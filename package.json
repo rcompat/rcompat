@@ -1,0 +1,26 @@
+{
+  "name": "@rcompat/monorepo",
+  "version": "0.1.0",
+  "description": "rcompat monorepo",
+  "license": "MIT",
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat"
+  },
+  "scripts": {
+    "test": "npx debris",
+    "lint": "npx eslint .",
+    "deps": "yarn upgrade-interactive"
+  },
+  "devDependencies": {
+    "debris": "^0.14.0",
+    "maximin": "^0.2.1"
+  },
+  "type": "module",
+  "private": true,
+  "packageManager": "yarn@3.6.3",
+  "workspaces": [
+    "packages/**/*"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "rcompat",
+  "version": "0.1.0",
+  "description": "JavaScript standard library & runtime compatibility layer",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/**/*.js",
+    "!/**/*.spec.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/rcompat"
+  },
+  "type": "module",
+  "exports": {
+    "./args": "./args/exports.js",
+    "./async": "./async/exports.js",
+    "./console": "./console/exports.js",
+    "./colors": "./colors/exports.js",
+    "./crypto": "./crypto/exports.js",
+    "./invariant": "./invariant/exports.js",
+    "./env": "./env/exports.js",
+    "./fs": "./fs/exports.js",
+    "./function": "./function/exports.js",
+    "./http": "./http/exports.js",
+    "./math": "./math/exports.js",
+    "./meta": "./meta/exports.js",
+    "./module": "./module/exports.js",
+    "./object": "./object/exports.js",
+    "./stdio": "./stdio/exports.js",
+    "./streams": "./streams/exports.js",
+    "./string": "./string/exports.js",
+    "./sync": "./sync/exports.js",
+    "./timers": "./timers/exports.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
