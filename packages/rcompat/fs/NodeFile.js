@@ -181,8 +181,8 @@ export default class File extends Blob {
     maybe(options).object();
 
     return readFile(this.path, {
-      ...options,
       encoding: options?.encoding ?? "utf8",
+      ...options,
     });
   }
 
@@ -198,6 +198,10 @@ export default class File extends Blob {
 
   static write(path, data, options) {
     return new File(path).write(data, options);
+  }
+
+  arrayBuffer() {
+    return this.read({ encoding: undefined });
   }
 
   text() {

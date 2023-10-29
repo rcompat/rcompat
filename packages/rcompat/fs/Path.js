@@ -180,6 +180,10 @@ export default class Path {
     return directory.up(levels - 1);
   }
 
+  arrayBuffer() {
+    return this.file.arrayBuffer();
+  }
+
   text() {
     return this.file.text();
   }
