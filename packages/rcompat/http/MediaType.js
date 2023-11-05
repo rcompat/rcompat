@@ -4,10 +4,11 @@ export const APPLICATION_JSON = "application/json";
 export const APPLICATION_OCTET_STREAM = "application/octet-stream";
 // }}}
 // text {{{
-export const TEXT_HTML = "text/html";
-export const TEXT_PLAIN = "text/plain";
 export const TEXT_CSS = "text/css";
+export const TEXT_EVENT_STREAM = "text/event-stream";
+export const TEXT_HTML = "text/html";
 export const TEXT_JAVASCRIPT = "text/javascript";
+export const TEXT_PLAIN = "text/plain";
 export const TEXT_XML = "text/xml";
 // XML {{{
 export const APPLICATION_RSS = "application/rss+xml";
@@ -24,15 +25,15 @@ export const IMAGE_WEBP = "image/webp";
 export const FONT_WOFF2 = "font/woff2";
 // }}}
 // video {{{
-/*
-    application/vnd.apple.mpegurl
-    audio/mpegurl
-    application/mpegurl
-    application/x-mpegurl
-    audio/mpegurl
-    audio/x-mpegurl
-    application/vnd.apple.mpegurl.audio
-*/
+//
+//  application/vnd.apple.mpegurl
+//  audio/mpegurl
+//  application/mpegurl
+//  application/x-mpegurl
+//  audio/mpegurl
+//  audio/x-mpegurl
+//  application/vnd.apple.mpegurl.audio
+//
 // }}}
 
 const extensions = {
