@@ -20,12 +20,12 @@ export default class File extends Blob {
     return this.#path.path;
   }
 
-  get modified() {
-    return this.#path.modified;
+  modified() {
+    return this.#path.modified();
   }
 
-  get exists() {
-    return this.#path.exists;
+  exists() {
+    return this.#path.exists();
   }
 
   get directory() {
@@ -57,7 +57,7 @@ export default class File extends Blob {
   }
 
   static exists(path) {
-    return new File(path).exists;
+    return new File(path).exists();
   }
 
   get readable() {
@@ -91,7 +91,7 @@ export default class File extends Blob {
   }
 
   async recreate() {
-    if (!await this.exists) {
+    if (!await this.exists()) {
       // create directory
       await this.create();
     }

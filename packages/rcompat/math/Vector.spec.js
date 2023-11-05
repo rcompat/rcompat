@@ -11,7 +11,7 @@ export default test => {
     assert(new Vector(0, 1).length).equals(1);
     assert(new Vector(1, 2).length).equals(Math.sqrt(5));
     assert(new Vector(1, 2, 3).length).equals(Math.sqrt(14));
-    assert(new Vector(2, -5, 4).length).equals(3*Math.sqrt(5));
+    assert(new Vector(2, -5, 4).length).equals(3 * Math.sqrt(5));
     assert(new Vector(1, 2, 3, 4).length).equals(Math.sqrt(30));
   });
 

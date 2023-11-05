@@ -114,8 +114,8 @@ export default class Path {
     return lstat(this.path);
   }
 
-  async modified() {
-    return Math.round((await this.#stats()).mtimeMs);
+  modified() {
+    return this.#stats().then(({ mtimeMs }) => Math.round(mtimeMs));
   }
 
   exists() {
@@ -127,18 +127,18 @@ export default class Path {
   }
 
   get isFile() {
-    return this.exists.then(exists =>
-      exists ? this.#stats.then(stats => stats.isFile()) : false);
+    return this.exists().then(exists =>
+      exists ? this.#stats().then(stats => stats.isFile()) : false);
   }
 
   get isDirectory() {
-    return this.exists.then(exists =>
-      exists ? this.#stats.then(stats => stats.isDirectory()) : false);
+    return this.exists().then(exists =>
+      exists ? this.#stats().then(stats => stats.isDirectory()) : false);
   }
 
   get isSymlink() {
-    return this.exists.then(exists =>
-      exists ? this.#stats.then(stats => stats.isSymbolicLink()) : false);
+    return this.exists().then(exists =>
+      exists ? this.#stats().then(stats => stats.isSymbolicLink()) : false);
   }
 
   get directory() {
@@ -158,7 +158,7 @@ export default class Path {
   }
 
   get extension() {
-    return extname(this.path);
+    return extname(this.path).slice(1);
   }
 
   get file() {
@@ -178,10 +178,6 @@ export default class Path {
     const { directory } = this;
     assert_boundary(directory, "Stopping at filesystem boundary");
     return directory.up(levels - 1);
-  }
-
-  arrayBuffer() {
-    return this.file.arrayBuffer();
   }
 
   text() {

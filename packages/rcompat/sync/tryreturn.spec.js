@@ -9,13 +9,13 @@ export default test => {
       assert(error.message).equals("`undefined` must be of type function");
     }
   });
-  /*test.case("no `orelse`", assert => {
-    try {
-      tryreturn(() => 1);
-    } catch (error) {
-      assert(error.message).equals("`tryreturn` executed without a backup");
-    }
-  });*/
+  // test.case("no `orelse`", assert => {
+  //   try {
+  //     tryreturn(() => 1);
+  //   } catch (error) {
+  //     assert(error.message).equals("`tryreturn` executed without a backup");
+  //   }
+  // });
   test.case("`orelse` faulty", assert => {
     try {
       tryreturn(identity).orelse();

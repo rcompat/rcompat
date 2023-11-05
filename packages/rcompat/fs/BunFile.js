@@ -17,12 +17,12 @@ export default class File extends Blob {
     return this.#path.path;
   }
 
-  get modified() {
-    return this.#path.modified;
+  modified() {
+    return this.#path.modified();
   }
 
-  get exists() {
-    return this.#path.exists;
+  exists() {
+    return this.#path.exists();
   }
 
   get directory() {
@@ -50,7 +50,7 @@ export default class File extends Blob {
   }
 
   static exists(path) {
-    return new File(path).exists;
+    return new File(path).exists();
   }
 
   get readable() {
@@ -112,14 +112,14 @@ export default class File extends Blob {
   async #collect(pattern, options) {
     return EagerEither
       .try(() => this.#path.list(() => true))
-      .match({left: () => []})
+      .match({ left: () => [] })
       .map(async list => {
         let files = [];
         for (const path of list) {
           if (path.name.startsWith(".")) {
             continue;
           }
-          const {file} = path;
+          const { file } = path;
           if (options?.recursive && await file.isDirectory) {
             files = files.concat(await file.#collect(pattern, options));
           } else if (pattern === undefined ||
@@ -156,7 +156,7 @@ export default class File extends Blob {
       await File.recreate(toPath);
       // copy all files
       return Promise.all((await this.#path.list(filter))
-        .map(({name}) => new File(this, name).copy(to.join(name))));
+        .map(({ name }) => new File(this, name).copy(to.join(name))));
     }
 
     return copyFile(this.path, to.path);

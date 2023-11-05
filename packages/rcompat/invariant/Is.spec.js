@@ -5,7 +5,7 @@ const fixtures = Object.entries({
   number: [0, Number(0)],
   bigint: [0n],
   boolean: [true, false],
-  function: [() => undefined, function func() {
+  function: [() => undefined, function() {
     return undefined;
   }],
   null: [null],
