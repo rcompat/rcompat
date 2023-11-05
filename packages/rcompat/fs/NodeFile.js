@@ -60,11 +60,11 @@ export default class File extends Blob {
     return new File(path).exists();
   }
 
-  get readable() {
+  stream() {
     return Readable.toWeb(fs.createReadStream(this.path, { flags: "r" }));
   }
 
-  static readable(path) {
+  static stream(path) {
     return new File(path).readable;
   }
 
@@ -76,8 +76,13 @@ export default class File extends Blob {
     return new File(path).writable;
   }
 
-  async remove(options) {
+  async remove(options = {}) {
     maybe(options).object();
+
+    // if not set to fail and exists, do nothing
+    if (!options.fail && !await this.exists()) {
+      return this;
+    }
 
     await rm(this.path, {
       ...options,

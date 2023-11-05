@@ -161,7 +161,7 @@ export default class Path {
     return extname(this.path).slice(1);
   }
 
-  get file() {
+  get #file() {
     return new File(this.path);
   }
 
@@ -180,12 +180,54 @@ export default class Path {
     return directory.up(levels - 1);
   }
 
+  arrayBuffer() {
+    return this.#file.arrayBuffer();
+  }
+
   text() {
-    return this.file.text();
+    return this.#file.text();
   }
 
   json() {
-    return this.file.json();
+    return this.#file.json();
+  }
+
+  copy(to, filter) {
+    return this.#file.copy(to, filter);
+  }
+
+  static copy(from, to, filter) {
+    return File.copy(from, to, filter);
+  }
+
+  async create(options) {
+    maybe(options).object();
+
+    return this.#file.create(options);
+  }
+
+  static create(path, options) {
+    return File.create(path, options);
+  }
+
+  async remove(options) {
+    maybe(options).object();
+
+    return this.#file.remove(options);
+  }
+
+  static remove(path, options) {
+    return File.remove(path, options);
+  }
+
+  write(data, options) {
+    maybe(options).object();
+
+    return this.#file.write(data, options);
+  }
+
+  static write(path, data, options) {
+    return File.write(path, data, options);
   }
 
   async discover(filename) {
@@ -204,6 +246,18 @@ export default class Path {
 
   debase(base) {
     return new Path(this.path.replace(base, _ => ""));
+  }
+
+  stream() {
+    return this.#file.stream();
+  }
+
+  static stream(path) {
+    return File.stream(path);
+  }
+
+  static read(path, options) {
+    return new File(path).read(options);
   }
 
   // return the first directory where package.json is found, starting at cwd

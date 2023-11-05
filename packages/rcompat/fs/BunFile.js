@@ -53,12 +53,12 @@ export default class File extends Blob {
     return new File(path).exists();
   }
 
-  get readable() {
+  stream() {
     return Bun.file(this.path).stream();
   }
 
-  static readable(path) {
-    return new File(path).readable;
+  static stream(path) {
+    return new File(path).stream();
   }
 
   get writable() {
@@ -178,6 +178,7 @@ export default class File extends Blob {
 
   write(data, options) {
     maybe(options).object();
+
     return Bun.write(this.path, data);
   }
 
