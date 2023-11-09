@@ -8,6 +8,7 @@ const root = await Path.root();
 const env = root.join(`.env${JS_ENV ? `.${JS_ENV}` : ""}`);
 const local = new Path(`${env.path}.local`);
 
-const read = async () => parse(await (await local.exists ? local : env).text());
+const is_local = async _ => await local.exists() ? local : env;
+const read = async _ => parse(await (await is_local()).text());
 
 export default await tryreturn(_ => read()).orelse(_ => ({}));
