@@ -1,1 +1,1 @@
-export { default } from "./module.js";
+export { default, user } from "./module.js";
