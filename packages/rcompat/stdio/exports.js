@@ -1,5 +1,5 @@
 export { stdin, stdout, stderr } from "node:process";
-import { exec } from "node:process";
+import { exec } from "node:child_process";
 
 const execute = (command, options) => new Promise((resolve, reject) => {
   exec(command, options, (error, stdout, stderr) =>
