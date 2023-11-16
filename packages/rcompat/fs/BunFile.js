@@ -84,7 +84,7 @@ export default class File extends Blob {
   }
 
   async recreate() {
-    if (!await this.exists) {
+    if (!await this.exists()) {
       // create directory
       await this.create();
     }
