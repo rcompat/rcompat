@@ -163,7 +163,7 @@ export default class File extends Blob {
     is(filter).function();
 
     if (await this.isSymlink) {
-      return new Path(await realpath(this.path)).file.copy(toPath, filter);
+      return new Path(await realpath(this.path)).copy(toPath, filter);
     }
 
     const to = new Path(toPath);
