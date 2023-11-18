@@ -158,7 +158,7 @@ export default class Path {
   }
 
   get extension() {
-    return extname(this.path).slice(1);
+    return extname(this.path);
   }
 
   get #file() {
