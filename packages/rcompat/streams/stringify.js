@@ -8,5 +8,5 @@ const read = ({ chunks = [], reader }) =>
     : read({ chunks: [...chunks, decoder.decode(value)], reader }));
 
 export default async input => input instanceof ReadableStream
-  ? (await read({ reader: input.getReader() })).filter(defined).join()
+  ? (await read({ reader: input.getReader() })).filter(defined).join("")
   : input;
