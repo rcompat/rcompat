@@ -1,4 +1,4 @@
-# RCompat
+# rcompat
 
 JavaScript standard library & runtime compatibility layer.
 
@@ -11,5 +11,5 @@ JavaScript standard library & runtime compatibility layer.
 
 ## License / Contributing
 
-By contributing to RCompat, you agree that your contributions will be licensed
+By contributing to rcompat, you agree that your contributions will be licensed
 under its [MIT license](LICENSE).
