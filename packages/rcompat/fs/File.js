@@ -13,7 +13,6 @@ const assert_filesystem_boundary = directory => {
     throw new Error("Stopping at filesystem boundary");
   }
 };
-const is_native = source => is(source).instanceof(NativeFile);
 const is_file = kind => assert(kind === Kind.File);
 const is_directory = kind => assert(kind === Kind.Directory);
 
@@ -32,9 +31,14 @@ export default class File {
     }
     // this.#source is effectively readonly past this stage
   }
+
+  #is_native() {
+    is(this.#source).instanceof(NativeFile);
+  }
+
   // {{{ traits
   #stats() {
-    is_native(this.#source);
+    this.#is_native();
 
     return lstat(this.path);
   }
@@ -89,36 +93,38 @@ export default class File {
   }
 
   get name() {
-    if (this.#source instanceof globalThis.File) {
-      return this.#source.name;
+    const source = this.#source;
+
+    if (source instanceof globalThis.File) {
+      return source.name;
     }
 
-    is_native(this.#source);
+    this.#is_native();
 
     return basename(this.path);
   }
 
   get extension() {
-    is_native(this.#source);
+    this.#is_native();
 
     return extname(this.path);
   }
 
   get base() {
-    is_native(this.#source);
+    this.#is_native();
 
     return basename(this.path, this.extension);
   }
 
   get type() {
-    is_native(this.#source);
+    this.#is_native();
 
     return MediaType.resolve(this.path);
   }
   // }}}
   // {{{ browse the filesystem
   join(...paths) {
-    is_native(this.#source);
+    this.#is_native();
 
     return new File(join(this.path, ...paths));
   }
@@ -130,12 +136,13 @@ export default class File {
   }
 
   debase(base) {
-    is_native(this.#source);
+    this.#is_native();
 
     return new File(this.path.replace(base, _ => ""));
   }
+
   parent(levels = 1) {
-    is_native(this.#source);
+    this.#is_native();
     assert(levels > 0);
     assert_filesystem_boundary(this);
 
@@ -145,7 +152,7 @@ export default class File {
   }
 
   async find(filename) {
-    is_native(this.#source);
+    this.#is_native();
 
     const file = new File(this.path).join(filename);
     if (await file.exists()) {
@@ -159,26 +166,20 @@ export default class File {
   // }}}
   // {{{ single file operations
   async arrayBuffer() {
-    is_file(await this.kind());
-
+    // blob or path-based
     return this.#source.arrayBuffer();
   }
 
   static arrayBuffer(path) {
-    // guarded by #arrayBuffer
-
     return new File(path).arrayBuffer();
   }
 
   async text() {
-    is_file(await this.kind());
-
+    // blob or path-based
     return this.#source.text();
   }
 
   static text(path) {
-    // guarded by #text
-
     return new File(path).text();
   }
 
@@ -194,15 +195,12 @@ export default class File {
     return new File(path).json();
   }
 
-  async stream() {
-    is_file(await this.kind());
-
+  stream() {
+    // blob or path-based
     return this.#source.stream();
   }
 
   static stream(path) {
-    // guarded by #stream
-
     return new File(path).stream();
   }
 
@@ -220,9 +218,8 @@ export default class File {
 
   async write(data, options) {
     is_file(await this.kind());
-    assert(data instanceof Blob
-        || data instanceof File
-        || typeof data === "string");
+    assert(data instanceof Blob || data instanceof File
+      || typeof data === "string");
     maybe(options).object();
 
     return this.#source.write(data, options);
@@ -236,7 +233,7 @@ export default class File {
   // }}}
   // {{{ mixed single file / directory operations
   async copy(to, filter = _ => true) {
-    is_native(this.#source);
+    this.#is_native();
     // also guarded by NativeFile#copy
 
     return this.#source.copy(await this.kind(), to, filter);
@@ -292,7 +289,7 @@ export default class File {
     for (const file of files) {
       if (await file.kind() === Kind.Directory) {
         files = files.concat(await file.glob(pattern));
-      } else if (file.is(new RegExp(pattern, "u"))) {
+      } else if (new RegExp(pattern, "u").test(file.path)) {
         files.push(file);
       }
     }
