@@ -1,5 +1,6 @@
 import { rm, realpath } from "node:fs/promises";
 import Kind from "./Kind.js";
+import FSFile from "./File.js";
 
 export default {
   [Kind.File]: async path => {
@@ -9,6 +10,6 @@ export default {
     await rm(path, { force, recursive });
   },
   [Kind.Link]: async path => {
-    new File(await realpath(path)).remove();
+    new FSFile(await realpath(path)).remove();
   },
 };
