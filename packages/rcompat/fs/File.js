@@ -40,7 +40,7 @@ export default class File {
   }
 
   async modified() {
-    // protected by this.#stats
+    // guarded by this.#stats
 
     const stats = await this.#stats();
 
@@ -48,7 +48,7 @@ export default class File {
   }
 
   async exists() {
-    // protected by this.#stats
+    // guarded by this.#stats
 
     try {
       await this.#stats();
@@ -59,13 +59,13 @@ export default class File {
   }
 
   static exists(...args) {
-    // protected by File#stats
+    // guarded by File#stats
 
     return new File(...args).exists();
   }
 
   async kind() {
-    // protected by File#exists
+    // guarded by File#exists
 
     const exists = await this.exists();
     is(exists).true();
@@ -165,7 +165,7 @@ export default class File {
   }
 
   static arrayBuffer(path) {
-    // protected by #arrayBuffer
+    // guarded by #arrayBuffer
 
     return new File(path).arrayBuffer();
   }
@@ -177,7 +177,7 @@ export default class File {
   }
 
   static text(path) {
-    // protected by #text
+    // guarded by #text
 
     return new File(path).text();
   }
@@ -189,7 +189,7 @@ export default class File {
   }
 
   static json(path) {
-    // protected by #json
+    // guarded by #json
 
     return new File(path).json();
   }
@@ -201,7 +201,7 @@ export default class File {
   }
 
   static stream(path) {
-    // protected by #stream
+    // guarded by #stream
 
     return new File(path).stream();
   }
@@ -213,7 +213,7 @@ export default class File {
   }
 
   static writer(path) {
-    // protected by #writer
+    // guarded by #writer
 
     return new File(path).writer();
   }
@@ -229,7 +229,7 @@ export default class File {
   }
 
   static write(path, data, options) {
-    // protected by #write
+    // guarded by #write
 
     return File.write(path, data, options);
   }
@@ -300,7 +300,7 @@ export default class File {
   }
 
   static glob(pattern) {
-    // protected by File#glob
+    // guarded by File#glob
 
     return new File(".").glob(pattern);
   }
