@@ -25,7 +25,7 @@ export default class File {
       this.#source = source;
     } else {
       is(source).string();
-      this.#source = new NativeFile(this.path);
+      this.#source = new NativeFile(source);
       this.#path = source;
       // this.#path is effectively readonly past this stage
     }
@@ -33,7 +33,7 @@ export default class File {
   }
 
   #is_native() {
-    is(this.#source).instanceof(NativeFile);
+    is(this.#source).instance(NativeFile);
   }
 
   // {{{ traits
@@ -57,7 +57,7 @@ export default class File {
     try {
       await this.#stats();
       return true;
-    } catch (_){
+    } catch (_) {
       return false;
     }
   }

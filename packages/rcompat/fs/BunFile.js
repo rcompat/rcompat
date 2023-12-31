@@ -1,7 +1,7 @@
 import { maybe } from "rcompat/invariant";
 import CommonFile from "./CommonFile.js";
 
-const { file, write } = Bun;
+const { file, write } = typeof Bun !== "undefined" ? Bun : {};
 
 export default class BunFile extends CommonFile {
   // {{{ single file operations
