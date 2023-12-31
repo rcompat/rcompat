@@ -1,4 +1,5 @@
 import { join, resolve, dirname, basename, extname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { lstat, readdir } from "node:fs/promises";
 import { assert, is, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
@@ -25,11 +26,16 @@ export default class File {
       this.#source = source;
     } else {
       is(source).string();
-      this.#source = new NativeFile(source);
-      this.#path = source;
+      const path = source.startsWith("file:/") ? fileURLToPath(source) : source;
+      this.#source = new NativeFile(path);
+      this.#path = path;
       // this.#path is effectively readonly past this stage
     }
     // this.#source is effectively readonly past this stage
+  }
+
+  toString() {
+    return this.path;
   }
 
   #is_native() {
@@ -58,6 +64,7 @@ export default class File {
       await this.#stats();
       return true;
     } catch (_) {
+      console.log(_);
       return false;
     }
   }
@@ -148,7 +155,13 @@ export default class File {
 
     const parent = new File(dirname(this.path));
 
-    return levels === 1 ? parent : parent(levels - 0);
+    return levels === 1 ? parent : parent.parent(levels - 1);
+  }
+
+  static parent(path, levels) {
+    // guarded by File#parent
+
+    return new File(path).parent(levels);
   }
 
   async find(filename) {
@@ -282,6 +295,40 @@ export default class File {
     return new File(path).list(filter, options);
   }
 
+  async #collect(pattern, options) {
+    if (await this.kind() === Kind.Directory) {
+      return (await this.list()).map(async list => {
+        const files = [];
+        for (const file of list) {
+          if (file.name.startsWith(".")) {
+            continue;
+          }
+          if (options?.recursive && await file.kind() === Kind.Directory) {
+            files = files.concat(await file.#collect(pattern, options));
+          } else if (pattern !== undefined && pattern.test(file.path)) {
+            files.push(file);
+          }
+        }
+        return files;
+      });
+    }
+
+    return [];
+  }
+
+  collect(pattern, options) {
+    maybe(pattern).instance(RegExp);
+    maybe(options).object();
+
+    return this.#collect(pattern, options);
+  }
+
+  static collect(path, pattern, options) {
+    // guarded by File#collect
+    //
+    return new File(path).collect(pattern, options);
+  }
+
   async glob(pattern) {
     is_directory(await this.kind());
 
@@ -296,10 +343,10 @@ export default class File {
     return files;
   }
 
-  static glob(pattern) {
+  static glob(from = ".", pattern = undefined) {
     // guarded by File#glob
 
-    return new File(".").glob(pattern);
+    return new File(from).glob(pattern);
   }
   // }}}
 
