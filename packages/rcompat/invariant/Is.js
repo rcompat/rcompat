@@ -137,4 +137,16 @@ export default class Is {
     const condition = Number.isInteger(this.#value) && this.#value > 0;
     return this.#test({ condition, def, error });
   }
+
+  true(error) {
+    const def = `\`${this.#value}\` must be boolean \`true\``;
+    const condition = this.#value === true;
+    return this.#test({ condition, def, error });
+  }
+
+  false(error) {
+    const def = `\`${this.#value}\` must be boolean \`false\``;
+    const condition = this.#value === false;
+    return this.#test({ condition, def, error });
+  }
 }
