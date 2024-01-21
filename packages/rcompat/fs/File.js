@@ -17,8 +17,9 @@ const assert_boundary = directory => {
   }
 };
 
-export default class File {
+export default class File extends Blob {
   constructor(path) {
+    super();
     defined(path);
     this.path = parse(path?.path ?? path);
   }
