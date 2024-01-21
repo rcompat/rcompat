@@ -6,7 +6,6 @@ import Kind from "../Kind.js";
 import { is } from "rcompat/invariant";
 
 export default async (path, to, filter = () => true) => {
-  is(to).instance(File);
   is(filter).function();
 
   const $kind = await kind(path);
