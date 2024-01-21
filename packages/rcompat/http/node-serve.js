@@ -12,11 +12,7 @@ export default async (handler, conf) =>
       //
       // 1. wrap a node request in a WHATWG request
       const url = new URL(dedouble(req.url), `http://${req.headers.host}`);
-      const request = new Request(`${url}`, {
-        headers: req.headers,
-        method: req.method,
-        body: req,
-      });
+      const request = new Request(`${url}`, req);
 
       const response = await handler(request);
 
