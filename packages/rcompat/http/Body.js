@@ -12,11 +12,12 @@ const { decodeURIComponent: decode } = globalThis;
 
 const contents = {
   [APPLICATION_FORM_URLENCODED]: async request =>
-    from(await stringify(request.body).split("&")
+    from((await stringify(request.body)).split("&")
       .map(part => part.split("=")
         .map(subpart => decode(subpart).replaceAll("+", " ")))),
-  [APPLICATION_JSON]: async request => JSON.parse(await stringify(request.body)),
-  [MULTIPART_FORM_DATA]: async request => from((await request.formData()).entries()),
+  [APPLICATION_JSON]: async ({ body }) => JSON.parse(await stringify(body)),
+  [MULTIPART_FORM_DATA]: async request =>
+    from((await request.formData()).entries()),
 };
 
 export default {
