@@ -1,9 +1,33 @@
-const { fetch, FormData, Headers, URL, URLSearchParams } = globalThis;
+import { runtime } from "rcompat/meta";
 
-export { fetch, FormData, Headers, URL, URLSearchParams };
-export { default as Response } from "./Response.js";
-export { default as Request } from "./Request.js";
-export { default as Body } from "./Body.js";
-export * as Status from "./Status.js";
-export * as MediaType from "./MediaType.js";
-export { default as serve } from "./serve.js";
+import * as node from "./node/exports.js";
+import * as deno from "./deno/exports.js";
+import * as bun from "./bun/exports.js";
+
+const {
+  Request,
+  Response,
+  Headers,
+  FormData,
+  URL,
+  URLSearchParams,
+  Status,
+  MediaType,
+  Body,
+  serve,
+  fetch,
+} = { bun, deno, node }[runtime];
+
+export {
+  Request,
+  Response,
+  Headers,
+  FormData,
+  URL,
+  URLSearchParams,
+  Status,
+  MediaType,
+  Body,
+  serve,
+  fetch,
+};

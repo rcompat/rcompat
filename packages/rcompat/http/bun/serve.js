@@ -1,4 +1,4 @@
-import get_options from "./get-options.js";
+import { get_options } from "../private/exports.js";
 
 export default async (handler, conf) => Bun.serve({
   port: conf.port,

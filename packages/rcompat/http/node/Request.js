@@ -1,8 +1,8 @@
-import { Headers } from "./exports.js";
-import { IncomingMessage } from "http";
-import { Readable } from "stream";
+import { IncomingMessage } from "node:http";
+import { Readable } from "node:stream";
 import { is } from "rcompat/invariant";
 import busboy from "busboy";
+import { Headers } from "../shared/exports.js";
 
 export default class Request {
   #original;

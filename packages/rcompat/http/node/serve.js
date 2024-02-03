@@ -1,12 +1,11 @@
-import { Writable } from "stream";
+import { Writable } from "node:stream";
+import { is_secure, get_options } from "../private/exports.js";
 import Request from "./Request.js";
-import get_options from "./get-options.js";
-import secure from "./secure.js";
 
 const dedouble = url => url.replaceAll(/\/{1,}/ug, () => "/");
 
 export default async (handler, conf) =>
-  import(secure(conf) ? "https" : "http").then(async ({ createServer }) =>
+  import(is_secure(conf) ? "https" : "http").then(async ({ createServer }) =>
     createServer(await get_options(conf), async (req, res) => {
       // handler gets a WHATWG Request, and returns a WHATWG Response
       //
