@@ -37,6 +37,6 @@
   },
   "dependencies": {
     "busboy": "^1.6.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.4.1"
   }
 }
