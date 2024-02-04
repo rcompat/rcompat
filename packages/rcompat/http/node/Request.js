@@ -66,6 +66,10 @@ export default class Request {
     }
   }
 
+  get original() {
+    return this.#original;
+  }
+
   get headers() {
     return this.#headers;
   }
