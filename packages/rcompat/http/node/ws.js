@@ -3,12 +3,12 @@ import { ws_actions } from "../private/exports.js";
 
 const wss = new WebSocketServer({ noServer: true });
 
-const done = response => socket => {
-  ws_actions.filter(([key]) => response[key]).forEach(([key, action]) =>
-    action(socket, response[key]));
+const done = actions => socket => {
+  ws_actions.filter(([key]) => actions[key]).forEach(([key, action]) =>
+    action(socket, actions[key]));
 };
 
-export const upgrade = (original, response) => {
+export const upgrade = (original, actions) => {
   const null_buffer = Buffer.from([]);
-  wss.handleUpgrade(original, original.socket, null_buffer, done(response));
+  wss.handleUpgrade(original, original.socket, null_buffer, done(actions));
 };

@@ -8,20 +8,20 @@ export default async (handler, conf) => {
     tls: await get_options(conf),
     websocket: {
       async message(socket, message) {
-        const reply = await socket.data.message?.(message, socket);
+        const reply = await socket.data.actions.message?.(message, socket);
         reply !== undefined && socket.send(reply);
       },
       open(socket) {
-        socket.data.open?.(socket);
+        socket.data.actions.open?.(socket);
       },
       close(socket) {
-        socket.data.close?.(socket);
+        socket.data.actions.close?.(socket);
       },
     },
   });
   return {
-    upgrade(request, data) {
-      server.upgrade(request, { data });
+    upgrade(request, actions = {}) {
+      server.upgrade(request, { data: { actions } });
     },
   };
 };
