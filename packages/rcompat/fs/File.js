@@ -108,6 +108,11 @@ export default class File extends Blob {
     return extname(this.path);
   }
 
+  get fullExtension() {
+    const name = this.path.split("/").at(-1);
+    return name.slice(name.indexOf("."));
+  }
+
   up(levels) {
     if (levels === 0) {
       return this;
