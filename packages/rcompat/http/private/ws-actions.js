@@ -1,8 +1,7 @@
 export default Object.entries({
   message(socket, handler) {
-    socket.addEventListener("message", async event => {
-      const reply = await handler(event.data, socket);
-      reply !== undefined && socket.send(reply);
+    socket.addEventListener("message", event => {
+      handler(socket, event.data);
     });
   },
   open(socket, handler) {

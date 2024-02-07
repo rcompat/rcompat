@@ -7,9 +7,8 @@ export default async (handler, conf) => {
     fetch: request => handler(request),
     tls: await get_options(conf),
     websocket: {
-      async message(socket, message) {
-        const reply = await socket.data.actions.message?.(message, socket);
-        reply !== undefined && socket.send(reply);
+      message(socket, message) {
+        socket.data.actions.message?.(socket, message);
       },
       open(socket) {
         socket.data.actions.open?.(socket);
