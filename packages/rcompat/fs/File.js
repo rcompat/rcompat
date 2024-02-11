@@ -1,4 +1,5 @@
 import { join, resolve, dirname, basename, extname } from "node:path";
+import url from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
 
@@ -7,8 +8,7 @@ import * as node from "./node/exports.js";
 
 const native = runtime === "bun" ? bun : node;
 
-const file_prefix = 7;
-const parse = p => p.startsWith("file://") ? p.slice(file_prefix) : p;
+const parse = p => p.startsWith("file://") ? url.fileURLToPath(p) : p;
 
 const assert_boundary = directory => {
   is(directory).instance(File);
