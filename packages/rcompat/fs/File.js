@@ -28,6 +28,16 @@ export default class File extends Blob {
     return this.path;
   }
 
+  async import(name) {
+    maybe(name).string();
+    const imported = await import(url.pathToFileURL(this.path));
+    return name === undefined ? imported : imported[name];
+  }
+
+  static import(path, name) {
+    return new File(path).import(name);
+  }
+
   join(...paths) {
     const [first, ...rest] = paths;
 
