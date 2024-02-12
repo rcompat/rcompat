@@ -2,6 +2,7 @@ import { join, resolve, dirname, basename, extname } from "node:path";
 import url from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
+import { s_streamable } from "./exports.js";
 
 import * as bun from "./bun/exports.js";
 import * as node from "./node/exports.js";
@@ -17,15 +18,20 @@ const assert_boundary = directory => {
   }
 };
 
-export default class File extends Blob {
+export default class File {
+  #streamable = s_streamable;
+
   constructor(path) {
-    super();
     defined(path);
     this.path = parse(path?.path ?? path);
   }
 
   toString() {
     return this.path;
+  }
+
+  get streamable() {
+    return this.#streamable;
   }
 
   async import(name) {
