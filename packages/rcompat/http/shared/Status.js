@@ -50,7 +50,7 @@ export const EXPECTATION_FAILED = 417;
 export const IM_A_TEAPOT = 418;
 
 export const MISDIRECTED_REQUEST = 421;
-export const UNPROCESSABLE_CONTENT = 422;
+export const UNPROCESSABLE_ENTITY = 422;
 export const LOCKED = 423;
 export const FAILED_DEPENDENCY = 424;
 export const TOO_EARLY = 425;
