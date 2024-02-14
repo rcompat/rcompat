@@ -1,4 +1,4 @@
-import { join, resolve, dirname, basename, extname } from "node:path";
+import { join, resolve, dirname, basename, extname, sep } from "node:path";
 import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
@@ -28,6 +28,14 @@ export default class File {
 
   toString() {
     return this.path;
+  }
+
+  static get separator() {
+    return sep;
+  }
+
+  normalize() {
+    return this.path.replaceAll(File.separator, "/");
   }
 
   get streamable() {
