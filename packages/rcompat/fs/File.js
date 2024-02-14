@@ -1,5 +1,5 @@
 import { join, resolve, dirname, basename, extname } from "node:path";
-import url from "node:url";
+import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
 import { s_streamable } from "./exports.js";
@@ -9,7 +9,7 @@ import * as node from "./node/exports.js";
 
 const native = runtime === "bun" ? bun : node;
 
-const parse = p => p.startsWith("file://") ? url.fileURLToPath(p) : p;
+const parse = p => p.startsWith("file://") ? to_path(p) : p;
 
 const assert_boundary = directory => {
   is(directory).instance(File);
@@ -36,7 +36,7 @@ export default class File {
 
   async import(name) {
     maybe(name).string();
-    const imported = await import(url.pathToFileURL(this.path));
+    const imported = await import(to_url(this.path));
     return name === undefined ? imported : imported[name];
   }
 
@@ -216,8 +216,10 @@ export default class File {
     return this.discover("package.json");
   }
 
-  debase(base) {
-    return new File(this.path.replace(base, _ => ""));
+  debase(base, suffix = "") {
+    const { href: pathed } = to_url(this.path);
+    const { href: based } = to_url(base?.path ?? base);
+    return new File(pathed.replace(`${based}${suffix}`, _ => ""));
   }
 
   stream() {
