@@ -1,5 +1,3 @@
-import { default as from } from "./from.js";
-import { default as to } from "./to.js";
 import { default as inflate } from "./inflate.js";
 import { default as extend } from "./extend.js";
 import { default as empty } from "./empty.js";
@@ -10,6 +8,11 @@ import { default as valmap } from "./valmap.js";
 import { default as filter } from "./filter.js";
 import { default as stringify } from "./stringify.js";
 import { default as get } from "./get.js";
+
+const {
+  fromEntries: from,
+  entries: to,
+} = Object;
 
 const object = {
   from,
