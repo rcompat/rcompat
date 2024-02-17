@@ -1,11 +1,44 @@
-export { default as from } from "./from.js";
-export { default as to } from "./to.js";
-export { default as inflate } from "./inflate.js";
-export { default as extend } from "./extend.js";
-export { default as empty } from "./empty.js";
-export { default as transform } from "./transform.js";
-export { default as map } from "./map.js";
-export { default as keymap } from "./keymap.js";
-export { default as valmap } from "./valmap.js";
-export { default as filter } from "./filter.js";
-export { default as stringify } from "./stringify.js";
+import { default as from } from "./from.js";
+import { default as to } from "./to.js";
+import { default as inflate } from "./inflate.js";
+import { default as extend } from "./extend.js";
+import { default as empty } from "./empty.js";
+import { default as transform } from "./transform.js";
+import { default as map } from "./map.js";
+import { default as keymap } from "./keymap.js";
+import { default as valmap } from "./valmap.js";
+import { default as filter } from "./filter.js";
+import { default as stringify } from "./stringify.js";
+import { default as get } from "./get.js";
+
+const object = {
+  from,
+  to,
+  inflate,
+  extend,
+  empty,
+  transform,
+  map,
+  keymap,
+  valmap,
+  filter,
+  stringify,
+  get,
+};
+
+export {
+  from,
+  to,
+  inflate,
+  extend,
+  empty,
+  transform,
+  map,
+  keymap,
+  valmap,
+  filter,
+  stringify,
+  get,
+};
+
+export default object;
