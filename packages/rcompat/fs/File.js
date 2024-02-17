@@ -34,7 +34,7 @@ export default class File {
     return sep;
   }
 
-  normalize() {
+  webpath() {
     return this.path.replaceAll(File.separator, "/");
   }
 
