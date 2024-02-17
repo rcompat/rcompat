@@ -9,6 +9,8 @@ import * as node from "./node/exports.js";
 
 const native = runtime === "bun" ? bun : node;
 
+const { decodeURIComponent: decode } = globalThis;
+
 const parse = p => p.startsWith("file://") ? to_path(p) : p;
 
 const assert_boundary = directory => {
@@ -227,7 +229,8 @@ export default class File {
   debase(base, suffix = "") {
     const { href: pathed } = to_url(this.path);
     const { href: based } = to_url(base?.path ?? base);
-    return new File(pathed.replace(`${based}${suffix}`, _ => ""));
+    const path = decode(pathed).replace(`${decode(based)}${suffix}`, _ => "");
+    return new File(path);
   }
 
   stream() {
