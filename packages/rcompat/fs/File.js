@@ -222,6 +222,10 @@ export default class File {
     return directory.discover(filename);
   }
 
+  static discover(path, filename) {
+    return new File(path).discover(filename);
+  }
+
   root() {
     return this.discover("package.json");
   }
