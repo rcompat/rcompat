@@ -1,4 +1,3 @@
-import { IncomingMessage } from "node:http";
 import { Readable } from "node:stream";
 import { is } from "rcompat/invariant";
 import busboy from "busboy";
@@ -10,14 +9,15 @@ export default class Request {
   #headers = new Headers();
   #url;
   #method;
+  #parsed = false;
 
-  constructor(input, request) {
-    this.#original = request;
+  constructor(url, original) {
+    this.#original = original;
 
-    const { headers, method = "GET" } = request;
+    const { headers, method = "GET" } = original;
 
-    is(input).string();
-    this.#url = input;
+    is(url).string();
+    this.#url = url;
 
     is(method).string();
     this.#method = method;
@@ -25,10 +25,27 @@ export default class Request {
     is(headers).object();
     Object.entries(headers).forEach(header => this.#headers.set(...header));
 
-    this.#setBody(request ?? null);
+    this.#init_body();
+  }
+
+  get #has_body() {
+    return["GET", "HEAD"].includes(this.#method);
+  }
+
+  #init_body() {
+    // unparsed
+    this.#body = this.#has_body ? null : this.#original;
+  }
+
+  #parse_body() {
+    if (this.#has_body && !this.#parsed) {
+      this.#body = Readable.toWeb(this.#original);
+      this.#parsed = true;
+    }
   }
 
   async formData() {
+    this.#parse_body();
     const bb = busboy({ headers: this.#original.headers });
     const fields = [];
     let resolve;
@@ -58,12 +75,6 @@ export default class Request {
     return new Promise($resolve => {
       resolve = $resolve;
     });
-  }
-
-  #setBody(input) {
-    if (input instanceof IncomingMessage) {
-      this.#body = Readable.toWeb(input);
-    }
   }
 
   get original() {
