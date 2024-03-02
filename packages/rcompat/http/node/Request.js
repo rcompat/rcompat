@@ -1,5 +1,6 @@
 import { Readable } from "node:stream";
 import { is } from "rcompat/invariant";
+import { stringify } from "rcompat/streams";
 import busboy from "busboy";
 import { Headers } from "../shared/exports.js";
 
@@ -42,6 +43,11 @@ export default class Request {
       this.#body = Readable.toWeb(this.#original);
       this.#parsed = true;
     }
+  }
+
+  async json() {
+    this.#body = Readable.toWeb(this.#original);
+    return JSON.parse(await stringify(this.#body));
   }
 
   async formData() {

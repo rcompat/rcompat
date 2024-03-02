@@ -1,6 +1,5 @@
 import { from } from "rcompat/object";
 import { tryreturn } from "rcompat/async";
-import { stringify } from "rcompat/streams";
 
 import {
   APPLICATION_FORM_URLENCODED,
@@ -8,16 +7,12 @@ import {
   MULTIPART_FORM_DATA,
 } from "./MediaType.js";
 
-const { decodeURIComponent: decode } = globalThis;
+const formdata = async request => from((await request.formData()).entries());
 
 const contents = {
-  [APPLICATION_FORM_URLENCODED]: async request =>
-    from((await stringify(request.body)).split("&")
-      .map(part => part.split("=")
-        .map(subpart => decode(subpart).replaceAll("+", " ")))),
-  [APPLICATION_JSON]: async ({ body }) => JSON.parse(await stringify(body)),
-  [MULTIPART_FORM_DATA]: async request =>
-    from((await request.formData()).entries()),
+  [APPLICATION_JSON]: request => request.json(),
+  [APPLICATION_FORM_URLENCODED]: formdata,
+  [MULTIPART_FORM_DATA]: formdata,
 };
 
 export default {
