@@ -8,6 +8,7 @@ import { default as valmap } from "./valmap.js";
 import { default as filter } from "./filter.js";
 import { default as stringify } from "./stringify.js";
 import { default as get } from "./get.js";
+import { default as exclude } from "./exclude.js";
 
 const {
   fromEntries: from,
@@ -27,6 +28,7 @@ const object = {
   filter,
   stringify,
   get,
+  exclude,
 };
 
 export {
