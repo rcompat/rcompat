@@ -1,4 +1,3 @@
-import { from } from "rcompat/object";
 import { tryreturn } from "rcompat/async";
 
 import {
@@ -7,7 +6,8 @@ import {
   MULTIPART_FORM_DATA,
 } from "./MediaType.js";
 
-const formdata = async request => from((await request.formData()).entries());
+const formdata = async request =>
+  Object.fromEntries((await request.formData()).entries());
 
 const contents = {
   [APPLICATION_JSON]: request => request.json(),

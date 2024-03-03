@@ -1,5 +1,4 @@
 import { tryreturn } from "rcompat/async";
-import { to } from "rcompat/object";
 
 const MODULE_NOT_FOUND = "ERR_MODULE_NOT_FOUND";
 
@@ -11,7 +10,7 @@ export default async dependencies => {
       .orelse(({ code }) => code === MODULE_NOT_FOUND ? module : {})));
 
   const errored = results.filter(result => typeof result === "string");
-  const versions = to(dependencies)
+  const versions = Object.entries(dependencies)
     .filter(([dependency]) => errored.includes(dependency))
     .map(([key, value]) => `${key}@${value}`);
   if (errored.length > 0) {
