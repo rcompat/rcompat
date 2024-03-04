@@ -44,6 +44,7 @@ export {
   filter,
   stringify,
   get,
+  exclude,
 };
 
 export default object;
