@@ -1,7 +1,17 @@
 import { Writable } from "node:stream";
 import { Request } from "rcompat/http";
+import console from "rcompat/console";
 import { upgrade } from "./ws.js";
 import { is_secure, get_options } from "../private/exports.js";
+
+const get_url = request => {
+  try {
+    return new globalThis.URL(request.url, `http://${request.headers.host}`);
+  } catch (_) {
+    console.error(_);
+    return null;
+  }
+};
 
 export default async (handler, conf) =>
   import(is_secure(conf) ? "https" : "http").then(async ({ createServer }) => {
@@ -10,7 +20,12 @@ export default async (handler, conf) =>
       // handler gets a WHATWG Request, and returns a WHATWG Response
       //
       // 1. wrap a node request in a WHATWG request
-      const url = new globalThis.URL(req.url, `http://${req.headers.host}`);
+      const url = get_url(req);
+
+      if (url === null) {
+        res.end();
+      }
+
       const request = new Request(`${url}`, req);
 
       const response = await handler(request);
