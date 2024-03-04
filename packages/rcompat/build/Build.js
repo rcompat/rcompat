@@ -1,60 +1,31 @@
 import { is, assert } from "rcompat/invariant";
+import * as o from "rcompat/object";
 import * as esbuild from "esbuild";
-
-const hotreload_event_path = "/esbuild";
-const default_name = "app";
-const dev = "development";
-const prod = "production";
-const modes = {
-  [dev]: (name = default_name) => ({
-    minify: false,
-    splitting: false,
-    banner: {
-      js: `new EventSource("${hotreload_event_path}").addEventListener("change",
-        () => globalThis.location.reload());`,
-    },
-    entryNames: name,
-  }),
-  [prod]: (name = default_name) => ({
-    minify: true,
-    splitting: true,
-    banner: {},
-    entryNames: `${name}-[hash]`,
-  }),
-};
+import * as hotreload from "./hotreload.js";
+import { default as modes, dev, prod } from "./modes.js";
 const mode_keys = Object.keys(modes);
-const defaults_hotreload = {
-  host: "localhost",
-  port: 6262,
-};
 
 export default class Build {
-  #name;
-  #options;
-  #hotreload;
   #started = false;
   #mode;
+  #hotreload;
+  #options;
+  #name;
   #plugins = [];
   #artifacts = {};
   #exports = [];
-
-  get development() {
-    return this.#mode === dev;
-  }
 
   constructor(options = {}, mode = dev) {
     is(options).object();
     assert(mode_keys.includes(mode), `mode must be one of "${dev}", "${prod}"`);
 
-    const { excludes, hotreload, name, ...rest } = options;
+    const { excludes, name, ...rest } = o.exclude(options, ["hotreload"]);
 
     this.#name = name;
-
     this.#hotreload = {
-      ...defaults_hotreload,
-      ...hotreload,
+      ...hotreload.defaults,
+      ...options.hotreload,
     };
-
     this.#options = {
       // defaults
       bundle: true,
@@ -91,7 +62,7 @@ export default class Build {
 
     return {
       url: `http://${host}:${port}`,
-      paths: [`/${name}.js`, `/${name}.css`, hotreload_event_path],
+      paths: [`/${name}.js`, `/${name}.css`, hotreload.event_path],
     };
   }
 
@@ -124,5 +95,9 @@ export default class Build {
     }
 
     this.#started = true;
+  }
+
+  get development() {
+    return this.#mode === dev;
   }
 }
