@@ -40,6 +40,10 @@ export default class File {
     return this.path.replaceAll(File.separator, "/");
   }
 
+  static webpath(path) {
+    return new File(path).webpath();
+  }
+
   get streamable() {
     return this.#streamable;
   }
