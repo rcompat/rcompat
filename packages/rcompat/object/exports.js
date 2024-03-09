@@ -9,6 +9,8 @@ import { default as filter } from "./filter.js";
 import { default as stringify } from "./stringify.js";
 import { default as get } from "./get.js";
 import { default as exclude } from "./exclude.js";
+import { default as defaults } from "./defaults.js";
+import { default as proper } from "./proper.js";
 
 const {
   fromEntries: from,
@@ -29,6 +31,8 @@ const object = {
   stringify,
   get,
   exclude,
+  defaults,
+  proper,
 };
 
 export {
@@ -45,6 +49,8 @@ export {
   stringify,
   get,
   exclude,
+  defaults,
+  proper,
 };
 
 export default object;
