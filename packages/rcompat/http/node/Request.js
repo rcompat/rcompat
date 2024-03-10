@@ -45,6 +45,11 @@ export default class Request {
     }
   }
 
+  text() {
+    this.#body = Readable.toWeb(this.#original);
+    return stringify(this.#body);
+  }
+
   async json() {
     this.#body = Readable.toWeb(this.#original);
     return JSON.parse(await stringify(this.#body));
