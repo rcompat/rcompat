@@ -4,6 +4,7 @@ import {
   APPLICATION_FORM_URLENCODED,
   APPLICATION_JSON,
   MULTIPART_FORM_DATA,
+  TEXT_PLAIN,
 } from "./MediaType.js";
 
 const formdata = async request =>
@@ -13,6 +14,7 @@ const contents = {
   [APPLICATION_JSON]: request => request.json(),
   [APPLICATION_FORM_URLENCODED]: formdata,
   [MULTIPART_FORM_DATA]: formdata,
+  [TEXT_PLAIN]: request => request.text(),
 };
 
 export default {
