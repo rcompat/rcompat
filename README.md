@@ -2,14 +2,11 @@
 
 JavaScript standard library & runtime compatibility layer.
 
-## Packages
+## License
 
-| Package                                     | Description                   |
-|---------------------------------------------|-------------------------------|
-|[rcompat](packages/rcompat)                  | Library                       |
-|[website](packages/website)                  | Website                       |
+MIT
 
-## License / Contributing
+## Contributing
 
 By contributing to rcompat, you agree that your contributions will be licensed
-under its [MIT license](LICENSE).
+under its MIT license.
