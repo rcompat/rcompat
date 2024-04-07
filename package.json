@@ -40,7 +40,7 @@
   "dependencies": {
     "busboy": "^1.6.0",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.20.1",
+    "esbuild": "^0.20.2",
     "ws": "^8.16.0"
   }
 }
