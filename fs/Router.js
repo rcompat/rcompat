@@ -33,10 +33,7 @@ export default class FileSystemRouter {
           `${file}`.replace(directory, _ => "").slice(1, -ending.length),
           await file.import(),
         ]));
-    const tree = mktree();
-    for (const [path, file] of objects) {
-      tree.register(path, file);
-    }
-    //    tree.root.print();
+    const tree = mktree(objects);
+    // tree.root.print();
   }
 }
