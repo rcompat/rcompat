@@ -15,7 +15,7 @@ export default objects => {
     match(path) {
       const [_, ...parts] = path.split("/").map(p => p === "" ? "index" : p);
       const $parts = parts.filter((part, i) => i === 0 || part !== "index");
-      return this.root.match($parts) ?? this.root.match($parts.concat("index"));
+      return this.root.match($parts.concat("index"), false) ?? this.root.match($parts);
     },
     print() {
       this.root.print();

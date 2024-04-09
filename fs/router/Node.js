@@ -64,6 +64,14 @@ export default class Node {
     this.#file = file;
   }
 
+  statics() {
+    return this.#children.filter(child => child.type === STATIC);
+  }
+
+  catches() {
+    return this.#children.filter(child => child.type === CATCH);
+  }
+
   filed(path, file) {
     this.#children.push(new Node(path, file));
   }
@@ -79,34 +87,57 @@ export default class Node {
     return interim;
   }
 
-  match(parts) {
+  try_match(parts, match_catch, params) {
+    // match static routes first
+    for (const child of this.statics()) {
+      const matched = child.match(parts, match_catch, params);
+      if (matched !== undefined) {
+        return matched;
+      }
+    }
+    // then match catch routes
+    for (const child of this.catches()) {
+      const matched = child.match(parts, match_catch, params);
+      if (matched !== undefined) {
+        return matched;
+      }
+    }
+  }
+
+  match(parts, match_catch = true, params = {}) {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
-      for (const child of this.#children) {
-        const matched = child.match(parts);
-        if (matched !== undefined) {
-          return matched;
-        }
-      }
-
+      return this.try_match(parts, match_catch, params);
     }
     // anchor
     if (parts.length === 1) {
-      if (this.#path === parts[0] && this.#file !== undefined) {
-        return {
-          path: this.#path,
-          file: this.#file,
-        };
+      if (this.#file !== undefined) {
+        // static match
+        if (this.#path === parts[0]) {
+          return {
+            path: this.#path,
+            file: this.#file,
+            params,
+          };
+        }
+        // catch always matches
+        if (match_catch && this.#type === CATCH) {
+          return {
+            path: this.#path,
+            file: this.#file,
+            params: {
+              ...params,
+              [this.#path.slice(1, -1)]: parts[0],
+            },
+          };
+        }
       }
     } else {
       // current path matches first
-      if (this.#path === parts[0]) {
-        for (const child of this.#children) {
-          const matched = child.match(parts.slice(1));
-          if (matched !== undefined) {
-            return matched;
-          }
-        }
+      const is_catch = match_catch && this.#type === CATCH;
+      if (this.#path === parts[0] || is_catch) {
+        const next_params = is_catch ? { ...params, [this.#path.slice(1, -1)]: parts[0] } : params;
+        return this.try_match(parts.slice(1), match_catch, next_params);
       }
     }
   }
@@ -120,5 +151,9 @@ export default class Node {
 
   get path() {
     return this.#path;
+  }
+
+  get type() {
+    return this.#type;
   }
 }
