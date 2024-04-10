@@ -1,7 +1,7 @@
 import o from "rcompat/object";
 import { is } from "rcompat/invariant";
 import { File } from "rcompat/fs";
-import mktree from "./router/tree.js";
+import tree from "./router/tree.js";
 
 const ending = ".js";
 
@@ -33,7 +33,6 @@ export default class FileSystemRouter {
           `${file}`.replace(directory, _ => "").slice(1, -ending.length),
           await file.import(),
         ]));
-    const tree = mktree(objects);
-    // tree.root.print();
+    return tree(objects);
   }
 }

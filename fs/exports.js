@@ -1,5 +1,5 @@
 import { default as Blob } from "./Blob.js";
-import { default as File } from "./File.js";
+import { default as $File } from "./File.js";
 import { default as Kind } from "./Kind.js";
 import { default as Router } from "./Router.js";
 import { watch } from "node:fs";
@@ -8,7 +8,7 @@ const s_streamable = Symbol.for("rcompat/fs.streamable");
 
 export {
   Blob,
-  File,
+  $File as File,
   Kind,
   Router,
   s_streamable,
@@ -17,7 +17,7 @@ export {
 
 export default {
   Blob,
-  File,
+  $File: File,
   Kind,
   Router,
   s_streamable,

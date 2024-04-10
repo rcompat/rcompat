@@ -24,5 +24,13 @@ export default objects => {
   for (const [path, file] of objects) {
     tree.add(tree.root, path.split("/"), file);
   }
+  // check for duplicates
+  tree.root.check(node => {
+    const catches = node.catches();
+    if (catches.length > 1) {
+      throw new Error("doubled route");
+    }
+  });
+
   return tree;
 };

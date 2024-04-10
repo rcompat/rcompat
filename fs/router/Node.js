@@ -64,6 +64,19 @@ export default class Node {
     this.#file = file;
   }
 
+  check(predicate) {
+    const check = predicate(this);
+    if (check !== undefined) {
+      return check();
+    }
+    for (const child of this.#children) {
+      const checked = child.check(predicate);
+      if (checked !== undefined) {
+        return checked;
+      }
+    }
+  }
+
   statics() {
     return this.#children.filter(child => child.type === STATIC);
   }
@@ -136,7 +149,9 @@ export default class Node {
       // current path matches first
       const is_catch = match_catch && this.#type === CATCH;
       if (this.#path === parts[0] || is_catch) {
-        const next_params = is_catch ? { ...params, [this.#path.slice(1, -1)]: parts[0] } : params;
+        const next_params = is_catch
+          ? { ...params, [this.#path.slice(1, -1)]: parts[0] }
+          : params;
         return this.try_match(parts.slice(1), match_catch, next_params);
       }
     }
