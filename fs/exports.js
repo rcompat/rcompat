@@ -1,9 +1,25 @@
-export { default as Blob } from "./Blob.js";
-export { default as File } from "./File.js";
-export { default as Kind } from "./Kind.js";
-export { default as Router } from "./Router.js";
-export { watch } from "node:fs";
+import { default as Blob } from "./Blob.js";
+import { default as File } from "./File.js";
+import { default as Kind } from "./Kind.js";
+import { default as Router } from "./Router.js";
+import { watch } from "node:fs";
 
 const s_streamable = Symbol.for("rcompat/fs.streamable");
 
-export { s_streamable };
+export {
+  Blob,
+  File,
+  Kind,
+  Router,
+  s_streamable,
+  watch,
+};
+
+export default {
+  Blob,
+  File,
+  Kind,
+  Router,
+  s_streamable,
+  watch,
+};
