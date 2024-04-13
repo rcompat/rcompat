@@ -1,6 +1,6 @@
 # rcompat
 
-JavaScript standard library & runtime compatibility layer.
+JavaScript interoperability and runtime compatibility layer for servers.
 
 ## License
 
