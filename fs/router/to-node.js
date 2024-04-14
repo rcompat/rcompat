@@ -172,8 +172,8 @@ export default config => class Node {
     return this.#children.length === 0;
   }
 
-  check_predicate(request) {
-    return this.file && config.predicate(this.file, request);
+  check_predicate(request, file = this.file) {
+    return file && config.predicate(this.file, request);
   }
 
   return(request, parts, match_catch, params, file = this.#file) {
@@ -213,20 +213,25 @@ export default config => class Node {
   }
 
   #match_anchor(request, parts, match_catch, params) {
-    if (!this.check_predicate(request)) {
-      return;
-    }
-
     if (this.#file !== undefined) {
+      if (!this.check_predicate(request)) {
+        return;
+      }
       return this.return(request, parts, match_catch, params);
     }
     const [{ type, file } = {}] = this.dynamics();
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
+      if (!this.check_predicate(request, file)) {
+        return;
+      }
       return this.return(request, parts, match_catch, params, file);
     }
     // this node has no file, but might have an OPTIONAL_rest field
     if (type === OPTIONAL_REST) {
+      if (!this.check_predicate(request, file)) {
+        return;
+      }
       return this.return(request, parts, match_catch, params, file);
     }
   }
