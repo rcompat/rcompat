@@ -91,6 +91,16 @@ export default config => class Node {
     return this.#children.filter(child => child.type === SPECIAL);
   }
 
+  // collects depth values for all nodes that satisfy a predicate, returning
+  // the highest max
+  max(predicate, depth = 1) {
+    let max = predicate(this) ? [depth] : [];
+    for (const child of this.#children) {
+      max.push(child.max(predicate, depth + 1));
+    }
+    return Math.max(...[...max].flat());
+  }
+
   collect(collected = {}, recursed = false) {
     const { parent } = this;
     // root
@@ -99,7 +109,7 @@ export default config => class Node {
     }
     for (const { path, file } of parent.specials()) {
       const name = path.slice(1);
-      const { recursive } = config[name];
+      const { recursive } = config.specials[name];
       // skip non-recursive specials
       if (recursed && !recursive) {
         continue;
@@ -125,17 +135,17 @@ export default config => class Node {
     return interim;
   }
 
-  try_match(parts, match_catch, params) {
+  next(request, parts, match_catch, params) {
     // match static routes first
     for (const child of this.statics()) {
-      const matched = child.match(parts, match_catch, params);
+      const matched = child.match(request, parts, match_catch, params);
       if (matched !== undefined) {
         return matched;
       }
     }
     // then match dynamic routes
     for (const child of this.dynamics()) {
-      const matched = child.match(parts, match_catch, params);
+      const matched = child.match(request, parts, match_catch, params);
       if (matched !== undefined) {
         return matched;
       }
@@ -162,7 +172,11 @@ export default config => class Node {
     return this.#children.length === 0;
   }
 
-  return(parts, match_catch, params, file = this.#file) {
+  check_predicate(request) {
+    return this.file && config.predicate(this.file, request);
+  }
+
+  return(request, parts, match_catch, params, file = this.#file) {
     // static match
     if (this.#path === parts[0]) {
       return {
@@ -198,22 +212,26 @@ export default config => class Node {
     }
   }
 
-  #match_anchor(parts, match_catch, params) {
+  #match_anchor(request, parts, match_catch, params) {
+    if (!this.check_predicate(request)) {
+      return;
+    }
+
     if (this.#file !== undefined) {
-      return this.return(parts, match_catch, params);
+      return this.return(request, parts, match_catch, params);
     }
     const [{ type, file } = {}] = this.dynamics();
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
-      return this.return(parts, match_catch, params, file);
+      return this.return(request, parts, match_catch, params, file);
     }
     // this node has no file, but might have an OPTIONAL_rest field
     if (type === OPTIONAL_REST) {
-      return this.return(parts, match_catch, params, file);
+      return this.return(request, parts, match_catch, params, file);
     }
   }
 
-  #match_recurse([first, ...rest], match_catch, params) {
+  #match_recurse(request, [first, ...rest], match_catch, params) {
     // current path matches first
     const is_catch = match_catch && this.catch;
     const is_rest = this.rest;
@@ -221,34 +239,38 @@ export default config => class Node {
 
     // static match is first
     if (is_static) {
-      return this.try_match(rest, match_catch, params);
+      return this.next(request, rest, match_catch, params);
     }
     if (is_catch) {
       const next_params = { ...params, [this.#path.slice(1, -1)]: first };
-      return this.try_match(rest, match_catch, next_params);
+      return this.next(request, rest, match_catch, next_params);
     }
     if (is_rest) {
+      if (!this.check_predicate(request)) {
+        return;
+      }
+
       const name = this.#path.slice(4, -1);
       const next_params = {
           ...params,
         [name]: `${first}/${rest.join("/")}`,
       };
       // rest stops recursing
-      return this.return([first, ...rest], match_catch, next_params);
+      return this.return(request, [first, ...rest], match_catch, next_params);
     }
   }
 
-  match(parts, match_catch = true, params = {}) {
+  match(request, parts, match_catch = true, params = {}) {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
-      return this.try_match(parts, match_catch, params);
+      return this.next(request, parts, match_catch, params);
     }
     // anchor
     if (parts.length === 1) {
-      return this.#match_anchor(parts, match_catch, params);
+      return this.#match_anchor(request, parts, match_catch, params);
     }
 
-    return this.#match_recurse(parts, match_catch, params);
+    return this.#match_recurse(request, parts, match_catch, params);
   }
 
   print(i = 0) {

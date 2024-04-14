@@ -13,8 +13,12 @@ export default class Router {
       directory: undefined,
       extension: default_extension,
       specials: {},
+      predicate: _ => true,
     });
-    this.#root = new (to_node(this.#config.specials))(null, "$");
+    this.#root = new (to_node({
+      specials: this.#config.specials,
+      predicate: this.#config.predicate,
+    }))(null, "$");
   }
 
   #add(node, parts, file) {
@@ -27,11 +31,13 @@ export default class Router {
     }
   }
 
-  match(path) {
+  match(request) {
+    const path = new URL(request.url).pathname;
     const [_, ...parts] = path.split("/").map(p => p === "" ? "index" : p);
     const $parts = parts.filter((part, i) => i === 0 || part !== "index");
     const root = this.#root;
-    return root.match($parts.concat("index"), false) ?? root.match($parts);
+    return root.match(request, $parts.concat("index"), false)
+      ?? root.match(request, $parts);
   }
 
   init(objects) {
@@ -70,5 +76,16 @@ export default class Router {
           `${file}`.replace(directory, _ => "").slice(1, -extension.length),
           await file.import(),
         ])));
+
+    return this;
+  }
+
+  depth(special) {
+    return this.#root.max(node => node.specials()
+      .filter(({ path }) => path.slice(1) === special).length > 0);
+  }
+
+  static load(config) {
+    return new Router(config).load();
   }
 }

@@ -1,5 +1,6 @@
 import Router from "./Router.js";
 
+const domain = "https://rcompat.dev";
 const r = (route, expected = route) => [route, {
   default: {
     get() {
@@ -100,7 +101,7 @@ export default test => {
 
     const match = assert => (path, route, expected_fn) => {
       [path, `${path}/`].forEach(p => {
-        const { file, ...rest } = router.match(p);
+        const { file, ...rest } = router.match(new Request(`${domain}${p}`));
         assert(file.default.get()).equals(route);
         expected_fn?.(rest);
       });
@@ -147,5 +148,38 @@ export default test => {
     matcher("/restopt/a/b", "restopt", $(p({ rest: "a/b" }), l(0, "restoptl0")));
     matcher("/restopt/a/b/c", "restopt", $(p({ rest: "a/b/c" }), l(0, "restoptl0")));
     matcher("/restopt", "restopt", $(p({}), nl(0)));
+  });
+
+  test.case("match with predicate", assert => {
+    const routes = [
+      r("index"),
+    ];
+    const router = Router.init({
+      specials: {
+        guard: {
+          recursive: true,
+        },
+        error: {
+          recursive: false,
+        },
+        layout: {
+          recursive: true,
+        },
+      },
+      predicate(route, request) {
+        return route.default[request.method.toLowerCase()] !== undefined;
+      },
+    }, routes);
+    const match = assert => (request, route, expected_fn) => {
+      [request].forEach(p => {
+        const { file, ...rest } = router.match(p) ?? {};
+        assert(file?.default.get()).equals(route);
+        expected_fn?.(rest);
+      });
+    };
+    const matcher = match(assert);
+    matcher(new Request(domain, { method: "GET" }), "index");
+    matcher(new Request(domain, { method: "POST" }));
+    matcher(new Request(`${domain}/test`, { method: "GET" }));
   });
 };
