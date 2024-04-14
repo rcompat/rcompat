@@ -17,7 +17,7 @@ export {
 
 export default {
   Blob,
-  $File: File,
+  File: $File,
   Kind,
   Router,
   s_streamable,
