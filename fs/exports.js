@@ -1,14 +1,14 @@
-import { default as Blob } from "./Blob.js";
-import { default as $File } from "./File.js";
-import { default as Kind } from "./Kind.js";
-import { default as Router } from "./Router.js";
-import { watch } from "node:fs";
+const { Blob } = globalThis;
 
-const s_streamable = Symbol.for("rcompat/fs.streamable");
+import File from "./File.js";
+import Kind from "./Kind.js";
+import Router from "./Router.js";
+import { watch } from "node:fs";
+import { s_streamable } from "./symbols.js";
 
 export {
   Blob,
-  $File as File,
+  File,
   Kind,
   Router,
   s_streamable,
@@ -17,7 +17,7 @@ export {
 
 export default {
   Blob,
-  File: $File,
+  File,
   Kind,
   Router,
   s_streamable,
