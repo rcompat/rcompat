@@ -55,11 +55,16 @@ export default test => {
       r("[p2]", "p2"),
     ];
     assert(() => Router.init({}, r1)).throws("doubled route");
-    const r2 = [
+    const r2a = [
       r("s/[p1]", "s/p1"),
       r("s/[p2]", "s/p2"),
     ];
-    assert(() => Router.init({}, r2)).throws("doubled route");
+    assert(() => Router.init({}, r2a)).throws("doubled route");
+    const r2b = [
+      r("htmx", "htmx"),
+      r("htmx/index", "htmx"),
+    ];
+    assert(() => Router.init({}, r2b)).throws("doubled route");
     const r3 = [
       r("[p1]", "p1"),
       r("[p1=number]", "p1=number"),
@@ -87,15 +92,9 @@ export default test => {
   test.case("match", assert => {
     const router = Router.init({
       specials: {
-        guard: {
-          recursive: true,
-        },
-        error: {
-          recursive: false,
-        },
-        layout: {
-          recursive: true,
-        },
+        guard: { recursive: true },
+        error: { recursive: false },
+        layout: { recursive: true },
       },
     }, routes);
 
@@ -111,11 +110,11 @@ export default test => {
     const s = (special, undef) => (i, expected) => ({ specials }) => {
       assert(specials[special]?.[i]?.name).equals(undef ? undefined : expected);
     };
-    const l = s("+layout");
-    const g = s("+guard");
-    const e = s("+error");
-    const ne = s("+error", true);
-    const nl = s("+layout", true);
+    const l = s("layout");
+    const g = s("guard");
+    const e = s("error");
+    const ne = s("error", true);
+    const nl = s("layout", true);
     const $ = (...conditions) => rest =>
       conditions.forEach(condition => condition(rest));
     matcher("/", "index");

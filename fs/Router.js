@@ -1,10 +1,13 @@
 import O from "rcompat/object";
 import File from "./File.js";
 import to_node from "./router/to-node.js";
+import * as errors from "./router/errors.js";
 
 const default_extension = ".js";
 
 export default class Router {
+  static Error = errors;
+
   #root;
   #config;
 
@@ -41,21 +44,25 @@ export default class Router {
   }
 
   init(objects) {
-    for (const [path, file] of objects) {
+    for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
       this.#add(this.#root, path.split("/"), file);
     }
+
     // check for duplicates
     this.#root.check(node => {
+      if (node.doubled) {
+        throw new errors.DoubleRoute(node.path);
+      }
       const dynamics = node.dynamics();
       if (dynamics.length > 1) {
-        throw new Error("doubled route");
+        throw new errors.DoubleRoute(dynamics[1].path);
       }
       const [dynamic = {}] = dynamics;
       if (dynamic.optional && !dynamic.leaf) {
-        throw new Error("optional routes must be leaves");
+        throw new errors.OptionalRoute(dynamic.path);
       }
       if (dynamic.rest && !dynamic.leaf) {
-        throw new Error("rest routes must be leaves");
+        throw new errors.RestRoute(dynamic.path);
       }
     });
 

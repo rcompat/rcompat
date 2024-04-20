@@ -94,7 +94,7 @@ export default config => class Node {
   // collects depth values for all nodes that satisfy a predicate, returning
   // the highest max
   max(predicate, depth = 1) {
-    let max = predicate(this) ? [depth] : [];
+    const max = predicate(this) ? [depth] : [];
     for (const child of this.#children) {
       max.push(child.max(predicate, depth + 1));
     }
@@ -114,8 +114,8 @@ export default config => class Node {
       if (recursed && !recursive) {
         continue;
       }
-      const arr = collected[path] === undefined ? [] : collected[path];
-      collected[path] = arr.concat(file);
+      const arr = collected[name] === undefined ? [] : collected[name];
+      collected[name] = arr.concat(file);
     }
     return parent.collect(collected, true);
   }
@@ -177,37 +177,28 @@ export default config => class Node {
   }
 
   return(request, parts, match_catch, params, file = this.#file) {
+    const path = this.#path;
+    const specials = this.collect();
     // static match
     if (this.#path === parts[0]) {
-      return {
-        path: this.#path,
-        file,
-        params,
-        specials: this.collect(),
-      };
+      return { path, file, specials, params };
     }
     // catch always matches
     if (match_catch && this.catch) {
-      return {
-        path: this.#path,
-        file,
+      return { path, file, specials,
         params: {
           ...params,
           [this.#path.slice(1, -1)]: parts[0],
         },
-        specials: this.collect(),
       };
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
-      return {
-        path: this.#path,
-        file,
+      return { path, file, specials,
         params: {
           ...params,
           [name]: params[name] ? params[name] : parts[0],
         },
-        specials: this.collect(),
       };
     }
   }
@@ -283,6 +274,19 @@ export default config => class Node {
     for (const child of this.#children) {
       child.print(i + 1);
     }
+  }
+
+  get doubled() {
+    const statics = this.statics();
+    for (const $static of statics) {
+      if ($static.path === "index"
+        && $static.file !== undefined
+        && this.#type === STATIC
+        && this.file !== undefined) {
+        return true;
+      }
+    }
+    return false;
   }
 
   get parent() {
