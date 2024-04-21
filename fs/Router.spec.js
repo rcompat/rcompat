@@ -54,22 +54,22 @@ export default test => {
       r("[p1]", "p1"),
       r("[p2]", "p2"),
     ];
-    assert(() => Router.init({}, r1)).throws("doubled route");
+    assert(() => Router.init({}, r1)).throws("double route");
     const r2a = [
       r("s/[p1]", "s/p1"),
       r("s/[p2]", "s/p2"),
     ];
-    assert(() => Router.init({}, r2a)).throws("doubled route");
+    assert(() => Router.init({}, r2a)).throws("double route");
     const r2b = [
       r("htmx", "htmx"),
       r("htmx/index", "htmx"),
     ];
-    assert(() => Router.init({}, r2b)).throws("doubled route");
+    assert(() => Router.init({}, r2b)).throws("double route");
     const r3 = [
       r("[p1]", "p1"),
       r("[p1=number]", "p1=number"),
     ];
-    assert(() => Router.init({}, r3)).throws("doubled route");
+    assert(() => Router.init({}, r3)).throws("double route");
     const r4 = [
       r("s/[p1]", "s/p1"),
       r("[p1]/s", "p1/s"),
@@ -95,6 +95,9 @@ export default test => {
         guard: { recursive: true },
         error: { recursive: false },
         layout: { recursive: true },
+      },
+      predicate(route, request) {
+        return route.default[request.method.toLowerCase()] !== undefined;
       },
     }, routes);
 

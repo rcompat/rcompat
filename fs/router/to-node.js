@@ -173,7 +173,7 @@ export default config => class Node {
   }
 
   check_predicate(request, file = this.file) {
-    return file && config.predicate(this.file, request);
+    return file && config.predicate(file, request);
   }
 
   return(request, parts, match_catch, params, file = this.#file) {
@@ -210,7 +210,7 @@ export default config => class Node {
       }
       return this.return(request, parts, match_catch, params);
     }
-    const [{ type, file } = {}] = this.dynamics();
+    const [{ type, file, path } = {}] = this.dynamics();
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
       if (!this.check_predicate(request, file)) {
