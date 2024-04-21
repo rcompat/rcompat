@@ -95,23 +95,23 @@ export default test => {
     dbls.forEach(dbl => {
       assert(() => Router.init({}, dbl)).throws("double route");
     });
-    const r4 = [
+
+    assert(() => Router.init({}, [
       r("s/[p1]", "s/p1"),
       r("[p1]/s", "p1/s"),
-    ];
-    assert(() => Router.init({}, r4)).nthrows();
-    const r5 = [
+    ])).nthrows();
+
+    assert(() => Router.init({}, [
       r("[[optional]]/1", "o/1"),
-    ];
-    assert(() => Router.init({}, r5)).throws("optional routes must be leaves");
-    const r6 = [
+    ])).throws("optional routes must be leaves");
+
+    assert(() => Router.init({}, [
       r("[[...optional_catch]]/1", "o/1"),
-    ];
-    assert(() => Router.init({}, r6)).throws("optional routes must be leaves");
-    const r7 = [
+    ])).throws("optional routes must be leaves");
+
+    assert(() => Router.init({}, [
       r("[...optional_catch]/1", "o/1"),
-    ];
-    assert(() => Router.init({}, r7)).throws("rest routes must be leaves");
+    ])).throws("rest routes must be leaves");
   });
 
   test.case("match", assert => {
