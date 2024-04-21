@@ -50,26 +50,51 @@ const routes = [
 
 export default test => {
   test.case("errors", assert => {
-    const r1 = [
-      r("[p1]", "p1"),
-      r("[p2]", "p2"),
+    const dbls = [
+      // same dynamic
+      [
+        r("[p1]", "p1"),
+        r("[p2]", "p2"),
+      ],
+      // static/same dynamic
+      [
+        r("s/[p1]", "s/p1"),
+        r("s/[p2]", "s/p2"),
+      ],
+      // explicit/implicit index
+      [
+        r("htmx", "htmx"),
+        r("htmx/index", "htmx"),
+      ],
+      // dynamic with/without type
+      [
+        r("[p1]", "p1"),
+        r("[p1=number]", "p1=number"),
+      ],
+      // index and optional
+      [
+        r("htmx/[[opt]]", "htmx/[[opt]]"),
+        r("htmx/index", "htmx"),
+      ],
+      // quasi-index and optional
+      [
+        r("htmx/[[opt]]", "htmx/[[opt]]"),
+        r("htmx", "htmx"),
+      ],
+      // index and rest optional
+      [
+        r("htmx/[[...opt]]", "htmx/[[...restopt]]"),
+        r("htmx/index", "htmx"),
+      ],
+      // quasi-index and rest optional
+      [
+        r("htmx/[[...opt]]", "htmx/[[...restopt]]"),
+        r("htmx", "htmx"),
+      ],
     ];
-    assert(() => Router.init({}, r1)).throws("double route");
-    const r2a = [
-      r("s/[p1]", "s/p1"),
-      r("s/[p2]", "s/p2"),
-    ];
-    assert(() => Router.init({}, r2a)).throws("double route");
-    const r2b = [
-      r("htmx", "htmx"),
-      r("htmx/index", "htmx"),
-    ];
-    assert(() => Router.init({}, r2b)).throws("double route");
-    const r3 = [
-      r("[p1]", "p1"),
-      r("[p1=number]", "p1=number"),
-    ];
-    assert(() => Router.init({}, r3)).throws("double route");
+    dbls.forEach(dbl => {
+      assert(() => Router.init({}, dbl)).throws("double route");
+    });
     const r4 = [
       r("s/[p1]", "s/p1"),
       r("[p1]/s", "p1/s"),

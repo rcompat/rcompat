@@ -83,6 +83,11 @@ export default config => class Node {
     return this.#children.filter(child => child.type === STATIC);
   }
 
+  optionals() {
+    return this.#children.filter(({ type }) =>
+      type === OPTIONAL_CATCH || type === OPTIONAL_REST);
+  }
+
   dynamics() {
     return this.#children.filter(child => child.dynamic);
   }
@@ -172,7 +177,7 @@ export default config => class Node {
     return this.#children.length === 0;
   }
 
-  check_predicate(request, file = this.file) {
+  check_predicate(request, file = this.#file) {
     return file && config.predicate(file, request);
   }
 
@@ -276,14 +281,27 @@ export default config => class Node {
     }
   }
 
+  get has_file() {
+    return this.file !== undefined;
+  }
+
   get doubled() {
     const statics = this.statics();
+    const optionals = this.optionals();
+    const has_optionals = optionals.length > 0;
+
+    if (has_optionals && this.has_file) {
+      return true;
+    }
     for (const $static of statics) {
-      if ($static.path === "index"
-        && $static.file !== undefined
-        && this.#type === STATIC
-        && this.file !== undefined) {
-        return true;
+      if ($static.path === "index" && $static.file !== undefined) {
+        if (this.#type === STATIC && this.has_file) {
+          return true;
+        }
+
+        if (has_optionals > 0) {
+          return true;
+        }
       }
     }
     return false;
