@@ -25,7 +25,7 @@ const ends = (c: any) => is(c, "endsWith");
 
 export default (test => {
   test.reassert(assert => {
-    const check = (glob: unknown, positions: number[]) => {
+    const check = (glob: string, positions: number[]) => {
       const globbed = globify(glob);
 
       paths.map((path, i) =>
