@@ -18,10 +18,12 @@ const paths = [
   "c",
 ];
 
-const is = (c: any, key: any) => paths.flatMap((path, i) => (path[key] as any)(c) ? [i] : []);
-const includes = (c: any) => is(c, "includes");
-const starts = (c: any) => is(c, "startsWith");
-const ends = (c: any) => is(c, "endsWith");
+type AnyStringFunction = keyof { [K in keyof string as string[K] extends (arg: string) => unknown ? K : never]: true }
+
+const is = (c: string, key: AnyStringFunction) => paths.flatMap((path, i) => path[key](c) ? [i] : []);
+const includes = (c: string) => is(c, "includes");
+const starts = (c: string) => is(c, "startsWith");
+const ends = (c: string) => is(c, "endsWith");
 
 export default (test => {
   test.reassert(assert => {
