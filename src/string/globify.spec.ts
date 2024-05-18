@@ -18,14 +18,14 @@ const paths = [
   "c",
 ];
 
-const is = (c, key) => paths.flatMap((path, i) => path[key](c) ? [i] : []);
-const includes = c => is(c, "includes");
-const starts = c => is(c, "startsWith");
-const ends = c => is(c, "endsWith");
+const is = (c: any, key: any) => paths.flatMap((path, i) => (path[key] as any)(c) ? [i] : []);
+const includes = (c: any) => is(c, "includes");
+const starts = (c: any) => is(c, "startsWith");
+const ends = (c: any) => is(c, "endsWith");
 
-export default test => {
+export default (test => {
   test.reassert(assert => {
-    const check = (glob, positions) => {
+    const check = (glob: unknown, positions: number[]) => {
       const globbed = globify(glob);
 
       paths.map((path, i) =>
@@ -70,4 +70,4 @@ export default test => {
     check("[a-b]", [0, 10]);
     check("[a-c]", [0, 10, 14]);
   });
-};
+}) satisfies DebrisTestSuite;

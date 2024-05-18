@@ -44,11 +44,14 @@
     "ws": "^8.16.0"
   },
   "devDependencies": {
+    "debris": "^0.14.0",
     "rimraf": "^5.0.7",
+    "tsx": "^4.10.5",
     "typescript": "^5.4.5"
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf ./lib"
+    "clean": "rimraf ./lib",
+    "test": "tsx ./node_modules/.bin/debris"
   }
 }
