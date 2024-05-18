@@ -1,20 +1,22 @@
 import { assert, is, every } from "rcompat/invariant";
 
+type Reducer = (reduced: number, n: number, i: number) => number;
+
 export default class Vector {
   #coordinates;
 
-  constructor(...coordinates) {
+  constructor(...coordinates: number[]) {
     every(coordinates).number();
     assert(coordinates.length > 0);
 
     this.#coordinates = [...coordinates];
   }
 
-  #map(mapper) {
+  #map(mapper: (n: number, i: number) => number) {
     return new Vector(...this.#coordinates.map(mapper));
   }
 
-  #reduce(reducer, initialValue) {
+  #reduce(reducer: Reducer, initialValue: number) {
     return this.#coordinates.reduce(reducer, initialValue);
   }
 
@@ -26,19 +28,24 @@ export default class Vector {
     return this.#coordinates.length;
   }
 
-  add(other) {
+  add(other: Vector) {
+    is(other).instance(Vector);
     assert(this.size === other.size, "vectors must have the same length");
+
     return this.#map((x, i) => x + other.at(i));
   }
 
   // dot product
-  multiply(by) {
+  multiply(by: Vector) {
     is(by).instance(Vector);
+
     return this.#reduce((product, x, i) => product + x * by.at(i), 0);
   }
 
-  at(index) {
+  at(index: number) {
     is(index).number();
+    assert(index >= this.size, `index \`${index}\` out of bounds`);
+
     return this.#coordinates.at(index);
   }
 
