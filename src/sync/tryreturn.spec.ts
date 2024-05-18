@@ -1,11 +1,11 @@
 import { identity } from "rcompat/function";
 import tryreturn from "./tryreturn.js";
 
-export default test => {
+export default (test => {
   test.case("`try` faulty", assert => {
     try {
-      tryreturn().orelse(identity);
-    } catch (error) {
+      tryreturn(undefined as never).orelse(identity);
+    } catch (error: any) {
       assert(error.message).equals("`undefined` must be of type function");
     }
   });
@@ -18,30 +18,30 @@ export default test => {
   // });
   test.case("`orelse` faulty", assert => {
     try {
-      tryreturn(identity).orelse();
-    } catch (error) {
+      tryreturn(identity).orelse(undefined as never);
+    } catch (error: any) {
       assert(error.message).equals("`undefined` must be of type function");
     }
   });
   test.case("`try` doesn't throw", assert => {
-    const value = tryreturn(_ => 0).orelse(_ => 1);
+    const value = tryreturn(() => 0).orelse(_ => 1);
     assert(value).equals(0);
   });
   test.case("if throws", assert => {
-    const value = tryreturn(_ => {
+    const value = tryreturn(() => {
       throw new Error();
     }).orelse(_ => 1);
     assert(value).equals(1);
   });
   test.case("else throws", assert => {
     try {
-      tryreturn(_ => {
+      tryreturn(() => {
         throw new Error();
       }).orelse(_ => {
         throw new Error("else");
       });
-    } catch (error) {
+    } catch (error: any) {
       assert(error.message).equals("else");
     }
   });
-};
+}) satisfies DebrisTestSuite;
