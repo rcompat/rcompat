@@ -49,6 +49,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "tsc && npx debris",
     "clean": "rimraf ./lib"
   }
 }
