@@ -15,32 +15,38 @@
   },
   "type": "module",
   "exports": {
-    "./args": "./args/exports.js",
-    "./async": "./async/exports.js",
-    "./build": "./build/exports.js",
-    "./console": "./console/exports.js",
-    "./colors": "./colors/exports.js",
-    "./crypto": "./crypto/exports.js",
-    "./invariant": "./invariant/exports.js",
-    "./env": "./env/exports.js",
-    "./fs": "./fs/exports.js",
-    "./function": "./function/exports.js",
-    "./http": "./http/exports.js",
-    "./math": "./math/exports.js",
-    "./meta": "./meta/exports.js",
-    "./module": "./module/exports.js",
-    "./object": "./object/exports.js",
-    "./package": "./package/exports.js",
-    "./stdio": "./stdio/exports.js",
-    "./streams": "./streams/exports.js",
-    "./string": "./string/exports.js",
-    "./sync": "./sync/exports.js",
-    "./timers": "./timers/exports.js"
+    "./args": "./lib/args/exports.js",
+    "./async": "./lib/async/exports.js",
+    "./build": "./lib/build/exports.js",
+    "./console": "./lib/console/exports.js",
+    "./colors": "./lib/colors/exports.js",
+    "./crypto": "./lib/crypto/exports.js",
+    "./invariant": "./lib/invariant/exports.js",
+    "./env": "./lib/env/exports.js",
+    "./fs": "./lib/fs/exports.js",
+    "./function": "./lib/function/exports.js",
+    "./http": "./lib/http/exports.js",
+    "./math": "./lib/math/exports.js",
+    "./meta": "./lib/meta/exports.js",
+    "./module": "./lib/module/exports.js",
+    "./object": "./lib/object/exports.js",
+    "./package": "./lib/package/exports.js",
+    "./stdio": "./lib/stdio/exports.js",
+    "./streams": "./lib/streams/exports.js",
+    "./string": "./lib/string/exports.js",
+    "./sync": "./lib/sync/exports.js",
+    "./timers": "./lib/timers/exports.js"
   },
   "dependencies": {
     "busboy": "^1.6.0",
     "dotenv": "^16.4.5",
     "esbuild": "^0.20.2",
     "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 }
