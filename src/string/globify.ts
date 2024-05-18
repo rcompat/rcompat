@@ -1,6 +1,6 @@
 import { is } from "rcompat/invariant";
 
-const globify = pattern => pattern
+const globify = (pattern: string) => pattern
   // . -> real dots need escaping
   .replaceAll(".", "\\.")
   // . -> real dots need escaping
@@ -15,8 +15,9 @@ const globify = pattern => pattern
   .replace(/(?<=\\)\.\*/u, ".[^/]*")
 ;
 
-export default pattern => {
-  is(pattern).string();
-  return new RegExp(`^${globify(pattern)}$`, "u");
+export default (pattern: unknown) => {
+  // Todo: Fix when invariant is ported
+  is(pattern).string(); // If this doesn't throw, we know it's a string, just type assert next line
+  return new RegExp(`^${globify(pattern as string)}$`, "u");
 };
 

@@ -44,9 +44,11 @@
     "ws": "^8.16.0"
   },
   "devDependencies": {
+    "rimraf": "^5.0.7",
     "typescript": "^5.4.5"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rimraf ./lib"
   }
 }
