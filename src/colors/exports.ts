@@ -1,4 +1,6 @@
-const color = number => message => `\x1b[${number}m${message}\x1b[0m`;
+const color = (number: number) =>
+  (message: string) =>
+    `\x1b[${number}m${message}\x1b[0m`;
 
 const colors = {
   bold: 1,
