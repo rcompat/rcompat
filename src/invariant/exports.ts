@@ -1,9 +1,10 @@
 import Is from "./Is.js";
 import Every from "./Every.js";
+import { ErrorFallbackFunction } from "./errored.js";
 
-const is = value => new Is(value);
-const every = (...values) => new Every(...values);
-const defined = (value, error) => is(value).defined(error);
+const is = (value: unknown) => new Is(value);
+const every = (...values: unknown[]) => new Every(...values);
+const defined = (value: unknown, error?: ErrorFallbackFunction) => is(value).defined(error);
 
 export { is, every, defined };
 export { default as maybe } from "./maybe.js";

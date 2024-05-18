@@ -1,23 +1,24 @@
 import { numeric } from "./attributes.js";
 
-export default test => {
+export default (test => {
+  // Todo: Figure a way to properly type reassert
   test.reassert(assert => {
     return {
-      trues(strings, number) {
+      trues(strings: any, number: any) {
         const array = Array.isArray(strings) ? strings : [strings];
         array.forEach(string => {
           assert(numeric(string)).true();
           assert(Number(string)).equals(number);
         });
       },
-      falses(...strings) {
+      falses(...strings: any[]) {
         strings.forEach(string => {
           assert(numeric(string)).false();
         });
       },
     };
   });
-  test.case("numeric", ({ trues, falses }) => {
+  test.case("numeric", ({ trues, falses }: any) => {
     trues(["1", "1.0"], 1);
     trues("1.5", 1.5);
     trues(["0", "0.0", "-0", "+0", "0x0"], 0);
@@ -44,4 +45,4 @@ export default test => {
       true, false,
     );
   });
-};
+}) satisfies DebrisTestSuite;

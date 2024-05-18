@@ -6,7 +6,7 @@ declare global {
 
   interface DebrisTest {
     case: (name:string, test: (assert: DebrisTestAssertion) => void) => void;
-    reassert: (assert: (DebrisTestAssertion) => void) => void;
+    reassert: <T extends object>(assert: (DebrisTestAssertion) => T) => void;
   }
 
   interface DebrisTestAssertion {
@@ -16,6 +16,9 @@ declare global {
 
   interface DebrisTestAssertionCombinators {
     equals: (x: unknown) => void
+    throws: () => void
+    nthrows: () => void
+    undefined: () => void
   }
 }
 

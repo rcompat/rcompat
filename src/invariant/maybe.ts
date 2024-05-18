@@ -1,5 +1,5 @@
 import Is from "./Is.js";
-import { nullish } from "./attributes.js";
+import { Nullish, nullish } from "./attributes.js";
 
 const operations = [
   // typeof
@@ -13,13 +13,14 @@ const operations = [
   // sizes
   "integer", "isize", "usize",
 
-];
+] as const;
 
-const return_nullish = value => nullish(value) ? value : true;
+const return_nullish = (value: unknown): Nullish | true => nullish(value) ? value : true;
 
-export default value => {
+export default (value: unknown) => {
   const is = new Is(value);
 
   return Object.fromEntries(operations.map(operation =>
-    [operation, (...args) => return_nullish(value) && is[operation](...args)]));
+    // Todo: Discuss the behavior for operations having more than 1 arguments
+    [operation, (...args: any) => return_nullish(value) && (is[operation] as any)(...args)]));
 };

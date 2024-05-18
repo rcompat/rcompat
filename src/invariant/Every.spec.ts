@@ -1,6 +1,6 @@
 import Every from "./Every.js";
 
-export default test => {
+export default (test => {
   test.case("constructor", assert => {
     assert(() => new Every()).nthrows();
   });
@@ -13,4 +13,4 @@ export default test => {
     assert(() => new Every(() => null).function()).nthrows();
     assert(() => new Every(() => null, undefined).function()).throws();
   });
-};
+}) satisfies DebrisTestSuite;

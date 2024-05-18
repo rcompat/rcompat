@@ -1,6 +1,8 @@
 import Is from "./Is.js";
 
-const fixtures = Object.entries({
+type ZZZ = keyof Is & {}
+
+const fixturesMap = {
   string: ["", String()],
   number: [0, Number(0)],
   bigint: [0n],
@@ -10,13 +12,15 @@ const fixtures = Object.entries({
   }],
   null: [null],
   undefined: [undefined],
-});
+} satisfies Partial<Record<keyof Is, unknown[]>>;
 
-export default test => {
+const fixtures = Object.entries(fixturesMap) as [keyof typeof fixturesMap, unknown[]][];
+
+export default (test => {
   test.case("non objects", assert => {
     fixtures.forEach(([key, values]) => {
       const nonValues = fixtures.filter(entry => entry[0] !== key)
-        .flatMap(([, value]) => value);
+        .flatMap(([, value]) => value as any);
       values.forEach(value => {
         assert(new Is(value)[key]()).equals(value);
         nonValues.forEach(nonValue =>
@@ -24,4 +28,4 @@ export default test => {
       });
     });
   });
-};
+}) satisfies DebrisTestSuite;
