@@ -11,3 +11,4 @@ export { default as maybe } from "./maybe.js";
 export { default as assert } from "./assert.js";
 export { constructible, inconstructible_function } from "./construct.js";
 export { numeric, boolish, nullish } from "./attributes.js";
+export * from "./types.js";
