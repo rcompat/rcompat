@@ -32,18 +32,18 @@ export default class Vector {
     is(other).instance(Vector);
     assert(this.size === other.size, "vectors must have the same length");
 
-    return this.#map((x, i) => x + other.at(i));
+    return this.#map((x, i) => x + other.at(i)!);
   }
 
   // dot product
   multiply(by: Vector) {
     is(by).instance(Vector);
 
-    return this.#reduce((product, x, i) => product + x * by.at(i), 0);
+    return this.#reduce((product, x, i) => product + x * by.at(i)!, 0);
   }
 
   at(index: number) {
-    is(index).number();
+    is(index).usize();
     assert(index >= this.size, `index \`${index}\` out of bounds`);
 
     return this.#coordinates.at(index);
