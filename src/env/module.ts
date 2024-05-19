@@ -9,10 +9,10 @@ const root = await File.root();
 const env = root.join(`.env${JS_ENV ? `.${JS_ENV}` : ""}`);
 const local = new File(`${env.path}.local`);
 
-const is_local = async _ => await local.exists() ? local : env;
-const read = async _ => parse(await (await is_local()).text());
+const is_local = async () => await local.exists() ? local : env;
+const read = async () => parse(await (await is_local()).text());
 
-export default await tryreturn(_ => read()).orelse(_ => ({}));
+export default await tryreturn(() => read()).orelse(async () => ({}));
 
 const { env: user } = process;
 
