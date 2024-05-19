@@ -4,8 +4,12 @@ import kind from "./kind.js";
 import File from "../File.js";
 import Kind from "../Kind.js";
 import { is } from "rcompat/invariant";
+import type { DirectoryFilter } from "../types.js";
 
-export default async (path, to, filter = () => true) => {
+export type Def = (path: string, to: File, filter?: DirectoryFilter)
+  => Promise<unknown>;
+
+export default (async (path, to, filter = () => true) => {
   is(filter).function();
 
   const $kind = await kind(path);
@@ -24,4 +28,4 @@ export default async (path, to, filter = () => true) => {
   }
 
   return copyFile(path, to.path);
-};
+}) as Def;

@@ -3,6 +3,7 @@ import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
 import { runtime } from "rcompat/meta";
 import { s_streamable } from "./symbols.js";
+import type * as Z from "./types.js";
 
 import * as bun from "./bun/exports.js";
 import * as node from "./node/exports.js";
@@ -11,21 +12,25 @@ const native = runtime === "bun" ? bun : node;
 
 const { decodeURIComponent: decode } = globalThis;
 
-const parse = p => p.startsWith("file://") ? to_path(p) : p;
+const parse = (p: string) => p.startsWith("file://") ? to_path(p) : p;
 
-const assert_boundary = directory => {
+const assert_boundary = (directory: File) => {
   is(directory).instance(File);
+
   if (`${directory}` === "/") {
     throw new Error("Stopping at filesystem boundary");
   }
 };
 
+export type Path = File | string;
+
 export default class File {
+  path: string;
   #streamable = s_streamable;
 
-  constructor(path) {
+  constructor(path: Path) {
     defined(path);
-    this.path = parse(path?.path ?? path);
+    this.path = parse((path as File)?.path ?? path);
   }
 
   toString() {
@@ -40,7 +45,7 @@ export default class File {
     return this.path.replaceAll(File.separator, "/");
   }
 
-  static webpath(path) {
+  static webpath(path: Path) {
     return new File(path).webpath();
   }
 
@@ -48,24 +53,24 @@ export default class File {
     return this.#streamable;
   }
 
-  async import(name) {
+  async import(name?: string) {
     maybe(name).string();
-    const imported = await import(to_url(this.path));
+    const imported = await import(`${to_url(this.path)}`);
     return name === undefined ? imported : imported[name];
   }
 
-  static import(path, name) {
+  static import(path: Path, name: string) {
     return new File(path).import(name);
   }
 
-  join(...paths) {
+  join(...paths: Path[]): File {
     const [first, ...rest] = paths;
 
-    const path = join(this.path, first?.path ?? first);
+    const path = join(this.path, (first as File)?.path ?? first);
     return paths.length === 1 ? new File(path) : new File(path).join(...rest);
   }
 
-  static join(...[first, ...rest]) {
+  static join(...[first, ...rest]: [Path, ...Path[]]) {
     return rest.length === 0 ? new File(first) : new File(first).join(...rest);
   }
 
@@ -73,28 +78,28 @@ export default class File {
     return native.kind(this.path);
   }
 
-  list(filter, options) {
+  list(filter: Z.DirectoryFilter, options: {}) {
     return native.list(this.path, filter, options);
   }
 
-  static list(path, filter, options) {
+  static list(path: Path, filter: Z.DirectoryFilter, options: {}) {
     return new File(path).list(filter, options);
   }
 
-  glob(pattern) {
+  glob(pattern: string) {
     return native.glob(this.path, pattern);
   }
 
-  static glob(pattern) {
+  static glob(pattern: string) {
     return new File(".").glob(pattern);
   }
 
-  collect(pattern, options) {
+  collect(pattern?: Z.CollectPattern, options?: Z.DirectoryOptions) {
     return native.collect(this.path, pattern, options);
   }
 
-  static collect(path, pattern, options) {
-    return new File(path).collect(pattern, options);
+  static collect(path: Path, ...args: [Z.CollectPattern, Z.DirectoryOptions]) {
+    return new File(path).collect(...args);
   }
 
   #stats() {
@@ -109,8 +114,8 @@ export default class File {
     return native.exists(this.path);
   }
 
-  static exists(...args) {
-    return File.join(...args).exists();
+  static exists(path: File) {
+    return new File(path).exists();
   }
 
   get isFile() {
@@ -122,7 +127,7 @@ export default class File {
     return new File(dirname(this.path));
   }
 
-  static directory(path) {
+  static directory(path: Path) {
     return new File(path).directory;
   }
 
@@ -139,16 +144,16 @@ export default class File {
   }
 
   get fullExtension() {
-    const name = this.path.split("/").at(-1);
+    const name = this.path.split("/").at(-1)!;
     return name.slice(name.indexOf("."));
   }
 
-  up(levels) {
+  up(levels: number): File {
     if (levels === 0) {
       return this;
     }
     const { directory } = this;
-    assert_boundary(directory, "Stopping at filesystem boundary");
+    assert_boundary(directory);
     return directory.up(levels - 1);
   }
 
@@ -156,67 +161,63 @@ export default class File {
     return native.arrayBuffer(this.path);
   }
 
-  static arrayBuffer(path) {
+  static arrayBuffer(path: Path) {
     return new File(path).arrayBuffer();
   }
 
-  text(options) {
-    maybe(options).object();
-
-    return native.text(this.path, options);
+  text() {
+    return native.text(this.path);
   }
 
-  static text(path, options) {
-    return new File(path).text(options);
+  static text(path: Path) {
+    return new File(path).text();
   }
 
   json() {
     return native.json(this.path);
   }
 
-  static json(path) {
+  static json(path: Path) {
     return new File(path).json();
   }
 
-  copy(to, filter) {
+  copy(to: File, filter?: Z.DirectoryFilter): Promise<unknown> {
     return native.copy(this.path, to, filter);
   }
 
-  static copy(from, to, filter) {
-    return new File(from).copy(to, filter);
+  static copy(from: Path, ...args: [File, Z.DirectoryFilter]) {
+    return new File(from).copy(...args);
   }
 
-  async create(options) {
+  async create(options?: Z.DirectoryOptions) {
     maybe(options).object();
 
     return native.create(this.path, options);
   }
 
-  static create(path, options) {
+  static create(path: Path, options?: Z.DirectoryOptions) {
     return new File(path).create(options);
   }
 
-  async remove(options) {
+  async remove(options?: {}) {
     maybe(options).object();
 
     return native.remove(this.path, options);
   }
 
-  static remove(path, options) {
+  static remove(path: Path, options?: Z.RemoveOptions) {
     return new File(path).remove(options);
   }
 
-  write(data, options) {
-    maybe(options).object();
-
-    return native.write(this.path, data, options);
+  write(input: Z.WritableInput) {
+    return native.write(this.path, input);
   }
 
-  static write(path, data, options) {
-    return new File(path).write(data, options);
+  static write(path: Path, input: Z.WritableInput) {
+    return new File(path).write(input);
   }
 
-  async discover(filename) {
+  async discover(filename: string): Promise<File> {
     const file = File.join(this.path, filename);
     if (await file.exists()) {
       return this;
@@ -226,7 +227,7 @@ export default class File {
     return directory.discover(filename);
   }
 
-  static discover(path, filename) {
+  static discover(path: Path, filename: string) {
     return new File(path).discover(filename);
   }
 
@@ -234,9 +235,9 @@ export default class File {
     return this.discover("package.json");
   }
 
-  debase(base, suffix = "") {
+  debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
-    const { href: based } = to_url(base?.path ?? base);
+    const { href: based } = to_url((base as File)?.path ?? base);
     const path = decode(pathed).replace(`${decode(based)}${suffix}`, _ => "");
     return new File(path);
   }
@@ -245,7 +246,7 @@ export default class File {
     return native.stream(this.path);
   }
 
-  static stream(path) {
+  static stream(path: File) {
     return new File(path).stream();
   }
 
@@ -254,11 +255,11 @@ export default class File {
     return File.resolve().root();
   }
 
-  static resolve(...paths) {
+  static resolve(...paths: string[]) {
     return new File(resolve(...paths));
   }
 
-  static same(left, right) {
+  static same(left: File, right: File) {
     is(left.path).string();
     is(right.path).string();
 

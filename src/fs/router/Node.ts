@@ -1,3 +1,5 @@
+import type { RouterNodeConfig, Route, MatchedRoute } from "../types.js";
+
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
 const STATIC = Symbol("static");
@@ -6,7 +8,7 @@ const OPTIONAL_CATCH = Symbol("optional-catch");
 const REST = Symbol("rest");
 const OPTIONAL_REST = Symbol("optional-rest");
 
-const type_to_string = symbol => {
+const type_to_string = (symbol: Symbol) => {
   if (symbol === ROOT) {
     return "root";
   }
@@ -30,7 +32,7 @@ const type_to_string = symbol => {
   }
 };
 
-const to_type = path => {
+const to_type = (path: string) => {
   if (path.startsWith("+")) {
     return SPECIAL;
   }
@@ -52,30 +54,34 @@ const to_type = path => {
   return STATIC;
 };
 
-export default config => class Node {
-  #parent;
-  #children = [];
-  #path;
-  #type;
-  #file;
+type Collected = Record<PropertyKey, Function[]>;
+type Params = Record<PropertyKey, unknown>;
+type NodePredicate = (node: Node) => boolean | undefined;
 
-  constructor(parent, path, file) {
+export default class Node {
+  #parent: Node | null;
+  #children: Node[] = [];
+  #path: string;
+  #type: Symbol;
+  #file?: Route;
+  static #config: RouterNodeConfig;
+
+  constructor(parent: Node | null, path: string, file?: Route) {
     this.#parent = parent;
     this.#type = to_type(path);
     this.#path = path.startsWith("[[") ? path.slice(1, -1) : path;
     this.#file = file;
   }
 
-  check(predicate) {
+  static set config(config: RouterNodeConfig) {
+    this.#config = {...config};
+  }
+
+  check(predicate: NodePredicate): undefined {
     const check = predicate(this);
-    if (check !== undefined) {
-      return check();
-    }
+
     for (const child of this.#children) {
-      const checked = child.check(predicate);
-      if (checked !== undefined) {
-        return checked;
-      }
+      child.check(predicate);
     }
   }
 
@@ -98,7 +104,7 @@ export default config => class Node {
 
   // collects depth values for all nodes that satisfy a predicate, returning
   // the highest max
-  max(predicate, depth = 1) {
+  max(predicate: NodePredicate, depth = 1) {
     const max = predicate(this) ? [depth] : [depth - 1];
     for (const child of this.#children) {
       max.push(child.max(predicate, depth + 1));
@@ -106,30 +112,30 @@ export default config => class Node {
     return Math.max(...[...max].flat());
   }
 
-  collect(collected = {}, recursed = false) {
+  collect(collected: Collected = {}, recursed = false): Collected {
     const { parent } = this;
     // root
-    if (this.parent === null) {
+    if (parent === null) {
       return collected;
     }
     for (const { path, file } of parent.specials()) {
       const name = path.slice(1);
-      const { recursive } = config.specials[name];
+      const { recursive } = Node.#config.specials[name];
       // skip non-recursive specials
       if (recursed && !recursive) {
         continue;
       }
       const arr = collected[name] === undefined ? [] : collected[name];
-      collected[name] = arr.concat(file);
+      collected[name] = arr.concat(file as never);
     }
     return parent.collect(collected, true);
   }
 
-  filed(path, file) {
+  filed(path: string, file: Route) {
     this.#children.push(new Node(this, path, file));
   }
 
-  interim(path) {
+  interim(path: string) {
     for (const child of this.#children) {
       if (child.path === path) {
         return child;
@@ -140,7 +146,7 @@ export default config => class Node {
     return interim;
   }
 
-  next(request, parts, match_catch, params) {
+  next(request: Request, parts: string[], match_catch: boolean, params: Params) {
     // match static routes first
     for (const child of this.statics()) {
       const matched = child.match(request, parts, match_catch, params);
@@ -177,20 +183,20 @@ export default config => class Node {
     return this.#children.length === 0;
   }
 
-  check_predicate(request, file = this.#file) {
-    return file && config.predicate(file, request);
+  check_predicate(request: Request, file = this.#file) {
+    return file && Node.#config.predicate(file, request);
   }
 
-  return(request, parts, match_catch, params, file = this.#file) {
+  return(request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute | undefined {
     const path = this.#path;
     const specials = this.collect();
     // static match
     if (this.#path === parts[0]) {
-      return { path, file, specials, params };
+      return { path, file: file as Route, specials, params };
     }
     // catch always matches
     if (match_catch && this.catch) {
-      return { path, file, specials,
+      return { path, file: file as Route, specials,
         params: {
           ...params,
           [this.#path.slice(1, -1)]: parts[0],
@@ -199,7 +205,7 @@ export default config => class Node {
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
-      return { path, file, specials,
+      return { path, file: file as Route, specials,
         params: {
           ...params,
           [name]: params[name] ? params[name] : parts[0],
@@ -208,31 +214,34 @@ export default config => class Node {
     }
   }
 
-  #match_anchor(request, parts, match_catch, params) {
+  #match_anchor(request: Request, parts: string[], match_catch: boolean, params: Params) {
     if (this.#file !== undefined) {
       if (!this.check_predicate(request)) {
         return;
       }
-      return this.return(request, parts, match_catch, params);
+      return this.return(request as never, parts, match_catch, params);
     }
-    const [{ type, file, path } = {}] = this.dynamics();
+    const [{ type, file }] = this.dynamics();
+
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
       if (!this.check_predicate(request, file)) {
         return;
       }
-      return this.return(request, parts, match_catch, params, file);
+      return this.return(request as never, parts, match_catch, params, file);
     }
     // this node has no file, but might have an OPTIONAL_rest field
     if (type === OPTIONAL_REST) {
       if (!this.check_predicate(request, file)) {
         return;
       }
-      return this.return(request, parts, match_catch, params, file);
+      return this.return(request as never, parts, match_catch, params, file);
     }
   }
 
-  #match_recurse(request, [first, ...rest], match_catch, params) {
+  #match_recurse(request: Request, parts: string[], match_catch: boolean, params: Params) {
+    const [first, ...rest] = parts;
+
     // current path matches first
     const is_catch = match_catch && this.catch;
     const is_rest = this.rest;
@@ -257,11 +266,11 @@ export default config => class Node {
         [name]: `${first}/${rest.join("/")}`,
       };
       // rest stops recursing
-      return this.return(request, [first, ...rest], match_catch, next_params);
+      return this.return(request as never, [first, ...rest], match_catch, next_params);
     }
   }
 
-  match(request, parts, match_catch = true, params = {}) {
+  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute | undefined {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
       return this.next(request, parts, match_catch, params);
@@ -299,7 +308,7 @@ export default config => class Node {
           return true;
         }
 
-        if (has_optionals > 0) {
+        if (has_optionals) {
           return true;
         }
       }

@@ -3,4 +3,5 @@ import { Readable } from "node:stream";
 
 const options = { flags: "r" };
 
-export default path => Readable.toWeb(fs.createReadStream(path, options));
+export default (path: string) => 
+  Readable.toWeb(fs.createReadStream(path, options));

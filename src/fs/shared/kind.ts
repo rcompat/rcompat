@@ -3,7 +3,8 @@ import stats from "./stats.js";
 import exists from "./exists.js";
 import Kind from "../Kind.js";
 
-export default async path => {
+export default async (path: string) => {
+  is(path).string();
   is(await exists(path)).true();
 
   const $stats = await stats(path);

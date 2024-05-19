@@ -1,30 +1,34 @@
 import O from "rcompat/object";
 import File from "./File.js";
-import to_node from "./router/to-node.js";
+import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
+import type { RouterConfig, Route } from "./types.js";
 
 const default_extension = ".js";
+
+type RouteEntry = [string, Route];
 
 export default class Router {
   static Error = errors;
 
   #root;
-  #config;
+  #config: RouterConfig;
 
-  constructor(config) {
+  constructor(config: RouterConfig) {
     this.#config = O.defaults(config, {
       directory: undefined,
       extension: default_extension,
       specials: {},
-      predicate: _ => true,
+      predicate: () => true,
     });
-    this.#root = new (to_node({
+    Node.config = {
       specials: this.#config.specials,
       predicate: this.#config.predicate,
-    }))(null, "$");
+    };
+    this.#root = new Node(null, "$");
   }
 
-  #add(node, parts, file) {
+  #add(node: Node, parts: string[], file: Route) {
     const [first, ...rest] = parts;
     // anchor
     if (parts.length === 1) {
@@ -34,7 +38,7 @@ export default class Router {
     }
   }
 
-  match(request) {
+  match(request: Request) {
     const path = new URL(request.url).pathname;
     const [_, ...parts] = path.split("/").map(p => p === "" ? "index" : p);
     const $parts = parts.filter((part, i) => i === 0 || part !== "index");
@@ -43,13 +47,13 @@ export default class Router {
       ?? root.match(request, $parts);
   }
 
-  init(objects) {
+  init(objects: RouteEntry[]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
       this.#add(this.#root, path.split("/"), file);
     }
 
     // check for duplicates
-    this.#root.check(node => {
+    this.#root.check((node: Node) => {
       if (node.doubled) {
         throw new errors.DoubleRoute(node.path);
       }
@@ -57,19 +61,24 @@ export default class Router {
       if (dynamics.length > 1) {
         throw new errors.DoubleRoute(dynamics[1].path);
       }
-      const [dynamic = {}] = dynamics;
+      if (dynamics.length === 0) {
+        return;
+      }
+      const [dynamic] = dynamics;
       if (dynamic.optional && !dynamic.leaf) {
         throw new errors.OptionalRoute(dynamic.path);
       }
       if (dynamic.rest && !dynamic.leaf) {
         throw new errors.RestRoute(dynamic.path);
       }
+
+      return undefined;
     });
 
     return this;
   }
 
-  static init(config, objects) {
+  static init(config: RouterConfig, objects: RouteEntry[]) {
     return new Router(config).init(objects);
   }
 
@@ -87,12 +96,12 @@ export default class Router {
     return this;
   }
 
-  depth(special) {
-    return this.#root.max(node => node.specials()
-      .filter(({ path }) => path.slice(1) === special).length > 0);
+  depth(special: string) {
+    return this.#root.max((node: Node) => node.specials()
+      .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
   }
 
-  static load(config) {
+  static load(config: RouterConfig) {
     return new Router(config).load();
   }
 }
