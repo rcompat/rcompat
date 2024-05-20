@@ -1,10 +1,10 @@
 import { defaults } from "rcompat/object";
 import non_objects from "./non_objects.js";
 
-export default test => {
+export default (test => {
   test.case("non-object", assert => {
     non_objects.forEach(non_object => {
-      assert(defaults(non_object, { foo: "bar" })).equals({ foo: "bar" });
+      assert(defaults(non_object as never, { foo: "bar" })).equals({ foo: "bar" });
     });
   });
   test.case("simple object", assert => {
@@ -17,4 +17,4 @@ export default test => {
     assert(defaults({ foo: "bar" }, { baz: { x: "y" } }))
       .equals({ foo: "bar", baz: { x: "y" } });
   });
-};
+}) satisfies DebrisTestSuite;
