@@ -1,18 +1,18 @@
 import extend from "./extend.js";
 
-export default test => {
+export default (test => {
   test.case("no params", assert => {
-    assert(extend()).equals({});
+    assert(extend(undefined as never, undefined as never)).equals({});
   });
 
   test.case("no base", assert => {
     const extension = { key: "value" };
-    assert(extend(undefined, extension)).equals(extension);
+    assert(extend(undefined as never, extension)).equals(extension);
   });
 
   test.case("no extension", assert => {
     const base = { keys: "values" };
-    assert(extend(base)).equals(base);
+    assert(extend(base, undefined as never)).equals(base);
   });
 
   test.case("base and extension same", assert => {
@@ -124,4 +124,4 @@ export default test => {
 
     assert(extend(base, additional)).equals(extended);
   });
-};
+}) satisfies DebrisTestSuite;

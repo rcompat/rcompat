@@ -1,7 +1,7 @@
 import { is } from "rcompat/invariant";
 import { extend, proper } from "rcompat/object";
 
-export default (object: object, defaults: object) => {
+export default <T extends object, U extends object>(object: T, defaults: U): T & U => {
   is(object).object();
   is(defaults).object();
 
@@ -10,5 +10,6 @@ export default (object: object, defaults: object) => {
     // potentially overriding them (deeply)
     return extend(defaults, object);
   }
-  return defaults;
+
+  return defaults as never;
 };

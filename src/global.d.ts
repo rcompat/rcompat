@@ -19,6 +19,7 @@ declare global {
     throws: () => void
     nthrows: () => void
     undefined: () => void
+    true: () => void
   }
 }
 

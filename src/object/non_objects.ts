@@ -8,4 +8,4 @@ export default [
   false,
   Symbol(""),
   () => null,
-];
+] as const;

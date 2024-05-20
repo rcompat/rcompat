@@ -8,11 +8,11 @@ const objects = [
   ["foo", "bar"],
 ];
 
-export default test => {
+export default (test => {
   test.case("improper", assert => {
     assert(!non_objects.some(non_object => proper(non_object))).true();
   });
   test.case("proper", assert => {
     assert(objects.every(object => proper(object))).true();
   });
-};
+}) satisfies DebrisTestSuite;

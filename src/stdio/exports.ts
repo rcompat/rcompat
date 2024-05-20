@@ -1,7 +1,7 @@
 export { stdin, stdout, stderr } from "node:process";
-import { exec } from "node:child_process";
+import { ExecOptions, exec } from "node:child_process";
 
-const execute = (command: string, options: {}) => 
+const execute = (command: string, options: ExecOptions): Promise<string> => 
   new Promise((resolve, reject) => {
     exec(command, options, (error, stdout, stderr) =>
       error === null ? resolve(stdout) : reject(stderr));

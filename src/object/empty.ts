@@ -1,1 +1,1 @@
-export default (object: object) => Object.keys(object).length === 0;
+export default (object: object): boolean => Object.keys(object).length === 0;
