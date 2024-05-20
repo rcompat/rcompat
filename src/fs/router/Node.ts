@@ -221,7 +221,7 @@ export default class Node {
       }
       return this.return(request as never, parts, match_catch, params);
     }
-    const [{ type, file }] = this.dynamics();
+    const [{ type = undefined, file = undefined } = {}] = this.dynamics();
 
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
@@ -230,7 +230,7 @@ export default class Node {
       }
       return this.return(request as never, parts, match_catch, params, file);
     }
-    // this node has no file, but might have an OPTIONAL_rest field
+    // this node has no file, but might have an OPTIONAL_REST field
     if (type === OPTIONAL_REST) {
       if (!this.check_predicate(request, file)) {
         return;

@@ -1,4 +1,4 @@
-import { is } from "rcompat/invariant";
+import { is, maybe } from "rcompat/invariant";
 
 export type InflateImpl3Result<P extends string, T, B extends string> =
   P extends `${infer P1}${B}${infer Rest}` ?
@@ -13,8 +13,9 @@ function inflate<P extends string, T, B extends string>(path: P, initial: T): In
 function inflate<P extends string, T, B extends string>(path: P, initial: T, by: B): InflateImpl3Result<P, T, B>
 function inflate(path: string, initial?: unknown, by?: string): Record<PropertyKey, unknown> {
   is(path).string();
-  is(initial).object();
-  is(by).string();
+  maybe(initial).object();
+  maybe(by).string();
+
   return path.split(by ?? DEFAULT_BY).reduceRight<unknown>((depathed, key) =>
     ({ [key]: depathed }), initial ?? {}) as never;
 };
