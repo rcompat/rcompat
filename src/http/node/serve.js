@@ -1,6 +1,5 @@
 import { Writable } from "node:stream";
 import { Request } from "rcompat/http";
-import console from "rcompat/console";
 import { upgrade } from "./ws.js";
 import { is_secure, get_options } from "../private/exports.js";
 
