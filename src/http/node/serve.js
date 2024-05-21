@@ -5,9 +5,9 @@ import { is_secure, get_options } from "../private/exports.js";
 
 const get_url = request => {
   try {
-    return new globalThis.URL(request.url, `http://${request.headers.host}`);
-  } catch (_) {
-    console.error(_);
+    return new URL(request.url, `http://${request.headers.host}`);
+  } catch (error) {
+    console.error(error);
     return null;
   }
 };
