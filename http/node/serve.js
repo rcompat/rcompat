@@ -24,6 +24,7 @@ export default async (handler, conf) =>
 
       if (url === null) {
         res.end();
+        return;
       }
 
       const request = new Request(`${url}`, req);
