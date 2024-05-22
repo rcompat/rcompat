@@ -1,4 +1,3 @@
-
 declare global {
   interface DebrisTestSuite {
     (test: DebrisTest): void
