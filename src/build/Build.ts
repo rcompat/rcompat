@@ -15,18 +15,17 @@ export interface BuildOptions extends esbuild.BuildOptions {
 }
 type PluginPath = string;
 
-const _modes = modes as any;
 export default class Build {
   #started = false;
   #mode;
   #hotreload;
   #options;
   #name;
-  #plugins = [];
-  #artifacts: any = {};
-  #exports = [];
+  #plugins: esbuild.Plugin[] = [];
+  #artifacts: Record<string, unknown> = {};
+  #exports: string[] = [];
 
-  constructor(options: BuildOptions = {}, mode: any = dev) {
+  constructor(options: BuildOptions = {}, mode: typeof dev | typeof prod = dev) {
     is(options).object();
     assert(mode_keys.includes(mode), `mode must be one of "${dev}", "${prod}"`);
 
@@ -42,29 +41,29 @@ export default class Build {
       bundle: true,
       format: "esm" as const,
       external: excludes,
-      ..._modes[mode](name),
+      ...modes[mode](name),
       ...rest,
     };
     this.#mode = mode;
   }
 
-  plugin(plugin: any) {
-    this.#plugins.push(plugin as never);
+  plugin(plugin: esbuild.Plugin) {
+    this.#plugins.push(plugin);
   }
 
-  save(path: any, source: any) {
+  save(path: PluginPath, source: string) {
     this.#artifacts[path] = source;
   }
 
-  load(path: any) {
+  load(path: PluginPath) {
     return this.#artifacts[path];
   }
 
-  export(code: any) {
-    if (this.#exports.includes(code as never)) {
+  export(code: string) {
+    if (this.#exports.includes(code)) {
       return;
     }
-    this.#exports.push(code as never);
+    this.#exports.push(code);
   }
 
   #hot() {
@@ -77,12 +76,14 @@ export default class Build {
     };
   }
 
-  proxy(request: any, next: any) {
-    const hot = this.#hot();
+  proxy(request: Request, fallback: Function) {
+    const { paths, url } = this.#hot();
+    const { pathname } = new URL(request.url);
+    const { method, headers, body } = request;
 
-    return hot.paths.includes(request.url.pathname)
-      ? request.pass(hot.url)
-      : next(request);
+    return paths.includes(pathname)
+      ? fetch(`${url}${pathname}`, { headers, method, body, duplex: "half" })
+      : fallback();
   }
 
   async start() {
