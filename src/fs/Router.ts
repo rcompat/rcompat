@@ -2,11 +2,9 @@ import O from "rcompat/object";
 import File from "./File.js";
 import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
-import type { RouterConfig, Route } from "./types.js";
+import type { Route, RouteEntry, RouterConfig } from "./types.js";
 
 const default_extension = ".js";
-
-type RouteEntry = [string, Route];
 
 export default class Router {
   static Error = errors;
@@ -83,7 +81,7 @@ export default class Router {
   }
 
   async load() {
-    const { directory, extension } = this.#config;
+    const { directory, extension = ".js" } = this.#config;
     const re = new RegExp(`^.*${extension}$`, "u");
 
     this.init(directory === undefined ? [] : await Promise.all(

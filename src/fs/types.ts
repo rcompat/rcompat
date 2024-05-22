@@ -1,6 +1,7 @@
 export type CollectPattern = string | RegExp;
 export type WritableInput = string | Blob;
 export type DirectoryFilter = (path: string) => boolean;
+export type RouteEntry = [string, Route | Special];
 
 export interface DirectoryOptions {
   recursive?: boolean;
@@ -10,19 +11,23 @@ export interface RemoveOptions extends DirectoryOptions {
 };
 
 export interface RouterNodeConfig {
-  specials: Record<PropertyKey, {
+  specials?: Record<PropertyKey, {
     recursive: boolean
   }>;
-  predicate: (route: { default: unknown }, request: Request) => boolean;
+  predicate?: (route: { default: unknown }, request: Request) => boolean;
 }
 
 export interface RouterConfig extends RouterNodeConfig {
   directory?: string;
-  extension: string;
+  extension?: string;
 }
 
 export interface Route {
   default: Record<PropertyKey, unknown>;
+}
+
+export interface Special extends Route {
+  recursive: boolean,
 }
 
 export interface MatchedRoute {

@@ -16,7 +16,7 @@ declare global {
 
   interface DebrisTestAssertionCombinators {
     equals: (x: unknown) => void
-    throws: () => void
+    throws: (error?: string) => void
     nthrows: () => void
     undefined: () => void
     true: () => void
