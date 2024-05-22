@@ -19,11 +19,11 @@ import { identity } from "rcompat/function";
 // the next last, until the first function is the outermost wrapper, executed
 // first
 // }}}
-export default (fns: Function[], final_fn = identity) => {
+export default (fns: any, final_fn = identity) => {
   is(fns).array();
 
-  return fns.reduceRight(async (next, fn: Function) =>
-    (value: unknown) =>
-      next.then(n =>
+  return fns.reduceRight(async (next: any, fn: any) =>
+    (value: any) =>
+      next.then((n: any) =>
         fn(value, n)), Promise.resolve(final_fn));
 };

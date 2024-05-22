@@ -2,15 +2,15 @@ import cascade from "./cascade.js";
 
 const last = -1;
 // sync slicer
-const s = _ => _.slice(0, last);
+const s = (_: string) => _.slice(0, last);
 // async slicer
-const as = async _ => _.slice(0, last);
+const as = async (_: string) => _.slice(0, last);
 // sync slicer + next
-const sn = (_, next) => next(_.slice(0, last));
+const sn = (_: string, next: Function) => next(_.slice(0, last));
 // async slicer + next
-const asn = async (_, next) => next(_.slice(0, last));
+const asn = async (_: string, next: Function) => next(_.slice(0, last));
 
-export default test => {
+export default (test => {
   test.case("0 case", async assert => {
     assert(await cascade([])("test")).equals("test");
   });
@@ -32,4 +32,4 @@ export default test => {
     assert(await cascade([sn], as)("test")).equals("te");
     assert(await cascade([asn], as)("test")).equals("te");
   });
-};
+}) satisfies DebrisTestSuite;
