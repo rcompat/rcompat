@@ -78,7 +78,7 @@ export default class Node {
   }
 
   check(predicate: NodePredicate): undefined {
-    const check = predicate(this);
+    predicate(this);
 
     for (const child of this.#children) {
       child.check(predicate);
@@ -120,7 +120,7 @@ export default class Node {
     }
     for (const { path, file } of parent.specials()) {
       const name = path.slice(1);
-      const { recursive } = Node.#config.specials[name];
+      const { recursive } = Node.#config.specials?.[name] ?? {};
       // skip non-recursive specials
       if (recursed && !recursive) {
         continue;
@@ -184,6 +184,9 @@ export default class Node {
   }
 
   check_predicate(request: Request, file = this.#file) {
+    if (!Node.#config.predicate) {
+      return true;
+    }
     return file && Node.#config.predicate(file, request);
   }
 
