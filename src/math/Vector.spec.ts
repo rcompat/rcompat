@@ -1,6 +1,6 @@
 import Vector from "./Vector.js";
 
-export default test => {
+export default (test => {
   test.case("constructor", assert => {
     assert(() => new Vector()).throws();
     assert(() => new Vector(1)).nthrows();
@@ -64,4 +64,4 @@ export default test => {
     assert(new Vector(2, -1, 3).toString()).equals("{2,-1,3}");
     assert(new Vector(0, 1, 2, 3).toString()).equals("{0,1,2,3}");
   });
-};
+}) satisfies DebrisTestSuite;
