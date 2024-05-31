@@ -201,7 +201,7 @@ export default (test => {
     const match = (assert: any) => (request: any, route?: any, expected_fn?: any) => {
       [request].forEach(p => {
         const { file, ...rest } = router.match(p) ?? {};
-//        assert((file?.default.get as any)()).equals(route);
+        assert((file?.default.get as any)()).equals(route);
         expected_fn?.(rest);
       });
     };
