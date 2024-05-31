@@ -48,6 +48,7 @@
     "debris": "^0.14.0",
     "rimraf": "^5.0.7",
     "tsx": "^4.10.5",
+    "types-deno": "^0.1.0-1.43.5",
     "typescript": "^5.4.5"
   },
   "scripts": {

@@ -3,7 +3,6 @@ import { get_options, handle_ws } from "../private/exports.js";
 import type { Conf, Handler, Actions } from "../types.js";
 
 export default async (handler: Handler, conf: Conf) => {
-  // @ts-ignore
   Deno.serve({
     port: conf.port,
     hostname: conf.host,
@@ -13,7 +12,6 @@ export default async (handler: Handler, conf: Conf) => {
   }, (request: Request) => handler(request));
   return {
     upgrade(request: Request, actions: Actions = {}) {
-      // @ts-ignore
       const { socket, response } = Deno.upgradeWebSocket(request);
       handle_ws(socket, actions);
       return response;

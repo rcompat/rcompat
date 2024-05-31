@@ -16,7 +16,8 @@
     "strict": true /* Enable all strict type-checking options. */,
     // "exactOptionalPropertyTypes": true,               /* Interpret optional property types as written, rather than adding 'undefined'. */
     // "noUncheckedIndexedAccess": true,                 /* Add 'undefined' to a type when accessed using an index. */
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "typeRoots": ["./node_modules/types-deno"]
   },
   "include": ["./src"],
   "exclude": ["nodes_modules", "lib"]
