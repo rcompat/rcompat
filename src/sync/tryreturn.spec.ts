@@ -18,7 +18,7 @@ export default (test => {
   // });
   test.case("`orelse` faulty", assert => {
     try {
-      tryreturn(identity).orelse(undefined as never);
+      tryreturn(() => null).orelse(undefined as never);
     } catch (error: any) {
       assert(error.message).equals("`undefined` must be of type function");
     }

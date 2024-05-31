@@ -27,9 +27,9 @@ export default (test => {
   });
   test.case("initial", async assert => {
     // last doesn't call next
-    assert(cascade([sn], s)("test")).equals("te");
-    assert(await cascade([asn], s)("test")).equals("te");
-    assert(await cascade([sn], as)("test")).equals("te");
-    assert(await cascade([asn], as)("test")).equals("te");
+    assert(cascade([sn], s as never)("test")).equals("te");
+    assert(await cascade([asn], s as never)("test")).equals("te");
+    assert(await cascade([sn], as as never)("test")).equals("te");
+    assert(await cascade([asn], as as never)("test")).equals("te");
   });
 }) satisfies DebrisTestSuite;

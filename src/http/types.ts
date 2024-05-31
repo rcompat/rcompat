@@ -18,4 +18,4 @@ export interface Actions extends Record<PropertyKey, unknown> {
   close?: (x: any) => unknown,
 }
 
-
+export type RequestLike = Request | PseudoRequest;

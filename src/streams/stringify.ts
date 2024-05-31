@@ -1,3 +1,4 @@
+import { is } from "rcompat/invariant";
 import { defined } from "rcompat/function";
 import type { ReadableStreamDefaultReader } from "node:stream/web";
 import { ReadableStream } from "./exports.js";
@@ -8,6 +9,7 @@ const read = ({ chunks = [], reader } : { chunks?: string[], reader: ReadableStr
     ? chunks
     : read({ chunks: [...chunks, decoder.decode(value)], reader }));
 
-export default async (input: ReadableStream | unknown) => input instanceof ReadableStream
-  ? (await read({ reader: input.getReader() })).filter(defined).join("")
-  : input;
+export default async (input: ReadableStream): Promise<string> => {
+  is(input).instance(ReadableStream);
+  return (await read({ reader: input.getReader() })).filter(defined).join("");
+}

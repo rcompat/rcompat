@@ -1,10 +1,9 @@
-import { identity } from "rcompat/function";
 import tryreturn from "./tryreturn.js";
 
 export default (test => {
   test.case("`try` faulty", async assert => {
     try {
-      await tryreturn(undefined as never).orelse(identity);
+      await tryreturn(undefined as never).orelse(async () => null);
     } catch (error: any) {
       assert(error.message).equals("`undefined` must be of type function");
     }
@@ -18,7 +17,7 @@ export default (test => {
   });
   test.case("`orelse` faulty", async assert => {
     try {
-      await tryreturn(identity).orelse(undefined as never);
+      await tryreturn(async () => null).orelse(undefined as never);
     } catch (error: any) {
       assert(error.message).equals("`undefined` must be of type function");
     }

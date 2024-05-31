@@ -62,6 +62,7 @@ const extensions = {
 };
 
 const regex = /\.(?<extension>[a-z1-9]*)$/u;
-const match = filename => filename.match(regex)?.groups.extension;
+const match = (filename: string) => filename.match(regex)?.groups?.extension;
 
-export const resolve = name => extensions[match(name)] ?? extensions.binary;
+export const resolve = (name: string) => 
+  extensions[match(name) as never] ?? extensions.binary;

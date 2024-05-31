@@ -1,20 +1,24 @@
 import { Writable } from "node:stream";
-import { Request } from "rcompat/http";
-import { upgrade } from "./ws.js";
-import { is_secure, get_options } from "../private/exports.js";
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { WebSocketServer } from "ws";
+import PseudoRequest from "./Request.js";
+import { is_secure, get_options, handle_ws } from "../private/exports.js";
+import type { Handler, Conf, Actions } from "../types.js";
 
-const get_url = request => {
+const wss = new WebSocketServer({ noServer: true });
+
+const get_url = (request: IncomingMessage) => {
   try {
-    return new URL(request.url, `http://${request.headers.host}`);
+    return new URL(request.url as string, `http://${request.headers.host}`);
   } catch (error) {
     console.error(error);
     return null;
   }
 };
 
-export default async (handler, conf) =>
+export default async (handler: Handler, conf: Conf) =>
   import(is_secure(conf) ? "https" : "http").then(async ({ createServer }) => {
-    createServer(await get_options(conf), async (req, res) => {
+    createServer(await get_options(conf), async (req: IncomingMessage, res: ServerResponse) => {
 
       // handler gets a WHATWG Request, and returns a WHATWG Response
       //
@@ -26,7 +30,7 @@ export default async (handler, conf) =>
         return;
       }
 
-      const request = new Request(`${url}`, req);
+      const request = new PseudoRequest(`${url}`, req);
 
       const response = await handler(request);
 
@@ -55,8 +59,11 @@ export default async (handler, conf) =>
       }
     }).listen(conf.port, conf.host);
     return {
-      upgrade(request, response) {
-        upgrade(request.original, response);
+      upgrade(request: IncomingMessage, actions: Actions) {
+        const null_buffer = Buffer.from([]);
+        wss.handleUpgrade(request, request.socket, null_buffer, socket => {
+          handle_ws(actions, socket);
+        });
         return null;
       },
     };
