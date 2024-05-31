@@ -1,6 +1,5 @@
 import { identity } from "rcompat/function";
-import { upgrade } from "./ws.js";
-import { get_options } from "../private/exports.js";
+import { get_options, handle_ws } from "../private/exports.js";
 import type { Conf, Handler, Actions } from "../types.js";
 
 export default async (handler: Handler, conf: Conf) => {
@@ -14,7 +13,10 @@ export default async (handler: Handler, conf: Conf) => {
   }, (request: Request) => handler(request));
   return {
     upgrade(request: Request, actions: Actions = {}) {
-      return upgrade(request, actions);
+      // @ts-ignore
+      const { socket, response } = Deno.upgradeWebSocket(request);
+      handle_ws(socket, actions);
+      return response;
     },
   };
 };

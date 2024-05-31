@@ -1,6 +1,6 @@
 import type { Actions } from "../types.js";
 
-export default (actions: Actions, socket: WebSocket) => {
+export default (socket: WebSocket, actions: Actions) => {
   if (actions.message !== undefined) {
     const action = actions.message;
 

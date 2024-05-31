@@ -59,10 +59,10 @@ export default async (handler: Handler, conf: Conf) =>
       }
     }).listen(conf.port, conf.host);
     return {
-      upgrade(request: IncomingMessage, actions: Actions) {
+      upgrade({ original }: PseudoRequest, actions: Actions) {
         const null_buffer = Buffer.from([]);
-        wss.handleUpgrade(request, request.socket, null_buffer, socket => {
-          handle_ws(actions, socket);
+        wss.handleUpgrade(original, original.socket, null_buffer, socket => {
+          handle_ws(socket, actions);
         });
         return null;
       },
