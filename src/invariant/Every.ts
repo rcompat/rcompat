@@ -63,7 +63,7 @@ export default class Every {
   // unsigned (positive) integer
   usize(error?: ErrorFallbackFunction): number[] {
     const def = "all the values must be positive integers";
-    const condition = this.#values.every(v => Number.isInteger(v) && v as number > 0);
+    const condition = this.#values.every(v => Number.isInteger(v) && v as number >= 0);
     return this.#test({ condition, def, error });
   }
 }

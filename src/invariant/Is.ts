@@ -144,7 +144,7 @@ export default class Is {
   // unsigned (positive) integer
   usize(error?: ErrorFallbackFunction | string) {
     const def = `\`${this.#value}\` must be positive integer`;
-    const condition = Number.isInteger(this.#value) && this.#value as number > 0;
+    const condition = Number.isInteger(this.#value) && this.#value as number >= 0;
     return this.#test({ condition, def, error });
   }
 
