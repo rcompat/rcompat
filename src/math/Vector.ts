@@ -6,7 +6,7 @@ export default class Vector {
   #coordinates;
 
   constructor(...coordinates: number[]) {
-    every(coordinates).number();
+    every(...coordinates).number();
     assert(coordinates.length > 0);
 
     this.#coordinates = [...coordinates];
@@ -43,8 +43,12 @@ export default class Vector {
   }
 
   at(index: number) {
-    is(index).usize();
-    assert(index >= this.size, `index \`${index}\` out of bounds`);
+    is(index).number();
+
+    const { size } = this;
+
+    assert(index < size || -(index - 1) < size,
+      `index \`${index}\` out of bounds`);
 
     return this.#coordinates.at(index);
   }
