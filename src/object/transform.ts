@@ -5,10 +5,11 @@ export interface ObjectTransformFunction<T, U> {
   (entries: [key: string, value: T][]): [key: string, value: U][]
 }
 
-// @ts-ignore
-export default <T, U>(object: Record<string, T> = {}, transformer: ObjectTransformFunction<T, U> = identity): Record<string, U> => {
-  is(object).object();
-  is(transformer).function();
+export default <T, U>(object: Record<string, T>, transformer: ObjectTransformFunction<T, U>): Record<string, U> => {
+  const transformer_ = transformer ?? identity;
 
-  return Object.fromEntries(transformer(Object.entries(object)));
+  is(object).object();
+  is(transformer_).function();
+
+  return Object.fromEntries(transformer_(Object.entries(object)));
 };
