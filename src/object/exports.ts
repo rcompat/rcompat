@@ -12,14 +12,7 @@ import { default as exclude } from "./exclude.js";
 import { default as defaults } from "./defaults.js";
 import { default as proper } from "./proper.js";
 
-const {
-  fromEntries: from,
-  entries: to,
-} = Object;
-
 const object = {
-  from,
-  to,
   inflate,
   extend,
   empty,
@@ -36,8 +29,6 @@ const object = {
 };
 
 export {
-  from,
-  to,
   inflate,
   extend,
   empty,

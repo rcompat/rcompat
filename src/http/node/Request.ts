@@ -3,7 +3,6 @@ import type { IncomingMessage } from "node:http";
 import { is } from "rcompat/invariant";
 import { stringify } from "rcompat/streams";
 import busboy from "busboy";
-import { Headers } from "../shared/exports.js";
 
 export type Entry = [PropertyKey, unknown];
 export type CallableEntriesFn = {entries: () => Iterable<readonly [PropertyKey, any]>};
