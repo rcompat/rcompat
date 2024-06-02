@@ -90,22 +90,26 @@ export default class Build {
     is(this.#started).false("build already started");
 
     const { stdin, ...options } = this.#options;
-
-    const context = await esbuild.context({
+    const build_options = {
       stdin: {
         ...stdin,
         contents: this.#exports.join("\n"),
       },
       plugins: this.#plugins,
       ...options,
-    });
-    await context.rebuild();
-
-    if (this.development) {
-      await context.watch();
-      await context.serve(this.#hotreload);
     }
 
+    if (this.development) {
+      const context = await esbuild.context(build_options);
+      await context.rebuild();
+
+      if (this.development) {
+        await context.watch();
+        await context.serve(this.#hotreload);
+      }
+    } else {
+      await esbuild.build(build_options);
+    }
     this.#started = true;
   }
 
