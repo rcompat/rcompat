@@ -5,12 +5,13 @@
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
-    "/**/*.js",
-    "!/**/*.spec.js"
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/rcompat/rcompat",
+    "url": "git+https://github.com/rcompat/rcompat.git",
     "directory": "packages/rcompat"
   },
   "type": "module",
@@ -54,6 +55,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./lib",
-    "test": "tsx ./node_modules/.bin/debris"
+    "test": "tsx ./node_modules/.bin/debris",
+    "prepublishOnly": "npm run build && cp src/global.d.ts lib"
   }
 }
