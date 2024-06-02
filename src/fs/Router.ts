@@ -1,4 +1,4 @@
-import O from "rcompat/object";
+import * as O from "rcompat/object";
 import File from "./File.js";
 import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
