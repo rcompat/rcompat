@@ -27,7 +27,7 @@ export default (trial => ({
       is(this[$backup]).defined("`tryreturn` executed without a backup");
   
       try {
-        const maybePromiseTrial = trial();
+        const maybePromiseTrial = await trial();
   
         return maybePromiseTrial instanceof Promise ? await maybePromiseTrial : maybePromiseTrial;
       } catch(error) {
