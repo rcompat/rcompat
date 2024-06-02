@@ -19,11 +19,20 @@ import { identity } from "rcompat/function";
 // the next last, until the first function is the outermost wrapper, executed
 // first
 // }}}
-export default (fns: any, final_fn = identity) => {
+
+export interface CascadeFunction<I = any, O = any> {
+  (input: I, next?: CascadeFunction<I, O>): Promise<O | undefined> | O | undefined
+}
+
+export interface CascadedFunction<I = any, O = any> {
+  (input: I): Promise<O> | O | undefined
+}
+
+export default (fns: CascadeFunction[], final_fn?: CascadedFunction): CascadedFunction => {
+  const final_fn_ = final_fn ?? identity;
   is(fns).array();
 
-  return fns.reduceRight(async (next: any, fn: any) =>
-    (value: any) =>
-      next.then((n: any) =>
-        fn(value, n)), Promise.resolve(final_fn));
+  return fns.reduceRight((next: any, fn: any) => async (value: any) =>
+    fn(value, await Promise.resolve(next)), 
+  Promise.resolve(final_fn_));
 };
