@@ -255,8 +255,10 @@ export default class File {
     return File.resolve().root();
   }
 
-  static resolve(...paths: string[]) {
-    return new File(resolve(...paths));
+  static resolve(path?: string) {
+    maybe(path).string();
+
+    return new File(path === undefined ? resolve() : resolve(path));
   }
 
   static same(left: File, right: File) {
