@@ -231,10 +231,6 @@ export default class File {
     return new File(path).discover(filename);
   }
 
-  root() {
-    return this.discover("package.json");
-  }
-
   debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
     const { href: based } = to_url((base as File)?.path ?? base);
@@ -250,15 +246,10 @@ export default class File {
     return new File(path).stream();
   }
 
-  // return the first directory where package.json is found, starting at cwd
-  static root() {
-    return File.resolve().root();
-  }
-
   static resolve(path?: string) {
     maybe(path).string();
 
-    return new File(path === undefined ? resolve() : resolve(path));
+    return new File(path === undefined ? resolve() : resolve(parse(path)));
   }
 
   static same(left: File, right: File) {
