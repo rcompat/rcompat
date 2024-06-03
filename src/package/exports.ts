@@ -1,7 +1,5 @@
-import { File } from "rcompat/fs";
-import { manifest } from "rcompat/meta";
+import manifest from "./manifest.js";
+import resolve from "./resolve.js";
+import root from "./root.js";
 
-const resolve = async (url: string): Promise<unknown> =>
-  (await File.discover(url, manifest)).join(manifest).json();
-
-export { resolve };
+export { manifest, resolve, root };
