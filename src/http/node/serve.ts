@@ -53,7 +53,7 @@ export default async (handler: Handler, conf: Conf) =>
       } else {
         try {
           await body.pipeTo(Writable.toWeb(res));
-        } catch (error) {
+        } catch {
           await body.cancel();
         }
       }

@@ -5,7 +5,7 @@ export const constructible = (value: unknown): boolean => {
     // Todo: Clean type?
     Reflect.construct(String, [], value as AnyConstructibleFunction);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 };

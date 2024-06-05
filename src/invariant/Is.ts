@@ -13,7 +13,7 @@ function try_instanceof(value: unknown, type: Function | string): boolean {
   try {
     // Todo: Revisit
     return value instanceof (type as Function);
-  } catch (e) {
+  } catch {
     return typeof value === type;
   }
 }
