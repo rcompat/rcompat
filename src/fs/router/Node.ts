@@ -190,7 +190,7 @@ export default class Node {
     return file && Node.#config.predicate(file, request);
   }
 
-  return(request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute | undefined {
+  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute | undefined {
     const path = this.#path;
     const specials = this.collect();
     // static match

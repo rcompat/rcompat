@@ -1,7 +1,5 @@
 import Is from "./Is.js";
 
-type ZZZ = keyof Is & {}
-
 const fixturesMap = {
   string: ["", String()],
   number: [0, Number(0)],
