@@ -75,7 +75,7 @@ export default class Is {
   }
 
   array(error?: ErrorFallbackFunction | string): unknown[] {
-    const def = `\`${this.#value}\` must be array`;
+    const def = `\`${JSON.stringify(this.#value)}\` must be array`;
     const condition = Array.isArray(this.#value);
     return this.#test({ condition, def, error });
   }
