@@ -8,7 +8,7 @@ const OPTIONAL_CATCH = Symbol("optional-catch");
 const REST = Symbol("rest");
 const OPTIONAL_REST = Symbol("optional-rest");
 
-const type_to_string = (symbol: Symbol) => {
+const type_to_string = (symbol: symbol) => {
   if (symbol === ROOT) {
     return "root";
   }
@@ -54,7 +54,7 @@ const to_type = (path: string) => {
   return STATIC;
 };
 
-type Collected = Record<PropertyKey, Function[]>;
+type Collected = Record<PropertyKey, ((...args: never) => unknown)[]>;
 type Params = Record<PropertyKey, unknown>;
 type NodePredicate = (node: Node) => boolean | undefined;
 
@@ -62,7 +62,7 @@ export default class Node {
   #parent: Node | null;
   #children: Node[] = [];
   #path: string;
-  #type: Symbol;
+  #type: symbol;
   #file?: Route;
   static #config: RouterNodeConfig;
 

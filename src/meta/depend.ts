@@ -14,7 +14,7 @@ export class MetaDependError extends Error {
   }
 }
 
-export default async (dependencies: {}): Promise<unknown[]> => {
+export default async (dependencies: Record<string, string>): Promise<unknown[]> => {
   const modules = Object.keys(dependencies);
 
   const results = await Promise.all(modules.map(module =>

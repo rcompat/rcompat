@@ -8,7 +8,7 @@ export type InflateImpl3Result<P extends string, T, B extends string> =
 const DEFAULT_BY = '.';
 type DEFAULT_BY = typeof DEFAULT_BY;
 
-function inflate<P extends string>(path: P): InflateImpl3Result<P, {}, DEFAULT_BY>
+function inflate<P extends string>(path: P): InflateImpl3Result<P, NonNullable<unknown>, DEFAULT_BY>
 function inflate<P extends string, T>(path: P, initial: T): InflateImpl3Result<P, T, DEFAULT_BY>
 function inflate<P extends string, T, B extends string>(path: P, initial: T, by: B): InflateImpl3Result<P, T, B>
 function inflate(path: string, initial?: unknown, by?: string): Record<PropertyKey, unknown> {

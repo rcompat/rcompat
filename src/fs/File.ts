@@ -7,6 +7,7 @@ import type * as Z from "./types.js";
 
 import * as bun from "./bun/exports.js";
 import * as node from "./node/exports.js";
+import { FileListOptions } from "./shared/list.js";
 
 const native = runtime === "bun" ? bun : node;
 
@@ -78,11 +79,11 @@ export default class File {
     return native.kind(this.path);
   }
 
-  list(filter: Z.DirectoryFilter, options: {}) {
+  list(filter: Z.DirectoryFilter, options: FileListOptions) {
     return native.list(this.path, filter, options);
   }
 
-  static list(path: Path, filter: Z.DirectoryFilter, options: {}) {
+  static list(path: Path, filter: Z.DirectoryFilter, options: FileListOptions) {
     return new File(path).list(filter, options);
   }
 
@@ -199,7 +200,7 @@ export default class File {
     return new File(path).create(options);
   }
 
-  async remove(options?: {}) {
+  async remove(options?: Z.RemoveOptions) {
     maybe(options).object();
 
     return native.remove(this.path, options);

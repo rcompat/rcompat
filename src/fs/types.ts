@@ -33,6 +33,6 @@ export interface Special extends Route {
 export interface MatchedRoute {
   path: string;
   file: Route;
-  specials: Record<PropertyKey, Function[]>;
+  specials: Record<PropertyKey, ((...args: never) => unknown)[]>;
   params: Record<PropertyKey, unknown>;
 }

@@ -15,6 +15,10 @@ export interface BuildOptions extends esbuild.BuildOptions {
 }
 type PluginPath = string;
 
+export interface BuildFallbackFunction {
+  (): unknown
+}
+
 export default class Build {
   #started = false;
   #mode;
@@ -76,7 +80,7 @@ export default class Build {
     };
   }
 
-  proxy(request: Request, fallback: Function) {
+  proxy(request: Request, fallback: BuildFallbackFunction) {
     const { paths, url } = this.#hot();
     const { pathname } = new URL(request.url);
     const { method, headers, body } = request;

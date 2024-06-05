@@ -5,14 +5,18 @@ import { AnyConstructibleFunction, TypeofTypeMap } from "./types.js";
 
 interface TestOptions { condition: boolean, error?: ErrorFallbackFunction | string, def: string }
 
+type AnyContructorFunction = new (...args: never) => unknown;
+
 const test = ({ condition, def, error }: TestOptions): void => assert(condition, error || def);
 
-function try_instanceof<C extends new (...args: never) => unknown>(value: unknown, type: C): value is InstanceType<C>
+
+
+function try_instanceof<C extends AnyContructorFunction>(value: unknown, type: C): value is InstanceType<C>
 function try_instanceof<T extends keyof TypeofTypeMap>(value: unknown, type: T): value is TypeofTypeMap[T]; 
-function try_instanceof(value: unknown, type: Function | string): boolean {
+function try_instanceof(value: unknown, type: AnyContructorFunction | string): boolean {
   try {
     // Todo: Revisit
-    return value instanceof (type as Function);
+    return value instanceof (type as AnyContructorFunction);
   } catch {
     return typeof value === type;
   }
@@ -87,7 +91,7 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  defined(error?: ErrorFallbackFunction | string): {} {
+  defined(error?: ErrorFallbackFunction | string): NonNullable<unknown> {
     const def = `\`${this.#value}\` must be defined`;
     const condition = this.#value !== undefined;
     return this.#test({ condition, def, error });
