@@ -86,10 +86,10 @@
   "devDependencies": {
     "@types/bun": "^1.1.3",
     "@types/busboy": "^1.5.4",
-    "@types/node": "^20.13.0",
+    "@types/node": "^20.14.1",
     "debris": "^0.14.0",
     "rimraf": "^5.0.7",
-    "tsx": "^4.11.0",
+    "tsx": "^4.11.2",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.4.5"
   },
