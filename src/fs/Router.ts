@@ -47,7 +47,7 @@ export default class Router {
 
   init(objects: RouteEntry[]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
-      this.#add(this.#root, path.split("/"), file);
+      this.#add(this.#root, File.webpath(path).split("/"), file);
     }
 
     // check for duplicates
