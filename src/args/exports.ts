@@ -1,4 +1,4 @@
-import { runtime } from "rcompat/meta";
+import { platform } from "rcompat/package";
 
-const [,, ...args] = runtime === "bun" ? Bun.argv : process.argv;
+const [,, ...args] = platform() === "bun" ? Bun.argv : process.argv;
 export default args;

@@ -1,11 +1,10 @@
 import process from "node:process";
 import { parse } from "dotenv";
-import { runtime } from "rcompat/meta";
 import { File } from "rcompat/fs";
 import * as P from "rcompat/package";
 import { tryreturn } from "rcompat/async";
 
-const { JS_ENV } = runtime === "bun" ? Bun.env : process.env;
+const { JS_ENV } = P.platform() === "bun" ? Bun.env : process.env;
 const env = (await P.root()).join(`.env${JS_ENV ? `.${JS_ENV}` : ""}`);
 const local = new File(`${env.path}.local`);
 

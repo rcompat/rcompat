@@ -1,14 +1,19 @@
 import { join, resolve, dirname, basename, extname, sep } from "node:path";
 import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
-import { runtime } from "rcompat/meta";
+import { platform } from "rcompat/package";
 import { s_streamable } from "./symbols.js";
 import type * as Z from "./types.js";
 
 import * as bun from "./bun/exports.js";
 import * as node from "./node/exports.js";
 
-const native = runtime === "bun" ? bun : node;
+const native = {
+  node,
+  // no native deno implementation yet
+  deno: node,
+  bun,
+}[platform()];
 
 const { decodeURIComponent: decode } = globalThis;
 
