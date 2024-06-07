@@ -1,7 +1,8 @@
 import { join, resolve, dirname, basename, extname, sep } from "node:path";
 import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
 import { is, defined, maybe } from "rcompat/invariant";
-import { platform } from "rcompat/package";
+// direct import because package/exports.js requires File
+import platform from "../package/platform.js";
 import { s_streamable } from "./symbols.js";
 import type * as Z from "./types.js";
 

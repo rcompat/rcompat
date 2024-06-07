@@ -1,4 +1,4 @@
-import { runtime } from "rcompat/meta";
+import { platform } from "rcompat/package";
 
 import * as node from "./node/exports.js";
 import * as deno from "./deno/exports.js";
@@ -9,7 +9,7 @@ const {
   MediaType,
   Body,
   serve,
-} = { bun, deno, node }[runtime];
+} = { bun, deno, node }[platform()];
 
 export {
   Status,
