@@ -16,6 +16,12 @@ const native = {
   bun,
 }[platform()];
 
+const ensure_parents = async (file: File) => {
+  const { directory } = file;
+  // make sure the directory exists
+  !await directory.exists() && await directory.create();
+};
+
 const { decodeURIComponent: decode } = globalThis;
 
 const parse = (p: string) => p.startsWith("file://") ? to_path(p) : p;
@@ -187,7 +193,9 @@ export default class File {
     return new File(path).json();
   }
 
-  copy(to: File, filter?: Z.DirectoryFilter): Promise<unknown> {
+  async copy(to: File, filter?: Z.DirectoryFilter): Promise<unknown> {
+    ensure_parents(to);
+
     return native.copy(this.path, to, filter);
   }
 
@@ -216,11 +224,8 @@ export default class File {
   }
 
   async write(input: Z.WritableInput) {
-    const { directory} = this;
-    // make sure the directory exists
-    if (!await directory.exists()) {
-      await directory.create();
-    }
+    ensure_parents(this);
+
     return native.write(this.path, input);
   }
 
