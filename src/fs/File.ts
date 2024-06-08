@@ -215,7 +215,12 @@ export default class File {
     return new File(path).remove(options);
   }
 
-  write(input: Z.WritableInput) {
+  async write(input: Z.WritableInput) {
+    const { directory} = this;
+    // make sure the directory exists
+    if (!await directory.exists()) {
+      await directory.create();
+    }
     return native.write(this.path, input);
   }
 
