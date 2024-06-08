@@ -3,10 +3,6 @@ declare global {
     (test: DebrisTest): void
   }
 
-  interface ImportMeta {
-    runtime: Record<string, string>
-  }
-
   interface DebrisTest {
     case: (name:string, test: (assert: DebrisTestAssertion) => void) => void;
     reassert: <T extends object>(assert: (DebrisTestAssertion) => T) => void;
