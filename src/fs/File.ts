@@ -1,18 +1,18 @@
-import { join, resolve, dirname, basename, extname, sep } from "node:path";
-import { pathToFileURL as to_url, fileURLToPath as to_path } from "node:url";
-import { is, defined, maybe } from "rcompat/invariant";
+import { basename, dirname, extname, join, resolve, sep } from "node:path";
+import { fileURLToPath as to_path, pathToFileURL as to_url } from "node:url";
+import { defined, is, maybe } from "rcompat/invariant";
 // direct import because package/exports.js requires File
 import platform from "../package/platform.js";
 import { s_streamable } from "./symbols.js";
 import type * as Z from "./types.js";
 
 import * as bun from "./bun/exports.js";
+import * as deno from "./deno/exports.js";
 import * as node from "./node/exports.js";
 
 const native = {
   node,
-  // no native deno implementation yet
-  deno: node,
+  deno,
   bun,
 }[platform()];
 
