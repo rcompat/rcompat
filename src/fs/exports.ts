@@ -1,4 +1,4 @@
-export { default as FlatFile } from "./FlatFile.js";
+export { file, default as FlatFile } from "./FlatFile.js";
 export { default as Kind } from "./Kind.js";
 export { default as Router } from "./Router.js";
 export { watch } from "node:fs";

@@ -58,7 +58,7 @@ export default class FlatFile {
   }
 
   static webpath(path: Path) {
-    return new FlatFile(path).webpath();
+    return file(path).webpath();
   }
 
   get streamable() {
@@ -72,22 +72,18 @@ export default class FlatFile {
   }
 
   static import(path: Path, name: string) {
-    return new FlatFile(path).import(name);
+    return file(path).import(name);
   }
 
   join(...paths: Path[]): FlatFile {
     const [first, ...rest] = paths;
 
     const path = join(this.path, (first as FlatFile)?.path ?? first);
-    return paths.length === 1
-      ? new FlatFile(path) 
-      : new FlatFile(path).join(...rest);
+    return paths.length === 1 ? file(path) : file(path).join(...rest);
   }
 
   static join(...[first, ...rest]: [Path, ...Path[]]) {
-    return rest.length === 0
-      ? new FlatFile(first) 
-      : new FlatFile(first).join(...rest);
+    return rest.length === 0 ? file(first) : file(first).join(...rest);
   }
 
   kind() {
@@ -99,7 +95,7 @@ export default class FlatFile {
   }
 
   static list(path: Path, filter: Z.DirectoryFilter, options: {}) {
-    return new FlatFile(path).list(filter, options);
+    return file(path).list(filter, options);
   }
 
   glob(pattern: string) {
@@ -107,7 +103,7 @@ export default class FlatFile {
   }
 
   static glob(pattern: string) {
-    return new FlatFile(".").glob(pattern);
+    return file(".").glob(pattern);
   }
 
   collect(pattern?: Z.CollectPattern, options?: Z.DirectoryOptions) {
@@ -115,7 +111,7 @@ export default class FlatFile {
   }
 
   static collect(path: Path, ...args: [Z.CollectPattern, Z.DirectoryOptions]) {
-    return new FlatFile(path).collect(...args);
+    return file(path).collect(...args);
   }
 
   #stats() {
@@ -131,7 +127,7 @@ export default class FlatFile {
   }
 
   static exists(path: FlatFile) {
-    return new FlatFile(path).exists();
+    return file(path).exists();
   }
 
   get isFile() {
@@ -140,11 +136,11 @@ export default class FlatFile {
   }
 
   get directory() {
-    return new FlatFile(dirname(this.path));
+    return file(dirname(this.path));
   }
 
   static directory(path: Path) {
-    return new FlatFile(path).directory;
+    return file(path).directory;
   }
 
   get name() {
@@ -178,7 +174,7 @@ export default class FlatFile {
   }
 
   static arrayBuffer(path: Path) {
-    return new FlatFile(path).arrayBuffer();
+    return file(path).arrayBuffer();
   }
 
   text() {
@@ -186,7 +182,7 @@ export default class FlatFile {
   }
 
   static text(path: Path) {
-    return new FlatFile(path).text();
+    return file(path).text();
   }
 
   json() {
@@ -194,7 +190,7 @@ export default class FlatFile {
   }
 
   static json(path: Path) {
-    return new FlatFile(path).json();
+    return file(path).json();
   }
 
   async copy(to: FlatFile, filter?: Z.DirectoryFilter): Promise<unknown> {
@@ -204,7 +200,7 @@ export default class FlatFile {
   }
 
   static copy(from: Path, ...args: [FlatFile, Z.DirectoryFilter]) {
-    return new FlatFile(from).copy(...args);
+    return file(from).copy(...args);
   }
 
   async create(options?: Z.DirectoryOptions) {
@@ -214,7 +210,7 @@ export default class FlatFile {
   }
 
   static create(path: Path, options?: Z.DirectoryOptions) {
-    return new FlatFile(path).create(options);
+    return file(path).create(options);
   }
 
   async remove(options?: {}) {
@@ -224,7 +220,7 @@ export default class FlatFile {
   }
 
   static remove(path: Path, options?: Z.RemoveOptions) {
-    return new FlatFile(path).remove(options);
+    return file(path).remove(options);
   }
 
   async write(input: Z.WritableInput) {
@@ -234,7 +230,7 @@ export default class FlatFile {
   }
 
   static write(path: Path, input: Z.WritableInput) {
-    return new FlatFile(path).write(input);
+    return file(path).write(input);
   }
 
   async discover(filename: string): Promise<FlatFile> {
@@ -248,14 +244,14 @@ export default class FlatFile {
   }
 
   static discover(path: Path, filename: string) {
-    return new FlatFile(path).discover(filename);
+    return file(path).discover(filename);
   }
 
   debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
     const { href: based } = to_url((base as FlatFile)?.path ?? base);
     const path = decode(pathed).replace(`${decode(based)}${suffix}`, _ => "");
-    return new FlatFile(path);
+    return file(path);
   }
 
   stream() {
@@ -263,13 +259,13 @@ export default class FlatFile {
   }
 
   static stream(path: FlatFile) {
-    return new FlatFile(path).stream();
+    return file(path).stream();
   }
 
   static resolve(path?: string) {
     maybe(path).string();
 
-    return new FlatFile(path === undefined ? resolve() : resolve(parse(path)));
+    return file(path === undefined ? resolve() : resolve(parse(path)));
   }
 
   static same(left: FlatFile, right: FlatFile) {
@@ -279,3 +275,5 @@ export default class FlatFile {
     return left.path === right.path;
   }
 }
+
+export const file = (path: Path) => new FlatFile(path);
