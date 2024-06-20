@@ -1,23 +1,23 @@
 import { is, maybe } from "rcompat/invariant";
 import list from "./list.js";
 import Kind from "../Kind.js";
-import File from "../File.js";
+import FlatFile from "../FlatFile.js";
 import type { CollectPattern, DirectoryOptions } from "../types.js";
 
 export type Def = (
   path: string
 , pattern?: CollectPattern
-, Options?: DirectoryOptions) => Promise<File[]>;
+, Options?: DirectoryOptions) => Promise<FlatFile[]>;
 
 const collect = (async (path, pattern, options) => {
-  let files: File[] = [];
+  let files: FlatFile[] = [];
   try {
     files = await list(path);
   } catch (_) {
     files = [];
   }
 
-  let subfiles: File[] = [];
+  let subfiles: FlatFile[] = [];
   for (const file of files) {
     if (file.name.startsWith(".")) {
       continue;

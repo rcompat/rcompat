@@ -1,4 +1,4 @@
-import type { File } from "rcompat/fs";
+import type { FlatFile } from "rcompat/fs";
 
 const Kind = {
   File: "file",
@@ -6,9 +6,9 @@ const Kind = {
   Link: "link",
   None: "none",
   is: {
-    file: async (file: File) => await file.kind() === Kind.File,
-    directory: async (file: File) => await file.kind() === Kind.Directory,
-    link: async (file: File) => await file.kind() === Kind.Link,
+    file: async (file: FlatFile) => await file.kind() === Kind.File,
+    directory: async (file: FlatFile) => await file.kind() === Kind.Directory,
+    link: async (file: FlatFile) => await file.kind() === Kind.Link,
   },
 };
 

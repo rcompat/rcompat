@@ -1,12 +1,12 @@
 import { copyFile, realpath } from "node:fs/promises";
 import list from "./list.js";
 import kind from "./kind.js";
-import File from "../File.js";
+import FlatFile from "../FlatFile.js";
 import Kind from "../Kind.js";
 import { is } from "rcompat/invariant";
 import type { DirectoryFilter } from "../types.js";
 
-export type Def = (path: string, to: File, filter?: DirectoryFilter)
+export type Def = (path: string, to: FlatFile, filter?: DirectoryFilter)
   => Promise<unknown>;
 
 export default (async (path, to, filter = () => true) => {
@@ -15,7 +15,7 @@ export default (async (path, to, filter = () => true) => {
   const $kind = await kind(path);
 
   if ($kind === Kind.Link) {
-    return new File(await realpath(path)).copy(to, filter);
+    return new FlatFile(await realpath(path)).copy(to, filter);
   }
 
   if ($kind === Kind.Directory) {
@@ -24,7 +24,7 @@ export default (async (path, to, filter = () => true) => {
     await to.create();
     // copy all files
     return Promise.all((await list(path, filter))
-      .map(({ name }) => File.join(path, name).copy(to.join(name))));
+      .map(({ name }) => FlatFile.join(path, name).copy(to.join(name))));
   }
 
   return copyFile(path, to.path);

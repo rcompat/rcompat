@@ -1,5 +1,5 @@
 import * as O from "rcompat/object";
-import File from "./File.js";
+import FlatFile from "./FlatFile.js";
 import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
 import type { Route, RouteEntry, RouterConfig } from "./types.js";
@@ -47,7 +47,7 @@ export default class Router {
 
   init(objects: RouteEntry[]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
-      this.#add(this.#root, File.webpath(path).split("/"), file);
+      this.#add(this.#root, FlatFile.webpath(path).split("/"), file);
     }
 
     // check for duplicates
@@ -85,7 +85,7 @@ export default class Router {
     const re = new RegExp(`^.*${extension}$`, "u");
 
     this.init(directory === undefined ? [] : await Promise.all(
-      (await File.collect(directory, re, { recursive: true }))
+      (await FlatFile.collect(directory, re, { recursive: true }))
         .map(async file => [
           `${file}`.replace(directory, _ => "").slice(1, -extension.length),
           await file.import(),
