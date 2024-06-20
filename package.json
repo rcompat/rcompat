@@ -1,6 +1,6 @@
 {
   "name": "rcompat",
-  "version": "0.17.1",
+  "version": "0.18.0",
   "description": "JavaScript interoperability and runtime compatibility layer for servers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
