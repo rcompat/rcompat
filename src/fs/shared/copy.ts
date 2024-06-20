@@ -2,6 +2,7 @@ import { copyFile, realpath } from "node:fs/promises";
 import { is } from "rcompat/invariant";
 import { file, default as FlatFile } from "../FlatFile.js";
 import Kind from "../Kind.js";
+import { join } from "../static.js";
 import type { DirectoryFilter } from "../types.js";
 import kind from "./kind.js";
 import list from "./list.js";
@@ -24,7 +25,7 @@ export default (async (path, to, filter = () => true) => {
     await to.create();
     // copy all files
     return Promise.all((await list(path, filter))
-      .map(({ name }) => FlatFile.join(path, name).copy(to.join(name))));
+      .map(({ name }) => join(path, name).copy(to.join(name))));
   }
 
   return copyFile(path, to.path);

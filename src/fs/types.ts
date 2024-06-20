@@ -5,10 +5,10 @@ export type RouteEntry = [string, Route | Special];
 
 export interface DirectoryOptions {
   recursive?: boolean;
-};
+}
 export interface RemoveOptions extends DirectoryOptions {
   fail?: boolean;
-};
+}
 
 export interface RouterNodeConfig {
   specials?: Record<PropertyKey, {

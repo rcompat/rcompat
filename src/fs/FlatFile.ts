@@ -1,4 +1,4 @@
-import { basename, dirname, extname, join, resolve, sep } from "node:path";
+import { basename, dirname, extname, join, sep } from "node:path";
 import { fileURLToPath as to_path, pathToFileURL as to_url } from "node:url";
 import { defined, is, maybe } from "rcompat/invariant";
 // direct import because package/exports.js requires FlatFile
@@ -24,7 +24,7 @@ const ensure_parents = async (file: FlatFile) => {
 
 const { decodeURIComponent: decode } = globalThis;
 
-const parse = (p: string) => p.startsWith("file://") ? to_path(p) : p;
+export const parse = (p: string) => p.startsWith("file://") ? to_path(p) : p;
 
 const assert_boundary = (directory: FlatFile) => {
   is(directory).instance(FlatFile);
@@ -49,16 +49,8 @@ export default class FlatFile {
     return this.path;
   }
 
-  static get separator() {
-    return sep;
-  }
-
   webpath() {
-    return this.path.replaceAll(FlatFile.separator, "/");
-  }
-
-  static webpath(path: Path) {
-    return file(path).webpath();
+    return this.path.replaceAll(separator, "/");
   }
 
   get streamable() {
@@ -71,19 +63,11 @@ export default class FlatFile {
     return name === undefined ? imported : imported[name];
   }
 
-  static import(path: Path, name: string) {
-    return file(path).import(name);
-  }
-
   join(...paths: Path[]): FlatFile {
     const [first, ...rest] = paths;
 
     const path = join(this.path, (first as FlatFile)?.path ?? first);
     return paths.length === 1 ? file(path) : file(path).join(...rest);
-  }
-
-  static join(...[first, ...rest]: [Path, ...Path[]]) {
-    return rest.length === 0 ? file(first) : file(first).join(...rest);
   }
 
   kind() {
@@ -94,24 +78,12 @@ export default class FlatFile {
     return native.list(this.path, filter, options);
   }
 
-  static list(path: Path, filter: Z.DirectoryFilter, options: {}) {
-    return file(path).list(filter, options);
-  }
-
   glob(pattern: string) {
     return native.glob(this.path, pattern);
   }
 
-  static glob(pattern: string) {
-    return file(".").glob(pattern);
-  }
-
   collect(pattern?: Z.CollectPattern, options?: Z.DirectoryOptions) {
     return native.collect(this.path, pattern, options);
-  }
-
-  static collect(path: Path, ...args: [Z.CollectPattern, Z.DirectoryOptions]) {
-    return file(path).collect(...args);
   }
 
   #stats() {
@@ -126,10 +98,6 @@ export default class FlatFile {
     return native.exists(this.path);
   }
 
-  static exists(path: FlatFile) {
-    return file(path).exists();
-  }
-
   get isFile() {
     return this.exists().then(exists =>
       exists ? this.#stats().then(stats => stats.isFile()) : false);
@@ -137,10 +105,6 @@ export default class FlatFile {
 
   get directory() {
     return file(dirname(this.path));
-  }
-
-  static directory(path: Path) {
-    return file(path).directory;
   }
 
   get name() {
@@ -173,24 +137,12 @@ export default class FlatFile {
     return native.arrayBuffer(this.path);
   }
 
-  static arrayBuffer(path: Path) {
-    return file(path).arrayBuffer();
-  }
-
   text() {
     return native.text(this.path);
   }
 
-  static text(path: Path) {
-    return file(path).text();
-  }
-
   json() {
     return native.json(this.path);
-  }
-
-  static json(path: Path) {
-    return file(path).json();
   }
 
   async copy(to: FlatFile, filter?: Z.DirectoryFilter): Promise<unknown> {
@@ -199,18 +151,10 @@ export default class FlatFile {
     return native.copy(this.path, to, filter);
   }
 
-  static copy(from: Path, ...args: [FlatFile, Z.DirectoryFilter]) {
-    return file(from).copy(...args);
-  }
-
   async create(options?: Z.DirectoryOptions) {
     maybe(options).object();
 
     return native.create(this.path, options);
-  }
-
-  static create(path: Path, options?: Z.DirectoryOptions) {
-    return file(path).create(options);
   }
 
   async remove(options?: {}) {
@@ -219,32 +163,20 @@ export default class FlatFile {
     return native.remove(this.path, options);
   }
 
-  static remove(path: Path, options?: Z.RemoveOptions) {
-    return file(path).remove(options);
-  }
-
   async write(input: Z.WritableInput) {
     ensure_parents(this);
 
     return native.write(this.path, input);
   }
 
-  static write(path: Path, input: Z.WritableInput) {
-    return file(path).write(input);
-  }
-
   async discover(filename: string): Promise<FlatFile> {
-    const file = FlatFile.join(this.path, filename);
+    const file = new FlatFile(this.path).join(filename);
     if (await file.exists()) {
       return this;
     }
     const { directory } = this;
     assert_boundary(directory);
     return directory.discover(filename);
-  }
-
-  static discover(path: Path, filename: string) {
-    return file(path).discover(filename);
   }
 
   debase(base: Path, suffix = "") {
@@ -257,23 +189,8 @@ export default class FlatFile {
   stream() {
     return native.stream(this.path);
   }
-
-  static stream(path: FlatFile) {
-    return file(path).stream();
-  }
-
-  static resolve(path?: string) {
-    maybe(path).string();
-
-    return file(path === undefined ? resolve() : resolve(parse(path)));
-  }
-
-  static same(left: FlatFile, right: FlatFile) {
-    is(left.path).string();
-    is(right.path).string();
-
-    return left.path === right.path;
-  }
 }
 
 export const file = (path: Path) => new FlatFile(path);
+
+export const separator = sep;
