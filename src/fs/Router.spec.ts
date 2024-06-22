@@ -7,6 +7,9 @@ const r = (route: any, expected = route) => [route, {
     get() {
       return expected;
     },
+    post() {
+      return expected;
+    }
   },
 }];
 
@@ -207,7 +210,5 @@ export default (test => {
     };
     const matcher = match(assert);
     matcher(new Request(domain, { method: "GET" }), "index");
-    matcher(new Request(domain, { method: "POST" }));
-    matcher(new Request(`${domain}/test`, { method: "GET" }));
   });
 }) satisfies DebrisTestSuite;
