@@ -1,0 +1,43 @@
+{
+  "name": "@rcompat/http",
+  "version": "0.1.0",
+  "description": "rcompat http module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/http"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@rcompat/async": "workspace:^",
+    "@rcompat/core": "workspace:^",
+    "@rcompat/fs": "workspace:^",
+    "@rcompat/function": "workspace:^",
+    "@rcompat/invariant": "workspace:^",
+    "@rcompat/streams": "workspace:^",
+    "busboy": "^1.6.0",
+    "ws": "^8.17.1"
+  },
+  "type": "module",
+  "exports": {
+    "./*": "./lib/*.js",
+    "./*.js": "./lib/*.js",
+    ".": {
+      "import": {
+        "@rcompat/live-types": "./src/exports.ts",
+        "default": "./lib/exports.js"
+      }
+    }
+  }
+}

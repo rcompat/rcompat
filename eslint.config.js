@@ -5,7 +5,12 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["*.config.js", "lib/**/*", "**/node_modules/**/*"]
+    ignores: [
+      "*.config.js",
+      "scripts/*.js",
+      "**/lib/**/*",
+      "**/node_modules/**/*",
+    ]
   },
   {
     languageOptions: {

@@ -1,4 +1,4 @@
 node_modules/
 package-lock.json
-*.lock
-lib
+pnpm-lock.yaml
+**/lib/**

@@ -1,0 +1,33 @@
+{
+  "name": "@rcompat/function",
+  "version": "0.1.0",
+  "description": "rcompat function module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/function"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "type": "module",
+  "exports": {
+    "./*": "./lib/*.js",
+    "./*.js": "./lib/*.js",
+    ".": {
+      "import": {
+        "@rcompat/live-types": "./src/exports.ts",
+        "default": "./lib/exports.js"
+      }
+    }
+  }
+}

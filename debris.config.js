@@ -1,6 +1,6 @@
 export default {
   fixtures: "fixtures",
-  base: "./src",
+  base: "./packages",
   pattern: ".*.spec.ts$",
   explicit: true,
 };
