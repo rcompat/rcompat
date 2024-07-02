@@ -20,8 +20,10 @@ export default tseslint.config(
       },
     },
     rules: {
+      "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
