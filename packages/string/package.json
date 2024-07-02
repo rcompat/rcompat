@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/string",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "rcompat string module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
