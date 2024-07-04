@@ -1,0 +1,38 @@
+{
+  "name": "@rcompat/webview",
+  "version": "0.1.0",
+  "description": "rcompat webview module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/webview"
+  },
+  "scripts": {
+    "build": "tsc && ./build-worker.sh && cp -a ./src/platform ./lib",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@rcompat/core": "workspace:^",
+    "@rcompat/object": "workspace:^"
+  },
+  "type": "module",
+  "exports": {
+    "./*": "./lib/*.js",
+    "./*.js": "./lib/*.js",
+    "./worker": "./lib/worker.js",
+    ".": {
+      "import": {
+        "@rcompat/live-types": "./src/exports.ts",
+        "default": "./lib/exports.js"
+      }
+    }
+  }
+}
