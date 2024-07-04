@@ -30,3 +30,5 @@ export const platform = () => {
   }
   return "node";
 };
+
+export class UnimplementedError extends Error {}
