@@ -1,5 +1,6 @@
 import { is } from "@rcompat/invariant";
-import { extend, proper } from "@rcompat/object";
+import extend from "./extend.js";
+import proper from "./proper.js";
 
 export default <T extends object, U extends object>(object: T, defaults: U): T & U => {
   const object_ = object ?? {};
