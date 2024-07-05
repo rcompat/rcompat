@@ -1,4 +1,4 @@
-const url = `../../platform/mac-arm64-webview.bin`;
+const url = `../../platform/darwin-x64-webview.bin`;
 const { default: library } = await import(url, { with: { type: "file" } });
 import base from "./base.js";
 

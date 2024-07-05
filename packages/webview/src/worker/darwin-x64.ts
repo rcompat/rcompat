@@ -1,5 +1,5 @@
 import { platform, UnimplementedError } from "@rcompat/core";
-import bun from "../bun/worker/mac-arm64.js";
+import bun from "../bun/worker/darwin-x64.js";
 
 const unimplemented = (platform_name: string) => {
   throw new UnimplementedError(platform_name);
