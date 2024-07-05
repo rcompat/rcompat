@@ -28,7 +28,11 @@
   "exports": {
     "./*": "./lib/*.js",
     "./*.js": "./lib/*.js",
-    "./worker": "./lib/worker.js",
+    "./worker": "./lib/worker/detect.js",
+    "./worker/linux-x64": "./lib/worker/linux-x64.js",
+    "./worker/mac-x64": "./lib/worker/mac-x64.js",
+    "./worker/mac-arm64": "./lib/worker/mac-arm64.js",
+    "./worker/windows-x64": "./lib/worker/windows-x64.js",
     ".": {
       "import": {
         "@rcompat/live-types": "./src/exports.ts",

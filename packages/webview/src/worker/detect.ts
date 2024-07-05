@@ -1,5 +1,5 @@
 import { platform, UnimplementedError } from "@rcompat/core";
-import bun from "./bun/worker.js";
+import bun from "../bun/worker/detect.js";
 
 const unimplemented = (platform_name: string) => {
   throw new UnimplementedError(platform_name);

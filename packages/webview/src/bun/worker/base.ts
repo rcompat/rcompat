@@ -1,14 +1,12 @@
-const url = `../platform/${process.platform}-${process.arch}-webview.bin`;
-const { default: library } = await import(url, { with: { type: "file" } });
+import type { Size } from "../Webview.js";
 // @ts-expect-error asset import
-import worker_logic from "./worker/init.js" with { type: "file" };
-import type { Size } from "./Webview.js";
+import worker from "./init.js" with { type: "file" };
 
-export default class {
+export default (library: string) => class {
   #worker: any;
 
   constructor(debug = false) {
-    this.#worker = new Worker(URL.createObjectURL(Bun.file(worker_logic)));
+    this.#worker = new Worker(URL.createObjectURL(Bun.file(worker)));
     this.message("construct", [debug, library]);
   }
 
