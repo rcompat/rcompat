@@ -1,1 +1,1 @@
-export default (path: string): Promise<unknown> => Bun.file(path).json();
+export default (path: string) => Bun.file(path).json();
