@@ -41,7 +41,7 @@ export default class FlatFile {
 
   constructor(path: Path) {
     defined(path);
-    this.path = parse((path as FlatFile)?.path ?? path);
+    this.path = parse((path as FlatFile).path ?? path);
   }
 
   toString() {
@@ -65,7 +65,7 @@ export default class FlatFile {
   join(...paths: Path[]): FlatFile {
     const [first, ...rest] = paths;
 
-    const path = join(this.path, (first as FlatFile)?.path ?? first);
+    const path = join(this.path, (first as FlatFile).path ?? first);
     return paths.length === 1 ? file(path) : file(path).join(...rest);
   }
 
@@ -180,7 +180,7 @@ export default class FlatFile {
 
   debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
-    const { href: based } = to_url((base as FlatFile)?.path ?? base);
+    const { href: based } = to_url((base as FlatFile).path ?? base);
     const path = decode(pathed).replace(`${decode(based)}${suffix}`, _ => "");
     return file(path);
   }

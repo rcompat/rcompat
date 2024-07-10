@@ -10,7 +10,7 @@ export default async (handler: Handler, conf: Conf) => {
     tls: await get_options(conf),
     websocket: {
       message(socket: ServerWebSocket<{ actions: Actions }>, message) {
-        socket.data?.actions.message?.(socket, message);
+        socket.data.actions.message?.(socket, message);
       },
       open(socket: ServerWebSocket<{ actions: Actions }>) {
         socket.data.actions.open?.(socket);

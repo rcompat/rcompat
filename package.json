@@ -11,6 +11,7 @@
     "clean": "pnpm -r clean",
     "publish": "pnpm -r --access=public publish",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "tsx --conditions=@rcompat/live-types ./node_modules/debris/src/bin.js"
   },
   "devDependencies": {

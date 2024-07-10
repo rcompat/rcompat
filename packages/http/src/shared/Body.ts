@@ -27,7 +27,7 @@ export default {
     return type === null
       ? null
       : tryreturn(async () => {
-          const contentType = type?.split(";")[0];
+          const contentType = type.split(";")[0];
 
           return isSupported(contentType) ? contents[contentType](request) : null;
         })
