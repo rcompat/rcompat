@@ -1,2 +1,4 @@
-export default (object: unknown): object is Record<PropertyKey, unknown> => typeof object === "object" && object !== null;
+import type { Proper } from "@rcompat/object/types";
 
+export default (object: unknown): object is Proper =>
+  typeof object === "object" && object !== null;

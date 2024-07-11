@@ -2,6 +2,13 @@ import type { DebrisTestSuite } from "@rcompat/core";
 import extend from "./extend.js";
 
 export default (test => {
+  test.case("typedoc", assert => {
+   assert(extend({}, { foo: "bar" })).equals({ foo: "bar" });
+   assert(extend({ foo: "bar" }, { foo: "baz" })).equals({ foo: "baz" });
+   assert(extend({ foo: { bar: "baz" } }, { foo: { bar: "baz2"} }))
+      .equals({ foo: { bar: "baz2"} });
+  });
+
   test.case("faulty params", assert => {
     const extension = { key: "value" };
     const base = { keys: "values" };

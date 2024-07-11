@@ -2,7 +2,7 @@ import type { BunFile } from "bun";
 import dlopen from "./dlopen.js";
 import platform from "./platform.js";
 import cstring from "./cstring.js";
-import { defaults } from "@rcompat/object";
+import { extend } from "@rcompat/object";
 
 const default_library = `${import.meta.dir}/../platform/${platform}-webview.bin`;
 
@@ -46,7 +46,7 @@ export default class Webview {
   }
 
   set size(size: Size) {
-    const { width, height, hint } = defaults(default_size, size);
+    const { width, height, hint } = extend(default_size, size);
     this.symbol("set_size")(this.#handle, width, height, hint);
   }
 

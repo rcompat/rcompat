@@ -1,12 +1,24 @@
 import { assert } from "@rcompat/invariant";
-import proper from "./proper.js";
+import type { Proper } from "@rcompat/object/types";
+import { default as proper } from "./proper.js";
 
 const recurse = (t: unknown, u: unknown) =>
-  (proper(t) && proper(u) ? extend(t as object, u as object) : u) ?? t;
+  (proper(t) && proper(u) ? extend(t as Proper, u as Proper) : u) ?? t;
 
-// recursively extend base with extension, overriding non-object properties
-// where both exist
-const extend = <T extends object, U extends object>(base: T, extension: U): T & U => {
+/**
+ * Extend a base object using an extension object, recursively overriding any
+ * property in `base` that exists in `extension`.
+ *
+ * assert(extend({}, { foo: "bar" })).equals({ foo: "bar" });
+ * assert(extend({ foo: "bar" }, { foo: "baz" })).equals({ foo: "baz" });
+ * assert(extend({ foo: { bar: "baz" } }, { foo: { bar: "baz2"} }))
+ *   .equals({ foo: { bar: "baz2"} });
+ *
+ * @param base the base object to extend
+ * #param extension the extending object
+ * @returns the result of extending `base` with `extension`
+ */
+const extend = <T extends Proper, U extends Proper>(base: T, extension: U): T & U => {
   assert(proper(base));
   assert(proper(extension));
 

@@ -33,6 +33,11 @@
         "@rcompat/live-types": "./src/exports.ts",
         "default": "./lib/exports.js"
       }
+    },
+    "./types": {
+      "import": {
+        "@rcompat/live-types": "./src/types.ts"
+      }
     }
   }
 }
