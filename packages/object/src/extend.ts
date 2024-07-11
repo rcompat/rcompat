@@ -4,8 +4,8 @@ import proper from "./proper.js";
 const recurse = (t: unknown, u: unknown) =>
   (proper(t) && proper(u) ? extend(t as object, u as object) : u) ?? t;
 
-// recursively copy properties from extension to base, if they do not exist in
-// base
+// recursively extend base with extension, overriding non-object properties
+// where both exist
 const extend = <T extends object, U extends object>(base: T, extension: U): T & U => {
   assert(proper(base));
   assert(proper(extension));
