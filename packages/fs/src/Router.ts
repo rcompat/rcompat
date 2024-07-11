@@ -4,7 +4,12 @@ import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
 import type { Route, RouteEntry, RouterConfig } from "./types.js";
 
-const default_extension = ".js";
+const defaults = {
+  directory: undefined,
+  extension: ".js",
+  specials: {},
+  predicate: () => true,
+};
 
 export default class Router {
   static Error = errors;
@@ -13,12 +18,7 @@ export default class Router {
   #config: RouterConfig;
 
   constructor(config: RouterConfig) {
-    this.#config = O.defaults(config, {
-      directory: undefined,
-      extension: default_extension,
-      specials: {},
-      predicate: () => true,
-    });
+    this.#config = O.override(defaults, config);
     Node.config = {
       specials: this.#config.specials,
       predicate: this.#config.predicate,

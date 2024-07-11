@@ -31,4 +31,6 @@ export const platform = () => {
   return "node";
 };
 
+export const NEVER = (value: unknown) => { return value as never };
+
 export class UnimplementedError extends Error {}
