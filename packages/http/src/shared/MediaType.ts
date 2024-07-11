@@ -59,10 +59,20 @@ const extensions = {
   webp: IMAGE_WEBP,
 
   woff2: FONT_WOFF2,
-};
+} as const;
+
+export type SupportedExtension = keyof typeof extensions;
+
+export const DEFAULT_SUPPORTED_EXTENSION = extensions.binary;
+
+export const isSupportedExtension = (extension: unknown): extension is SupportedExtension =>
+  typeof extension === 'string' && extension in extensions;
 
 const regex = /\.(?<extension>[a-z1-9]*)$/u;
 const match = (filename: string) => filename.match(regex)?.groups?.extension;
 
-export const resolve = (name: string) => 
-  extensions[match(name) as never] ?? extensions.binary;
+export const resolve = (name: string) => {
+    const matched = match(name);
+
+    return isSupportedExtension(matched) ? extensions[matched] : DEFAULT_SUPPORTED_EXTENSION;
+};
