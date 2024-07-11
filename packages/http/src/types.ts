@@ -10,7 +10,8 @@ export interface Conf {
   };
 }
 
-export type Handler = (request: Request | PseudoRequest) => Response;
+export type Handler = (request: Request | PseudoRequest) =>
+  Response | Promise<Response>;
 
 export interface Actions extends Record<PropertyKey, unknown> {
   message?: (socket: any, message: Buffer | string) => unknown,

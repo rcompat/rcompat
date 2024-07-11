@@ -2,10 +2,12 @@ import type { DebrisTestSuite } from "@rcompat/core";
 import defaults from "./defaults.js";
 import non_objects from "./non-objects.js";
 
+const INVALID_VALUE = (val: unknown) => { return val as never };
+
 export default (test => {
   test.case("non-object", assert => {
     non_objects.forEach(non_object => {
-      assert(defaults(non_object as never, { foo: "bar" })).equals({ foo: "bar" });
+      assert(() => defaults(INVALID_VALUE(non_object), { foo: "bar" })).throws();
     });
   });
   test.case("simple object", assert => {

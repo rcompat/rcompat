@@ -1,22 +1,20 @@
-import { is } from "@rcompat/invariant";
+import { assert } from "@rcompat/invariant";
+import proper from "./proper.js";
 
+const recurse = (t: unknown, u: unknown) =>
+  (proper(t) && proper(u) ? extend(t as object, u as object) : u) ?? t;
+
+// recursively copy properties from extension to base, if they do not exist in
+// base
 const extend = <T extends object, U extends object>(base: T, extension: U): T & U => {
-  const base_ = base ?? {}
-  const extension_ = extension ?? {}
+  assert(proper(base));
+  assert(proper(extension));
 
-  if (!(!!base_ && typeof base_ === "object")) {
-    return base_;
-  }
-  is(extension_).object();
-  return (Object.keys(extension_) as (keyof (U & T))[]) .reduce((result, property) => {
-    const value = extension_[property as keyof U];
-    return {
-      ...result,
-      [property]: value?.constructor === Object
-        ? extend(base_[property as keyof T] as object, value)
-        : value,
-    };
-  }, base_) as never;
+  return (Object.keys(extension) as (keyof (T & U))[])
+    .reduce((extended, key) => ({
+      ...extended,
+      [key]: recurse(base[key as keyof T], extension[key as keyof U]),
+    }), base) as T & U;
 };
 
 export default extend;

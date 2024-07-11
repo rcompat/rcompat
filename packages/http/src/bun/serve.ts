@@ -1,12 +1,12 @@
 import { ServerWebSocket } from "bun";
-import type { Conf, Handler, Actions } from "../types.js";
 import { get_options } from "../private/exports.js";
+import type { Actions, Conf, Handler } from "../types.js";
 
 export default async (handler: Handler, conf: Conf) => {
   const server = Bun.serve({
     port: conf.port,
     hostname: conf.host,
-    fetch: request => handler(request),
+    fetch: handler,
     tls: await get_options(conf),
     websocket: {
       message(socket: ServerWebSocket<{ actions: Actions }>, message) {
@@ -20,10 +20,10 @@ export default async (handler: Handler, conf: Conf) => {
       },
     },
   });
+
   return {
-    upgrade(request: Request, actions = {}) {
+    upgrade(request: Request, actions: Actions) {
       server.upgrade(request, { data: { actions } });
     },
   };
 };
-

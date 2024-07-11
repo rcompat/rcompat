@@ -2,18 +2,12 @@ import type { DebrisTestSuite } from "@rcompat/core";
 import extend from "./extend.js";
 
 export default (test => {
-  test.case("no params", assert => {
-    assert(extend(undefined as never, undefined as never)).equals({});
-  });
-
-  test.case("no base", assert => {
+  test.case("faulty params", assert => {
     const extension = { key: "value" };
-    assert(extend(undefined as never, extension)).equals(extension);
-  });
-
-  test.case("no extension", assert => {
     const base = { keys: "values" };
-    assert(extend(base, undefined as never)).equals(base);
+    assert(() => extend(undefined as never, undefined as never)).throws();
+    assert(() => extend(undefined as never, extension)).throws();
+    assert(() => extend(base, undefined as never)).throws();
   });
 
   test.case("base and extension same", assert => {
@@ -72,7 +66,7 @@ export default (test => {
       const fn = () => undefined;
       const base = { fn, foo: "bar" };
       const extension = { fn: { foo: "bar" }, fn2: { bar: "baz" } };
-      const extended = { fn, foo: "bar", fn2: { bar: "baz" } };
+      const extended = { fn: { foo: "bar" }, foo: "bar", fn2: { bar: "baz" } };
       assert(extend(base, extension)).equals(extended);
     }
   });

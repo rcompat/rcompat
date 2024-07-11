@@ -1,9 +1,9 @@
-import { Writable } from "node:stream";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { Writable } from "node:stream";
 import { WebSocketServer } from "ws";
+import { get_options, handle_ws, is_secure } from "../private/exports.js";
+import type { Actions, Conf, Handler } from "../types.js";
 import PseudoRequest from "./Request.js";
-import { is_secure, get_options, handle_ws } from "../private/exports.js";
-import type { Handler, Conf, Actions } from "../types.js";
 
 const wss = new WebSocketServer({ noServer: true });
 
@@ -35,8 +35,8 @@ export default async (handler: Handler, conf: Conf) =>
       const response = await handler(request);
 
       // no return (WebSocket)
-      if (response === null) {
-        return;
+      if (response.body === null) {
+        return res.end();
       }
 
       [...response.headers.entries()].forEach(([name, value]) => {
@@ -48,14 +48,10 @@ export default async (handler: Handler, conf: Conf) =>
       // 2. copy from a WHATWG response into a node response
       const { body } = response;
 
-      if (body === null) {
-        res.end();
-      } else {
-        try {
-          await body.pipeTo(Writable.toWeb(res));
-        } catch {
-          await body.cancel();
-        }
+      try {
+        await body.pipeTo(Writable.toWeb(res));
+      } catch {
+        await body.cancel();
       }
     }).listen(conf.port, conf.host);
     return {
@@ -64,7 +60,6 @@ export default async (handler: Handler, conf: Conf) =>
         wss.handleUpgrade(original, original.socket, null_buffer, socket => {
           handle_ws(socket, actions);
         });
-        return null;
       },
     };
   });

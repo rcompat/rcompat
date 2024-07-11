@@ -10,6 +10,7 @@ export default tseslint.config(
       "scripts/*.js",
       "**/lib/**/*",
       "**/node_modules/**/*",
+      "packages/webview/src/bun/worker/init.js"
     ]
   },
   {
