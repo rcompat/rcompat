@@ -35,13 +35,15 @@ const assert_boundary = (directory: FlatFile) => {
 
 export type Path = FlatFile | string;
 
+const as_string = (path: Path) => typeof path === "string" ? path : path.path;
+
 export default class FlatFile {
   path: string;
   #streamable = s_streamable;
 
   constructor(path: Path) {
     defined(path);
-    this.path = parse((path as FlatFile).path ?? path);
+    this.path = parse(as_string(path));
   }
 
   toString() {
@@ -65,7 +67,7 @@ export default class FlatFile {
   join(...paths: Path[]): FlatFile {
     const [first, ...rest] = paths;
 
-    const path = join(this.path, (first as FlatFile).path ?? first);
+    const path = join(this.path, as_string(first));
     return paths.length === 1 ? file(path) : file(path).join(...rest);
   }
 
@@ -180,7 +182,7 @@ export default class FlatFile {
 
   debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
-    const { href: based } = to_url((base as FlatFile).path ?? base);
+    const { href: based } = to_url(as_string(base));
     const path = decode(pathed).replace(`${decode(based)}${suffix}`, _ => "");
     return file(path);
   }

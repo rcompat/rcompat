@@ -102,11 +102,8 @@ export default class Build {
     if (this.development) {
       const context = await esbuild.context(build_options);
       await context.rebuild();
-
-      if (this.development) {
-        await context.watch();
-        await context.serve(this.#hotreload);
-      }
+      await context.watch();
+      await context.serve(this.#hotreload);
     } else {
       await esbuild.build(build_options);
     }
