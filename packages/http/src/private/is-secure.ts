@@ -1,3 +1,10 @@
+import { is } from "@rcompat/invariant";
 import type { Conf } from "../types.js";
 
-export default ({ ssl } : Conf) => ssl?.key !== undefined && ssl.cert !== undefined;
+export default (conf: Conf) => {
+  is(conf).object();
+
+  const { ssl } = conf;
+
+  return ssl?.key !== undefined && ssl.cert !== undefined;
+}
