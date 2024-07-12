@@ -1,3 +1,4 @@
+import { FlatFile } from "@rcompat/fs";
 import { is } from "@rcompat/invariant";
 import type { Conf } from "../types.js";
 
@@ -6,5 +7,5 @@ export default (conf: Conf) => {
 
   const { ssl } = conf;
 
-  return ssl?.key !== undefined && ssl.cert !== undefined;
+  return ssl?.key instanceof FlatFile && ssl.cert instanceof FlatFile;
 }

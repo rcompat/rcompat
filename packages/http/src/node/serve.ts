@@ -47,7 +47,7 @@ export default async (handler: Handler, conf?: Conf) => {
 
     const response = await tryreturn(async () => await handler(request))
       .orelse(async () =>
-        new Response(null, { status: Status.INTERNAL_SERVER_ERROR}));
+        new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
 
     // no return (WebSocket)
     if (response.body === null) {
