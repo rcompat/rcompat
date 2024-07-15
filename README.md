@@ -9,27 +9,27 @@ servers.
 
 ## Packages
 
-| Package                                 | Function                  |
-|-----------------------------------------|-------------------------------|
-|[@rcompat/args](packages/args)           | program arguments |
-|[@rcompat/array](packsges/array)         | array utilities |
-|[@rcompat/async](packages/async)         | async utilities |
-|[@rcompat/build](packages/build)         | build system |
-|[@rcompat/cli](packages/cli)             | cli apps |
-|[@rcompat/crypto](packages/crypto)       | cryptographic functions |
-|[@rcompat/env](packages/env)             | loading environment files |
-|[@rcompat/fs](packages/fs)               | filesystem functions |
-|[@rcompat/function](packages/function)   | function utilities |
-|[@rcompat/http](packages/http)           | http servers |
-|[@rcompat/invariant](packages/invariant) | runtime validation |
-|[@rcompat/math](packages/math)           | mathematical functions |
-|[@rcompat/module](packages/module)       | module loading |
-|[@rcompat/object](packages/object)       | object utilities |
-|[@rcompat/stdio](packages/stdio)         | process handling |
-|[@rcompat/streams](packages/streams)     | stream utilities |
-|[@rcompat/string](packages/string)       | string utilities |
-|[@rcompat/sync](packages/sync)           | sync utilities |
-|[@rcompat/webview](packages/webview)     | native webview library |
+| Package                                 | Function                          |
+|-----------------------------------------|-----------------------------------|
+|[@rcompat/args](packages/args)           | program arguments                 |
+|[@rcompat/array](packages/array)         | array utilities                   |
+|[@rcompat/async](packages/async)         | async utilities                   |
+|[@rcompat/build](packages/build)         | build system                      |
+|[@rcompat/cli](packages/cli)             | cli apps                          |
+|[@rcompat/crypto](packages/crypto)       | cryptographic functions           |
+|[@rcompat/env](packages/env)             | loading environment files         |
+|[@rcompat/fs](packages/fs)               | filesystem functions              |
+|[@rcompat/function](packages/function)   | function utilities                |
+|[@rcompat/http](packages/http)           | http servers                      |
+|[@rcompat/invariant](packages/invariant) | runtime validation                |
+|[@rcompat/math](packages/math)           | mathematical functions            |
+|[@rcompat/module](packages/module)       | module loading                    |
+|[@rcompat/object](packages/object)       | object utilities                  |
+|[@rcompat/stdio](packages/stdio)         | process handling                  |
+|[@rcompat/streams](packages/streams)     | stream utilities                  |
+|[@rcompat/string](packages/string)       | string utilities                  |
+|[@rcompat/sync](packages/sync)           | sync utilities                    |
+|[@rcompat/webview](packages/webview)     | native webview library            |
 
 ## Motivation
 
