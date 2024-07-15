@@ -24,12 +24,12 @@
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
     ".": {
       "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
+        "@rcompat/live-types": "./src/node.ts",
+        "bun": "./lib/bun.js",
+        "deno": "./lib/deno.js",
+        "node": "./lib/node.js"
       }
     }
   }
