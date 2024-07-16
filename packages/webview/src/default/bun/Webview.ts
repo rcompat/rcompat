@@ -1,10 +1,10 @@
+import override from "@rcompat/object/override";
 import type { BunFile } from "bun";
+import cstring from "./cstring.js";
 import dlopen from "./dlopen.js";
 import platform from "./platform.js";
-import cstring from "./cstring.js";
-import { override } from "@rcompat/object";
 
-const default_library = `${import.meta.dir}/../platform/${platform}-webview.bin`;
+const default_library = `${import.meta.dir}/../../platform/${platform}-webview.bin`;
 
 export interface WebviewOptions {
   debug: boolean,

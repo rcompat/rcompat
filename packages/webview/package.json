@@ -26,17 +26,20 @@
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
-    "./worker": "./lib/worker/detect.js",
-    "./worker/linux-x64": "./lib/worker/linux-x64.js",
-    "./worker/darwin-x64": "./lib/worker/darwin-x64.js",
-    "./worker/darwin-arm64": "./lib/worker/darwin-arm64.js",
-    "./worker/windows-x64": "./lib/worker/windows-x64.js",
+    "./worker": {
+      "bun": "./lib/worker/bun/index.js",
+      "deno": "./lib/worker/deno/index.js",
+      "node": "./lib/worker/node/index.js"
+    },
+    "./worker/*": {
+      "bun": "./lib/worker/bun/*/index.js",
+      "deno": "./lib/worker/deno/*/index.js",
+      "node": "./lib/worker/node/*/index.js"
+    },
     ".": {
       "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
+        "@rcompat/live-types": "./src/default/bun/Webview.ts",
+        "bun": "./lib/default/bun/Webview.js"
       }
     }
   }

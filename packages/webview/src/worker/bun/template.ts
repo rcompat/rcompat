@@ -1,7 +1,7 @@
 declare const self: Worker;
 
-import Webview from "../Webview.js";
-import type { Size } from "../Webview.js";
+import Webview from "../../default/bun/Webview.js";
+import type { Size } from "../../default/bun/Webview.js";
 
 let webview: Webview;
 

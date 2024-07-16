@@ -2,7 +2,7 @@ import type { BunFile } from "bun";
 import { FFIType as T, dlopen } from "bun:ffi";
 
 export default (name: string | BunFile) => dlopen(name, {
-  webview_create:    { returns: T.ptr, args: [T.i32, T.ptr] },
+  webview_create:    { returns: T.ptr,  args: [T.i32, T.ptr] },
   webview_destroy:   { returns: T.void, args: [T.ptr] },
   webview_run:       { returns: T.void, args: [T.ptr] },
   webview_terminate: { returns: T.void, args: [T.ptr] },
