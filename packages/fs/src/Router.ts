@@ -1,5 +1,5 @@
 import { collect, webpath } from "@rcompat/fs";
-import * as O from "@rcompat/object";
+import override from "@rcompat/object/override";
 import Node from "./router/Node.js";
 import * as errors from "./router/errors.js";
 import type { Route, RouteEntry, RouterConfig } from "./types.js";
@@ -18,7 +18,7 @@ export default class Router {
   #config: RouterConfig;
 
   constructor(config: RouterConfig) {
-    this.#config = O.override(defaults, config);
+    this.#config = override(defaults, config);
     Node.config = {
       specials: this.#config.specials,
       predicate: this.#config.predicate,

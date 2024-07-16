@@ -1,5 +1,5 @@
 import { is } from "@rcompat/invariant";
-import { identity } from "@rcompat/function";
+import identity from "@rcompat/function/identity";
 
 // {{{ explanation
 // given a list of functions that accept `(input, next)` with the general

@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import { identity } from "@rcompat/function";
+import identity from "@rcompat/function/identity";
 import tryreturn from "./tryreturn.js";
 
 export default (test => {

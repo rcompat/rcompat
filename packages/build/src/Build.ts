@@ -1,8 +1,8 @@
-import { is, assert } from "@rcompat/invariant";
-import * as o from "@rcompat/object";
+import { assert, is } from "@rcompat/invariant";
+import exclude from "@rcompat/object/exclude";
 import * as esbuild from "esbuild";
 import * as hotreload from "./hotreload.js";
-import { default as modes, dev, prod } from "./modes.js";
+import { dev, default as modes, prod } from "./modes.js";
 const mode_keys = Object.keys(modes);
 
 export interface BuildOptions extends esbuild.BuildOptions {
@@ -29,7 +29,7 @@ export default class Build {
     is(options).object();
     assert(mode_keys.includes(mode), `mode must be one of "${dev}", "${prod}"`);
 
-    const { excludes, name, ...rest } = o.exclude(options, ["hotreload"]);
+    const { excludes, name, ...rest } = exclude(options, ["hotreload"]);
 
     this.#name = name;
     this.#hotreload = {

@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import { identity } from "@rcompat/function";
+import identity from "@rcompat/function/identity";
 import Router from "./Router.js";
 
 const domain = "https://rcompat.dev";

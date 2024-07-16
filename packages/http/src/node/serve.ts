@@ -1,6 +1,6 @@
 import { tryreturn } from "@rcompat/async";
 import { Status } from "@rcompat/http";
-import { override } from "@rcompat/object";
+import override from "@rcompat/object/override";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Writable } from "node:stream";
 import { WebSocketServer } from "ws";

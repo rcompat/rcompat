@@ -1,5 +1,5 @@
+import defined from "@rcompat/function/defined";
 import { is } from "@rcompat/invariant";
-import { defined } from "@rcompat/function";
 import type { ReadableStreamDefaultReader } from "node:stream/web";
 
 const decoder = new TextDecoder();

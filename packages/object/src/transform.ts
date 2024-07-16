@@ -1,5 +1,5 @@
 import { is } from "@rcompat/invariant";
-import { identity } from "@rcompat/function";
+import identity from "@rcompat/function/identity";
 
 export interface ObjectTransformFunction<T, U> {
   (entries: [key: string, value: T][]): [key: string, value: U][]

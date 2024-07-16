@@ -1,4 +1,4 @@
-import { identity } from "@rcompat/function";
+import identity from "@rcompat/function/identity";
 import { get_options, handle_ws } from "../private/exports.js";
 import type { Actions, Conf, Handler } from "../types.js";
 
