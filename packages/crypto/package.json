@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/crypto",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "rcompat crypto module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -19,17 +19,18 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "@rcompat/core": "workspace:^"
-  },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
+    "./hash": {
+      "@rcompat/live-types": "./src/hash/bun/index.ts",
+      "bun": "./lib/hash/bun/index.js",
+      "node": "./lib/hash/node/index.js"
+    },
     ".": {
       "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
+        "@rcompat/live-types": "./src/default/bun/index.ts",
+        "bun": "./lib/default/bun/index.js",
+        "node": "./lib/default/node/index.js"
       }
     }
   }
