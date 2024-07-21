@@ -1,0 +1,37 @@
+{
+  "name": "@rcompat/sql",
+  "version": "0.1.0",
+  "description": "rcompat sql module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/sql"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "better-sqlite3": "11"
+  },
+  "peerDependenciesMeta": {
+    "better-sqlite3": {
+      "optional": true
+    }
+  },
+  "type": "module",
+  "exports": {
+    "./sqlite": {
+      "bun": "./lib/sqlite/bun/index.js",
+      "node": "./lib/sqlite/node/index.js"
+    }
+  } 
+}
