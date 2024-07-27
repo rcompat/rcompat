@@ -25,12 +25,10 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "@rcompat/live-types": "./src/node.ts",
-        "bun": "./lib/bun.js",
-        "deno": "./lib/deno.js",
-        "node": "./lib/node.js"
-      }
+      "@rcompat/live-types": "./src/node.ts",
+      "bun": "./lib/bun.js",
+      "deno": "./lib/deno.js",
+      "node": "./lib/node.js"
     }
   }
 }
