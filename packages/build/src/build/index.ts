@@ -1,4 +1,5 @@
-import { assert, is } from "@rcompat/invariant";
+import assert from "@rcompat/invariant/assert";
+import is from "@rcompat/invariant/is";
 import exclude from "@rcompat/object/exclude";
 import * as esbuild from "esbuild";
 import * as hotreload from "./hotreload.js";
