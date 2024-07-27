@@ -11,6 +11,7 @@ export default (library: string) => class {
     this.#worker.onmessage = (event: MessageEvent) => {
       if (event.data === "destroyed") {
         this.#onclosed?.();
+        this.#worker.terminate();
       }
     }
     this.message("construct", [debug, library]);
