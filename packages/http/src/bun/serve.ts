@@ -25,5 +25,8 @@ export default async (handler: Handler, conf: Conf) => {
     upgrade(request: Request, actions: Actions) {
       server.upgrade(request, { data: { actions } });
     },
+    stop() {
+      server.stop();
+    }
   };
 };
