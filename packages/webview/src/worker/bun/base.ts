@@ -4,9 +4,15 @@ import worker from "./init.js" with { type: "file" };
 
 export default (library: string) => class {
   #worker: any;
+  #onclosed?: () => void;
 
   constructor(debug = false) {
     this.#worker = new Worker(URL.createObjectURL(Bun.file(worker)));
+    this.#worker.onmessage = (event: MessageEvent) => {
+      if (event.data === "destroyed") {
+        this.#onclosed?.();
+      }
+    }
     this.message("construct", [debug, library]);
   }
 
@@ -28,6 +34,10 @@ export default (library: string) => class {
 
   run() {
     this.#worker.postMessage({ name: "run" });
+  }
+
+  closed(callback: () => void) {
+    this.#onclosed = callback;
   }
 }
 

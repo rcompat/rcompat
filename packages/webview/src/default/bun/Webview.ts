@@ -59,5 +59,6 @@ export default class Webview {
     this.symbol("terminate")(this.#handle);
     this.symbol("destroy")(this.#handle);
     this.#handle = null;
+    globalThis.postMessage("destroyed");
   }
 }
