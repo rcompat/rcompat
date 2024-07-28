@@ -1,5 +1,5 @@
 import Is from "@rcompat/invariant/#/is";
-import { type Nullish, nullish } from "@rcompat/invariant/attributes";
+import nullish, { type Nullish } from "@rcompat/invariant/nullish";
 
 const operations = [
   // typeof

@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import { numeric } from "@rcompat/invariant/attributes";
+import numeric from "@rcompat/invariant/numeric";
 
 export default (test => {
   // Todo: Figure a way to properly type reassert
