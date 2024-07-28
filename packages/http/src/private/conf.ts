@@ -1,10 +1,10 @@
-import { FlatFile } from "@rcompat/fs";
+import FileRef from "@rcompat/fs/#/file-ref";
 
 export default interface Conf {
   host: string;
   port: number;
   ssl?: {
-    key: FlatFile;
-    cert: FlatFile;
+    key: FileRef;
+    cert: FileRef;
   };
 }

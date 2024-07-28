@@ -1,4 +1,4 @@
-import { resolve } from "@rcompat/fs";
+import resolve from "@rcompat/fs/resolve";
 import maybe from "@rcompat/invariant/maybe";
 import manifest_name from "@rcompat/package/manifest-name";
 

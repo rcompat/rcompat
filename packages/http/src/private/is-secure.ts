@@ -1,4 +1,4 @@
-import { FlatFile } from "@rcompat/fs";
+import FileRef from "@rcompat/fs/#/file-ref";
 import type Conf from "@rcompat/http/#/conf";
 import is from "@rcompat/invariant/is";
 
@@ -7,5 +7,5 @@ export default (conf: Conf) => {
 
   const { ssl } = conf;
 
-  return ssl?.key instanceof FlatFile && ssl.cert instanceof FlatFile;
+  return ssl?.key instanceof FileRef && ssl.cert instanceof FileRef;
 }

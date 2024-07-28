@@ -29,11 +29,20 @@
   },
   "type": "module",
   "exports": {
-    ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
+    "./#/*": {
+      "@rcompat/live-types": "./lib/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
+    },
+    "./native/*": {
+      "@rcompat/live-types": "./lib/native/bun/*.ts",
+      "bun": "./lib/native/bun/*.js",
+      "deno": "./lib/native/deno/*.js",
+      "node": "./lib/native/node/*.js",
+      "default": "./lib/native/default/*.js"
+    },
+    "./*": {
+      "@rcompat/live-types": "./src/default/*/index.ts",
+      "default": "./lib/default/*/index.js"
     }
   }
 }

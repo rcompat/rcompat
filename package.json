@@ -7,7 +7,7 @@
   "files": [],
   "repository": "https://github.com/rcompat/rcompat",
   "scripts": {
-    "build": "pnpm -r build",
+    "build": "npm run clean && pnpm -r build",
     "clean": "pnpm -r clean",
     "publish": "pnpm -r --access=public publish",
     "lint": "eslint .",
