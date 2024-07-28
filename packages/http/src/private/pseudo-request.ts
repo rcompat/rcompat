@@ -7,7 +7,7 @@ import { Readable } from "node:stream";
 export type Entry = [PropertyKey, unknown];
 export type CallableEntriesFn = {entries: () => Iterable<readonly [PropertyKey, any]>};
 
-export default class Request {
+export default class PseudoRequest {
   #original;
   #body: ReadableStream<any> | IncomingMessage | null = null;
   #headers = new Headers();

@@ -1,12 +1,12 @@
 import tryreturn from "@rcompat/async/tryreturn";
-import { RequestLike } from "../types.js";
+import type RequestLike from "@rcompat/http/#/request-like";
 
 import {
   APPLICATION_FORM_URLENCODED,
   APPLICATION_JSON,
   MULTIPART_FORM_DATA,
   TEXT_PLAIN,
-} from "./MediaType.js";
+} from "@rcompat/http/mediatype";
 
 const formdata = async (request: RequestLike) =>
   Object.fromEntries((await request.formData()).entries());

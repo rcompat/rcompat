@@ -1,6 +1,8 @@
-import { ServerWebSocket } from "bun";
-import { get_options } from "../private/exports.js";
-import type { Actions, Conf, Handler } from "../types.js";
+import type Actions from "@rcompat/http/#/actions";
+import type Conf from "@rcompat/http/#/conf";
+import get_options from "@rcompat/http/#/get-options";
+import type Handler from "@rcompat/http/#/handler";
+import type { ServerWebSocket } from "bun";
 
 export default async (handler: Handler, conf: Conf) => {
   const server = Bun.serve({

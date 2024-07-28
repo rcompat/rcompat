@@ -1,6 +1,6 @@
+import type Conf from "@rcompat/http/#/conf";
+import is_secure from "@rcompat/http/#/is-secure";
 import is from "@rcompat/invariant/is";
-import type { Conf } from "../types.js";
-import is_secure from "./is-secure.js";
 
 export default async (conf: Conf) => {
   is(conf).object();

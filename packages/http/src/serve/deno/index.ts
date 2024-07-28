@@ -1,6 +1,9 @@
 import identity from "@rcompat/function/identity";
-import { get_options, handle_ws } from "../private/exports.js";
-import type { Actions, Conf, Handler } from "../types.js";
+import type Actions from "@rcompat/http/#/actions";
+import type Conf from "@rcompat/http/#/conf";
+import get_options from "@rcompat/http/#/get-options";
+import handle_ws from "@rcompat/http/#/handle-ws";
+import type Handler from "@rcompat/http/#/handler";
 
 export default async (handler: Handler, conf: Conf) => {
   Deno.serve({

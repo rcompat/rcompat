@@ -1,12 +1,16 @@
 import tryreturn from "@rcompat/async/tryreturn";
-import { Status } from "@rcompat/http";
+import type Actions from "@rcompat/http/#/actions";
+import type Conf from "@rcompat/http/#/conf";
+import get_options from "@rcompat/http/#/get-options";
+import handle_ws from "@rcompat/http/#/handle-ws";
+import type Handler from "@rcompat/http/#/handler";
+import is_secure from "@rcompat/http/#/is-secure";
+import PseudoRequest from "@rcompat/http/#/pseudo-request";
+import { INTERNAL_SERVER_ERROR } from "@rcompat/http/status";
 import override from "@rcompat/object/override";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Writable } from "node:stream";
 import { WebSocketServer } from "ws";
-import { get_options, handle_ws, is_secure } from "../private/exports.js";
-import type { Actions, Conf, Handler } from "../types.js";
-import PseudoRequest from "./Request.js";
 
 const wss = new WebSocketServer({ noServer: true });
 
@@ -47,7 +51,7 @@ export default async (handler: Handler, conf?: Conf) => {
 
     const response = await tryreturn(async () => await handler(request))
       .orelse(async () =>
-        new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
+        new Response(null, { status: INTERNAL_SERVER_ERROR }));
 
     // no return (WebSocket)
     if (response.body === null) {
