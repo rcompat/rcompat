@@ -1,4 +1,4 @@
-import Is from "@rcompat/invariant/base/is";
+import Is from "@rcompat/invariant/#/is";
 import { type Nullish, nullish } from "@rcompat/invariant/attributes";
 
 const operations = [

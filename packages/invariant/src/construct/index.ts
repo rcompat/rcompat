@@ -1,4 +1,4 @@
-import { AnyConstructibleFunction } from "@rcompat/invariant/base/types";
+import type { AnyConstructibleFunction } from "@rcompat/invariant/#/types";
 
 export const constructible = (value: unknown): boolean => {
   try {

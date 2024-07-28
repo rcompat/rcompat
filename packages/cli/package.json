@@ -21,15 +21,13 @@
   },
   "type": "module",
   "exports": {
-    ".": {
-      "@rcompat/live-types": "./src/exports.ts",
-      "default": "./lib/exports.js"
+    "./#/*": {
+      "@rcompat/live-types": "./lib/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
     },
-    "./colors/*": {
-      "import": {
-        "@rcompat/live-types": "./src/colors/*.ts",
-        "default": "./lib/colors/*.js"
-      }
+    "./color/*": {
+      "@rcompat/live-types": "./src/color/*.ts",
+      "default": "./lib/color/*.js"
     }
   }
 }

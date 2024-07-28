@@ -1,5 +1,5 @@
 import { type DebrisTestSuite, NEVER } from "@rcompat/core";
-import non_objects from "@rcompat/object/base/non-objects";
+import non_objects from "@rcompat/object/#/non-objects";
 import override from "@rcompat/object/override";
 
 export default (test => {

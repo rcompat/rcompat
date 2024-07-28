@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import Every from "@rcompat/invariant/base/every";
+import Every from "@rcompat/invariant/#/every";
 
 export default (test => {
   test.case("constructor", assert => {

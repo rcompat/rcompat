@@ -24,6 +24,10 @@
   },
   "type": "module",
   "exports": {
+    "./#/*": {
+      "@rcompat/live-types": "./lib/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
+    },
     ".": {
       "@rcompat/live-types": "./src/node.ts",
       "bun": "./lib/bun.js",

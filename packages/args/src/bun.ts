@@ -1,3 +1,3 @@
-import args from "./shared/args.js";
+import args from "@rcompat/args/#/args";
 
 export default args(Bun.argv);

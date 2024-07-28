@@ -1,8 +1,8 @@
-import { constructible } from "@rcompat/invariant/construct";
+import type { ErrorFallbackFunction } from "@rcompat/invariant/#/errored";
+import type { AnyConstructibleFunction, TypeofTypeMap }
+  from "@rcompat/invariant/#/types";
 import assert from "@rcompat/invariant/assert";
-import { ErrorFallbackFunction } from "@rcompat/invariant/base/errored";
-import { AnyConstructibleFunction, TypeofTypeMap }
-  from "@rcompat/invariant/base/types";
+import { constructible } from "@rcompat/invariant/construct";
 
 interface TestOptions { condition: boolean, error?: ErrorFallbackFunction | string, def: string }
 
