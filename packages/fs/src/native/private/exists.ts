@@ -1,4 +1,4 @@
-import stats from "@rcompat/fs/native/stats";
+import { stats } from "@rcompat/fs/native/#";
 import is from "@rcompat/invariant/is";
 
 export default async (path: string) => {

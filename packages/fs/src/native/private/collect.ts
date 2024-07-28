@@ -1,7 +1,7 @@
 import FileRef from "@rcompat/fs/#/file-ref";
 import Kind from "@rcompat/fs/#/kind";
 import type { CollectPattern, DirectoryOptions } from "@rcompat/fs/#/types";
-import list from "@rcompat/fs/native/list";
+import { list } from "@rcompat/fs/native/#";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 

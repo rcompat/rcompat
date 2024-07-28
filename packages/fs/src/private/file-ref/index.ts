@@ -1,20 +1,6 @@
 import parse from "@rcompat/fs/#/parse";
 import type * as Z from "@rcompat/fs/#/types";
-import arrayBuffer from "@rcompat/fs/native/array-buffer";
-import collect from "@rcompat/fs/native/collect";
-import copy from "@rcompat/fs/native/copy";
-import create from "@rcompat/fs/native/create";
-import exists from "@rcompat/fs/native/exists";
-import glob from "@rcompat/fs/native/glob";
-import json from "@rcompat/fs/native/json";
-import kind from "@rcompat/fs/native/kind";
-import list from "@rcompat/fs/native/list";
-import modified from "@rcompat/fs/native/modified";
-import remove from "@rcompat/fs/native/remove";
-import stats from "@rcompat/fs/native/stats";
-import stream from "@rcompat/fs/native/stream";
-import text from "@rcompat/fs/native/text";
-import write from "@rcompat/fs/native/write";
+import * as native from "@rcompat/fs/native";
 import separator from "@rcompat/fs/separator";
 import streamable from "@rcompat/fs/streamable";
 import defined from "@rcompat/invariant/defined";
@@ -83,31 +69,31 @@ export default class FileRef {
   }
 
   kind() {
-    return kind(this.path);
+    return native.kind(this.path);
   }
 
   list(filter: Z.DirectoryFilter, options: {}) {
-    return list(this.path, filter, options);
+    return native.list(this.path, filter, options);
   }
 
   glob(pattern: string) {
-    return glob(this.path, pattern);
+    return native.glob(this.path, pattern);
   }
 
   collect(pattern?: Z.CollectPattern, options?: Z.DirectoryOptions) {
-    return collect(this.path, pattern, options);
+    return native.collect(this.path, pattern, options);
   }
 
   #stats() {
-    return stats(this.path);
+    return native.stats(this.path);
   }
 
   modified() {
-    return modified(this.path);
+    return native.modified(this.path);
   }
 
   exists() {
-    return exists(this.path);
+    return native.exists(this.path);
   }
 
   get isFile() {
@@ -146,39 +132,39 @@ export default class FileRef {
   }
 
   arrayBuffer() {
-    return arrayBuffer(this.path);
+    return native.arrayBuffer(this.path);
   }
 
   text() {
-    return text(this.path);
+    return native.text(this.path);
   }
 
   json() {
-    return json(this.path);
+    return native.json(this.path);
   }
 
   async copy(to: FileRef, filter?: Z.DirectoryFilter): Promise<unknown> {
     ensure_parents(to);
 
-    return copy(this.path, to, filter);
+    return native.copy(this.path, to, filter);
   }
 
   async create(options?: Z.DirectoryOptions) {
     maybe(options).object();
 
-    return create(this.path, options);
+    return native.create(this.path, options);
   }
 
   async remove(options?: {}) {
     maybe(options).object();
 
-    return remove(this.path, options);
+    return native.remove(this.path, options);
   }
 
   async write(input: Z.WritableInput) {
     ensure_parents(this);
 
-    return write(this.path, input);
+    return native.write(this.path, input);
   }
 
   async discover(filename: string): Promise<FileRef> {
@@ -199,6 +185,6 @@ export default class FileRef {
   }
 
   stream() {
-    return stream(this.path);
+    return native.stream(this.path);
   }
 }

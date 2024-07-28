@@ -1,6 +1,5 @@
 import Kind from "@rcompat/fs/#/kind";
-import exists from "@rcompat/fs/native/exists";
-import stats from "@rcompat/fs/native/stats";
+import { exists, stats } from "@rcompat/fs/native/#";
 import is from "@rcompat/invariant/is";
 
 export default async (path: string) => {

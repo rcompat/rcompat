@@ -1,5 +1,5 @@
 import type { RemoveOptions } from "@rcompat/fs/#/types";
-import exists from "@rcompat/fs/native/exists";
+import { exists } from "@rcompat/fs/native/#";
 import maybe from "@rcompat/invariant/maybe";
 import { rm } from "node:fs/promises";
 

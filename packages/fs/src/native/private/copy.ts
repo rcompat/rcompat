@@ -2,8 +2,7 @@ import FileRef from "@rcompat/fs/#/file-ref";
 import Kind from "@rcompat/fs/#/kind";
 import type { DirectoryFilter } from "@rcompat/fs/#/types";
 import join from "@rcompat/fs/join";
-import kind from "@rcompat/fs/native/kind";
-import list from "@rcompat/fs/native/list";
+import { kind, list } from "@rcompat/fs/native/#";
 import is from "@rcompat/invariant/is";
 import { copyFile, realpath } from "node:fs/promises";
 

@@ -1,5 +1,5 @@
 import Kind from "@rcompat/fs/#/kind";
-import list from "@rcompat/fs/native/list";
+import { list } from "@rcompat/fs/native/#";
 
 export default async (base: string, pattern: string) => {
   let paths = await list(base, name => !name.startsWith("."));
