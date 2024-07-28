@@ -1,6 +1,6 @@
-import assert from "./assert.js";
-import { ErrorFallbackFunction } from "./errored.js";
-import { AnyFunction, TypeofTypeMap } from "./types.js";
+import assert from "@rcompat/invariant/assert";
+import { ErrorFallbackFunction } from "@rcompat/invariant/base/errored";
+import { AnyFunction, TypeofTypeMap } from "@rcompat/invariant/base/types";
 
 interface TestOptions { condition: boolean, error?: ErrorFallbackFunction, def: string }
 

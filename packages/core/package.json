@@ -21,13 +21,9 @@
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
     ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
+      "@rcompat/live-types": "./src/exports.ts",
+      "default": "./lib/exports.js"
     }
   }
 }

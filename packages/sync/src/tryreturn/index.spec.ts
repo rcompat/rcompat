@@ -1,6 +1,6 @@
 import type { DebrisTestSuite } from "@rcompat/core";
 import identity from "@rcompat/function/identity";
-import tryreturn from "./tryreturn.js";
+import tryreturn from "@rcompat/sync/tryreturn";
 
 export default (test => {
   test.case("`try` faulty", assert => {

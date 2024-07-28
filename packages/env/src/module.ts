@@ -1,12 +1,13 @@
 import process from "node:process";
 import { parse } from "dotenv";
 import { file } from "@rcompat/fs";
-import { platform } from "@rcompat/core";
-import * as P from "@rcompat/package";
-import { tryreturn } from "@rcompat/async";
+import platform from "@rcompat/platform";
+import root from "@rcompat/package/root";
+import tryreturn from "@rcompat/async/tryreturn";
 
-const { JS_ENV } = platform() === "bun" ? Bun.env : process.env;
-const env = (await P.root()).join(`.env${JS_ENV ? `.${JS_ENV}` : ""}`);
+// @ts-expect-error can be different platform
+const { JS_ENV } = platform === "bun" ? Bun.env : process.env;
+const env = (await root()).join(`.env${JS_ENV ? `.${JS_ENV}` : ""}`);
 const local = file(`${env.path}.local`);
 
 const is_local = async () => await local.exists() ? local : env;

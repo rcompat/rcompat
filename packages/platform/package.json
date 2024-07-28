@@ -21,7 +21,7 @@
   },
   "type": "module",
   "exports": {
-    "./": {
+    ".": {
       "bun": "./lib/default/bun.js",
       "deno": "./lib/default/deno.js",
       "workerd": "./lib/default/cloudflare.js",

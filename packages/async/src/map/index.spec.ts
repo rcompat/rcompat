@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import map from "./map.js";
+import map from "@rcompat/async/map";
 
 export default (test => {
   test.case("0 case", async assert => {

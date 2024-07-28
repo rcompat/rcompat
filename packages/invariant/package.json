@@ -24,13 +24,13 @@
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
-    ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
+    "./base/*": {
+      "@rcompat/live-types": "./lib/base/*.ts",
+      "default": "./lib/base/*.js"
+    },
+    "./*": {
+      "@rcompat/live-types": "./src/*/index.ts",
+      "default": "./lib/*/index.js"
     }
   }
 }

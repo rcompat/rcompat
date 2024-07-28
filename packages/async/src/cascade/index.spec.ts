@@ -1,6 +1,6 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import cascade from "./cascade.js";
-import type { CascadeFunction } from "./cascade.js";
+import cascade from "@rcompat/async/cascade";
+import type { CascadeFunction } from "@rcompat/async/cascade";
 
 const last = -1;
 // sync slicer

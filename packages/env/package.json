@@ -24,17 +24,14 @@
     "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/package": "workspace:^",
+    "@rcompat/platform": "workspace:^",
     "dotenv": "^16.4.5"
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
     ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
+      "@rcompat/live-types": "./src/exports.ts",
+      "default": "./lib/exports.js"
     }
   }
 }

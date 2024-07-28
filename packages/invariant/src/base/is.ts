@@ -1,7 +1,8 @@
-import { constructible } from "./construct.js";
-import assert from "./assert.js";
-import { ErrorFallbackFunction } from "./errored.js";
-import { AnyConstructibleFunction, TypeofTypeMap } from "./types.js";
+import { constructible } from "@rcompat/invariant/construct";
+import assert from "@rcompat/invariant/assert";
+import { ErrorFallbackFunction } from "@rcompat/invariant/base/errored";
+import { AnyConstructibleFunction, TypeofTypeMap }
+  from "@rcompat/invariant/base/types";
 
 interface TestOptions { condition: boolean, error?: ErrorFallbackFunction | string, def: string }
 

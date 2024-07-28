@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import maybe from "./maybe.js";
+import maybe from "@rcompat/invariant/maybe";
 
 export default (test => {
   test.case("nullish", assert => {

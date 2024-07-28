@@ -22,17 +22,14 @@
   "dependencies": {
     "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
-    "@rcompat/invariant": "workspace:^"
+    "@rcompat/invariant": "workspace:^",
+    "@rcompat/platform": "workspace:^"
   },
   "type": "module",
   "exports": {
-    "./*": "./lib/*.js",
-    "./*.js": "./lib/*.js",
-    ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
+    "./*": {
+      "@rcompat/live-types": "./src/*/index.ts",
+      "default": "./lib/*/index.js"
     }
   }
 }

@@ -21,16 +21,6 @@ export interface DebrisTestAssertionCombinators {
   false: () => void
 }
 
-export const platform = () => {
-  if (typeof Bun !== "undefined") {
-    return "bun";
-  }
-  if (typeof Deno !== "undefined") {
-    return "deno";
-  }
-  return "node";
-};
-
 export const NEVER = (value: unknown) => { return value as never };
 
 export class UnimplementedError extends Error {}

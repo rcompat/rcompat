@@ -1,6 +1,6 @@
 import { maybe } from "@rcompat/invariant";
-import root from "./root.js";
-import manifest_name from "./manifest-name.js";
+import root from "@rcompat/package/root";
+import manifest_name from "@rcompat/package/manifest-name";
 
 export default async (from?: string) => {
   maybe(from).string();
