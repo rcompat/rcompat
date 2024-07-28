@@ -1,1 +1,3 @@
- bun build ./src/worker/bun/template.ts --target=node --outdir ./src/worker/bun --external "bun:ffi" --entry-naming [dir]/init.[ext]
+npx esbuild ./src/worker/bun/template.ts --bundle --format=esm \
+  --outdir=./src/worker/bun --external:"bun:ffi" \
+  --entry-names=[dir]/init

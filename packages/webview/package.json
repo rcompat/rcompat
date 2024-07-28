@@ -16,13 +16,17 @@
     "directory": "packages/webview"
   },
   "scripts": {
-    "build": "tsc && cp -a ./src/platform ./lib",
+    "build": "tsc && ./build-worker.sh && cp -a ./src/platform ./lib",
+    "test-build": "./build-worker-esbuild.sh",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@rcompat/core": "workspace:^",
     "@rcompat/object": "workspace:^"
+  },
+  "devDependencies": {
+    "esbuild": "^0.22.0"
   },
   "type": "module",
   "exports": {
