@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import globify from "./globify.js";
+import globify from "@rcompat/string/globify";
 
 const paths = [
   "a",

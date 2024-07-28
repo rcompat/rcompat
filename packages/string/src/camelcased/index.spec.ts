@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import camelcased from "./camelcased.js";
+import camelcased from "@rcompat/string/camelcased";
 
 export default (test => {
   test.case("uppercased -> unchanged", assert => {

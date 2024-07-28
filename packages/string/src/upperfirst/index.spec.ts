@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import upperfirst from "./upperfirst.js";
+import upperfirst from "@rcompat/string/upperfirst";
 
 export default (test => {
   test.case("empty string", assert => {
