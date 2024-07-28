@@ -1,5 +1,5 @@
+import reload_path from "@rcompat/build/reload/path";
 import * as esbuild from "esbuild";
-import { event_path } from "./hotreload.js";
 
 const default_name = "app";
 export const dev = "development";
@@ -10,7 +10,7 @@ export default {
     minify: false,
     splitting: false,
     banner: {
-      js: `new EventSource("${event_path}").addEventListener("change",
+      js: `new EventSource("${reload_path}").addEventListener("change",
         () => globalThis.location.reload());`,
     },
     entryNames: name,

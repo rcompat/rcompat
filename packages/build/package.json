@@ -28,9 +28,17 @@
   },
   "type": "module",
   "exports": {
+    "./reload/*": {
+      "@rcompat/live-types": "./lib/reload/*.ts",
+      "default": "./lib/reload/*.js"
+    },
     "./*": {
       "@rcompat/live-types": "./src/*/index.ts",
       "default": "./lib/*/index.js"
+    },
+    ".": {
+      "@rcompat/live-types": "./src/default/index.ts",
+      "default": "./lib/default/index.js"
     }
   }
 }

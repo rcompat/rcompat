@@ -2,7 +2,8 @@ import assert from "@rcompat/invariant/assert";
 import is from "@rcompat/invariant/is";
 import exclude from "@rcompat/object/exclude";
 import * as esbuild from "esbuild";
-import * as hotreload from "./hotreload.js";
+import reload_defaults from "@rcompat/build/reload/defaults";
+import reload_path from "@rcompat/build/reload/path";
 import { dev, default as modes, prod } from "./modes.js";
 const mode_keys = Object.keys(modes);
 
@@ -34,7 +35,7 @@ export default class Build {
 
     this.#name = name;
     this.#hotreload = {
-      ...hotreload.defaults,
+      ...reload_defaults,
       ...options.hotreload,
     };
     this.#options = {
@@ -73,7 +74,7 @@ export default class Build {
 
     return {
       url: `http://${host}:${port}`,
-      paths: [`/${name}.js`, `/${name}.css`, hotreload.event_path],
+      paths: [`/${name}.js`, `/${name}.css`, reload_path],
     };
   }
 
