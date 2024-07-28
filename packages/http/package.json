@@ -37,6 +37,12 @@
       "@rcompat/live-types": "./lib/private/*.ts",
       "default": "./lib/private/*.js"
     },
+    "./serve": {
+      "@rcompat/live-types": "./lib/serve/bun/index.ts",
+      "bun": "./lib/serve/bun/index.js",
+      "deno": "./lib/serve/deno/index.js",
+      "node": "./lib/serve/node/index.js"
+    },
     "./*": {
       "@rcompat/live-types": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
