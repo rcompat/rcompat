@@ -41,10 +41,8 @@
       "node": "./lib/worker/node/*/index.js"
     },
     ".": {
-      "import": {
-        "@rcompat/live-types": "./src/default/bun/Webview.ts",
-        "bun": "./lib/default/bun/Webview.js"
-      }
+      "@rcompat/live-types": "./src/default/bun/Webview.ts",
+      "bun": "./lib/default/bun/Webview.js"
     }
   }
 }
