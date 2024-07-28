@@ -1,9 +1,3 @@
-import platform from "@rcompat/platform";
+type packager = "npm" | "bun" | "deno";
 
-const packagers = {
-  bun: "bun",
-  deno: "deno",
-  node: "npm",
-}
-
-export default () => packagers[platform];
+export default packager;
