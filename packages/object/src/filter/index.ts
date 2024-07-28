@@ -1,4 +1,4 @@
-import transform from "./transform.js";
+import transform from "@rcompat/object/transform";
 
 function filter<T, U extends T>(object: Record<string, T>, mapper: (entries: [key: string, value: T]) => entries is [key: string, value: U]): Record<string, U>;
 function filter<T>(object: Record<string, T>, mapper: (entries: [key: string, value: T]) => boolean): Record<string, T>;

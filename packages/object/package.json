@@ -26,14 +26,13 @@
   },
   "type": "module",
   "exports": {
-    "./*": {
-      "@rcompat/live-types": "./lib/*.ts",
-      "default": "./lib/*.js"
+    "./base/*": {
+      "@rcompat/live-types": "./lib/base/*.ts",
+      "default": "./lib/base/*.js"
     },
-    "./types": {
-      "import": {
-        "@rcompat/live-types": "./src/types.ts"
-      }
+    "./*": {
+      "@rcompat/live-types": "./src/*/index.ts",
+      "default": "./lib/*/index.js"
     }
   }
 }

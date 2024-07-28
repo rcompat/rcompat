@@ -1,5 +1,5 @@
 import is from "@rcompat/invariant/is";
-import filter from "./filter.js";
+import filter from "@rcompat/object/filter";
 
 export default <T extends object, const E extends keyof T>(object: T, excludes: readonly E[]): Omit<T, E> => {
   is(object).object();

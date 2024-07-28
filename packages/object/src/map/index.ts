@@ -1,4 +1,4 @@
-import transform from "./transform.js";
+import transform from "@rcompat/object/transform";
 
 export interface ObjectMapFunction<T, U> {
   (entries: [key: string, value: T]): [key: string, value: U];

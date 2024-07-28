@@ -1,6 +1,6 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import proper from "./proper.js";
-import non_objects from "./non-objects.js";
+import proper from "@rcompat/object/proper";
+import non_objects from "@rcompat/object/base/non-objects";
 
 const objects = [
   {},

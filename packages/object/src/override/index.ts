@@ -1,6 +1,5 @@
 import assert from "@rcompat/invariant/assert";
-import type { Proper } from "@rcompat/object/types";
-import { default as proper } from "./proper.js";
+import proper, { type Proper } from "@rcompat/object/proper";
 
 const recurse = (t: unknown, u: unknown) =>
   (proper(t) && proper(u) ? override(t as Proper, u as Proper) : u) ?? t;

@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import stringify from "./stringify.js";
+import stringify from "@rcompat/object/stringify";
 
 export default (test => {
   test.case("default", assert => {

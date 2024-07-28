@@ -1,4 +1,4 @@
-import map from "./map.js";
+import map from "@rcompat/object/map";
 
 export interface ObjectValMapFunction<T, U> {
   (t: T): U;

@@ -1,6 +1,6 @@
 import { type DebrisTestSuite, NEVER } from "@rcompat/core";
-import override from "./override.js";
-import non_objects from "./non-objects.js";
+import non_objects from "@rcompat/object/base/non-objects";
+import override from "@rcompat/object/override";
 
 export default (test => {
   test.case("typedoc", assert => {
