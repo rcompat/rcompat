@@ -1,4 +1,4 @@
-import { tryreturn } from "@rcompat/async";
+import tryreturn from "@rcompat/async/tryreturn";
 import { Status } from "@rcompat/http";
 import override from "@rcompat/object/override";
 import type { IncomingMessage, ServerResponse } from "node:http";

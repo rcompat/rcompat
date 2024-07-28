@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 
 export default (object: object): boolean => {
   is(object).object();

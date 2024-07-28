@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 import type { Conf } from "../types.js";
 import is_secure from "./is-secure.js";
 

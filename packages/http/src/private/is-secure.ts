@@ -1,5 +1,5 @@
 import { FlatFile } from "@rcompat/fs";
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 import type { Conf } from "../types.js";
 
 export default (conf: Conf) => {

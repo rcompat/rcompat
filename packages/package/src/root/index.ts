@@ -1,5 +1,5 @@
 import { resolve } from "@rcompat/fs";
-import { maybe } from "@rcompat/invariant";
+import maybe from "@rcompat/invariant/maybe";
 import manifest_name from "@rcompat/package/manifest-name";
 
 export default (relative_to?: string) => {

@@ -1,8 +1,8 @@
-import { Readable } from "node:stream";
-import type { IncomingMessage } from "node:http";
-import { is } from "@rcompat/invariant";
-import { stringify } from "@rcompat/streams";
+import is from "@rcompat/invariant/is";
+import stringify from "@rcompat/streams/stringify";
 import busboy from "busboy";
+import type { IncomingMessage } from "node:http";
+import { Readable } from "node:stream";
 
 export type Entry = [PropertyKey, unknown];
 export type CallableEntriesFn = {entries: () => Iterable<readonly [PropertyKey, any]>};

@@ -1,4 +1,5 @@
-import { is, maybe } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
+import maybe from "@rcompat/invariant/maybe";
 import list from "./list.js";
 import Kind from "../Kind.js";
 import FlatFile from "../FlatFile.js";

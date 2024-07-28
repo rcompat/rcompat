@@ -22,8 +22,8 @@
   "type": "module",
   "exports": {
     "./*": {
-      "@rcompat/live-types": "./lib/*.ts",
-      "default": "./lib/*.js"
+      "@rcompat/live-types": "./lib/*/index.ts",
+      "default": "./lib/*/index.js"
     }
   }
 }

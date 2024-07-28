@@ -1,4 +1,4 @@
-import { assert } from "@rcompat/invariant";
+import assert from "@rcompat/invariant/assert";
 import type { Proper } from "@rcompat/object/types";
 import { default as proper } from "./proper.js";
 

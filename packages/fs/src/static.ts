@@ -1,5 +1,6 @@
+import is from "@rcompat/invariant/is";
+import maybe from "@rcompat/invariant/maybe";
 import { resolve as resolve_ } from "node:path";
-import { is, maybe } from "@rcompat/invariant";
 import { file, default as FlatFile, parse, type Path } from "./FlatFile.js";
 import type * as Z from "./types.js";
 

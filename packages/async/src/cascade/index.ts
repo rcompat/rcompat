@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 import identity from "@rcompat/function/identity";
 
 // {{{ explanation

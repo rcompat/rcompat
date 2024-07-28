@@ -1,4 +1,4 @@
-import { tryreturn } from "@rcompat/async";
+import tryreturn from "@rcompat/async/tryreturn";
 import { RequestLike } from "../types.js";
 
 import {

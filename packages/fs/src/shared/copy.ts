@@ -1,5 +1,5 @@
 import { copyFile, realpath } from "node:fs/promises";
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 import { file, default as FlatFile } from "../FlatFile.js";
 import Kind from "../Kind.js";
 import { join } from "../static.js";

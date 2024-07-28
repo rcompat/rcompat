@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 const $backup = Symbol("backup");
 
 export interface AsyncTryReturnTrialBackup<T> extends PromiseLike<T> {

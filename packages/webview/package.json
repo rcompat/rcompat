@@ -16,7 +16,7 @@
     "directory": "packages/webview"
   },
   "scripts": {
-    "build": "tsc && ./build-worker.sh && cp -a ./src/platform ./lib",
+    "build": "tsc && cp -a ./src/platform ./lib",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },

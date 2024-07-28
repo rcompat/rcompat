@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 
 export default (a: unknown[], b: unknown[]) => {
   is(a).array();

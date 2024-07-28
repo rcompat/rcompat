@@ -1,7 +1,9 @@
+import defined from "@rcompat/invariant/defined";
+import is from "@rcompat/invariant/is";
+import maybe from "@rcompat/invariant/maybe";
+import platform from "@rcompat/platform";
 import { basename, dirname, extname, join, sep } from "node:path";
 import { fileURLToPath as to_path, pathToFileURL as to_url } from "node:url";
-import { defined, is, maybe } from "@rcompat/invariant";
-import { platform } from "@rcompat/core";
 import { s_streamable } from "./symbols.js";
 import type * as Z from "./types.js";
 
@@ -13,7 +15,7 @@ const native: any = {
   node,
   deno,
   bun,
-}[platform()];
+}[platform];
 
 const ensure_parents = async (file: FlatFile) => {
   const { directory } = file;

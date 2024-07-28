@@ -1,5 +1,6 @@
 import { readdir } from "node:fs/promises";
-import { is, maybe } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
+import maybe from "@rcompat/invariant/maybe";
 import FlatFile from "../FlatFile.js";
 import { join } from "../static.js";
 import type { DirectoryFilter } from "../types.js";

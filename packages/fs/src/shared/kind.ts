@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 import stats from "./stats.js";
 import exists from "./exists.js";
 import Kind from "../Kind.js";

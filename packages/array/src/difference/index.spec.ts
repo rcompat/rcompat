@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import difference from "./difference.js";
+import difference from "@rcompat/array/difference";
 
 export default (test => {
   test.case("default", assert => {

@@ -1,4 +1,4 @@
-import { is } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
 
 export interface SyncTryReturnTrialBackup<T> {
   orelse:<U>(backup: SyncTryReturnTrialBackupFunction<U>) => T | U

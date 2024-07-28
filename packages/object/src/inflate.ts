@@ -1,4 +1,5 @@
-import { is, maybe } from "@rcompat/invariant";
+import is from "@rcompat/invariant/is";
+import maybe from "@rcompat/invariant/maybe";
 
 export type InflateImpl3Result<P extends string, T, B extends string> =
   P extends `${infer P1}${B}${infer Rest}` ?

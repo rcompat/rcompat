@@ -25,6 +25,7 @@
   "type": "module",
   "exports": {
     "./base/*": {
+      "bun": "./lib/base/*.js",
       "@rcompat/live-types": "./lib/base/*.ts",
       "default": "./lib/base/*.js"
     },
