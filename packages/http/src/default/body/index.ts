@@ -6,7 +6,7 @@ import {
   APPLICATION_JSON,
   MULTIPART_FORM_DATA,
   TEXT_PLAIN,
-} from "@rcompat/http/mediatype";
+} from "@rcompat/http/media-type";
 
 const formdata = async (request: RequestLike) =>
   Object.fromEntries((await request.formData()).entries());
