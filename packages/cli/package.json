@@ -22,16 +22,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "@rcompat/live-types": "./src/exports.ts",
-        "default": "./lib/exports.js"
-      }
-    },
-    "./colors": {
-      "import": {
-        "@rcompat/live-types": "./src/colors/exports.ts",
-        "default": "./lib/colors/exports.js"
-      }
+      "@rcompat/live-types": "./src/exports.ts",
+      "default": "./lib/exports.js"
     },
     "./colors/*": {
       "import": {
