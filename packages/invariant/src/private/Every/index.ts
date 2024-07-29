@@ -1,5 +1,5 @@
-import type { ErrorFallbackFunction } from "@rcompat/invariant/#/errored";
-import type { AnyFunction, TypeofTypeMap } from "@rcompat/invariant/#/types";
+import type { ErrorFallbackFunction } from "#errored";
+import type { AnyFunction, TypeofTypeMap } from "#types";
 import assert from "@rcompat/invariant/assert";
 
 interface TestOptions { condition: boolean, error?: ErrorFallbackFunction, def: string }

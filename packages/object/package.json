@@ -15,7 +15,7 @@
     "directory": "packages/object"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -25,14 +25,16 @@
     "@rcompat/invariant": "workspace:^"
   },
   "type": "module",
-  "exports": {
-    "./#/*": {
+  "imports": {
+    "#*": {
       "@rcompat/live-types": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
-    },
+    }
+  },
+  "exports": {
     "./*": {
-      "@rcompat/live-types": "./src/*/index.ts",
-      "default": "./lib/*/index.js"
+      "@rcompat/live-types": "./src/public/*/index.ts",
+      "default": "./lib/public/*/index.js"
     }
   }
 }

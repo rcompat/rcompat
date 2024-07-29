@@ -1,7 +1,7 @@
-import FileRef from "@rcompat/fs/#/file-ref";
-import Kind from "@rcompat/fs/#/kind";
-import type { CollectPattern, DirectoryOptions } from "@rcompat/fs/#/types";
-import list from "./list.js";
+import FileRef from "#FileRef";
+import Kind from "#Kind";
+import list from "#native/list";
+import type { CollectPattern, DirectoryOptions } from "#types";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 

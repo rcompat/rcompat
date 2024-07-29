@@ -1,3 +1,3 @@
-import file from "@rcompat/fs/file";
+import FileRef from "#FileRef";
 
-export default (pattern: string) => file(".").glob(pattern);
+export default (pattern: string) => FileRef.new(".").glob(pattern);

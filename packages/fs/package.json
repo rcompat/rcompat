@@ -15,7 +15,7 @@
     "directory": "packages/fs"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -28,16 +28,22 @@
     "@rcompat/platform": "workspace:^"
   },
   "type": "module",
+  "imports": {
+    "#*": {
+      "@rcompat/live-types": "./src/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
+    },
+    "#native/*": {
+      "@rcompat/live-types": "./src/native/private/*.ts",
+      "default": "./lib/native/private/*.js"
+    }
+  },
   "exports": {
     "./native": {
       "@rcompat/live-types": "./src/native/node/index.ts",
       "bun": "./lib/native/bun/index.js",
       "deno": "./lib/native/deno/index.js",
       "node": "./lib/native/node/index.js"
-    },
-    "./#/*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
     },
     "./*": {
       "@rcompat/live-types": "./src/default/*/index.ts",

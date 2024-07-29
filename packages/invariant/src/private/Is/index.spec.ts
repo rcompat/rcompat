@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import Is from "@rcompat/invariant/#/is";
+import Is from "#Is";
 
 const fixturesMap = {
   string: ["", String()],

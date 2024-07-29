@@ -1,3 +1,5 @@
-import FileRef from "@rcompat/fs/#/file-ref";
+import FileRef from "#FileRef";
 
 export default FileRef.new;
+
+export { FileRef };

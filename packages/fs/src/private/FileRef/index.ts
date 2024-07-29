@@ -1,5 +1,5 @@
-import parse from "@rcompat/fs/#/parse";
-import type * as Z from "@rcompat/fs/#/types";
+import parse from "#parse";
+import type * as Z from "#types";
 import * as native from "@rcompat/fs/native";
 import separator from "@rcompat/fs/separator";
 import streamable from "@rcompat/fs/streamable";

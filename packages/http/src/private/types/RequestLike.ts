@@ -1,4 +1,4 @@
-import PseudoRequest from "@rcompat/http/#/pseudo-request";
+import PseudoRequest from "#PseudoRequest";
 
 type RequestLike = Request | PseudoRequest;
 

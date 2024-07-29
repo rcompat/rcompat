@@ -1,4 +1,4 @@
-import type { DirectoryOptions } from "@rcompat/fs/#/types";
+import type { DirectoryOptions } from "#types";
 import { mkdir } from "node:fs/promises";
 
 export default async (path: string, options?: DirectoryOptions) => {

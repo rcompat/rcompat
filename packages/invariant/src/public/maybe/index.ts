@@ -1,4 +1,4 @@
-import Is from "@rcompat/invariant/#/is";
+import Is from "#Is";
 import nullish, { type Nullish } from "@rcompat/invariant/nullish";
 
 const operations = [
@@ -15,12 +15,14 @@ const operations = [
 
 ] as const;
 
-const return_nullish = (value: unknown): Nullish | true => nullish(value) ? value : true;
+const return_nullish = (value: unknown): Nullish | true =>
+  nullish(value) ? value : true;
 
 export default (value: unknown) => {
   const is = new Is(value);
 
   return Object.fromEntries(operations.map(operation =>
     // Todo: Discuss the behavior for operations having more than 1 arguments
-    [operation, (...args: any) => return_nullish(value) && (is[operation] as any)(...args)]));
+    [operation, (...args: any) =>
+      return_nullish(value) && (is[operation] as any)(...args)]));
 };

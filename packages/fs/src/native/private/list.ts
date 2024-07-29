@@ -1,5 +1,5 @@
-import FileRef from "@rcompat/fs/#/file-ref";
-import type { DirectoryFilter } from "@rcompat/fs/#/types";
+import FileRef from "#FileRef";
+import type { DirectoryFilter } from "#types";
 import join from "@rcompat/fs/join";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";

@@ -1,4 +1,4 @@
-import FileRef, { type Path } from "@rcompat/fs/#/file-ref";
+import FileRef, { type Path } from "#FileRef";
 
 export default (...[first, ...rest]: [Path, ...Path[]]) => {
   const file = FileRef.new(first);

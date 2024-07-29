@@ -1,9 +1,9 @@
-import FileRef from "@rcompat/fs/#/file-ref";
-import Kind from "@rcompat/fs/#/kind";
-import type { DirectoryFilter } from "@rcompat/fs/#/types";
+import FileRef from "#FileRef";
+import Kind from "#Kind";
+import kind from "#native/kind";
+import list from "#native/list";
+import type { DirectoryFilter } from "#types";
 import join from "@rcompat/fs/join";
-import kind from "./kind.js";
-import list from "./list.js";
 import is from "@rcompat/invariant/is";
 import { copyFile, realpath } from "node:fs/promises";
 

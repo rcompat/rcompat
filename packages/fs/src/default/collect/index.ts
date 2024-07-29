@@ -1,5 +1,5 @@
-import type { Path } from "@rcompat/fs/#/file-ref";
-import type { CollectPattern, DirectoryOptions } from "@rcompat/fs/#/types";
+import type { Path } from "#FileRef";
+import type { CollectPattern, DirectoryOptions } from "#types";
 import file from "@rcompat/fs/file";
 
 export type CollectOptions = [CollectPattern, DirectoryOptions];

@@ -1,4 +1,4 @@
-import type { WritableInput } from "@rcompat/fs/#/types";
+import type { WritableInput } from "#types";
 
 export default async (path: string, input: WritableInput) => {
   const buffer = input instanceof Blob ? await input.text() : input;

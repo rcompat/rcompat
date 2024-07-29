@@ -15,16 +15,18 @@
     "directory": "packages/cli"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
   "type": "module",
-  "exports": {
-    "./#/*": {
+  "imports": {
+    "#*": {
       "@rcompat/live-types": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
-    },
+    }
+  },
+  "exports": {
     "./color/*": {
       "@rcompat/live-types": "./src/color/*.ts",
       "default": "./lib/color/*.js"

@@ -1,11 +1,11 @@
+import get_options from "#get-options";
+import handle_ws from "#handle-ws";
+import is_secure from "#is-secure";
+import PseudoRequest from "#PseudoRequest";
+import type Actions from "#types/Actions";
+import type Conf from "#types/Conf";
+import type Handler from "#types/Handler";
 import tryreturn from "@rcompat/async/tryreturn";
-import type Actions from "@rcompat/http/#/actions";
-import type Conf from "@rcompat/http/#/conf";
-import get_options from "@rcompat/http/#/get-options";
-import handle_ws from "@rcompat/http/#/handle-ws";
-import type Handler from "@rcompat/http/#/handler";
-import is_secure from "@rcompat/http/#/is-secure";
-import PseudoRequest from "@rcompat/http/#/pseudo-request";
 import { INTERNAL_SERVER_ERROR } from "@rcompat/http/status";
 import override from "@rcompat/object/override";
 import type { IncomingMessage, ServerResponse } from "node:http";

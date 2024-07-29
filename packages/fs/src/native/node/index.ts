@@ -1,4 +1,4 @@
-export * from "../private/index.js";
+export * from "#native/index";
 export { default as arrayBuffer } from "./array-buffer.js";
 export { default as json } from "./json.js";
 export { default as stream } from "./stream.js";

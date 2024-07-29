@@ -1,4 +1,4 @@
-import type FileRef from "@rcompat/fs/#/file-ref";
+import type FileRef from "#FileRef";
 
 const Kind = {
   File: "file",

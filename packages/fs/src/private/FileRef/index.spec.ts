@@ -1,6 +1,6 @@
 import type { DebrisTestSuite } from "@rcompat/core";
 import crypto from "@rcompat/crypto";
-import FileRef from "@rcompat/fs/#/file-ref";
+import FileRef from "#FileRef";
 
 export default (test => {
   test.case("write", async assert => {

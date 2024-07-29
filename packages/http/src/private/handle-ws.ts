@@ -1,4 +1,4 @@
-import type Actions from "@rcompat/http/#/actions";
+import type Actions from "#types/Actions";
 
 export default (socket: WebSocket, actions: Actions) => {
   if (actions.message !== undefined) {

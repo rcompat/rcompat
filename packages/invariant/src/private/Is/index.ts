@@ -1,6 +1,5 @@
-import type { ErrorFallbackFunction } from "@rcompat/invariant/#/errored";
-import type { AnyConstructibleFunction, TypeofTypeMap }
-  from "@rcompat/invariant/#/types";
+import type { ErrorFallbackFunction } from "#errored";
+import type { AnyConstructibleFunction, TypeofTypeMap } from "#types";
 import assert from "@rcompat/invariant/assert";
 import { constructible } from "@rcompat/invariant/construct";
 

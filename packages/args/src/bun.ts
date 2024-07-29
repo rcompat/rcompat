@@ -1,3 +1,3 @@
-import args from "@rcompat/args/#/args";
+import args from "#args";
 
 export default args(Bun.argv);

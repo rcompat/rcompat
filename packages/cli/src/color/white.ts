@@ -1,3 +1,3 @@
-import color from "@rcompat/cli/#/color";
+import color from "#color";
 
 export default color(37);

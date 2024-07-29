@@ -1,4 +1,4 @@
-import type { WritableInput } from "@rcompat/fs/#/types";
+import type { WritableInput } from "#types";
 import { writeFile } from "node:fs/promises";
 
 export default async (path: string, input: WritableInput) => {

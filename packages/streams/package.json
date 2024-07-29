@@ -15,7 +15,7 @@
     "directory": "packages/streams"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },

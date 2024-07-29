@@ -15,7 +15,7 @@
     "directory": "packages/http"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -32,11 +32,17 @@
     "ws": "^8.17.1"
   },
   "type": "module",
-  "exports": {
-    "./#/*": {
+  "imports": {
+    "#*": {
       "@rcompat/live-types": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     },
+    "#types/*": {
+      "@rcompat/live-types": "./src/private/types/*.ts",
+      "default": "./lib/private/types/*.js"
+    }
+  },
+  "exports": {
     "./serve": {
       "@rcompat/live-types": "./src/serve/node/index.ts",
       "bun": "./lib/serve/bun/index.js",

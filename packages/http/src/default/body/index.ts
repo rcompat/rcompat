@@ -1,6 +1,5 @@
+import type RequestLike from "#types/RequestLike";
 import tryreturn from "@rcompat/async/tryreturn";
-import type RequestLike from "@rcompat/http/#/request-like";
-
 import {
   APPLICATION_FORM_URLENCODED,
   APPLICATION_JSON,

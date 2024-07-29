@@ -1,7 +1,7 @@
-import type Actions from "@rcompat/http/#/actions";
-import type Conf from "@rcompat/http/#/conf";
-import get_options from "@rcompat/http/#/get-options";
-import type Handler from "@rcompat/http/#/handler";
+import get_options from "#get-options";
+import type Actions from "#types/Actions";
+import type Conf from "#types/Conf";
+import type Handler from "#types/Handler";
 import type { ServerWebSocket } from "bun";
 
 export default async (handler: Handler, conf: Conf) => {

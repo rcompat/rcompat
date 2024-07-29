@@ -23,14 +23,16 @@
     "@rcompat/core": "workspace:^"
   },
   "type": "module",
-  "exports": {
-    "./#/*": {
+  "imports": {
+    "#*": {
       "@rcompat/live-types": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
-    },
+    }
+  },
+  "exports": {
     "./*": {
-      "@rcompat/live-types": "./src/*/index.ts",
-      "default": "./lib/*/index.js"
+      "@rcompat/live-types": "./src/public/*/index.ts",
+      "default": "./lib/public/*/index.js"
     }
   }
 }
