@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/build",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "rcompat build module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
