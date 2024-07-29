@@ -10,25 +10,26 @@
     "build": "npm run clean && pnpm -r build",
     "clean": "pnpm -r clean",
     "publish": "pnpm -r --access=public publish",
+    "upgrade": "pnpm update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "tsx --conditions=@rcompat/live-types ./node_modules/debris/src/bin.js"
   },
   "devDependencies": {
-    "@eslint/js": "^8.56.0",
+    "@eslint/js": "^9.8.0",
     "@rcompat/fs": "workspace:^",
     "@rcompat/stdio": "workspace:^",
     "@types/bun": "^1.1.6",
     "@types/busboy": "^1.5.4",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^20.14.9",
-    "@types/ws": "^8.5.10",
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.5.12",
     "debris": "^0.14.0",
-    "eslint": "^8.56.0",
-    "tsx": "^4.16.0",
+    "eslint": "^9.8.0",
+    "tsx": "^4.16.2",
     "types-deno": "^0.2.0-1.43.5",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.15.0"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^7.17.0"
   },
   "type": "module",
   "private": true
