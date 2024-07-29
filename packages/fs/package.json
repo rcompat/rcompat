@@ -29,19 +29,15 @@
   },
   "type": "module",
   "exports": {
-    "./native/#": {
-      "@rcompat/live-types": "./src/native/private/index.ts",
-      "default": "./lib/native/private/index.js"
-    },
-    "./#/*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
-    },
     "./native": {
       "@rcompat/live-types": "./src/native/node/index.ts",
       "bun": "./lib/native/bun/index.js",
       "deno": "./lib/native/deno/index.js",
       "node": "./lib/native/node/index.js"
+    },
+    "./#/*": {
+      "@rcompat/live-types": "./src/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
     },
     "./*": {
       "@rcompat/live-types": "./src/default/*/index.ts",
