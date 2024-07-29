@@ -28,6 +28,7 @@
       "netlify": "./lib/default/netlify.js",
       "edge-light": "./lib/default/vercel.js",
       "fastly": "./lib/default/fastly.js",
+      "browser": "./lib/default/browser.js",
       "node": "./lib/default/node.js"
     }
   } 
