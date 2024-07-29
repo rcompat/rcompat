@@ -34,11 +34,11 @@
   "type": "module",
   "exports": {
     "./#/*": {
-      "@rcompat/live-types": "./lib/private/*.ts",
+      "@rcompat/live-types": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     },
     "./serve": {
-      "@rcompat/live-types": "./lib/serve/bun/index.ts",
+      "@rcompat/live-types": "./src/serve/node/index.ts",
       "bun": "./lib/serve/bun/index.js",
       "deno": "./lib/serve/deno/index.js",
       "node": "./lib/serve/node/index.js"

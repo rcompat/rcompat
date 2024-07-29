@@ -22,7 +22,7 @@
   "type": "module",
   "exports": {
     "./*": {
-      "@rcompat/live-types": "./lib/*/index.ts",
+      "@rcompat/live-types": "./src/*/index.ts",
       "default": "./lib/*/index.js"
     }
   }

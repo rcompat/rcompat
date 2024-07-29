@@ -22,7 +22,7 @@
   "type": "module",
   "exports": {
     "./#/*": {
-      "@rcompat/live-types": "./lib/private/*/index.ts",
+      "@rcompat/live-types": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     },
     "./color/*": {
