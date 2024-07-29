@@ -22,9 +22,11 @@ servers.
 |[@rcompat/function](packages/function)   | function utilities                |
 |[@rcompat/http](packages/http)           | http servers                      |
 |[@rcompat/invariant](packages/invariant) | runtime validation                |
-|[@rcompat/math](packages/math)           | mathematical functions            |
 |[@rcompat/module](packages/module)       | module loading                    |
 |[@rcompat/object](packages/object)       | object utilities                  |
+|[@rcompat/package](packages/package)     | package utilities                 |
+|[@rcompat/sql](packages/sql)             | SQL abstractions                  |
+|[@rcompat/platform](packages/platform)   | platform querying                 |
 |[@rcompat/stdio](packages/stdio)         | process handling                  |
 |[@rcompat/streams](packages/streams)     | stream utilities                  |
 |[@rcompat/string](packages/string)       | string utilities                  |
@@ -65,22 +67,21 @@ object transformations, and many more useful modules and abstractions.
 
 The standard library is designed to accommodate modern development needs: for
 example, `@rcompat/http` supports WebSockets (natively on Deno/Bun, and using
-NPM's `ws` on Node), while `@rcompat/fs.File` offers globbing, listing and
+NPM's `ws` on Node), while `@rcompat/fs/file` offers globbing, listing and
 manipulation of files, similarly to Python's `pathlib`.
 
-For example, to set up a server with rcompat, use the `serve` export of
-`@rcompat/http` -- the server-side equivalent of `fetch`.
+For example, to set up a server with rcompat, use `@rcompat/http/serve` -- the
+server-side equivalent of `fetch`.
 
 ```js
-import { serve } from "@rcompat/http";
+import serve from "@rcompat/http/serve";
 
 serve(request => new Response("Hi!"), { host: "localhost", port: 6161 });
 ```
 
 This code runs successfully with either `node app.js` (if you set your
 package.json to `{ "type": "module" }`; otherwise use `app.mjs`), `deno run
---allow-all app.js` or `bun --bun app.js`, taking advantage of native
-optimizations.
+-A app.js` or `bun --bun app.js`, taking advantage of native optimizations.
 
 ### Another standard library?
 
@@ -96,9 +97,9 @@ target everything.
 For example, here's how you can read a file and parse it as JSON.
 
 ```js
-import { json } from "@rcompat/fs";
+import file from "@rcompat/fs/file";
 
-console.log(await json("./users.json"));
+console.log(await file("./users.json").json());
 ```
 
 Again, this code runs successfully on Node, Deno or Bun, taking advantage of
