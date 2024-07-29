@@ -4,9 +4,14 @@ import type { AnyConstructibleFunction, TypeofTypeMap }
 import assert from "@rcompat/invariant/assert";
 import { constructible } from "@rcompat/invariant/construct";
 
-interface TestOptions { condition: boolean, error?: ErrorFallbackFunction | string, def: string }
+interface TestOptions {
+  condition: boolean,
+  error?: ErrorFallbackFunction | string,
+  def: string
+}
 
-const test = ({ condition, def, error }: TestOptions): void => assert(condition, error || def);
+const test = ({ condition, def, error }: TestOptions): void =>
+  assert(condition, error || def);
 
 function try_instanceof<C extends new (...args: never) => unknown>(value: unknown, type: C): value is InstanceType<C>
 function try_instanceof<T extends keyof TypeofTypeMap>(value: unknown, type: T): value is TypeofTypeMap[T]; 
@@ -125,7 +130,7 @@ export default class Is {
 
   anyOf<T extends AnyConstructibleFunction>(Classes: T[], error?: ErrorFallbackFunction | string): InstanceType<T> {
     const classes = Classes instanceof Array ? Classes : [Classes];
-    const classes_str = classes.map(c => `\`${c.name ?? c}\``).join(", ");
+    const classes_str = classes.map(c => `\`${c.name}\``).join(", ");
     const def = `\`${this.#value}\` must instance any of ${classes_str}`;
     const condition = classes.some(c => try_instanceof(this.#value, c));
     return this.#test({ condition, def, error });
