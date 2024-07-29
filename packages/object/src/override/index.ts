@@ -1,8 +1,10 @@
 import assert from "@rcompat/invariant/assert";
 import proper, { type Proper } from "@rcompat/object/proper";
 
+const proper_na = (o: unknown) => proper(o) && !Array.isArray(o);
+
 const recurse = (t: unknown, u: unknown) =>
-  (proper(t) && proper(u) ? override(t as Proper, u as Proper) : u) ?? t;
+  (proper_na(t) && proper_na(u) ? override(t as Proper, u as Proper) : u) ?? t;
 
 /**
  * Override an object with another recursively.

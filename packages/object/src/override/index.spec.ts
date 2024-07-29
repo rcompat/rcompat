@@ -83,6 +83,18 @@ export default (test => {
     }
   });
 
+  test.case("arrays don't recurse", assert => {
+    const base = {
+      modules: [],
+    };
+
+    const over = {
+      modules: [{ name: "primate:htmx" } ],
+    };
+
+    assert(override(base, over)).equals(over);
+  });
+
   test.case("config enhancement", assert => {
     const base = {
       base: "/",
