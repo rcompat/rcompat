@@ -10,7 +10,7 @@
     "build": "pnpm -r build",
     "clean": "pnpm -r clean",
     "publish": "pnpm -r --access=public publish",
-    "upgrade": "pnpm update -i -L",
+    "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "tsx --conditions=@rcompat/live-types ./node_modules/debris/src/bin.js"
@@ -29,7 +29,7 @@
     "tsx": "^4.16.2",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^7.17.0"
+    "typescript-eslint": "^7.18.0"
   },
   "type": "module",
   "private": true
