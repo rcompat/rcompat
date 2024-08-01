@@ -27,6 +27,10 @@
     }
   },
   "exports": {
+    "./*": {
+      "@rcompat/live-types": "./src/*.ts",
+      "default": "./lib/*.js"
+    },
     "./color/*": {
       "@rcompat/live-types": "./src/color/*.ts",
       "default": "./lib/color/*.js"
