@@ -1,20 +1,15 @@
 import type RequestLike from "#types/RequestLike";
 import tryreturn from "@rcompat/async/tryreturn";
-import {
-  APPLICATION_FORM_URLENCODED,
-  APPLICATION_JSON,
-  MULTIPART_FORM_DATA,
-  TEXT_PLAIN,
-} from "@rcompat/http/media-type";
+import { form, json, multipart, txt } from "@rcompat/http/mime";
 
 const formdata = async (request: RequestLike) =>
   Object.fromEntries((await request.formData()).entries());
 
 const contents = {
-  [APPLICATION_JSON]: (request: RequestLike) => request.json(),
-  [APPLICATION_FORM_URLENCODED]: formdata,
-  [MULTIPART_FORM_DATA]: formdata,
-  [TEXT_PLAIN]: (request: RequestLike) => request.text(),
+  [json]: (request: RequestLike) => request.json(),
+  [form]: formdata,
+  [multipart]: formdata,
+  [txt]: (request: RequestLike) => request.text(),
 };
 
 const isSupported = (type: string): type is keyof typeof contents => type in contents;
