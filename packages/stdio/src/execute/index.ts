@@ -1,5 +1,4 @@
-export { stdin, stdout, stderr } from "node:process";
-import { ExecOptions, exec } from "node:child_process";
+import { type ExecOptions, exec } from "node:child_process";
 
 export default (command: string, options: ExecOptions): Promise<string> => 
   new Promise((resolve, reject) => {
