@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/package",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "rcompat package module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -23,7 +23,8 @@
     "@rcompat/cli": "workspace:^",
     "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
-    "@rcompat/invariant": "workspace:^"
+    "@rcompat/invariant": "workspace:^",
+    "@rcompat/object": "^workspace:^"
   },
   "type": "module",
   "exports": {

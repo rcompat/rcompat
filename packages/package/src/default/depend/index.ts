@@ -3,6 +3,7 @@ import red from "@rcompat/cli/color/red";
 import yellow from "@rcompat/cli/color/yellow";
 import print from "@rcompat/cli/print";
 import manifest from "@rcompat/package/manifest";
+import override from "@rcompat/object/override";
 
 const error_message = (pkg: string, dependencies: string[]) =>
   `${red("ERROR")} missing peer dependencies for package \`${yellow(pkg)}\`
@@ -12,8 +13,10 @@ const error_message = (pkg: string, dependencies: string[]) =>
 type R = Record<PropertyKey, unknown>;
 
 export default async (needed: string[], loader: string) => {
-  const { devDependencies, dependencies } = (await manifest()) as
-    { devDependencies: R, dependencies: R};
+  const { devDependencies, dependencies } = override({
+    devDependencies: {},
+    dependencies: {},
+  }, (await manifest()) as { devDependencies: R, dependencies: R });
   const missing = needed
     .filter(dependency =>
       dependencies[dependency] === undefined
