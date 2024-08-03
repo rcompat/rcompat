@@ -1,7 +1,7 @@
+import manifest_name from "#manifest-name";
+import type { FileRef } from "@rcompat/fs/file";
 import resolve from "@rcompat/fs/resolve";
 import maybe from "@rcompat/invariant/maybe";
-import manifest_name from "@rcompat/package/manifest-name";
-import type { FileRef } from "@rcompat/fs/file";
 
 export default (relative_to?: string): Promise<FileRef> => {
   maybe(relative_to).string();

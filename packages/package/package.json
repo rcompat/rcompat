@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/package",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "rcompat package module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -20,13 +20,16 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/cli": "workspace:^",
-    "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
-    "@rcompat/invariant": "workspace:^",
-    "@rcompat/object": "workspace:^"
+    "@rcompat/invariant": "workspace:^"
   },
   "type": "module",
+  "imports": {
+    "#*": {
+      "@rcompat/live-types": "./src/private/*/index.ts",
+      "default": "./lib/private/*/index.js"
+    }
+  },
   "exports": {
     "./packager": {
       "@rcompat/live-types": "./src/packager/index.ts",
@@ -35,8 +38,8 @@
       "node": "./lib/packager/node.js"
     },
     "./*": {
-      "@rcompat/live-types": "./src/default/*/index.ts",
-      "default": "./lib/default/*/index.js"
+      "@rcompat/live-types": "./src/public/*/index.ts",
+      "default": "./lib/public/*/index.js"
     }
   }
 }
