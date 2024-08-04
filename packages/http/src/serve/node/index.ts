@@ -53,16 +53,16 @@ export default async (handler: Handler, conf?: Conf) => {
       .orelse(async () =>
         new Response(null, { status: INTERNAL_SERVER_ERROR }));
 
-    // no return (WebSocket)
-    if (response.body === null) {
-      return node_response.end();
-    }
-
     [...response.headers.entries()].forEach(([name, value]) => {
       node_response.setHeader(name, value);
     });
 
     node_response.writeHead(response.status);
+
+    // no body, end response
+    if (response.body === null) {
+      return node_response.end();
+    }
 
     // 2. copy from a WHATWG response into a node response
     const { body } = response;
