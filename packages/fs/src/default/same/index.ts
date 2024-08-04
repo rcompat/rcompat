@@ -1,4 +1,4 @@
-import FileRef from "#FileRef";
+import type FileRef from "#FileRef";
 import is from "@rcompat/invariant/is";
 
 export default (left: FileRef, right: FileRef) => {
