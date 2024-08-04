@@ -27,7 +27,7 @@
     "@rcompat/object": "workspace:^"
   },
   "devDependencies": {
-    "esbuild": "^0.22.0"
+    "esbuild": "^0.23.0"
   },
   "type": "module",
   "exports": {
