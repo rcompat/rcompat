@@ -23,6 +23,9 @@ export const png = "image/png";
 export const svg = "image/svg+xml";
 export const webp = "image/webp";
 
+// video
+export const mp4 = "video/mp4";
+
 // font
 export const woff2 = "font/woff2";
 
