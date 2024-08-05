@@ -246,19 +246,15 @@ export default class Node {
     const [first, ...rest] = parts;
 
     // current path matches first
-    const is_catch = match_catch && this.catch;
-    const is_rest = this.rest;
-    const is_static = this.#path === first;
-
     // static match is first
-    if (is_static) {
+    if (this.#path === first) {
       return this.next(request, rest, match_catch, params);
     }
-    if (is_catch) {
+    if (this.catch) {
       const next_params = { ...params, [this.#path.slice(1, -1)]: first };
       return this.next(request, rest, match_catch, next_params);
     }
-    if (is_rest) {
+    if (this.rest) {
       if (!this.check_predicate(request)) {
         return;
       }

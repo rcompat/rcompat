@@ -51,6 +51,8 @@ const routes = [
   ["rest/+layout", { default: identity, recursive: true, name: "restl0" }],
   r("restopt/[[...rest]]", "restopt"),
   ["restopt/+layout", { default: identity, recursive: true, name: "restoptl0" }],
+  r("test/[test]/index", "testtestindex"),
+  r("test/[test]/view", "testtestview"),
 ];
 
 export default (test => {
@@ -161,7 +163,7 @@ export default (test => {
     matcher("/svelte/svelte", "svelte/svelte",
       $(l(0, "l0"), g(0, "g0"), e(0, "e0")));
     matcher("/svelte/post-add", "svelte/post-add", l(0, "l0"));
-    matcher("/test/svelte", "p1/svelte", p({ p1: "test" }));
+    matcher("/testsvelte/svelte", "p1/svelte", p({ p1: "testsvelte" }));
     matcher("/a", "p1", p({ p1: "a" }));
     matcher("/b", "p1", p({ p1: "b" }));
     matcher("/a/b", "p1/p2", $(p({ p1: "a", p2: "b" }/*, l(0, "p1l0")*/)));
@@ -180,6 +182,12 @@ export default (test => {
     matcher("/restopt/a/b", "restopt", $(p({ rest: "a/b" }), l(0, "restoptl0")));
     matcher("/restopt/a/b/c", "restopt", $(p({ rest: "a/b/c" }), l(0, "restoptl0")));
     matcher("/restopt", "restopt", $(p({}), nl(0)));
+    matcher("/test/test", "testtestindex", p({ test: "test" }));
+    matcher("/test/test/index", "testtestindex", p({ test: "test" }));
+    matcher("/test/test2", "testtestindex", p({ test: "test2" }));
+    matcher("/test/test2/index", "testtestindex", p({ test: "test2" }));
+    matcher("/test/test/view", "testtestview", p({ test: "test" }));
+    matcher("/test/test2/view", "testtestview", p({ test: "test2" }));
   });
 
   test.case("match with predicate", assert => {
