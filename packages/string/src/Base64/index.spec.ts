@@ -1,5 +1,5 @@
 import type { DebrisTestSuite } from "@rcompat/core";
-import Base64 from "@rcompat/string/base64";
+import Base64 from "@rcompat/string/Base64";
 
 export default (test => {
   test.case("there and back again", assert => {
