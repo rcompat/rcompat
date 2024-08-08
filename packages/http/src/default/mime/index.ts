@@ -27,6 +27,7 @@ export const webp = "image/webp";
 export const mp4 = "video/mp4";
 
 // font
+export const ttf = "font/ttf";
 export const woff2 = "font/woff2";
 
 const extensions = {
