@@ -50,10 +50,6 @@ export default class FileRef {
     return this.path.replaceAll(separator, "/");
   }
 
-  get streamable() {
-    return this.#streamable;
-  }
-
   async import(name?: string) {
     maybe(name).string();
     const imported = await import(`${to_url(this.path)}`);
@@ -96,7 +92,7 @@ export default class FileRef {
     return native.exists(this.path);
   }
 
-  get isFile() {
+  isFile() {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
   }
@@ -120,6 +116,10 @@ export default class FileRef {
   get fullExtension() {
     const name = this.path.split("/").at(-1)!;
     return name.slice(name.indexOf("."));
+  }
+
+  get streamable() {
+    return this.#streamable;
   }
 
   up(levels: number): FileRef {
