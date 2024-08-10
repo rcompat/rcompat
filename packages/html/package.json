@@ -1,0 +1,33 @@
+{
+  "name": "@rcompat/html",
+  "version": "0.1.0",
+  "description": "rcompat HTML module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/html"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@rcompat/core": "workspace:^",
+    "@rcompat/invariant": "workspace:^"
+  },
+  "type": "module",
+  "exports": {
+    "./*": {
+      "@rcompat/live-types": "./src/*/index.ts",
+      "default": "./lib/*/index.js"
+    }
+  }
+}
