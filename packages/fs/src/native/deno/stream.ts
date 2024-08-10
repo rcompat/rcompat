@@ -1,2 +1,2 @@
 export default async (path: string) => 
-  (await Deno.open(path, { write: false })).readable;
+  (await Deno.open(path, { read: true })).readable;
