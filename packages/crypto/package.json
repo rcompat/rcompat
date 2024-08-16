@@ -22,12 +22,12 @@
   "type": "module",
   "exports": {
     ".": {
-      "@rcompat/live-types": "./src/default/bun/index.ts",
+      "livetypes": "./src/default/bun/index.ts",
       "bun": "./lib/default/bun/index.js",
       "node": "./lib/default/node/index.js"
     },
     "./hash": {
-      "@rcompat/live-types": "./src/hash/bun/index.ts",
+      "livetypes": "./src/hash/bun/index.ts",
       "bun": "./lib/hash/bun/index.js",
       "node": "./lib/hash/node/index.js"
     }

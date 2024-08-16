@@ -34,23 +34,23 @@
   "type": "module",
   "imports": {
     "#*": {
-      "@rcompat/live-types": "./src/private/*.ts",
+      "livetypes": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     },
     "#types/*": {
-      "@rcompat/live-types": "./src/private/types/*.ts",
+      "livetypes": "./src/private/types/*.ts",
       "default": "./lib/private/types/*.js"
     }
   },
   "exports": {
     "./serve": {
-      "@rcompat/live-types": "./src/serve/node/index.ts",
+      "livetypes": "./src/serve/node/index.ts",
       "bun": "./lib/serve/bun/index.js",
       "deno": "./lib/serve/deno/index.js",
       "node": "./lib/serve/node/index.js"
     },
     "./*": {
-      "@rcompat/live-types": "./src/default/*/index.ts",
+      "livetypes": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
     }
   }

@@ -25,13 +25,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
+      "livetypes": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     }
   },
   "exports": {
     ".": {
-      "@rcompat/live-types": "./src/node.ts",
+      "livetypes": "./src/node.ts",
       "bun": "./lib/bun.js",
       "deno": "./lib/deno.js",
       "node": "./lib/node.js"

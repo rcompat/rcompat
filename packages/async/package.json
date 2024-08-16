@@ -27,7 +27,7 @@
   "type": "module",
   "exports": {
     "./*": {
-      "@rcompat/live-types": "./src/*/index.ts",
+      "livetypes": "./src/*/index.ts",
       "default": "./lib/*/index.js"
     }
   }

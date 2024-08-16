@@ -30,23 +30,23 @@
   "type": "module",
   "imports": {
     "#*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
+      "livetypes": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     },
     "#native/*": {
-      "@rcompat/live-types": "./src/native/private/*.ts",
+      "livetypes": "./src/native/private/*.ts",
       "default": "./lib/native/private/*.js"
     }
   },
   "exports": {
     "./native": {
-      "@rcompat/live-types": "./src/native/node/index.ts",
+      "livetypes": "./src/native/node/index.ts",
       "bun": "./lib/native/bun/index.js",
       "deno": "./lib/native/deno/index.js",
       "node": "./lib/native/node/index.js"
     },
     "./*": {
-      "@rcompat/live-types": "./src/default/*/index.ts",
+      "livetypes": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
     }
   }

@@ -42,7 +42,7 @@
       "node": "./lib/worker/node/*/index.js"
     },
     ".": {
-      "@rcompat/live-types": "./src/default/bun/Webview.ts",
+      "livetypes": "./src/default/bun/Webview.ts",
       "bun": "./lib/default/bun/Webview.js"
     }
   }

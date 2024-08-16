@@ -13,7 +13,7 @@
     "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "tsx --conditions=@rcompat/live-types ./node_modules/debris/src/bin.js"
+    "test": "tsx --conditions=livetypes ./node_modules/debris/src/bin.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -26,6 +26,7 @@
     "@types/ws": "^8.5.12",
     "debris": "^0.14.0",
     "eslint": "^9.8.0",
+    "livetypes": "^0.2.0",
     "tsx": "^4.16.5",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.5.4",

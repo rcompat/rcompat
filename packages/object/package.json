@@ -27,13 +27,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
+      "livetypes": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     }
   },
   "exports": {
     "./*": {
-      "@rcompat/live-types": "./src/public/*/index.ts",
+      "livetypes": "./src/public/*/index.ts",
       "default": "./lib/public/*/index.js"
     }
   }

@@ -25,17 +25,17 @@
   "type": "module",
   "imports": {
     "#*": {
-      "@rcompat/live-types": "./src/private/*/index.ts",
+      "livetypes": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     }
   },
   "exports": {
     "./*": {
-      "@rcompat/live-types": "./src/*.ts",
+      "livetypes": "./src/*.ts",
       "default": "./lib/*.js"
     },
     "./color/*": {
-      "@rcompat/live-types": "./src/color/*.ts",
+      "livetypes": "./src/color/*.ts",
       "default": "./lib/color/*.js"
     }
   }

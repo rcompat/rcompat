@@ -30,7 +30,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "@rcompat/live-types": "./src/exports.ts",
+      "livetypes": "./src/exports.ts",
       "default": "./lib/exports.js"
     }
   }
