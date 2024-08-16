@@ -1,7 +1,7 @@
 {
-  "name": "@rcompat/platform",
-  "version": "0.3.0",
-  "description": "rcompat platform module",
+  "name": "@rcompat/runtime",
+  "version": "0.1.0",
+  "description": "runtime detection",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/platform"
+    "directory": "packages/runtime"
   },
   "scripts": {
     "build": "npm run clean && tsc",

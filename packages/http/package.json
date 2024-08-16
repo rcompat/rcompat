@@ -26,7 +26,6 @@
     "@rcompat/function": "workspace:^",
     "@rcompat/invariant": "workspace:^",
     "@rcompat/object": "workspace:^",
-    "@rcompat/platform": "workspace:^",
     "@rcompat/streams": "workspace:^",
     "busboy": "^1.6.0",
     "ws": "^8.17.1"

@@ -24,10 +24,16 @@
     "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/package": "workspace:^",
-    "@rcompat/platform": "workspace:^",
     "dotenv": "^16.4.5"
   },
   "type": "module",
+  "imports": {
+    "#*": {
+      "livetypes": "./src/private/node/*.ts",
+      "bun": "./lib/private/bun/*.js",
+      "default": "./lib/private/node/*.js"
+    }
+  },
   "exports": {
     ".": {
       "livetypes": "./src/exports.ts",
