@@ -2,7 +2,7 @@ import is from "@rcompat/invariant/is";
 
 type Entry<T> = [PropertyKey, T];
 
-const Entries = class Entries<T> {
+class Entries<T> {
   #entries: Entry<T>[];
 
   constructor(entries: Entry<T>[]) {
@@ -11,16 +11,30 @@ const Entries = class Entries<T> {
     this.#entries = entries;
   }
 
-  filter(predicate: (entry: Entry<T>) => boolean) {
+  filter(predicate: (entry: Entry<T>) => boolean): Entries<T> {
     is(predicate).function();
 
-    this.#entries = this.#entries.filter(predicate);
+    return new Entries(this.#entries.filter(predicate));
   }
 
-  map<U>(mapper: (t: T) => U): Entries<U> {
+  map<U>(mapper: (entry: Entry<T>) => Entry<U>): Entries<U> {
     is(mapper).function();
 
-    return new Entries(this.#entries.map(([key, value]) => [key, mapper(value)]));
+    return new Entries(this.#entries.map(mapper));
+  }
+
+  mapKey(mapper: (value: T, key: PropertyKey) => PropertyKey): Entries<T> {
+    is(mapper).function();
+
+    return new Entries(this.#entries.map(([key, value]) =>
+      [mapper(value, key), value]));
+  }
+
+  mapValue<U>(mapper: (value: T, key: PropertyKey) => U): Entries<U> {
+    is(mapper).function();
+    
+    return new Entries(this.#entries.map(([key, value]) => [key,
+      mapper(value, key)]));
   }
 
   get() {
@@ -28,5 +42,5 @@ const Entries = class Entries<T> {
   }
 }
 
-export default (object: Record<PropertyKey, unknown>) => 
+export default <T>(object: Record<PropertyKey, T>) => 
   new Entries(Object.entries(object));
