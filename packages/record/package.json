@@ -19,7 +19,9 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@rcompat/invariant": "^0.5.0"
+  },
   "type": "module",
   "imports": {
     "#*": {

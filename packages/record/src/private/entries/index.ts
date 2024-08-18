@@ -1,12 +1,26 @@
-const Entries = class Entries<T> {
-  #entries: [PropertyKey, T][];
+import is from "@rcompat/invariant/is";
 
-  constructor(object: Record<PropertyKey, T>) {
-    this.#entries = Object.entries(object);
+type Entry<T> = [PropertyKey, T];
+
+const Entries = class Entries<T> {
+  #entries: Entry<T>[];
+
+  constructor(entries: Entry<T>[]) {
+    is(entries).array();
+
+    this.#entries = entries;
   }
 
-  filter(predicate: (entry: [PropertyKey, T]) => boolean) {
+  filter(predicate: (entry: Entry<T>) => boolean) {
+    is(predicate).function();
+
     this.#entries = this.#entries.filter(predicate);
+  }
+
+  map<U>(mapper: (t: T) => U): Entries<U> {
+    is(mapper).function();
+
+    return new Entries(this.#entries.map(([key, value]) => [key, mapper(value)]));
   }
 
   get() {
@@ -14,4 +28,5 @@ const Entries = class Entries<T> {
   }
 }
 
-export default (object: Record<PropertyKey, unknown>) => new Entries(object);
+export default (object: Record<PropertyKey, unknown>) => 
+  new Entries(Object.entries(object));
