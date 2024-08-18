@@ -32,9 +32,9 @@ class Entries<T> {
 
   mapValue<U>(mapper: (value: T, key: PropertyKey) => U): Entries<U> {
     is(mapper).function();
-    
-    return new Entries(this.#entries.map(([key, value]) => [key,
-      mapper(value, key)]));
+
+    return new Entries(this.#entries.map(([key, value]) =>
+      [key, mapper(value, key)]));
   }
 
   get() {
