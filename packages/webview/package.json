@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@rcompat/core": "workspace:^",
-    "@rcompat/object": "workspace:^"
+    "@rcompat/record": "workspace:^"
   },
   "devDependencies": {
     "esbuild": "^0.23.0"

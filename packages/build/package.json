@@ -23,7 +23,7 @@
     "@rcompat/core": "workspace:^",
     "@rcompat/function": "workspace:^",
     "@rcompat/invariant": "workspace:^",
-    "@rcompat/object": "workspace:^",
+    "@rcompat/record": "workspace:^",
     "esbuild": "^0.23.0"
   },
   "type": "module",

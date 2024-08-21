@@ -24,7 +24,7 @@
     "@rcompat/crypto": "workspace:^",
     "@rcompat/invariant": "workspace:^",
     "@rcompat/function": "workspace:^",
-    "@rcompat/object": "workspace:^"
+    "@rcompat/record": "workspace:^"
   },
   "type": "module",
   "imports": {

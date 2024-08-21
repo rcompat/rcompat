@@ -1,5 +1,5 @@
 import assert from "@rcompat/invariant/assert";
-import proper, { type Proper } from "@rcompat/object/proper";
+import proper, { type Proper } from "#proper";
 
 const proper_na = (o: unknown) => proper(o) && !Array.isArray(o);
 

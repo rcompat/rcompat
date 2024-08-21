@@ -1,6 +1,6 @@
-import non_objects from "#non-objects";
+import non_records from "#non-records";
 import { type DebrisTestSuite, NEVER } from "@rcompat/core";
-import override from "@rcompat/object/override";
+import override from "#override";
 
 export default (test => {
   test.case("typedoc", assert => {
@@ -16,9 +16,9 @@ export default (test => {
     assert(() => override(NEVER(undefined), NEVER(undefined))).throws();
     assert(() => override(NEVER(undefined), over)).throws();
     assert(() => override(base, NEVER(undefined))).throws();
-    non_objects.forEach(non_object => {
-      assert(() => override(NEVER(non_object), { foo: "bar" })).throws();
-      assert(() => override({ foo: "bar" }, NEVER(non_object))).throws();
+    non_records.forEach(non_record => {
+      assert(() => override(NEVER(non_record), { foo: "bar" })).throws();
+      assert(() => override({ foo: "bar" }, NEVER(non_record))).throws();
     });
   });
 

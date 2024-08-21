@@ -1,5 +1,5 @@
+import empty from "#empty";
 import type { DebrisTestSuite } from "@rcompat/core";
-import empty from "@rcompat/object/empty";
 
 export default (test => {
   test.case("no params", assert => {

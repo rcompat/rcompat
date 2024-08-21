@@ -1,6 +1,6 @@
 import collect from "@rcompat/fs/collect";
 import webpath from "@rcompat/fs/webpath";
-import override from "@rcompat/object/override";
+import override from "@rcompat/record/override";
 import Node from "./Node.js";
 import * as errors from "./errors.js";
 import type { Route, RouteEntry, RouterConfig } from "./types.js";

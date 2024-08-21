@@ -1,6 +1,6 @@
 import assert from "@rcompat/invariant/assert";
 import is from "@rcompat/invariant/is";
-import exclude from "@rcompat/object/exclude";
+import exclude from "@rcompat/record/exclude";
 import * as esbuild from "esbuild";
 import reload_defaults from "@rcompat/build/reload/defaults";
 import reload_path from "@rcompat/build/reload/path";

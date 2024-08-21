@@ -7,7 +7,7 @@ import type Conf from "#types/Conf";
 import type Handler from "#types/Handler";
 import tryreturn from "@rcompat/async/tryreturn";
 import { INTERNAL_SERVER_ERROR } from "@rcompat/http/status";
-import override from "@rcompat/object/override";
+import override from "@rcompat/record/override";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Writable } from "node:stream";
 import { WebSocketServer } from "ws";

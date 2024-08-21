@@ -1,46 +1,50 @@
 import is from "@rcompat/invariant/is";
 
-type Entry<T> = [PropertyKey, T];
+type Entry<K extends string, V> = [K, V];
 
-class Entries<T> {
-  #entries: Entry<T>[];
+class Entries<K extends string, V> {
+  #entries: Entry<K, V>[];
 
-  constructor(entries: Entry<T>[]) {
+  constructor(entries: Entry<K, V>[]) {
     is(entries).array();
 
     this.#entries = entries;
   }
 
-  filter(predicate: (entry: Entry<T>) => boolean): Entries<T> {
+  filter<U extends V>(predicate: (entry: Entry<K, V>) => entry is Entry<K, U>): Entries<K, U>;
+  filter(predicate: (entry: Entry<K, V>) => boolean): Entries<K, V>;
+  filter(predicate: (entry: Entry<K, V>) => boolean): Entries<K, V> {
     is(predicate).function();
 
     return new Entries(this.#entries.filter(predicate));
   }
 
-  map<U>(mapper: (entry: Entry<T>) => Entry<U>): Entries<U> {
+  map<U>(mapper: (entry: Entry<K, V>) => Entry<K, U>): Entries<K, U> {
     is(mapper).function();
 
     return new Entries(this.#entries.map(mapper));
   }
 
-  mapKey(mapper: (value: T, key: PropertyKey) => PropertyKey): Entries<T> {
+  mapKey(mapper: (entry: Entry<K, V>) => K): Entries<K, V> {
     is(mapper).function();
 
-    return new Entries(this.#entries.map(([key, value]) =>
-      [mapper(value, key), value]));
+    return new Entries(this.#entries.map(entry => [mapper(entry), entry[1]]));
   }
 
-  mapValue<U>(mapper: (value: T, key: PropertyKey) => U): Entries<U> {
+  mapValue<U>(mapper: (entry: Entry<K, V>) => U): Entries<K, U> {
     is(mapper).function();
 
-    return new Entries(this.#entries.map(([key, value]) =>
-      [key, mapper(value, key)]));
+    return new Entries(this.#entries.map(entry => [entry[0], mapper(entry)]));
   }
 
-  get() {
-    return Object.fromEntries(this.#entries);
+  get(): Record<K, V> {
+    return Object.fromEntries(this.#entries) as never;
+  }
+
+  [Symbol.iterator](): IterableIterator<Entry<K, V>> {
+    return this.#entries.values()
   }
 }
 
-export default <T>(object: Record<PropertyKey, T>) => 
-  new Entries(Object.entries(object));
+export default <K extends string, V>(record: Record<K, V>): Entries<K, V> =>
+  new Entries(Object.entries(record)) as never;

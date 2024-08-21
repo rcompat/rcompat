@@ -20,6 +20,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@rcompat/core": "workspace:^",
     "@rcompat/invariant": "^0.5.0"
   },
   "type": "module",
@@ -31,8 +32,8 @@
   },
   "exports": {
     "./*": {
-      "livetypes": "./src/public/*/index.ts",
-      "default": "./lib/public/*/index.js"
+      "livetypes": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

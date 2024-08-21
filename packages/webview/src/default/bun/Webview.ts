@@ -1,4 +1,4 @@
-import override from "@rcompat/object/override";
+import override from "@rcompat/record/override";
 import type { BunFile } from "bun";
 import cstring from "./cstring.js";
 import dlopen from "./dlopen.js";
