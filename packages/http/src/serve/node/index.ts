@@ -34,7 +34,7 @@ export default async (handler: Handler, conf?: Conf) => {
   const module = await import(is_secure($conf) ? "https" : "http");
   const options = await get_options($conf);
 
-  return module.createServer(options,
+  module.createServer(options,
     async (node_request: IncomingMessage, node_response: ServerResponse) => {
 
     // handler gets a WHATWG Request, and returns a WHATWG Response
