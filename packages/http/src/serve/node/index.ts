@@ -28,7 +28,10 @@ const defaults: Conf = {
   port: 6161,
 };
 
-export default async (handler: Handler, conf?: Conf) => {
+type NullableHandler = (request: Request | PseudoRequest) =>
+  Response | Promise<Response> | Promise<null>;
+
+export default async (handler: NullableHandler, conf?: Conf) => {
   const $conf = override(defaults, conf ?? {});
 
   const module = await import(is_secure($conf) ? "https" : "http");
@@ -52,6 +55,11 @@ export default async (handler: Handler, conf?: Conf) => {
     const response = await tryreturn(async () => await handler(request))
       .orelse(async () =>
         new Response(null, { status: INTERNAL_SERVER_ERROR }));
+
+    // keep the connection alive (101 switching protocols)
+    if (response === null) {
+      return;
+    }
 
     [...response.headers.entries()].forEach(([name, value]) => {
       node_response.setHeader(name, value);
