@@ -8,8 +8,9 @@ export interface RouterNodeConfig {
 }
 
 export interface RouterConfig extends RouterNodeConfig {
+  import: boolean,
   directory?: string;
-  extension?: string;
+  extensions: [string];
 }
 
 export interface Route {

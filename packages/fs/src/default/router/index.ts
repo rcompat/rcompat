@@ -7,10 +7,11 @@ import type { Route, RouteEntry, RouterConfig } from "./types.js";
 
 const defaults = {
   directory: undefined,
-  extension: ".js",
+  extensions: [".js"],
   specials: {},
   predicate: () => true,
-};
+  import: true,
+} satisfies RouterConfig;
 
 export default class Router {
   static Error = errors;
@@ -82,14 +83,14 @@ export default class Router {
   }
 
   async load() {
-    const { directory, extension = ".js" } = this.#config;
-    const re = new RegExp(`^.*${extension}$`, "u");
+    const { directory, extensions } = this.#config;
+    const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
 
     this.init(directory === undefined ? [] : await Promise.all(
       (await collect(directory, re, { recursive: true }))
         .map(async (file: any) => [
-          `${file}`.replace(directory, _ => "").slice(1, -extension.length),
-          await file.import(),
+          `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
+          this.#config.import && await file.import(),
         ])));
 
     return this;

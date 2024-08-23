@@ -14,6 +14,11 @@ const r = (route: any, expected = route) => [route, {
   },
 }];
 
+const init: typeof Router.init = (config, objects) => Router.init({
+  ...config,
+  extensions: [".js"],
+}, objects);
+
 const routes = [
   r("index"),
   ["svelte/+layout", { default: identity, recursive: true, name: "l0" }],
@@ -100,29 +105,31 @@ export default (test => {
       ],
     ];
     dbls.forEach(dbl => {
-      assert(() => Router.init({}, dbl as never)).throws("double route");
+      assert(() => init({} as never, dbl as never)).throws("double route");
     });
 
-    assert(() => Router.init({}, [
+    assert(() => init({} as never, [
       r("s/[p1]", "s/p1") as never,
       r("[p1]/s", "p1/s") as never,
     ])).nthrows();
 
-    assert(() => Router.init({}, [
+    assert(() => init({} as never, [
       r("[[optional]]/1", "o/1") as never,
     ])).throws("optional routes must be leaves");
 
-    assert(() => Router.init({}, [
+    assert(() => init({} as never, [
       r("[[...optional_catch]]/1", "o/1") as never,
     ])).throws("optional routes must be leaves");
 
-    assert(() => Router.init({}, [
+    assert(() => init({} as never, [
       r("[...optional_catch]/1", "o/1") as never,
     ])).throws("rest routes must be leaves");
   });
 
   test.case("match", assert => {
-    const router = Router.init({
+    const router = init({
+      import: true,
+      extensions: [".js"],
       specials: {
         guard: { recursive: true },
         error: { recursive: false },
@@ -194,7 +201,9 @@ export default (test => {
     const routes = [
       r("index"),
     ];
-    const router = Router.init({
+    const router = init({
+      import: true,
+      extensions: [".js"],
       specials: {
         guard: {
           recursive: true,
