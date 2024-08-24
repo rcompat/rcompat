@@ -26,6 +26,7 @@ export default class Build {
   #plugins: esbuild.Plugin[] = [];
   #artifacts: Record<string, unknown> = {};
   #exports: string[] = [];
+  #context?: esbuild.BuildContext;
 
   constructor(options: BuildOptions = {}, mode: typeof dev | typeof prod = dev) {
     is(options).object();
@@ -106,10 +107,17 @@ export default class Build {
       await context.rebuild();
       await context.watch();
       await context.serve(this.#hotreload);
+      this.#context = context;
     } else {
       await esbuild.build(build_options);
     }
     this.#started = true;
+  }
+
+  stop() {
+    if (this.#context !== undefined) {
+      this.#context.dispose();
+    }
   }
 
   get development() {
