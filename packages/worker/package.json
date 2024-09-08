@@ -1,0 +1,32 @@
+{
+  "name": "@rcompat/worker",
+  "version": "0.1.0",
+  "description": "web workers",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/worker"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {},
+  "type": "module",
+  "exports": {
+    ".": {
+      "livetypes": "./src/bun/index.ts",
+      "bun": "./lib/bun/index.js",
+      "deno": "./lib/deno/index.js",
+      "node": "./lib/node/index.js"
+    }
+  }
+}
