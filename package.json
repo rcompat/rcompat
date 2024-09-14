@@ -16,21 +16,21 @@
     "test": "tsx --conditions=livetypes ./node_modules/debris/src/bin.js"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
+    "@eslint/js": "^9.10.0",
     "@rcompat/fs": "workspace:^",
     "@rcompat/stdio": "workspace:^",
-    "@types/bun": "^1.1.6",
+    "@types/bun": "^1.1.9",
     "@types/busboy": "^1.5.4",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^20.14.9",
     "@types/ws": "^8.5.12",
     "debris": "^0.14.0",
-    "eslint": "^9.9.0",
+    "eslint": "^9.10.0",
     "livetypes": "^0.2.0",
-    "tsx": "^4.17.0",
+    "tsx": "^4.19.1",
     "types-deno": "^0.2.0-1.43.5",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.1.0"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.5.0"
   },
   "type": "module",
   "private": true
