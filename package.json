@@ -2,6 +2,7 @@
   "name": "@rcompat/monorepo",
   "version": "0.1.0",
   "description": "JavaScript interoperability and runtime compatibility layer for servers",
+  "type": "module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [],
@@ -15,6 +16,7 @@
     "lint:fix": "eslint . --fix",
     "test": "tsx --conditions=livetypes ./node_modules/debris/src/bin.js"
   },
+  "private": true,
   "devDependencies": {
     "@eslint/js": "^9.10.0",
     "@rcompat/fs": "workspace:^",
@@ -31,7 +33,5 @@
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.5.0"
-  },
-  "type": "module",
-  "private": true
+  }
 }
