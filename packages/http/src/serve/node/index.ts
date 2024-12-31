@@ -2,11 +2,10 @@ import get_options from "#get-options";
 import handle_ws from "#handle-ws";
 import is_secure from "#is-secure";
 import PseudoRequest from "#PseudoRequest";
+import Status from "#Status";
 import type Actions from "#types/Actions";
 import type Conf from "#types/Conf";
-import type Handler from "#types/Handler";
 import tryreturn from "@rcompat/async/tryreturn";
-import { INTERNAL_SERVER_ERROR } from "@rcompat/http/status";
 import override from "@rcompat/record/override";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Writable } from "node:stream";
@@ -54,7 +53,7 @@ export default async (handler: NullableHandler, conf?: Conf) => {
 
     const response = await tryreturn(async () => await handler(request))
       .orelse(async () =>
-        new Response(null, { status: INTERNAL_SERVER_ERROR }));
+        new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
 
     // keep the connection alive (101 switching protocols)
     if (response === null) {

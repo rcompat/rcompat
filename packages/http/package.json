@@ -49,8 +49,8 @@
       "node": "./lib/serve/node/index.js"
     },
     "./*": {
-      "livetypes": "./src/default/*/index.ts",
-      "default": "./lib/default/*/index.js"
+      "livetypes": "./src/default/*.ts",
+      "default": "./lib/default/*.js"
     }
   }
 }
