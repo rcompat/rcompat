@@ -1,5 +1,5 @@
 type Import = Record<string, unknown> & {
-  default: unknown
+  default?: unknown
 };
 
 export default Import;
