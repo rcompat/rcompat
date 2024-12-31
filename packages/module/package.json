@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/module",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "rcompat module module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -21,6 +21,10 @@
   },
   "type": "module",
   "exports": {
+    "./import": {
+      "livetypes": "./src/import/index.ts",
+      "default": "./lib/import/index.js"
+    },
     ".": {
       "livetypes": "./src/index.ts",
       "default": "./lib/index.js"
