@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/record",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "record helpers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@rcompat/core": "workspace:^",
-    "@rcompat/invariant": "^0.5.0"
+    "@rcompat/invariant": "workspace:^"
   },
   "type": "module",
   "imports": {
