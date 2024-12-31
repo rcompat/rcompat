@@ -24,7 +24,7 @@
     "@rcompat/core": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/package": "workspace:^",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.7"
   },
   "type": "module",
   "imports": {

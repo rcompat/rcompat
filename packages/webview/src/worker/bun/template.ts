@@ -26,7 +26,7 @@ const events: any = {
   }
 };
 
-self.addEventListener("message", (event: MessageEvent) => {
+self.addEventListener("message", (event: Bun.MessageEvent) => {
   const { name, params = [] } = event.data;
   events[name](...params);
 });
