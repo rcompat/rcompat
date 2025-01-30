@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/http",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "HTTP module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
