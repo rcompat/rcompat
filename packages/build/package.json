@@ -24,7 +24,7 @@
     "@rcompat/function": "workspace:^",
     "@rcompat/invariant": "workspace:^",
     "@rcompat/record": "workspace:^",
-    "esbuild": "^0.24.2"
+    "esbuild": "^0.25.0"
   },
   "type": "module",
   "exports": {
