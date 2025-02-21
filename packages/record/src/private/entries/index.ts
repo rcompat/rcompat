@@ -1,3 +1,4 @@
+import Dictionary from "#Dictionary";
 import is from "@rcompat/invariant/is";
 
 type Entry<K extends string, V> = [K, V];
@@ -25,13 +26,13 @@ class Entries<K extends string, V> {
     return new Entries(this.#entries.map(mapper));
   }
 
-  mapKey(mapper: (entry: Entry<K, V>) => K): Entries<K, V> {
+  keymap(mapper: (entry: Entry<K, V>) => K): Entries<K, V> {
     is(mapper).function();
 
     return new Entries(this.#entries.map(entry => [mapper(entry), entry[1]]));
   }
 
-  mapValue<U>(mapper: (entry: Entry<K, V>) => U): Entries<K, U> {
+  valmap<U>(mapper: (entry: Entry<K, V>) => U): Entries<K, U> {
     is(mapper).function();
 
     return new Entries(this.#entries.map(entry => [entry[0], mapper(entry)]));
@@ -43,6 +44,10 @@ class Entries<K extends string, V> {
 
   [Symbol.iterator](): IterableIterator<Entry<K, V>> {
     return this.#entries.values()
+  }
+
+  static dict(dictionary: Dictionary): Entries<string, unknown> {
+    return new Entries(Object.entries(dictionary));
   }
 }
 
