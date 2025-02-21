@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/record",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "record helpers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
