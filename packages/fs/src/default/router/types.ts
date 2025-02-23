@@ -13,9 +13,9 @@ export interface RouterConfig extends RouterNodeConfig {
   extensions: [string];
 }
 
-export interface MatchedRoute {
+export interface MatchedRoute<Route extends Import> {
   path: string;
-  file: Import;
+  file: Route;
   specials: Record<PropertyKey, Function[]>;
   params: Record<PropertyKey, unknown>;
 }

@@ -15,10 +15,13 @@ const defaults = {
   import: true,
 } satisfies RouterConfig;
 
-export default class Router {
+export type NodePredicate<Route extends Import, Special extends Import> =
+  (node: Node<Route, Special>) => boolean | undefined;
+
+export default class Router<Route extends Import, Special extends Import> {
   static Error = errors;
 
-  #root;
+  #root: Node<Route, Special>;
   #config: RouterConfig;
 
   constructor(config: RouterConfig) {
@@ -30,7 +33,7 @@ export default class Router {
     this.#root = new Node(null, "$");
   }
 
-  #add(node: Node, parts: string[], file: Import) {
+  #add(node: Node<Route, Special>, parts: string[], file: Route | Special) {
     const [first, ...rest] = parts;
     // leaves 
     if (parts.length === 1) {
@@ -49,13 +52,13 @@ export default class Router {
       ?? root.match(request, $parts);
   }
 
-  init(objects: [string, Import][]) {
+  init(objects: [string, Route | Special][]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
       this.#add(this.#root, webpath(path).split("/"), file);
     }
 
     // check for duplicates
-    this.#root.check((node: Node) => {
+    this.#root.check((node: Node<Route, Special>) => {
       if (node.doubled) {
         throw new errors.DoubleRoute(node.path);
       }
@@ -99,7 +102,7 @@ export default class Router {
   }
 
   depth(special: string) {
-    return this.#root.max((node: Node) => node.specials()
+    return this.#root.max((node: Node<Route, Special>) => node.specials()
       .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
   }
 

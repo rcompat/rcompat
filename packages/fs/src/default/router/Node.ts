@@ -1,4 +1,5 @@
 import type { MatchedRoute, Import, RouterNodeConfig } from "./types.js";
+import { NodePredicate } from "./index.js";
 
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
@@ -56,17 +57,16 @@ const to_type = (path: string) => {
 
 type Collected = Record<PropertyKey, Function[]>;
 type Params = Record<PropertyKey, unknown>;
-type NodePredicate = (node: Node) => boolean | undefined;
 
-export default class Node {
-  #parent: Node | null;
-  #children: Node[] = [];
+export default class Node<Route extends Import, Special extends Import> {
+  #parent: Node<Route, Special> | null;
+  #children: Node<Route, Special>[] = [];
   #path: string;
   #type: symbol;
-  #file?: Import;
+  #file?: Route | Special;
   static #config: RouterNodeConfig;
 
-  constructor(parent: Node | null, path: string, file?: Import) {
+  constructor(parent: Node<Route, Special> | null, path: string, file?: Route | Special) {
     this.#parent = parent;
     this.#type = to_type(path);
     this.#path = path.startsWith("[[") ? path.slice(1, -1) : path;
@@ -77,7 +77,7 @@ export default class Node {
     this.#config = {...config};
   }
 
-  check(predicate: NodePredicate): undefined {
+  check(predicate: NodePredicate<Route, Special>): undefined {
     predicate(this);
 
     for (const child of this.#children) {
@@ -104,7 +104,7 @@ export default class Node {
 
   // collects depth values for all nodes that satisfy a predicate, returning
   // the highest max
-  max(predicate: NodePredicate, depth = 1) {
+  max(predicate: NodePredicate<Route, Special>, depth = 1) {
     const max = predicate(this) ? [depth] : [depth - 1];
     for (const child of this.#children) {
       max.push(child.max(predicate, depth + 1));
@@ -131,8 +131,8 @@ export default class Node {
     return parent.collect(collected, true);
   }
 
-  filed(path: string, file: Import) {
-    this.#children.push(new Node(this, path, file));
+  filed(path: string, file: Route | Special) {
+    this.#children.push(new Node<Route, Special>(this, path, file));
   }
 
   interim(path: string) {
@@ -190,16 +190,16 @@ export default class Node {
     return file && Node.#config.predicate(file, request);
   }
 
-  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute | undefined {
+  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute<Route> | undefined {
     const path = this.#path;
     const specials = this.collect();
     // static match
     if (this.#path === parts[0]) {
-      return { path, file: file as Import, specials, params };
+      return { path, file: file as Route, specials, params };
     }
     // catch always matches
     if (match_catch && this.catch) {
-      return { path, file: file as Import, specials,
+      return { path, file: file as Route, specials,
         params: {
           ...params,
           [this.#path.slice(1, -1)]: parts[0],
@@ -208,7 +208,7 @@ export default class Node {
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
-      return { path, file: file as Import, specials,
+      return { path, file: file as Route, specials,
         params: {
           ...params,
           [name]: params[name] ? params[name] : parts[0],
@@ -269,7 +269,7 @@ export default class Node {
     }
   }
 
-  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute | undefined {
+  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute<Route> | undefined {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
       return this.next(request, parts, match_catch, params);
