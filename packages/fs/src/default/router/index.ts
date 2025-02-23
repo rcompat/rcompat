@@ -1,9 +1,11 @@
+import FileRef from "#FileRef";
 import collect from "@rcompat/fs/collect";
 import webpath from "@rcompat/fs/webpath";
 import override from "@rcompat/record/override";
 import Node from "./Node.js";
 import * as errors from "./errors.js";
-import type { Route, RouteEntry, RouterConfig } from "./types.js";
+import type { RouterConfig } from "./types.js";
+import type { Import } from "./types.js";
 
 const defaults = {
   directory: undefined,
@@ -28,9 +30,9 @@ export default class Router {
     this.#root = new Node(null, "$");
   }
 
-  #add(node: Node, parts: string[], file: Route) {
+  #add(node: Node, parts: string[], file: Import) {
     const [first, ...rest] = parts;
-    // anchor
+    // leaves 
     if (parts.length === 1) {
       node.filed(first, file);
     } else {
@@ -47,7 +49,7 @@ export default class Router {
       ?? root.match(request, $parts);
   }
 
-  init(objects: RouteEntry[]) {
+  init(objects: [string, Import][]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
       this.#add(this.#root, webpath(path).split("/"), file);
     }
@@ -78,7 +80,7 @@ export default class Router {
     return this;
   }
 
-  static init(config: RouterConfig, objects: RouteEntry[]) {
+  static init<Route extends Import, Special extends Import>(config: RouterConfig, objects: [string, Route | Special][]) {
     return new Router(config).init(objects);
   }
 
@@ -88,7 +90,7 @@ export default class Router {
 
     this.init(directory === undefined ? [] : await Promise.all(
       (await collect(directory, re, { recursive: true }))
-        .map(async (file: any) => [
+        .map(async (file: FileRef) => [
           `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
           this.#config.import && await file.import(),
         ])));

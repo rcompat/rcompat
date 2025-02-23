@@ -1,8 +1,7 @@
-import type { DebrisTestSuite } from "@rcompat/core";
-import crypto from "@rcompat/crypto";
 import FileRef from "#FileRef";
+import crypto from "@rcompat/crypto";
 
-export default (test => {
+export default test => {
   test.case("write", async assert => {
     const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
     const file = FileRef.new(filename);
@@ -17,4 +16,4 @@ export default (test => {
     assert(await file.text()).equals("test");
     await file.remove();
   });
-}) satisfies DebrisTestSuite;
+};

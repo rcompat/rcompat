@@ -22,8 +22,8 @@
   "dependencies": {
     "@rcompat/core": "workspace:^",
     "@rcompat/crypto": "workspace:^",
-    "@rcompat/invariant": "workspace:^",
     "@rcompat/function": "workspace:^",
+    "@rcompat/invariant": "workspace:^",
     "@rcompat/record": "workspace:^"
   },
   "type": "module",
@@ -48,5 +48,8 @@
       "livetypes": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
     }
+  },
+  "devDependencies": {
+    "@rcompat/module": "workspace:^"
   }
 }

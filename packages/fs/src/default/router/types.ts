@@ -1,4 +1,4 @@
-export type RouteEntry = [string, Route | Special];
+import Dictionary from "@rcompat/record/Dictionary";
 
 export interface RouterNodeConfig {
   specials?: Record<PropertyKey, {
@@ -13,17 +13,11 @@ export interface RouterConfig extends RouterNodeConfig {
   extensions: [string];
 }
 
-export interface Route {
-  default: Record<PropertyKey, unknown>;
-}
-
-export interface Special extends Route {
-  recursive: boolean,
-}
-
 export interface MatchedRoute {
   path: string;
-  file: Route;
+  file: Import;
   specials: Record<PropertyKey, Function[]>;
   params: Record<PropertyKey, unknown>;
 }
+
+export type Import = Dictionary & { default: unknown };

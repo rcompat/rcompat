@@ -1,4 +1,4 @@
-import type { MatchedRoute, Route, RouterNodeConfig } from "./types.js";
+import type { MatchedRoute, Import, RouterNodeConfig } from "./types.js";
 
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
@@ -8,7 +8,7 @@ const OPTIONAL_CATCH = Symbol("optional-catch");
 const REST = Symbol("rest");
 const OPTIONAL_REST = Symbol("optional-rest");
 
-const type_to_string = (symbol: Symbol) => {
+const type_to_string = (symbol: symbol) => {
   if (symbol === ROOT) {
     return "root";
   }
@@ -62,11 +62,11 @@ export default class Node {
   #parent: Node | null;
   #children: Node[] = [];
   #path: string;
-  #type: Symbol;
-  #file?: Route;
+  #type: symbol;
+  #file?: Import;
   static #config: RouterNodeConfig;
 
-  constructor(parent: Node | null, path: string, file?: Route) {
+  constructor(parent: Node | null, path: string, file?: Import) {
     this.#parent = parent;
     this.#type = to_type(path);
     this.#path = path.startsWith("[[") ? path.slice(1, -1) : path;
@@ -131,7 +131,7 @@ export default class Node {
     return parent.collect(collected, true);
   }
 
-  filed(path: string, file: Route) {
+  filed(path: string, file: Import) {
     this.#children.push(new Node(this, path, file));
   }
 
@@ -195,11 +195,11 @@ export default class Node {
     const specials = this.collect();
     // static match
     if (this.#path === parts[0]) {
-      return { path, file: file as Route, specials, params };
+      return { path, file: file as Import, specials, params };
     }
     // catch always matches
     if (match_catch && this.catch) {
-      return { path, file: file as Route, specials,
+      return { path, file: file as Import, specials,
         params: {
           ...params,
           [this.#path.slice(1, -1)]: parts[0],
@@ -208,7 +208,7 @@ export default class Node {
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
-      return { path, file: file as Route, specials,
+      return { path, file: file as Import, specials,
         params: {
           ...params,
           [name]: params[name] ? params[name] : parts[0],

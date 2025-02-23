@@ -1,9 +1,8 @@
-import type { DebrisTestSuite } from "@rcompat/core";
 import identity from "@rcompat/function/identity";
 import Router from "@rcompat/fs/router";
 
 const domain = "https://rcompat.dev";
-const r = (route: any, expected = route) => [route, {
+const r = (route, expected = route) => [route, {
   default: {
     get() {
       return expected;
@@ -14,7 +13,7 @@ const r = (route: any, expected = route) => [route, {
   },
 }];
 
-const init: typeof Router.init = (config, objects) => Router.init({
+const init = (config, objects) => Router.init({
   ...config,
   extensions: [".js"],
 }, objects);
@@ -60,7 +59,7 @@ const routes = [
   r("test/[test]/view", "testtestview"),
 ];
 
-export default (test => {
+export default test => {
   test.case("errors", assert => {
     const dbls = [
       // same dynamic
@@ -105,24 +104,24 @@ export default (test => {
       ],
     ];
     dbls.forEach(dbl => {
-      assert(() => init({} as never, dbl as never)).throws("double route");
+      assert(() => init({}, dbl)).throws("double route");
     });
 
-    assert(() => init({} as never, [
-      r("s/[p1]", "s/p1") as never,
-      r("[p1]/s", "p1/s") as never,
+    assert(() => init({}, [
+      r("s/[p1]", "s/p1"),
+      r("[p1]/s", "p1/s"),
     ])).nthrows();
 
-    assert(() => init({} as never, [
-      r("[[optional]]/1", "o/1") as never,
+    assert(() => init({}, [
+      r("[[optional]]/1", "o/1"),
     ])).throws("optional routes must be leaves");
 
-    assert(() => init({} as never, [
-      r("[[...optional_catch]]/1", "o/1") as never,
+    assert(() => init({}, [
+      r("[[...optional_catch]]/1", "o/1"),
     ])).throws("optional routes must be leaves");
 
-    assert(() => init({} as never, [
-      r("[...optional_catch]/1", "o/1") as never,
+    assert(() => init({}, [
+      r("[...optional_catch]/1", "o/1"),
     ])).throws("rest routes must be leaves");
   });
 
@@ -136,20 +135,20 @@ export default (test => {
         layout: { recursive: true },
       },
       predicate(route, request) {
-        return (route.default as never)[request.method.toLowerCase()] !== undefined;
+        return route.default[request.method.toLowerCase()] !== undefined;
       },
-    }, routes as never);
+    }, routes);
 
-    const match = (assert: any) => (path: any, route: any, expected_fn?: any) => {
+    const match = assert => (path, route, expected_fn) => {
       [path, `${path}/`].forEach(p => {
-        const { file, ...rest } : any = router.match(new Request(`${domain}${p}`));
+        const { file, ...rest } = router.match(new Request(`${domain}${p}`));
         assert(file.default.get()).equals(route);
         expected_fn?.(rest);
       });
     };
     const matcher = match(assert);
-    const p = (expected: any) => ({ params } : { params: any }) => assert(params).equals(expected);
-    const s = (special: any, undef?: any) => (i: any, expected?: any) => ({ specials } : { specials: any }) => {
+    const p = (expected) => ({ params }) => assert(params).equals(expected);
+    const s = (special, undef) => (i, expected) => ({ specials }) => {
       assert(specials[special]?.[i]?.name).equals(undef ? undefined : expected);
     };
     const l = s("layout");
@@ -157,15 +156,15 @@ export default (test => {
     const e = s("error");
     const ne = s("error", true);
     const nl = s("layout", true);
-    const $ = (...conditions: any) => (rest: any) =>
-      conditions.forEach((condition: any) => condition(rest));
+    const $ = (...conditions) => rest =>
+      conditions.forEach(condition => condition(rest));
     matcher("/", "index");
     matcher("/ws", "ws");
     matcher("/svelte", "svelte");
     matcher("/svelte-nodb", "svelte-nodb");
     matcher("/svelte/svelte", "svelte/svelte");
     matcher("/svelte/test", "svelte/test",
-      $(l(0, "l1"), l(1, "l0"), g(0, "g1"), g(1, "g0"), e(0, "e1"), (ne as any)(1)));
+      $(l(0, "l1"), l(1, "l0"), g(0, "g1"), g(1, "g0"), e(0, "e1"), ne(1)));
     matcher("/svelte/test2", "svelte/p2", p({ p2: "test2" }));
     matcher("/svelte/svelte", "svelte/svelte",
       $(l(0, "l0"), g(0, "g0"), e(0, "e0")));
@@ -216,17 +215,17 @@ export default (test => {
         },
       },
       predicate(route, request) {
-        return (route.default as any)[request.method.toLowerCase()] !== undefined;
+        return route.default[request.method.toLowerCase()] !== undefined;
       },
-    }, routes as never);
-    const match = (assert: any) => (request: any, route?: any, expected_fn?: any) => {
+    }, routes);
+    const match = assert => (request, route, expected_fn) => {
       [request].forEach(p => {
         const { file, ...rest } = router.match(p) ?? {};
-        assert((file?.default.get as any)()).equals(route);
+        assert((file?.default.get)()).equals(route);
         expected_fn?.(rest);
       });
     };
     const matcher = match(assert);
     matcher(new Request(domain, { method: "GET" }), "index");
   });
-}) satisfies DebrisTestSuite;
+};
