@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fs",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "rcompat fs module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
