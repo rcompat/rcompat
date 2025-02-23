@@ -83,10 +83,6 @@ export default class Router<Route extends Import, Special extends Import> {
     return this;
   }
 
-  static init<Route extends Import, Special extends Import>(config: RouterConfig, objects: [string, Route | Special][]) {
-    return new Router(config).init(objects);
-  }
-
   async load() {
     const { directory, extensions } = this.#config;
     const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
@@ -104,6 +100,10 @@ export default class Router<Route extends Import, Special extends Import> {
   depth(special: string) {
     return this.#root.max((node: Node<Route, Special>) => node.specials()
       .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
+  }
+  
+  static init<Route extends Import, Special extends Import>(config: RouterConfig, objects: [string, Route | Special][]) {
+    return new Router<Route, Special>(config).init(objects);
   }
 
   static load(config: RouterConfig) {
