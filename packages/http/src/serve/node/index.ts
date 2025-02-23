@@ -1,9 +1,10 @@
+import type Actions from "#Actions";
 import get_options from "#get-options";
 import handle_ws from "#handle-ws";
 import is_secure from "#is-secure";
 import PseudoRequest from "#PseudoRequest";
+import type Server from "#Server";
 import Status from "#Status";
-import type Actions from "#types/Actions";
 import type Conf from "#types/Conf";
 import tryreturn from "@rcompat/async/tryreturn";
 import override from "@rcompat/record/override";
@@ -30,7 +31,7 @@ const defaults: Conf = {
 type NullableHandler = (request: Request | PseudoRequest) =>
   Response | Promise<Response> | Promise<null>;
 
-export default async (handler: NullableHandler, conf?: Conf) => {
+export default async (handler: NullableHandler, conf?: Conf): Promise<Server> => {
   const $conf = override(defaults, conf ?? {});
 
   const module = await import(is_secure($conf) ? "https" : "http");
@@ -82,11 +83,14 @@ export default async (handler: NullableHandler, conf?: Conf) => {
   }).listen($conf.port, $conf.host);
 
   return {
-    upgrade({ original }: PseudoRequest, actions: Actions) {
+    upgrade(request: PseudoRequest, actions: Actions) {
+      const { original } = request;
       const null_buffer = Buffer.from([]);
       wss.handleUpgrade(original, original.socket, null_buffer, socket => {
         handle_ws(socket, actions);
       });
     },
+    // currently noop
+    stop() {},
   };
 };

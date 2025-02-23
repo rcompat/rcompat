@@ -1,10 +1,11 @@
+import type Actions from "#Actions";
 import get_options from "#get-options";
-import type Actions from "#types/Actions";
+import type Server from "#Server";
 import type Conf from "#types/Conf";
 import type Handler from "#types/Handler";
 import type { ServerWebSocket } from "bun";
 
-export default async (handler: Handler, conf: Conf) => {
+export default async (handler: Handler, conf: Conf): Promise<Server> => {
   const server = Bun.serve({
     port: conf.port,
     hostname: conf.host,
@@ -24,7 +25,7 @@ export default async (handler: Handler, conf: Conf) => {
   });
 
   return {
-    upgrade(request: Request, actions: Actions) {
+    upgrade(request: Request, actions) {
       server.upgrade(request, { data: { actions } });
     },
     stop() {

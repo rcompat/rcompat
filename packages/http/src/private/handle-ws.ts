@@ -1,4 +1,4 @@
-import type Actions from "#types/Actions";
+import type Actions from "#Actions";
 
 export default (socket: WebSocket, actions: Actions) => {
   if (actions.message !== undefined) {
