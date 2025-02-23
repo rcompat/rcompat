@@ -7,7 +7,6 @@ import type { Route, RouteEntry, RouterConfig } from "./types.js";
 
 const defaults = {
   directory: undefined,
-  extensions: [".js"],
   specials: {},
   predicate: () => true,
   import: true,
@@ -83,7 +82,8 @@ export default class Router {
   }
 
   async load() {
-    const { directory, extensions } = this.#config;
+    const { directory } = this.#config;
+    const extensions = [".js"];
     const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
 
     this.init(directory === undefined ? [] : await Promise.all(
