@@ -16,6 +16,7 @@ const r = (route: any, expected = route) => [route, {
 
 const init: typeof Router.init = (config, objects) => Router.init({
   ...config,
+  extensions: [".js"],
 }, objects);
 
 const routes = [
@@ -128,6 +129,7 @@ export default (test => {
   test.case("match", assert => {
     const router = init({
       import: true,
+      extensions: [".js"],
       specials: {
         guard: { recursive: true },
         error: { recursive: false },
@@ -201,6 +203,7 @@ export default (test => {
     ];
     const router = init({
       import: true,
+      extensions: [".js"],
       specials: {
         guard: {
           recursive: true,
