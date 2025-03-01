@@ -28,7 +28,7 @@ const defaults: Conf = {
   port: 6161,
 };
 
-type NullableHandler = (request: Request | PseudoRequest) =>
+type NullableHandler = (request: Request) =>
   Response | Promise<Response> | Promise<null>;
 
 export default async (handler: NullableHandler, conf?: Conf): Promise<Server> => {
@@ -52,7 +52,7 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
 
     const request = new PseudoRequest(`${url}`, node_request);
 
-    const response = await tryreturn(async () => await handler(request))
+    const response = await tryreturn(async () => await handler(request as Request))
       .orelse(async () =>
         new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
 

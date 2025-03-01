@@ -1,24 +1,31 @@
 import is from "@rcompat/invariant/is";
-import stringify from "@rcompat/streams/stringify";
 import busboy from "busboy";
 import type { IncomingMessage } from "node:http";
+import type { RequestDuplex } from "undici-types";
 import { Readable } from "node:stream";
+import { arrayBuffer, blob, json, text } from "node:stream/consumers";
 
 export type Entry = [PropertyKey, unknown];
 export type CallableEntriesFn = {entries: () => Iterable<readonly [PropertyKey, any]>};
 
+const no_body = ["GET", "HEAD"];
+
+const unimplemented = () => {
+  throw new Error("unimplemented");
+};
+
 export default class PseudoRequest {
-  #original;
-  #body: ReadableStream<any> | IncomingMessage | null = null;
+  #incoming: IncomingMessage;
+  #body: ReadableStream<any> | null = null;
+  #body_used = false;
   #headers = new Headers();
   #url;
   #method;
-  #parsed = false;
 
-  constructor(url: string, original: IncomingMessage) {
-    this.#original = original;
+  constructor(url: string, incoming: IncomingMessage) {
+    this.#incoming = incoming;
 
-    const { headers, method = "GET" } = original;
+    const { headers, method = "GET" } = incoming;
 
     is(url).string();
     this.#url = url;
@@ -30,41 +37,114 @@ export default class PseudoRequest {
     Object.entries(headers)
       .filter((header): header is [string, string] => typeof header[1] === "string")
       .forEach(entry => this.#headers.set(...entry));
-
-    this.#init_body();
   }
 
-  get #has_body() {
-    return["GET", "HEAD"].includes(this.#method);
+  get #parsable() {
+    return this.#body === null && !no_body.includes(this.#method);
   }
 
-  #init_body() {
-    // unparsed
-    this.#body = this.#has_body ? null : this.#original;
-  }
-
-  #parse_body() {
-    if (this.#has_body && !this.#parsed) {
-      this.#body = Readable.toWeb(this.#original);
-      this.#parsed = true;
+  get body() {
+    this.#use_body();
+    if (this.#parsable) {
+      this.#body = Readable.toWeb(this.#incoming);
     }
+    return this.#body;
   }
 
-  text() {
-    this.#body = Readable.toWeb(this.#original);
-    return stringify(this.#body);
+  get bodyUsed() {
+    return this.#body_used;
   }
 
-  async json() {
-    this.#body = Readable.toWeb(this.#original);
-    return JSON.parse(await stringify(this.#body));
+  get cache() {
+    return "default";
   }
 
-  async formData(): Promise<CallableEntriesFn> {
-    this.#parse_body();
-    const bb = busboy({ headers: this.#original.headers });
-    const fields: Entry[] = [];
-    let resolve: (value: CallableEntriesFn) => void;
+  get credentials() {
+     return "same-origin";
+  }
+
+  get destination() {
+    return "";
+  }
+
+  get duplex(): RequestDuplex {
+    return "half";
+  }
+
+  get headers(): unknown {
+    return this.#headers;
+  }
+
+  get integrity() {
+    return "";
+  }
+
+  get keepalive() {
+    return true;
+  }
+
+  get method() {
+    return this.#method;
+  }
+
+  get mode() {
+    return "same-origin";
+  }
+
+  get redirect() {
+    return "follow";
+  }
+
+  get referrer() {
+    return this.#incoming.headers.referer;
+  }
+
+  get referrerPolicy() {
+    return "";
+  }
+
+  get signal() {
+    unimplemented();
+    // ts;
+    return new AbortSignal();
+  }
+
+  get url() {
+    return this.#url;
+  }
+
+  // not in spec
+  get original() {
+    return this.#incoming;
+  }
+
+  #use_body() {
+    if (this.#body_used) {
+      throw new Error("ERR_BODY_ALREADY_USED");
+    }
+    this.#body_used = true;
+  }
+
+  arrayBuffer() {
+    this.#use_body();
+    return arrayBuffer(this.#incoming);
+  }
+
+  blob() {
+    this.#use_body();
+    return blob(this.#incoming);
+  }
+
+  clone() {
+    unimplemented();
+    // ts
+    return this;
+  }
+
+  async formData(): Promise<FormData> {
+    const bb = busboy({ headers: this.#incoming.headers });
+    const form_data = new FormData();
+    let resolve: (value: FormData) => void;
 
     bb.on("file", (name, file, info) => {
       const buffers: any[]= [];
@@ -73,42 +153,29 @@ export default class PseudoRequest {
       file.on("data", data => {
         buffers.push(data);
       }).on("close", () => {
-        fields.push([name, new Blob([Buffer.concat(buffers)], { type })]);
+        form_data.set(name, new Blob([Buffer.concat(buffers)], { type }));
       });
     });
     bb.on("field", (name, value) => {
-      fields.push([name, value]);
+      form_data.set(name, value);
     });
     bb.on("close", () => {
-      resolve({
-        entries() {
-          return fields;
-        },
-      });
+      resolve(form_data);
     });
-    this.#original.pipe(bb);
+    this.#incoming.pipe(bb);
+
     return new Promise($resolve => {
       resolve = $resolve;
     });
   }
 
-  get original() {
-    return this.#original;
+  async json() {
+    this.#use_body();
+    return json(this.#incoming);
   }
 
-  get headers(): any {
-    return this.#headers;
-  }
-
-  get url() {
-    return this.#url;
-  }
-
-  get body() {
-    return this.#body;
-  }
-
-  get method() {
-    return this.#method;
+  async text() {
+    this.#use_body();
+    return text(this.#incoming);
   }
 }

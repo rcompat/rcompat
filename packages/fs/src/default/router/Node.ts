@@ -55,7 +55,6 @@ const to_type = (path: string) => {
   return STATIC;
 };
 
-type Collected = Record<PropertyKey, Function[]>;
 type Params = Record<PropertyKey, unknown>;
 
 export default class Node<Route extends Import, Special extends Import> {
@@ -112,8 +111,9 @@ export default class Node<Route extends Import, Special extends Import> {
     return Math.max(...[...max].flat());
   }
 
-  collect(collected: Collected = {}, recursed = false): Collected {
+  collect(collected: {[s in string]?: Special[]} = {}, recursed = false): {[s in string]?: Special[]} {
     const { parent } = this;
+
     // root
     if (parent === null) {
       return collected;
@@ -184,18 +184,19 @@ export default class Node<Route extends Import, Special extends Import> {
   }
 
   check_predicate(request: Request, file = this.#file) {
-    if (!Node.#config.predicate) {
+    if (!Node.config.predicate) {
       return true;
     }
-    return file && Node.#config.predicate(file, request);
+    return file && Node.config.predicate(file, request);
   }
 
-  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute<Route> | undefined {
+  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute<Route, Special> | undefined {
     const path = this.#path;
     const specials = this.collect();
+
     // static match
     if (this.#path === parts[0]) {
-      return { path, file: file as Route, specials, params };
+      return { path, file: file as Route, specials: specials, params };
     }
     // catch always matches
     if (match_catch && this.catch) {
@@ -269,7 +270,7 @@ export default class Node<Route extends Import, Special extends Import> {
     }
   }
 
-  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute<Route> | undefined {
+  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute<Route, Special> | undefined {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
       return this.next(request, parts, match_catch, params);

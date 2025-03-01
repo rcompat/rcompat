@@ -13,10 +13,10 @@ export interface RouterConfig extends RouterNodeConfig {
   extensions: [string];
 }
 
-export interface MatchedRoute<Route extends Import> {
+export interface MatchedRoute<Route extends Import, Special extends Import> {
   path: string;
   file: Route;
-  specials: Record<PropertyKey, Function[]>;
+  specials: {[s in string]?: Special[]},
   params: Record<PropertyKey, unknown>;
 }
 

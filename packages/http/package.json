@@ -52,5 +52,8 @@
       "livetypes": "./src/default/*.ts",
       "default": "./lib/default/*.js"
     }
+  },
+  "devDependencies": {
+    "undici-types": "^7.4.0"
   }
 }
