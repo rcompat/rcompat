@@ -1,4 +1,4 @@
-import type Conf from "#types/Conf";
+import type Conf from "#Conf";
 import { FileRef } from "@rcompat/fs/file";
 import is from "@rcompat/invariant/is";
 

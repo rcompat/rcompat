@@ -1,8 +1,7 @@
 import type Actions from "#Actions";
-import PseudoRequest from "#PseudoRequest";
 
 type Server = {
-  upgrade(request: Request | PseudoRequest, actions: Actions): undefined;
+  upgrade(request: Request, actions: Actions): undefined;
   stop(): undefined;
 }
 

@@ -5,7 +5,7 @@ import is_secure from "#is-secure";
 import PseudoRequest from "#PseudoRequest";
 import type Server from "#Server";
 import Status from "#Status";
-import type Conf from "#types/Conf";
+import type Conf from "#Conf";
 import tryreturn from "@rcompat/async/tryreturn";
 import override from "@rcompat/record/override";
 import type { IncomingMessage, ServerResponse } from "node:http";
@@ -83,8 +83,8 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
   }).listen($conf.port, $conf.host);
 
   return {
-    upgrade(request: PseudoRequest, actions: Actions) {
-      const { original } = request;
+    upgrade(request: Request, actions: Actions) {
+      const { original } = request as PseudoRequest;
       const null_buffer = Buffer.from([]);
       wss.handleUpgrade(original, original.socket, null_buffer, socket => {
         handle_ws(socket, actions);

@@ -1,7 +1,7 @@
 import type Actions from "#Actions";
+import type Conf from "#Conf";
 import get_options from "#get-options";
 import type Server from "#Server";
-import type Conf from "#types/Conf";
 import type Handler from "#types/Handler";
 import type { ServerWebSocket } from "bun";
 

@@ -1,5 +1,5 @@
+import type Conf from "#Conf";
 import is_secure from "#is-secure";
-import type Conf from "#types/Conf";
 import is from "@rcompat/invariant/is";
 
 export default async (conf: Conf) => {
