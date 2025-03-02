@@ -32,7 +32,10 @@ export default (fns: CascadeFunction[], final_fn?: CascadedFunction): CascadedFu
   const final_fn_ = final_fn ?? identity;
   is(fns).array();
 
+  if (fns.length === 0 && final_fn === undefined) {
+    return identity;
+  }
+
   return fns.reduceRight((next: any, fn: any) => async (value: any) =>
-    fn(value, await Promise.resolve(next)), 
-  Promise.resolve(final_fn_));
+    fn(value, await Promise.resolve(next)), Promise.resolve(final_fn_));
 };
