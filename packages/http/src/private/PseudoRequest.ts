@@ -44,7 +44,6 @@ export default class PseudoRequest {
   }
 
   get body() {
-    this.#use_body();
     if (this.#parsable) {
       this.#body = Readable.toWeb(this.#incoming);
     }
