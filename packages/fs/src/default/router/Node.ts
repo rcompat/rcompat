@@ -76,6 +76,10 @@ export default class Node<Route extends Import, Special extends Import> {
     this.#config = {...config};
   }
 
+  static get config() {
+    return this.#config;
+  }
+
   check(predicate: NodePredicate<Route, Special>): undefined {
     predicate(this);
 

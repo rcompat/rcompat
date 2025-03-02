@@ -21,6 +21,7 @@ export default tseslint.config(
       },
     },
     rules: {
+      "accessor-pairs": "error",
       "@typescript-eslint/await-thenable": "error",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
