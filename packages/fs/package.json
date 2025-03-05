@@ -19,6 +19,10 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "devDependencies": {
+    "@rcompat/module": "workspace:^",
+    "@rcompat/string": "workspace:^"
+  },
   "dependencies": {
     "@rcompat/core": "workspace:^",
     "@rcompat/crypto": "workspace:^",
@@ -48,8 +52,5 @@
       "livetypes": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
     }
-  },
-  "devDependencies": {
-    "@rcompat/module": "workspace:^"
   }
 }

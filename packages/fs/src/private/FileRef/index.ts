@@ -6,13 +6,17 @@ import streamable from "@rcompat/fs/streamable";
 import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
+import Dictionary from "@rcompat/record/Dictionary";
+import type { Replacer, default as StringLike } from "@rcompat/string/StringLike";
 import { basename, dirname, extname, join } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
   // make sure the directory exists
-  !await directory.exists() && await directory.create();
+  if (!await directory.exists()) {
+    await directory.create();
+  }
 };
 
 const { decodeURIComponent: decode } = globalThis;
@@ -29,13 +33,13 @@ export type Path = FileRef | string;
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
-export default class FileRef {
-  path: string;
+export default class FileRef implements StringLike {
+  #path: string;
   #streamable = streamable;
 
   constructor(path: Path) {
     defined(path);
-    this.path = parse(as_string(path));
+    this.#path = parse(as_string(path));
   }
 
   static new(path: Path) {
@@ -44,6 +48,14 @@ export default class FileRef {
 
   toString() {
     return this.path;
+  }
+
+  [Symbol.replace](string: string, replacement: string | Replacer) {
+    if (typeof replacement === "string") {
+      return string.replace(this.toString(), replacement);
+    } else {
+      return string.replace(this.toString(), replacement);
+    }
   }
 
   webpath() {
@@ -68,7 +80,7 @@ export default class FileRef {
     return native.kind(this.path);
   }
 
-  list(filter: Z.DirectoryFilter, options: {}) {
+  list(filter: Z.DirectoryFilter, options: Dictionary) {
     return native.list(this.path, filter, options);
   }
 
@@ -95,6 +107,10 @@ export default class FileRef {
   isFile() {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
+  }
+
+  get path() {
+    return this.#path;
   }
 
   get directory() {
@@ -155,7 +171,7 @@ export default class FileRef {
     return native.create(this.path, options);
   }
 
-  async remove(options?: {}) {
+  async remove(options?: Dictionary) {
     maybe(options).object();
 
     return native.remove(this.path, options);
