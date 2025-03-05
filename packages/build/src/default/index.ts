@@ -6,6 +6,7 @@ import reload_defaults from "@rcompat/build/reload/defaults";
 import reload_path from "@rcompat/build/reload/path";
 import { dev, default as modes, prod } from "./modes.js";
 const mode_keys = Object.keys(modes);
+import Dictionary from "@rcompat/record/Dictionary";
 
 export interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {
@@ -24,7 +25,7 @@ export default class Build {
   #options;
   #name;
   #plugins: esbuild.Plugin[] = [];
-  #artifacts: Record<string, unknown> = {};
+  #artifacts: Dictionary<string> = {};
   #exports: string[] = [];
   #context?: esbuild.BuildContext;
 
