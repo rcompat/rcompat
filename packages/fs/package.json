@@ -39,6 +39,10 @@
     "#native/*": {
       "livetypes": "./src/native/private/*.ts",
       "default": "./lib/native/private/*.js"
+    },
+    "#symbols/*": {
+      "livetypes": "./src/private/symbols/*.ts",
+      "default": "./lib/private/symbols/*.js"
     }
   },
   "exports": {
@@ -47,6 +51,10 @@
       "bun": "./lib/native/bun/index.js",
       "deno": "./lib/native/deno/index.js",
       "node": "./lib/native/node/index.js"
+    },
+    "./symbols/*": {
+      "livetypes": "./src/default/symbols/*.ts",
+      "default": "./lib/default/symbols/*.js"
     },
     "./*": {
       "livetypes": "./src/default/*/index.ts",

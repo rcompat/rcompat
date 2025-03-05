@@ -1,8 +1,8 @@
 import parse from "#parse";
+import s_streamable from "#symbols/streamable";
 import type * as Z from "#types";
 import * as native from "@rcompat/fs/native";
 import separator from "@rcompat/fs/separator";
-import streamable from "@rcompat/fs/streamable";
 import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
@@ -35,7 +35,7 @@ const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
 export default class FileRef implements StringLike {
   #path: string;
-  #streamable = streamable;
+  #streamable = s_streamable;
 
   constructor(path: Path) {
     defined(path);

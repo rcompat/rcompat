@@ -1,4 +1,4 @@
-import streamable from "@rcompat/fs/streamable";
+import s_streamable from "#symbols/streamable";
 
 export type Streamable<T> =
   ReadableStream<T> | { stream: () => ReadableStream<T>, streamable?: symbol };
@@ -7,7 +7,7 @@ export default <T>(input : Streamable<T>) => {
   if (input instanceof ReadableStream) {
     return input;
   }
-  if (input instanceof Blob || input.streamable === streamable) {
+  if (input instanceof Blob || input.streamable === s_streamable) {
     return input.stream();
   }
 
