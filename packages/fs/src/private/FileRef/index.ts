@@ -42,16 +42,16 @@ export default class FileRef implements StringLike {
     this.#path = parse(as_string(path));
   }
 
-  static new(path: Path) {
-    return new FileRef(path);
-  }
-
-  toString() {
-    return this.path;
+  #stats() {
+    return native.stats(this.path);
   }
 
   [Symbol.replace](string: string, replacement: string | Replacer) {
     return string.replace(this.toString(), replacement/* TS bug*/ as never);
+  }
+
+  toString() {
+    return this.path;
   }
 
   webpath() {
@@ -86,10 +86,6 @@ export default class FileRef implements StringLike {
 
   collect(pattern?: Z.CollectPattern, options?: Z.DirectoryOptions) {
     return native.collect(this.path, pattern, options);
-  }
-
-  #stats() {
-    return native.stats(this.path);
   }
 
   modified() {
@@ -147,12 +143,24 @@ export default class FileRef implements StringLike {
     return native.arrayBuffer(this.path);
   }
 
+  static arrayBuffer(path: Path) {
+    return new FileRef(path).arrayBuffer();
+  }
+
   text() {
     return native.text(this.path);
   }
 
+  static text(path: Path) {
+    return new FileRef(path).text();
+  }
+
   json() {
     return native.json(this.path);
+  }
+
+  static json(path: Path) {
+    return new FileRef(path).json();
   }
 
   async copy(to: FileRef, filter?: Z.DirectoryFilter): Promise<unknown> {
@@ -198,5 +206,9 @@ export default class FileRef implements StringLike {
 
   stream() {
     return native.stream(this.path);
+  }
+
+  static stream(path: Path) {
+    return new FileRef(path).stream();
   }
 }

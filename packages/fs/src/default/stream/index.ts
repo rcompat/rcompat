@@ -7,6 +7,7 @@ export default <T>(input : Streamable<T>) => {
   if (input instanceof ReadableStream) {
     return input;
   }
+
   if (input instanceof Blob || input.streamable === s_streamable) {
     return input.stream();
   }
