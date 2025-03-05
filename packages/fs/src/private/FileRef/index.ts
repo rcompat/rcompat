@@ -58,6 +58,10 @@ export default class FileRef implements StringLike {
     return this.path.replaceAll(separator, "/");
   }
 
+  static webpath(path: Path) {
+    return new FileRef(path).webpath();
+  }
+
   async import(name?: string) {
     maybe(name).string();
     const imported = await import(`${to_url(this.path)}`);
@@ -78,6 +82,10 @@ export default class FileRef implements StringLike {
 
   list(filter: Z.DirectoryFilter, options: Dictionary) {
     return native.list(this.path, filter, options);
+  }
+
+  static list(path: Path, filter: Z.DirectoryFilter, options: Dictionary) {
+    return new FileRef(path).list(filter, options);
   }
 
   glob(pattern: string) {

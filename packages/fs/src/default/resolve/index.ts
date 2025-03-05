@@ -6,5 +6,5 @@ import { resolve } from "node:path";
 export default (path?: string): FileRef => {
   maybe(path).string();
 
-  return FileRef.new(path === undefined ? resolve() : resolve(parse(path)));
+  return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
 }

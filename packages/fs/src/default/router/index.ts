@@ -1,6 +1,5 @@
 import FileRef from "#FileRef";
 import collect from "@rcompat/fs/collect";
-import webpath from "@rcompat/fs/webpath";
 import override from "@rcompat/record/override";
 import Node from "./Node.js";
 import * as errors from "./errors.js";
@@ -54,7 +53,7 @@ export default class Router<Route extends Import, Special extends Import> {
 
   init(objects: [string, Route | Special][]) {
     for (const [path, file] of objects.sort(([a], [b]) => a > b ? 1 : -1)) {
-      this.#add(this.#root, webpath(path).split("/"), file);
+      this.#add(this.#root, FileRef.webpath(path).split("/"), file);
     }
 
     // check for duplicates

@@ -4,4 +4,4 @@ import type { CollectPattern, DirectoryOptions } from "#types";
 export type CollectOptions = [CollectPattern, DirectoryOptions];
 
 export default (path: Path, ...args: CollectOptions) =>
-  FileRef.new(path).collect(...args);
+  new FileRef(path).collect(...args);
