@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/worker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "web workers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
