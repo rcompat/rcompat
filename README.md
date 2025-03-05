@@ -67,7 +67,7 @@ object transformations, and many more useful modules and abstractions.
 
 The standard library is designed to accommodate modern development needs: for
 example, `@rcompat/http` supports WebSockets (natively on Deno/Bun, and using
-NPM's `ws` on Node), while `@rcompat/fs/file` offers globbing, listing and
+NPM's `ws` on Node), while `@rcompat/fs/FileRef` offers globbing, listing and
 manipulation of files, similarly to Python's `pathlib`.
 
 For example, to set up a server with rcompat, use `@rcompat/http/serve` -- the

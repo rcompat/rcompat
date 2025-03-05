@@ -1,4 +1,4 @@
-import type { FileRef } from "@rcompat/fs/file";
+import type FileRef from "@rcompat/fs/FileRef";
 
 export default interface Conf {
   host: string;

@@ -1,5 +1,5 @@
 import type Conf from "#Conf";
-import { FileRef } from "@rcompat/fs/file";
+import FileRef from "@rcompat/fs/FileRef";
 import is from "@rcompat/invariant/is";
 
 export default (conf: Conf) => {

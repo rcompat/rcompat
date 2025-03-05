@@ -1,5 +1,5 @@
 import manifest_name from "#manifest-name";
-import type { FileRef } from "@rcompat/fs/file";
+import type FileRef from "@rcompat/fs/FileRef";
 import resolve from "@rcompat/fs/resolve";
 import maybe from "@rcompat/invariant/maybe";
 
