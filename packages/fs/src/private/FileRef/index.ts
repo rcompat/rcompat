@@ -51,11 +51,7 @@ export default class FileRef implements StringLike {
   }
 
   [Symbol.replace](string: string, replacement: string | Replacer) {
-    if (typeof replacement === "string") {
-      return string.replace(this.toString(), replacement);
-    } else {
-      return string.replace(this.toString(), replacement);
-    }
+    return string.replace(this.toString(), replacement/* TS bug*/ as never);
   }
 
   webpath() {
