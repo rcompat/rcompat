@@ -212,7 +212,7 @@ export default class FileRef implements StringLike {
     return new FileRef(path);
   }
 
-  stream() {
+  stream(): ReadableStream {
     return native.stream(this.path);
   }
 
