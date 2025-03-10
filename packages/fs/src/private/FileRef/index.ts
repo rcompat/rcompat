@@ -7,7 +7,7 @@ import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 import Dictionary from "@rcompat/record/Dictionary";
-import type { Replacer, default as StringLike } from "@rcompat/string/StringLike";
+import type { Replacer, StringClass } from "@rcompat/string/StringLike";
 import { basename, dirname, extname, join } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
 
@@ -33,7 +33,7 @@ export type Path = FileRef | string;
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
-export default class FileRef implements StringLike {
+export default class FileRef implements StringClass {
   #path: string;
   #streamable = s_streamable;
 
