@@ -1,11 +1,11 @@
 import type Actions from "#Actions";
+import type Conf from "#Conf";
 import get_options from "#get-options";
-import handle_ws from "#handle-ws";
+import handle_ws from "#handle-ws-node";
 import is_secure from "#is-secure";
 import PseudoRequest from "#PseudoRequest";
 import type Server from "#Server";
 import Status from "#Status";
-import type Conf from "#Conf";
 import tryreturn from "@rcompat/async/tryreturn";
 import override from "@rcompat/record/override";
 import type { IncomingMessage, ServerResponse } from "node:http";

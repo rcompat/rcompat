@@ -1,6 +1,6 @@
 import type Conf from "#Conf";
 import get_options from "#get-options";
-import handle_ws from "#handle-ws";
+import handle_ws from "#handle-ws-deno";
 import type Server from "#Server";
 import type Handler from "#types/Handler";
 import identity from "@rcompat/function/identity";

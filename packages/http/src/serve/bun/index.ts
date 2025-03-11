@@ -12,7 +12,7 @@ export default async (handler: Handler, conf: Conf): Promise<Server> => {
     fetch: handler,
     tls: await get_options(conf),
     websocket: {
-      message(socket: ServerWebSocket<{ actions: Actions }>, message) {
+      message(socket: ServerWebSocket<{ actions: Actions }>, message: Buffer | string) {
         socket.data.actions.message?.(socket, message);
       },
       open(socket: ServerWebSocket<{ actions: Actions }>) {
