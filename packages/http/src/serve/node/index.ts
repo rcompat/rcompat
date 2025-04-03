@@ -37,7 +37,7 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
   const module = await import(is_secure($conf) ? "https" : "http");
   const options = await get_options($conf);
 
-  module.createServer(options,
+  const server = module.createServer(options,
     async (node_request: IncomingMessage, node_response: ServerResponse) => {
 
     // handler gets a WHATWG Request, and returns a WHATWG Response
@@ -90,7 +90,8 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
         handle_ws(socket, actions);
       });
     },
-    // currently noop
-    stop() {},
+    stop() {
+      server.close();
+    },
   };
 };
