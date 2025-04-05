@@ -7,7 +7,7 @@ type UnknownSet = Set<unknown>;
 type UnknownMap = Map<PropertyKey, unknown>;
 
 const is = {
-  primitive: (x: unknown): x is Scalar => scalars.includes(typeof x as Scalar),
+  scalar: (x: unknown): x is Scalar => scalars.includes(typeof x as Scalar),
   null: (x: unknown): x is null => x === null,
   object: (x: unknown): x is object => typeof x === "object",
   date: (x: unknown): x is Date => x instanceof Date,
@@ -29,7 +29,7 @@ const equal_map = <T extends Dictionary>(left: T, right: T) =>
   equal_record(left, right) && equal_record(right, left);
 
 const equal = {
-  primitive: <T>(x: T, y: T) => x === y || Object.is(x, y),
+  scalar: <T>(x: T, y: T) => x === y || Object.is(x, y),
   array: <T extends unknown[]>(x: T, y: T) => 
     equal_array(x, y) && equal_array(y, x),
   date: <T extends Date>(x: T, y: T) => x.getTime() === y.getTime(),
@@ -46,7 +46,7 @@ const equal = {
 };
 
 const checks = [
-  [is.primitive, <T>(x: T, y: T) => is.primitive(y) && equal.primitive(x, y)],
+  [is.scalar, <T>(x: T, y: T) => is.scalar(y) && equal.scalar(x, y)],
   [is.null, <T>(_: T, y: T) => is.null(y)],
   [is.date, <T>(x: T, y: T) => is.date(y) && equal.date(x as Date, y)],
   [is.array, <T>(x: T, y: T) => is.array(y) && equal.array(x as unknown[], y)],
