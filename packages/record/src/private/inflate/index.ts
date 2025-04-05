@@ -6,7 +6,7 @@ export type InflateImpl3Result<P extends string, T, B extends string> =
     { [K in P1]: InflateImpl3Result<Rest, T, B> } :
     { [K in P]: T };
 
-const DEFAULT_BY = '.';
+const DEFAULT_BY = ".";
 type DEFAULT_BY = typeof DEFAULT_BY;
 
 function inflate<P extends string>(path: P): InflateImpl3Result<P, {}, DEFAULT_BY>

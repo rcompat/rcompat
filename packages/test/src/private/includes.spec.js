@@ -1,13 +1,19 @@
-import fn from "#equals";
+import fn from "#includes";
 
 export default test => {
   test.case("string", assert => {
     assert(fn("", "")).true();
     assert(fn("foo", "foo")).true();
+    assert(fn("foo", "fo")).true();
+    assert(fn("foo", "o")).true();
+    assert(fn("foo", "oo")).true();
+    assert(fn("foo", "")).true();
 
     assert(fn("foo", "bar")).false();
-    assert(fn("foo", "")).false();
     assert(fn("", "foo")).false();
+    assert(fn("f", "foo")).false();
+    assert(fn("fo", "foo")).false();
+    assert(fn("oo", "foo")).false();
   });
 
   test.case("number", assert => {
@@ -64,9 +70,11 @@ export default test => {
   test.case("object", assert => {
     assert(fn({}, {})).true();
     assert(fn({ foo: "bar" }, { foo: "bar" })).true();
+    assert(fn({ foo: "bar" }, {})).true();
+    assert(fn({ foo: "bar", bar: []}, { foo: "bar" })).true();
+    assert(fn({ foo: "bar", bar: [0, 1]}, { foo: "bar", bar: [0] })).true();
 
     assert(fn({}, { foo: "bar" })).false();
-    assert(fn({ foo: "bar" }, {})).false();
     assert(fn({ foo: "bar"}, { foo: "baz" })).false();
     assert(fn({ foo: "bar"}, { bar: "baz" })).false();
     assert(fn({ foo: "bar"}, { foo: "bar", bar: [] })).false();
@@ -77,12 +85,17 @@ export default test => {
     assert(fn(["", ], ["", ])).true();
     assert(fn(["",, ""], ["",, ""])).true();
     assert(fn([ { foo: "bar" }], [ { foo: "bar" }])).true();
+    assert(fn(["foo"], [])).true();
+    assert(fn(["foo", "bar"], ["bar"])).true();
+    assert(fn(["foo", ["bar", "baz"]], ["foo", ["baz"]])).true();
+    assert(fn(["", "foo"], ["", ])).true();
+    assert(fn(["foo", "bar", "baz", "bat"], ["bar", "baz"])).true();
 
     assert(fn([], ["foo"])).false();
-    assert(fn(["foo"], [])).false();
     assert(fn(["", ], ["", "foo"])).false();
-    assert(fn(["", "foo"], [, "", ])).false();
+    assert(fn(["", ], [, "foo"])).false();
     assert(fn(["", ], [, ""])).false();
+    assert(fn(["foo", "bar", "baz", "bat"], ["bar", "bat"])).false();
   });
 
   test.case("Date", assert => {
@@ -97,42 +110,55 @@ export default test => {
   });
 
   test.case("Set", assert => {
-    const s0 = new Set(["foo"]);
+    const set = (...args) => new Set(args);
+    const s0 = set("foo");
 
     assert(fn(s0, s0)).true();
-    assert(fn(s0, new Set(["foo"]))).true();
-    assert(fn(new Set([1, 2]), new Set([2, 1]))).true();
-    assert(fn(new Set([2, 1, 2]), new Set([2, 1]))).true();
-    assert(fn(new Set([0]), new Set(Array.from({ length: 10 }, _ => 0)))).true();
-    assert(fn(new Set([{ foo: "bar" }]), new Set([{ foo: "bar" }]))).true();
-    assert(fn(new Set([{ foo: "bar" }, { bar: "baz" }]), new Set([{ bar: "baz" }, { foo: "bar" }]))).true();
+    assert(fn(s0, set("foo"))).true();
+    assert(fn(set(1, 2), set(2, 1))).true();
+    assert(fn(set(2, 1, 2), set(2, 1))).true();
+    assert(fn(set(0), set(...Array.from({ length: 10 }, _ => 0)))).true();
+    assert(fn(set({ foo: "bar" }), set({ foo: "bar" }))).true();
+    assert(fn(set({ foo: "bar" }, { bar: "baz" }), set({ bar: "baz" }, { foo: "bar" }))).true();
+    assert(fn(set(1, 2, 3), set(1, 2))).true();
+    assert(fn(set({ foo: "bar" }, { bar: "baz" }), set({ bar: "baz" }))).true();
+    assert(fn(set("foo", "bar"), set("bar"))).true();
+    assert(fn(set("foo", ["bar", "baz"]), set("foo", ["baz"]))).true();
+    assert(fn(set("", "foo"), set(""))).true();
+    assert(fn(set("foo", "bar", "baz", "bat"), set("bar", "baz"))).true();
+    assert(fn(set("foo", "bar", "baz", "bat"), set("bar", "bat"))).true();
 
-    assert(fn(s0, new Set(["bar"]))).false();
-    assert(fn(new Set([1, 2]), new Set([1, 2, 3]))).false();
-    assert(fn(new Set([1, 2, 3]), new Set([1, 2]))).false();
-    assert(fn(new Set([]), new Set([1]))).false();
-    assert(fn(new Set([1]), new Set([0]))).false();
+    assert(fn(s0, set("bar"))).false();
+    assert(fn(set(1, 2), set(1, 2, 3))).false();
+    assert(fn(set(), set(1))).false();
+    assert(fn(set(1), set(0))).false();
+    assert(fn(set(""), set("", "foo"))).false();
+    assert(fn(set(""), set(undefined, "foo"))).false();
+    assert(fn(set(""), set(undefined, ""))).false();
   });
 
   test.case("Map", assert => {
-    const map = o => new Map(Object.entries(o));
+    const map = (o = {}) => new Map(Object.entries(o));
 
     const o0 = { foo: "bar" };
     const o1 = { foo: { bar: "baz" }};
     const o2 = { foo: "bar", bar: "baz" };
     const m0 = map(o0);
 
-    assert(fn(new Map(), new Map())).true();
+    assert(fn(map(), map())).true();
     assert(fn(m0, m0)).true();
     assert(fn(m0, map(o0))).true();
     assert(fn(map(o1), map(o1))).true();
+    assert(fn(map(o0), map())).true();
+    assert(fn(map({ foo: "bar", bar: []}), map({ foo: "bar" }))).true();
+    assert(fn(map({ foo: "bar", bar: [0, 1]}), map({ foo: "bar", bar: [0] }))).true();
 
     assert(fn(map(o0), map(o1))).false();
-    assert(fn(new Map(), map(o0))).false();
     assert(fn(map(o2), map(o1))).false();
+    assert(fn(map(), map(o0))).false();
+    assert(fn(map(), map({ foo: "bar" }))).false();
     assert(fn(map({ foo: "bar"}), map({ foo: "baz" }))).false();
     assert(fn(map({ foo: "bar"}), map({ bar: "baz" }))).false();
     assert(fn(map({ foo: "bar"}), map({ foo: "bar", bar: [] }))).false();
-    assert(fn(map({ foo: "bar", bar: []}), map({ foo: "bar" }))).false();
   });
 };

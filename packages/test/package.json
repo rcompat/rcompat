@@ -26,6 +26,10 @@
   },
   "type": "module",
   "imports": {
+    "#types/*": {
+      "livetypes": "./src/private/types/*.ts",
+      "default": "./lib/private/types/*.js"
+    },
     "#*": {
       "livetypes": "./src/private/*.ts",
       "default": "./lib/private/*.js"
