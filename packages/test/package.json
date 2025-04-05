@@ -1,0 +1,40 @@
+{
+  "name": "@rcompat/test",
+  "version": "0.0.1",
+  "description": "test module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/test"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build",
+    "test": "tsx --conditions=livetypes ../../node_modules/debris/src/bin.js"
+  },
+  "dependencies": {
+    "@rcompat/core": "workspace:^",
+    "@rcompat/record": "workspace:^"
+  },
+  "type": "module",
+  "imports": {
+    "#*": {
+      "livetypes": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
+  "exports": {
+    "./*": {
+      "livetypes": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
+    }
+  }
+}
