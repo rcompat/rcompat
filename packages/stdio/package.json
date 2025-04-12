@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/stdio",
-  "version": "0.8.0",
-  "description": "rcompat stdio module",
+  "version": "0.8.1",
+  "description": "Standard IO operations",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
