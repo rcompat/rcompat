@@ -19,13 +19,8 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
-    "better-sqlite3": "11"
-  },
-  "peerDependenciesMeta": {
-    "better-sqlite3": {
-      "optional": true
-    }
+  "dependencies": {
+    "better-sqlite3": "^11.9.1"
   },
   "type": "module",
   "exports": {
@@ -34,5 +29,5 @@
       "deno": "./lib/sqlite/deno/index.js",
       "node": "./lib/sqlite/node/index.js"
     }
-  } 
+  }
 }
