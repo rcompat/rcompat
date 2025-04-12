@@ -19,6 +19,9 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13"
+  },
   "dependencies": {
     "better-sqlite3": "^11.9.1"
   },
