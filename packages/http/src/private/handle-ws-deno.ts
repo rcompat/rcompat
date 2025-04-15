@@ -1,4 +1,5 @@
 import type Actions from "#Actions";
+import { WebSocket } from "undici-types";
 
 export default (socket: WebSocket, actions: Actions) => {
   if (actions.message !== undefined) {

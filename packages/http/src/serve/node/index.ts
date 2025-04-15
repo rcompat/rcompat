@@ -52,7 +52,7 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
 
     const request = new PseudoRequest(`${url}`, node_request);
 
-    const response = await tryreturn(async () => await handler(request as Request))
+    const response = await tryreturn(async () => await handler(request as unknown as Request))
       .orelse(async () =>
         new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
 
@@ -84,7 +84,7 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
 
   return {
     upgrade(request: Request, actions: Actions) {
-      const { original } = request as PseudoRequest;
+      const { original } = request as unknown as PseudoRequest;
       const null_buffer = Buffer.from([]);
       wss.handleUpgrade(original, original.socket, null_buffer, socket => {
         handle_ws(socket, actions);

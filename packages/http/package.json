@@ -54,6 +54,6 @@
     }
   },
   "devDependencies": {
-    "undici-types": "^7.4.0"
+    "undici-types": "7.8.0"
   }
 }
