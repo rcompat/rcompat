@@ -27,6 +27,7 @@
     "debris": "^0.14.0",
     "eslint": "^9.24.0",
     "livetypes": "^0.2.0",
+    "proby": "workspace:^",
     "tsx": "^4.19.3",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.8.3",

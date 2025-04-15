@@ -1,0 +1,45 @@
+{
+  "name": "proby",
+  "version": "0.0.1",
+  "description": "test runner for rcompat",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "/src/**/*.ts",
+    "!/**/*.spec.*"
+  ],
+  "bin": "src/bin.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/proby"
+  },
+  "dependencies": {
+    "@rcompat/test": "workspace:^"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build",
+    "test": "tsx --conditions=livetypes ../../node_modules/debris/src/bin.js"
+  },
+  "type": "module",
+  "imports": {
+    "#types/*": {
+      "livetypes": "./src/private/types/*.ts",
+      "default": "./lib/private/types/*.js"
+    },
+    "#*": {
+      "livetypes": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
+  "exports": {
+    "./*": {
+      "livetypes": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
+    }
+  }
+}
