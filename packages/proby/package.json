@@ -7,17 +7,26 @@
   "files": [
     "/lib/**/*.js",
     "/lib/**/*.d.ts",
-    "/src/**/*.ts",
     "!/**/*.spec.*"
   ],
-  "bin": "src/bin.ts",
+  "bin": "lib/bin.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
     "directory": "packages/proby"
   },
   "dependencies": {
+    "@rcompat/cli": "workspace:^",
+    "@rcompat/fs": "workspace:^",
+    "@rcompat/package": "workspace:^"
+  },
+  "peerDependencies": {
     "@rcompat/test": "workspace:^"
+  },
+  "peerDependenciesMeta": {
+    "@rcompat/test": {
+      "optional": true
+    }
   },
   "scripts": {
     "build": "npm run clean && tsc",
@@ -27,19 +36,9 @@
   },
   "type": "module",
   "imports": {
-    "#types/*": {
-      "livetypes": "./src/private/types/*.ts",
-      "default": "./lib/private/types/*.js"
-    },
     "#*": {
-      "livetypes": "./src/private/*.ts",
-      "default": "./lib/private/*.js"
-    }
-  },
-  "exports": {
-    "./*": {
-      "livetypes": "./src/public/*.ts",
-      "default": "./lib/public/*.js"
+      "livetypes": "./src/*.ts",
+      "default": "./lib/*.js"
     }
   }
 }

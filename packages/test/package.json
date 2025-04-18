@@ -26,6 +26,10 @@
   },
   "type": "module",
   "imports": {
+    "#mask/*": {
+      "livetypes": "./src/private/mask/*.ts",
+      "default": "./lib/private/mask/*.js"
+    },
     "#types/*": {
       "livetypes": "./src/private/types/*.ts",
       "default": "./lib/private/types/*.js"
@@ -36,9 +40,17 @@
     }
   },
   "exports": {
+    "./mask/*": {
+      "livetypes": "./src/public/mask/*.ts",
+      "default": "./lib/public/mask/*.js"
+    },
     "./*": {
       "livetypes": "./src/public/*.ts",
       "default": "./lib/public/*.js"
+    },
+    ".": {
+      "livetypes": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }

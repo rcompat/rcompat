@@ -80,11 +80,11 @@ export default class FileRef implements StringClass {
     return native.kind(this.path);
   }
 
-  list(filter: Z.DirectoryFilter, options: Dictionary) {
+  list(filter?: Z.DirectoryFilter, options?: Dictionary) {
     return native.list(this.path, filter, options);
   }
 
-  static list(path: Path, filter: Z.DirectoryFilter, options: Dictionary) {
+  static list(path: Path, filter?: Z.DirectoryFilter, options?: Dictionary) {
     return new FileRef(path).list(filter, options);
   }
 
