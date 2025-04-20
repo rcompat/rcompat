@@ -1,4 +1,4 @@
-import difference from "@rcompat/array/difference";
+import difference from "#difference";
 import test from "@rcompat/test";
 
 test.case("default", assert => {

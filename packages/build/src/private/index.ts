@@ -1,13 +1,14 @@
-import reload_defaults from "@rcompat/build/reload/defaults";
-import reload_path from "@rcompat/build/reload/path";
+import reload_defaults from "#reload/defaults";
+import reload_path from "#reload/path";
 import assert from "@rcompat/invariant/assert";
 import is from "@rcompat/invariant/is";
 import type Dictionary from "@rcompat/record/Dictionary";
 import exclude from "@rcompat/record/exclude";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
 import * as esbuild from "esbuild";
 import { dev, default as modes, prod } from "./modes.js";
+
 const mode_keys = Object.keys(modes);
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 export interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {

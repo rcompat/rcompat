@@ -1,4 +1,4 @@
-import cascade, { type CascadeFunction } from "@rcompat/async/cascade";
+import cascade, { type CascadeFunction } from "#cascade";
 import test from "@rcompat/test";
 
 const last = -1;

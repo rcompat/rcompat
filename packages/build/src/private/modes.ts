@@ -1,7 +1,8 @@
-import reload_path from "@rcompat/build/reload/path";
+import reload_path from "#reload/path";
 import * as esbuild from "esbuild";
 
 const default_name = "app";
+
 export const dev = "development";
 export const prod = "production";
 

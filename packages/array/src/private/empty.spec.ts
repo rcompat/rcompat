@@ -1,4 +1,4 @@
-import empty from "@rcompat/array/empty";
+import empty from "#empty";
 import test from "@rcompat/test";
 import NEVER from "@rcompat/test/NEVER";
 

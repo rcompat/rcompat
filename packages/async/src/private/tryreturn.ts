@@ -1,4 +1,5 @@
 import is from "@rcompat/invariant/is";
+
 const $backup = Symbol("backup");
 
 export interface AsyncTryReturnTrialBackup<T> extends PromiseLike<T> {
@@ -25,10 +26,10 @@ export default (trial => ({
     return (async () => {
       is(trial).function();
       is(this[$backup]).defined("`tryreturn` executed without a backup");
-  
+
       try {
         const maybePromiseTrial = await trial();
-  
+
         return maybePromiseTrial instanceof Promise ? await maybePromiseTrial : maybePromiseTrial;
       } catch(error) {
         return this[$backup]!(error);

@@ -1,4 +1,4 @@
-import tryreturn from "@rcompat/async/tryreturn";
+import tryreturn from "#tryreturn";
 import test from "@rcompat/test";
 import NEVER from "@rcompat/test/NEVER";
 

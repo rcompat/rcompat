@@ -26,18 +26,28 @@
     "esbuild": "^0.25.1"
   },
   "type": "module",
+  "imports": {
+    "#reload/*": {
+      "apekit": "./src/private/reload/*.ts",
+      "default": "./lib/private/reload/*.js"
+    },
+    "#*": {
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
   "exports": {
     "./reload/*": {
-      "apekit": "./lib/reload/*.ts",
-      "default": "./lib/reload/*.js"
+      "apekit": "./src/public/reload/*.ts",
+      "default": "./lib/public/reload/*.js"
     },
     "./*": {
-      "apekit": "./src/*/index.ts",
-      "default": "./lib/*/index.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     },
     ".": {
-      "apekit": "./src/default/index.ts",
-      "default": "./lib/default/index.js"
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }

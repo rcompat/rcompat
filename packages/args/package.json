@@ -22,16 +22,16 @@
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "apekit": "./src/node.ts",
-      "bun": "./lib/bun.js",
-      "deno": "./lib/deno.js",
-      "node": "./lib/node.js"
+      "apekit": "./src/public/node.ts",
+      "bun": "./lib/public/bun.js",
+      "deno": "./lib/public/deno.js",
+      "node": "./lib/public/node.js"
     }
   }
 }
