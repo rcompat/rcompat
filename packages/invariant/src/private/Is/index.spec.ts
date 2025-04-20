@@ -1,5 +1,6 @@
-import type { DebrisTestSuite } from "@rcompat/core";
 import Is from "#Is";
+import test from "@rcompat/test";
+import NEVER from "@rcompat/test/NEVER";
 
 const fixturesMap = {
   string: ["", String()],
@@ -15,16 +16,14 @@ const fixturesMap = {
 
 const fixtures = Object.entries(fixturesMap) as [keyof typeof fixturesMap, unknown[]][];
 
-export default (test => {
-  test.case("non objects", assert => {
-    fixtures.forEach(([key, values]) => {
-      const nonValues = fixtures.filter(entry => entry[0] !== key)
-        .flatMap(([, value]) => value as any);
-      values.forEach(value => {
-        assert(new Is(value)[key]()).equals(value);
-        nonValues.forEach(nonValue =>
-          assert(() => new Is(nonValue)[key]()).throws());
-      });
+test.case("non objects", assert => {
+  fixtures.forEach(([key, values]) => {
+    const non_values = fixtures.filter(entry => entry[0] !== key)
+      .flatMap(([, value]) => value);
+    values.forEach(value => {
+      assert(new Is(value)[key]()).equals(NEVER(value));
+      non_values.forEach(non_value =>
+        assert(() => new Is(non_value)[key]()).throws());
     });
   });
-}) satisfies DebrisTestSuite;
+});

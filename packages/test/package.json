@@ -17,11 +17,12 @@
   "scripts": {
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
-    "prepublishOnly": "npm run build",
-    "test": "tsx --conditions=livetypes ../../node_modules/debris/src/bin.js"
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@rcompat/fs": "workspace:^"
   },
   "dependencies": {
-    "@rcompat/core": "workspace:^",
     "@rcompat/record": "workspace:^"
   },
   "type": "module",

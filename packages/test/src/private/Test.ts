@@ -1,19 +1,26 @@
 import Assert from "#Assert";
 import Body from "#Body";
 import Result from "#Result";
+import type FileRef from "@rcompat/fs/FileRef";
 
-export default class Case {
+export default class Test {
   #name: string;
   #body: Body;
   #results: Result<unknown>[] = [];
+  #file: FileRef;
 
-  constructor(name: string, body: Body) {
+  constructor(name: string, body: Body, file: FileRef) {
     this.#name = name;
     this.#body = body;
+    this.#file = file;
   }
 
   get name() {
     return this.#name;
+  }
+
+  get file() {
+    return this.#file;
   }
 
   get results() {

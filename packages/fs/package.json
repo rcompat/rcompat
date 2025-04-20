@@ -24,7 +24,6 @@
     "@rcompat/string": "workspace:^"
   },
   "dependencies": {
-    "@rcompat/core": "workspace:^",
     "@rcompat/crypto": "workspace:^",
     "@rcompat/function": "workspace:^",
     "@rcompat/invariant": "workspace:^",

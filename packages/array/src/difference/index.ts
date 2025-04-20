@@ -5,4 +5,4 @@ export default (a: unknown[], b: unknown[]) => {
   is(b).array();
 
   return a.filter(member => !b.includes(member));
-}
+};

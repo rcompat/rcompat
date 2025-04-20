@@ -1,5 +1,5 @@
-import Assert from "#Assert";
+import Asserter from "#Asserter";
 
-type Body = (asserter: (<T>(actual: T) => Assert<T>)) => void;
+type Body = (asserter: Asserter) => void;
 
 export { Body as default };

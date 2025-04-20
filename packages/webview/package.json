@@ -23,7 +23,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/core": "workspace:^",
     "@rcompat/record": "workspace:^"
   },
   "devDependencies": {

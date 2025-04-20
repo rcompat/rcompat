@@ -1,17 +1,15 @@
 import Every from "#Every";
-import type { DebrisTestSuite } from "@rcompat/core";
+import test from "@rcompat/test";
 
-export default (test => {
-  test.case("constructor", assert => {
-    assert(() => new Every()).nthrows();
-  });
-  test.case("number", assert => {
-    assert(() => new Every("1").number()).throws();
-    assert(() => new Every(1).number()).nthrows();
-  });
-  test.case("function", assert => {
-    assert(() => new Every("1").function()).throws();
-    assert(() => new Every(() => null).function()).nthrows();
-    assert(() => new Every(() => null, undefined).function()).throws();
-  });
-}) satisfies DebrisTestSuite;
+test.case("constructor", assert => {
+  assert(() => new Every()).tries();
+});
+test.case("number", assert => {
+  assert(() => new Every("1").number()).throws();
+  assert(() => new Every(1).number()).tries();
+});
+test.case("function", assert => {
+  assert(() => new Every("1").function()).throws();
+  assert(() => new Every(() => null).function()).tries();
+  assert(() => new Every(() => null, undefined).function()).throws();
+});

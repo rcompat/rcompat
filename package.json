@@ -13,7 +13,7 @@
     "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "tsx --conditions=livetypes ./node_modules/debris/src/bin.js"
+    "test": "npx proby"
   },
   "private": true,
   "devDependencies": {
@@ -23,11 +23,9 @@
     "@types/busboy": "^1.5.4",
     "@types/node": "^22.14.1",
     "@types/ws": "^8.18.1",
-    "debris": "^0.14.0",
     "eslint": "^9.24.0",
     "livetypes": "^0.2.0",
     "proby": "workspace:^",
-    "tsx": "^4.19.3",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.30.1"

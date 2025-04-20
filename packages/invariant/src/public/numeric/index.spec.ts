@@ -1,49 +1,46 @@
-import type { DebrisTestSuite } from "@rcompat/core";
 import numeric from "@rcompat/invariant/numeric";
+import test from "@rcompat/test";
+import type Asserter from "@rcompat/test/Asserter";
+import NEVER from "@rcompat/test/NEVER";
 
-export default (test => {
-  // Todo: Figure a way to properly type reassert
-  test.reassert(assert => {
-    return {
-      trues(strings: any, number: any) {
-        const array = Array.isArray(strings) ? strings : [strings];
-        array.forEach(string => {
-          assert(numeric(string)).true();
-          assert(Number(string)).equals(number);
-        });
-      },
-      falses(...strings: any[]) {
-        strings.forEach(string => {
-          assert(numeric(string)).false();
-        });
-      },
-    };
+const trues = (assert: Asserter, strings: unknown, number: number) => {
+  const array = Array.isArray(strings) ? strings : [strings];
+  array.forEach(string => {
+    assert(numeric(string)).true();
+    assert(Number(string)).equals(number);
   });
-  test.case("numeric", ({ trues, falses }: any) => {
-    trues(["1", "1.0"], 1);
-    trues("1.5", 1.5);
-    trues(["0", "0.0", "-0", "+0", "0x0"], 0);
-    trues("08", 8);
-    trues(["+1", "1"], 1);
-    trues(["0.5", ".5"], 0.5);
-    trues(["5", "5.", "5.0"], 5);
-    trues(["0x10", "16"], 16);
-    trues("123e4", 1230000);
-    trues("-123e4", -1230000);
-    trues("123e-4", 0.0123);
-    trues("-123e-4", -0.0123);
+};
 
-    falses(
-      "1n", "1,0",
-      "Infinity", "-Infinity",
-      "NaN", "-NaN",
-      "", " ",
-      "5..", "..5",
-      1, 1n,
-      Symbol("1"),
-      [], {},
-      null, undefined,
-      true, false,
-    );
+const falses = (assert: Asserter, ...strings: unknown[]) => {
+  strings.forEach(string => {
+    assert(numeric(NEVER(string))).false();
   });
-}) satisfies DebrisTestSuite;
+};
+
+test.case("numeric", assert => {
+  trues(assert, ["1", "1.0"], 1);
+  trues(assert, "1.5", 1.5);
+  trues(assert, ["0", "0.0", "-0", "+0", "0x0"], 0);
+  trues(assert, "08", 8);
+  trues(assert, ["+1", "1"], 1);
+  trues(assert, ["0.5", ".5"], 0.5);
+  trues(assert, ["5", "5.", "5.0"], 5);
+  trues(assert, ["0x10", "16"], 16);
+  trues(assert, "123e4", 1230000);
+  trues(assert, "-123e4", -1230000);
+  trues(assert, "123e-4", 0.0123);
+  trues(assert, "-123e-4", -0.0123);
+
+  falses(assert, 
+    "1n", "1,0",
+    "Infinity", "-Infinity",
+    "NaN", "-NaN",
+    "", " ",
+    "5..", "..5",
+    1, 1n,
+    Symbol("1"),
+    [], {},
+    null, undefined,
+    true, false,
+  );
+});

@@ -1,14 +1,14 @@
 import identity from "@rcompat/function/identity";
 import tryreturn from "@rcompat/sync/tryreturn";
 import test from "@rcompat/test";
-import _ from "@rcompat/test/mask/any";
-import $ from "@rcompat/test/mask/error";
+import E from "@rcompat/test/E";
+import NEVER from "@rcompat/test/NEVER";
 
-test.case("`try faulty", assert => {
+test.case("`try` faulty", assert => {
   try {
-    _(tryreturn)(undefined).orelse(identity);
+    tryreturn(NEVER.undefined).orelse(identity);
   } catch (error) {
-    assert($(error).message).equals("`undefined` must be of type functiond");
+    assert(E(error).message).equals("`undefined` must be of type function");
   }
 });
 
@@ -16,16 +16,16 @@ test.case("`try faulty", assert => {
 //   try {
 //     tryreturn(() => 1);
 //   } catch (error) {
-//     assert($(error).message).equals("`tryreturn` executed without a backup");
+//     assert(E(error).message).equals("`tryreturn` executed without a backup");
 //   }
 // });
 //
 
 test.case("`orelse` faulty", assert => {
   try {
-    tryreturn(() => null).orelse(undefined as never);
+    tryreturn(() => null).orelse(NEVER.undefined);
   } catch (error) {
-    assert($(error).message).equals("`undefined` must be of type function");
+    assert(E(error).message).equals("`undefined` must be of type function");
   }
 });
 
@@ -49,6 +49,6 @@ test.case("else throws", assert => {
       throw new Error("else");
     });
   } catch (error) {
-    assert($(error).message).equals("else");
+    assert(E(error).message).equals("else");
   }
 });

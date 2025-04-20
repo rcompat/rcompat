@@ -1,7 +1,5 @@
-import { UnimplementedError } from "@rcompat/core";
-
-const unimplemented = (platform_name: string) => {
-  throw new UnimplementedError(platform_name);
+const unimplemented = (platform: string) => {
+  throw new Error(`unimplmented: ${platform}`);
 }
 
 export default () => unimplemented("deno");

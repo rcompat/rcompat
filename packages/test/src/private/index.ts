@@ -1,9 +1,8 @@
 import Body from "#Body";
-import Case from "#Case";
-import tests from "#tests";
+import repository from "#repository";
 
 export default {
   case(name: string, body: Body) {
-    tests.push(new Case(name, body));
+    repository.put(name, body);
   }
 };

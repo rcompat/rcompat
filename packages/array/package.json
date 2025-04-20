@@ -20,7 +20,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/core": "workspace:^",
     "@rcompat/invariant": "workspace:^"
   },
   "type": "module",
