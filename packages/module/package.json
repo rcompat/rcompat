@@ -22,11 +22,11 @@
   "type": "module",
   "exports": {
     "./import": {
-      "livetypes": "./src/import/index.ts",
+      "apekit": "./src/import/index.ts",
       "default": "./lib/import/index.js"
     },
     ".": {
-      "livetypes": "./src/index.ts",
+      "apekit": "./src/index.ts",
       "default": "./lib/index.js"
     }
   }

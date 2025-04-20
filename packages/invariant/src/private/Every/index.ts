@@ -2,10 +2,14 @@ import type { ErrorFallbackFunction } from "#errored";
 import type { AnyFunction, TypeofTypeMap } from "#types";
 import assert from "@rcompat/invariant/assert";
 
-interface TestOptions { condition: boolean, error?: ErrorFallbackFunction, def: string }
+interface TestOptions {
+  condition: boolean,
+  error: ErrorFallbackFunction | undefined,
+  def: string
+}
 
-const test = ({ condition, def, error }: TestOptions): void => assert(condition, error || def);
-
+const test = ({ condition, def, error }: TestOptions): void =>
+  assert(condition, error || def);
 
 export default class Every {
   #values;
@@ -19,7 +23,9 @@ export default class Every {
     return this.#values as never;
   }
 
-  #typeof<T extends keyof TypeofTypeMap>(type: T, error?: ErrorFallbackFunction) {
+  #typeof<
+    T extends keyof TypeofTypeMap
+  >(type: T, error?: ErrorFallbackFunction) {
     const def = `all the values must be of type ${type}`;
     const condition = this.#values.every(v => typeof v === type);
     return this.#test<TypeofTypeMap[T]>({ condition, def, error });
@@ -63,7 +69,8 @@ export default class Every {
   // unsigned (positive) integer
   usize(error?: ErrorFallbackFunction): number[] {
     const def = "all the values must be positive integers";
-    const condition = this.#values.every(v => Number.isInteger(v) && v as number >= 0);
+    const condition = this.#values.every(v =>
+      Number.isInteger(v) && v as number >= 0);
     return this.#test({ condition, def, error });
   }
 }

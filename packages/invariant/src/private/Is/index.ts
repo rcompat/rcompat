@@ -2,24 +2,30 @@ import type { ErrorFallbackFunction } from "#errored";
 import type { AnyConstructibleFunction, TypeofTypeMap } from "#types";
 import assert from "@rcompat/invariant/assert";
 import { constructible } from "@rcompat/invariant/construct";
+import Dictionary from "@rcompat/record/Dictionary";
+
+type UnknownFunction = (...params: unknown[]) => unknown;
 
 interface TestOptions {
-  condition: boolean,
-  error?: ErrorFallbackFunction | string,
-  def: string
-}
+  condition: boolean;
+  error: ErrorFallbackFunction | string | undefined;
+  def: string;
+};
 
 const test = ({ condition, def, error }: TestOptions): void =>
   assert(condition, error || def);
 
-function try_instanceof<C extends new (...args: never) => unknown>(value: unknown, type: C): value is InstanceType<C>
-function try_instanceof<T extends keyof TypeofTypeMap>(value: unknown, type: T): value is TypeofTypeMap[T]; 
-function try_instanceof(value: unknown, type: Function | string): boolean {
+function try_instanceof<
+  C extends new (...args: never) => unknown
+>(value: unknown, type: C): value is InstanceType<C>;
+function try_instanceof<
+  T extends keyof TypeofTypeMap
+>(value: unknown, type: T): value is TypeofTypeMap[T];
+function try_instanceof(value: unknown, type: UnknownFunction): boolean {
   try {
-    // Todo: Revisit
-    return value instanceof (type as Function);
+    return value instanceof (type as UnknownFunction);
   } catch {
-    return typeof value === type;
+    return false;
   }
 }
 
@@ -35,7 +41,9 @@ export default class Is {
     return this.#value as never;
   }
 
-  #typeof<T extends keyof TypeofTypeMap>(type: T, error?: ErrorFallbackFunction | string): TypeofTypeMap[T] {
+  #typeof<
+    T extends keyof TypeofTypeMap
+  >(type: T, error?: ErrorFallbackFunction | string): TypeofTypeMap[T] {
     const def = `\`${this.#value}\` must be of type ${type}`;
     const condition = typeof this.#value === type;
     return this.#test({ condition, def, error });
@@ -92,7 +100,7 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  defined(error?: ErrorFallbackFunction | string): {} {
+  defined(error?: ErrorFallbackFunction | string): Dictionary {
     const def = `\`${this.#value}\` must be defined`;
     const condition = this.#value !== undefined;
     return this.#test({ condition, def, error });

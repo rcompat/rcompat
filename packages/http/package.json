@@ -32,23 +32,23 @@
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/private/*.ts",
+      "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     },
     "#types/*": {
-      "livetypes": "./src/private/types/*.ts",
+      "apekit": "./src/private/types/*.ts",
       "default": "./lib/private/types/*.js"
     }
   },
   "exports": {
     "./serve": {
-      "livetypes": "./src/serve/node/index.ts",
+      "apekit": "./src/serve/node/index.ts",
       "bun": "./lib/serve/bun/index.js",
       "deno": "./lib/serve/deno/index.js",
       "node": "./lib/serve/node/index.js"
     },
     "./*": {
-      "livetypes": "./src/default/*.ts",
+      "apekit": "./src/default/*.ts",
       "default": "./lib/default/*.js"
     }
   },

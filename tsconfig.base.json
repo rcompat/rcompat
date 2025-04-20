@@ -1,5 +1,5 @@
 {
-  "extends": "livetypes",
+  "extends": "apekit/tsconfig",
   "compilerOptions": {
     "typeRoots": [
       "./node_modules/@types",

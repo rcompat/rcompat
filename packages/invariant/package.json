@@ -19,16 +19,19 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "devDependencies": {
+    "@rcompat/record": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/private/*/index.ts",
+      "apekit": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     }
   },
   "exports": {
     "./*": {
-      "livetypes": "./src/public/*/index.ts",
+      "apekit": "./src/public/*/index.ts",
       "default": "./lib/public/*/index.js"
     }
   }

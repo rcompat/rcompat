@@ -1,15 +1,15 @@
-import Dictionary from "@rcompat/record/Dictionary";
+import type Dictionary from "@rcompat/record/Dictionary";
 
 export interface RouterNodeConfig {
-  specials?: Record<PropertyKey, {
+  specials: Record<PropertyKey, {
     recursive: boolean
-  }>;
-  predicate?: (route: { default: unknown }, request: Request) => boolean;
+  }> | undefined;
+  predicate: (route: { default: unknown }, request: Request) => boolean | undefined;
 }
 
 export interface RouterConfig extends RouterNodeConfig {
   import: boolean,
-  directory?: string;
+  directory: string | undefined;
   extensions: [string];
 }
 

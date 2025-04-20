@@ -41,7 +41,7 @@
       "node": "./lib/worker/node/*/index.js"
     },
     ".": {
-      "livetypes": "./src/default/bun/Webview.ts",
+      "apekit": "./src/default/bun/Webview.ts",
       "bun": "./lib/default/bun/Webview.js"
     }
   }

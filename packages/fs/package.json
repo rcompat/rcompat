@@ -32,31 +32,31 @@
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/private/*/index.ts",
+      "apekit": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     },
     "#native/*": {
-      "livetypes": "./src/native/private/*.ts",
+      "apekit": "./src/native/private/*.ts",
       "default": "./lib/native/private/*.js"
     },
     "#symbols/*": {
-      "livetypes": "./src/private/symbols/*.ts",
+      "apekit": "./src/private/symbols/*.ts",
       "default": "./lib/private/symbols/*.js"
     }
   },
   "exports": {
     "./native": {
-      "livetypes": "./src/native/node/index.ts",
+      "apekit": "./src/native/node/index.ts",
       "bun": "./lib/native/bun/index.js",
       "deno": "./lib/native/deno/index.js",
       "node": "./lib/native/node/index.js"
     },
     "./symbols/*": {
-      "livetypes": "./src/default/symbols/*.ts",
+      "apekit": "./src/default/symbols/*.ts",
       "default": "./lib/default/symbols/*.js"
     },
     "./*": {
-      "livetypes": "./src/default/*/index.ts",
+      "apekit": "./src/default/*/index.ts",
       "default": "./lib/default/*/index.js"
     }
   }

@@ -22,12 +22,12 @@
   "type": "module",
   "exports": {
     ".": {
-      "livetypes": "./src/default/bun/index.ts",
+      "apekit": "./src/default/bun/index.ts",
       "bun": "./lib/default/bun/index.js",
       "node": "./lib/default/node/index.js"
     },
     "./hash": {
-      "livetypes": "./src/hash/bun/index.ts",
+      "apekit": "./src/hash/bun/index.ts",
       "bun": "./lib/hash/bun/index.js",
       "node": "./lib/hash/node/index.js"
     }

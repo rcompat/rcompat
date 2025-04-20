@@ -1,20 +1,21 @@
-import assert from "@rcompat/invariant/assert";
-import is from "@rcompat/invariant/is";
-import exclude from "@rcompat/record/exclude";
-import * as esbuild from "esbuild";
 import reload_defaults from "@rcompat/build/reload/defaults";
 import reload_path from "@rcompat/build/reload/path";
+import assert from "@rcompat/invariant/assert";
+import is from "@rcompat/invariant/is";
+import type Dictionary from "@rcompat/record/Dictionary";
+import exclude from "@rcompat/record/exclude";
+import * as esbuild from "esbuild";
 import { dev, default as modes, prod } from "./modes.js";
 const mode_keys = Object.keys(modes);
-import Dictionary from "@rcompat/record/Dictionary";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 export interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {
     host: string,
     port: number
-  },
-  excludes?: string[],
-  name?: string,
+  } | undefined,
+  excludes?: string[] | undefined,
+  name?: string | undefined,
 }
 type PluginPath = string;
 
@@ -80,7 +81,7 @@ export default class Build {
     };
   }
 
-  proxy(request: Request, fallback: Function) {
+  proxy(request: Request, fallback: UnknownFunction) {
     const { paths, url } = this.#hot();
     const { pathname } = new URL(request.url);
     const { method, headers, body } = request;
@@ -104,13 +105,13 @@ export default class Build {
     }
 
     if (this.development) {
-      const context = await esbuild.context(build_options);
+      const context = await esbuild.context(build_options as never);
       await context.rebuild();
       await context.watch();
       await context.serve(this.#hotreload);
       this.#context = context;
     } else {
-      await esbuild.build(build_options);
+      await esbuild.build(build_options as never);
     }
     this.#started = true;
   }

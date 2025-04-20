@@ -28,15 +28,15 @@
   "type": "module",
   "exports": {
     "./reload/*": {
-      "livetypes": "./lib/reload/*.ts",
+      "apekit": "./lib/reload/*.ts",
       "default": "./lib/reload/*.js"
     },
     "./*": {
-      "livetypes": "./src/*/index.ts",
+      "apekit": "./src/*/index.ts",
       "default": "./lib/*/index.js"
     },
     ".": {
-      "livetypes": "./src/default/index.ts",
+      "apekit": "./src/default/index.ts",
       "default": "./lib/default/index.js"
     }
   }

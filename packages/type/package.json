@@ -1,7 +1,7 @@
 {
-  "name": "@rcompat/string",
-  "version": "0.6.1",
-  "description": "rcompat string module",
+  "name": "@rcompat/type",
+  "version": "0.1.0",
+  "description": "standard types for rcompat",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -12,21 +12,24 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/string"
+    "directory": "packages/types"
   },
   "scripts": {
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "@rcompat/invariant": "workspace:^"
-  },
   "type": "module",
+  "imports": {
+    "#*": {
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
   "exports": {
     "./*": {
-      "apekit": "./src/*/index.ts",
-      "default": "./lib/*/index.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

@@ -37,7 +37,7 @@
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/*.ts",
+      "apekit": "./src/*.ts",
       "default": "./lib/*.js"
     }
   }

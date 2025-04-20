@@ -22,7 +22,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "livetypes": "./src/bun/index.ts",
+      "apekit": "./src/bun/index.ts",
       "bun": "./lib/bun/index.js",
       "deno": "./lib/deno/index.js",
       "node": "./lib/node/index.js"

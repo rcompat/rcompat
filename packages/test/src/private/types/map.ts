@@ -1,7 +1,6 @@
 import to_object from "#to-object";
 import record from "#types/record";
-
-export type UnknownMap = Map<PropertyKey, unknown>;
+import type UnknownMap from "@rcompat/type/UnknownMap";
 
 const is = (x: unknown): x is UnknownMap => x instanceof Map;
 

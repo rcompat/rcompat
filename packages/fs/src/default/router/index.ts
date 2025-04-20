@@ -34,7 +34,7 @@ export default class Router<Route extends Import, Special extends Import> {
 
   #add(node: Node<Route, Special>, parts: string[], file: Route | Special) {
     const [first, ...rest] = parts;
-    // leaves 
+    // leaves
     if (parts.length === 1) {
       node.filed(first, file);
     } else {
@@ -100,7 +100,7 @@ export default class Router<Route extends Import, Special extends Import> {
     return this.#root.max((node: Node<Route, Special>) => node.specials()
       .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
   }
-  
+ 
   static init<Route extends Import, Special extends Import>(config: RouterConfig, objects: [string, Route | Special][]) {
     return new Router<Route, Special>(config).init(objects);
   }

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/monorepo",
-  "description": "Server JavaScript interoperability and compatibility layer",
+  "description": "Standard library for JavaScript runtimes",
   "type": "module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -17,17 +17,15 @@
   },
   "private": true,
   "devDependencies": {
-    "@eslint/js": "^9.24.0",
     "@rcompat/test": "workspace:^",
-    "@types/bun": "^1.2.9",
+    "@rcompat/type": "workspace:^",
+    "@types/bun": "^1.2.10",
     "@types/busboy": "^1.5.4",
     "@types/node": "^22.14.1",
     "@types/ws": "^8.18.1",
-    "eslint": "^9.24.0",
-    "livetypes": "^0.2.0",
+    "apekit": "^0.0.13",
     "proby": "workspace:^",
     "types-deno": "^0.2.0-1.43.5",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.30.1"
+    "typescript": "^5.8.3"
   }
 }

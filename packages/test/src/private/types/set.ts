@@ -1,7 +1,6 @@
 import equals from "#equals";
 import includes from "#includes";
-
-export type UnknownSet = Set<unknown>;
+import type UnknownSet from "@rcompat/type/UnknownSet";
 
 const is = (x: unknown): x is UnknownSet => x instanceof Set;
 

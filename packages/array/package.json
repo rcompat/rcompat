@@ -25,7 +25,7 @@
   "type": "module",
   "exports": {
     "./*": {
-      "livetypes": "./src/*/index.ts",
+      "apekit": "./src/*/index.ts",
       "default": "./lib/*/index.js"
     }
   }

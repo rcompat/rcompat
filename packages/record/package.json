@@ -25,13 +25,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/private/*/index.ts",
+      "apekit": "./src/private/*/index.ts",
       "default": "./lib/private/*/index.js"
     }
   },
   "exports": {
     "./*": {
-      "livetypes": "./src/public/*.ts",
+      "apekit": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

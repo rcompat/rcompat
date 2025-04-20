@@ -28,14 +28,14 @@
   "type": "module",
   "imports": {
     "#*": {
-      "livetypes": "./src/private/node/*.ts",
+      "apekit": "./src/private/node/*.ts",
       "bun": "./lib/private/bun/*.js",
       "default": "./lib/private/node/*.js"
     }
   },
   "exports": {
     ".": {
-      "livetypes": "./src/exports.ts",
+      "apekit": "./src/exports.ts",
       "default": "./lib/exports.js"
     }
   }

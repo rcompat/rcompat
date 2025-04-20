@@ -7,7 +7,7 @@ const partial = <t extends unknown[]>(x: t, y: t) =>
   x.reduce<boolean>((equal, xi, i) =>
     equal && equals(xi, y[i]), true);
 
-const equal = <T extends unknown[]>(x: T, y: T) => 
+const equal = <T extends unknown[]>(x: T, y: T) =>
   partial(x, y) && partial(y, x);
 
 const include = <T extends unknown[]>(x: T, y: T) => {
@@ -31,7 +31,7 @@ const include = <T extends unknown[]>(x: T, y: T) => {
   if (x.slice(index).length < y.length) {
     return false;
   }
- 
+
   // compare rest of members from y[1]]
   return y.slice(1).reduce<boolean>((included, member, i) =>
     included && includes(x[index + i + 1], member), true);

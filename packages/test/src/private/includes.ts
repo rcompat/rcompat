@@ -1,11 +1,13 @@
 import equals from "#equals";
 import array from "#types/array";
 import date from "#types/date";
-import map, { type UnknownMap } from "#types/map";
+import map from "#types/map";
 import record from "#types/record";
-import set, { type UnknownSet } from "#types/set";
+import set from "#types/set";
 import string from "#types/string";
-import Dictionary from "@rcompat/record/Dictionary";
+import type Dictionary from "@rcompat/record/Dictionary";
+import type UnknownMap from "@rcompat/type/UnknownMap";
+import type UnknownSet from "@rcompat/type/UnknownSet";
 
 const includes = <T>(x: T, y: T): boolean => typeof x === typeof y
   ? equals(x, y)

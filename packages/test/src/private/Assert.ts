@@ -1,7 +1,7 @@
 import E from "#E";
-import Test from "#Test";
+import type Test from "#Test";
 import equals from "#equals";
-import { UnknownFn } from "#types/fn";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 export default class Assert<T> {
   #actual: T;
@@ -44,7 +44,7 @@ export default class Assert<T> {
     this.#static(undefined);
   }
 
-  instance(expected: UnknownFn) {
+  instance(expected: UnknownFunction) {
     this.#report(expected, this.#actual instanceof expected);
   }
 

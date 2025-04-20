@@ -62,7 +62,7 @@ export default class Node<Route extends Import, Special extends Import> {
   #children: Node<Route, Special>[] = [];
   #path: string;
   #type: symbol;
-  #file?: Route | Special;
+  #file: Route | Special | undefined;
   static #config: RouterNodeConfig;
 
   constructor(parent: Node<Route, Special> | null, path: string, file?: Route | Special) {
