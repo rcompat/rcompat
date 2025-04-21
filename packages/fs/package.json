@@ -31,33 +31,27 @@
   },
   "type": "module",
   "imports": {
+    "#native": {
+      "bun": "./lib/private/native/bun.js",
+      "deno": "./lib/private/native/deno.js",
+      "default": "./lib/private/native/node.js"
+    },
+    "#native/type": {
+      "apekit": "./src/private/native/type.ts"
+    },
+    "#router/*": {
+      "apekit": "./src/private/router/*.ts",
+      "default": "./lib/private/router/*.js"
+    },
     "#*": {
-      "apekit": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
-    },
-    "#native/*": {
-      "apekit": "./src/native/private/*.ts",
-      "default": "./lib/native/private/*.js"
-    },
-    "#symbols/*": {
-      "apekit": "./src/private/symbols/*.ts",
-      "default": "./lib/private/symbols/*.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    "./native": {
-      "apekit": "./src/native/node/index.ts",
-      "bun": "./lib/native/bun/index.js",
-      "deno": "./lib/native/deno/index.js",
-      "node": "./lib/native/node/index.js"
-    },
-    "./symbols/*": {
-      "apekit": "./src/default/symbols/*.ts",
-      "default": "./lib/default/symbols/*.js"
-    },
     "./*": {
-      "apekit": "./src/default/*/index.ts",
-      "default": "./lib/default/*/index.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

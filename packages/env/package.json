@@ -27,16 +27,20 @@
   },
   "type": "module",
   "imports": {
+    "#js-env": {
+      "apekit": "./src/private/js-env/node.ts",
+      "bun": "./src/private/js-env/bun.ts",
+      "default": "./src/private/js-env/node.ts"
+    },
     "#*": {
-      "apekit": "./src/private/node/*.ts",
-      "bun": "./lib/private/bun/*.js",
-      "default": "./lib/private/node/*.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    ".": {
-      "apekit": "./src/exports.ts",
-      "default": "./lib/exports.js"
+    "./*": {
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

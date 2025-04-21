@@ -24,19 +24,23 @@
   },
   "type": "module",
   "imports": {
+    "#color/*": {
+      "apekit": "./src/private/color/*.ts",
+      "default": "./lib/private/color/*.js"
+    },
     "#*": {
-      "apekit": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    "./*": {
-      "apekit": "./src/*.ts",
-      "default": "./lib/*.js"
-    },
     "./color/*": {
-      "apekit": "./src/color/*.ts",
-      "default": "./lib/color/*.js"
+      "apekit": "./src/public/color/*.ts",
+      "default": "./lib/public/color/*.js"
+    },
+    "./*": {
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

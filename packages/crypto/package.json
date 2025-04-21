@@ -20,16 +20,26 @@
     "prepublishOnly": "npm run build"
   },
   "type": "module",
-  "exports": {
-    ".": {
-      "apekit": "./src/default/bun/index.ts",
-      "bun": "./lib/default/bun/index.js",
-      "node": "./lib/default/node/index.js"
+  "imports": {
+    "#hash": {
+      "apekit": "./src/private/hash/node.ts",
+      "bun": "./lib/private/hash/bun.js",
+      "node": "./lib/private/hash/node.js"
     },
+    "#index": {
+      "apekit": "./src/private/index/node.ts",
+      "bun": "./lib/private/index/bun.js",
+      "node": "./lib/private/index/node.js"
+    }
+  },
+  "exports": {
     "./hash": {
-      "apekit": "./src/hash/bun/index.ts",
-      "bun": "./lib/hash/bun/index.js",
-      "node": "./lib/hash/node/index.js"
+      "apekit": "./src/public/hash.ts",
+      "default": "./lib/public/hash.js"
+    },
+    ".": {
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }
