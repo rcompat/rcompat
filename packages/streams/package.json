@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/streams",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "rcompat streams module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
