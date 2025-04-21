@@ -16,10 +16,8 @@ export default class Assert<T> {
     this.#test.report(this.#actual, expected, passed);
   }
 
-  equals<Expected extends T>(expected?: Expected) {
-    if (expected !== undefined) {
-      this.#report(expected, equals(this.#actual, expected))
-    }
+  equals(expected: T) {
+    this.#report(expected, equals(this.#actual, expected))
   }
 
   nequals(expected: unknown) {
@@ -72,4 +70,7 @@ export default class Assert<T> {
       this.#report(`[threw] ${message}` as T, false);
     }
   }
+
+  // type check, no body
+  type<_Expected extends T>() {}
 };
