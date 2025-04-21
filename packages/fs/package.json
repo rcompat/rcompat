@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fs",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "rcompat fs module",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -18,10 +18,6 @@
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
-  },
-  "devDependencies": {
-    "@rcompat/module": "workspace:^",
-    "@rcompat/string": "workspace:^"
   },
   "dependencies": {
     "@rcompat/crypto": "workspace:^",
