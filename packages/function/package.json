@@ -20,10 +20,16 @@
     "prepublishOnly": "npm run build"
   },
   "type": "module",
+  "imports": {
+    "#*": {
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
   "exports": {
     "./*": {
-      "apekit": "./src/*/index.ts",
-      "default": "./lib/*/index.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

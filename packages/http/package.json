@@ -19,6 +19,9 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "devDependencies": {
+    "undici-types": "7.8.0"
+  },
   "dependencies": {
     "@rcompat/async": "workspace:^",
     "@rcompat/fs": "workspace:^",
@@ -31,28 +34,20 @@
   },
   "type": "module",
   "imports": {
+    "#serve": {
+      "bun": "./lib/private/serve/bun.js",
+      "deno": "./lib/private/serve/deno.js",
+      "node": "./lib/private/serve/node.js"
+    },
     "#*": {
       "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"
-    },
-    "#types/*": {
-      "apekit": "./src/private/types/*.ts",
-      "default": "./lib/private/types/*.js"
     }
   },
   "exports": {
-    "./serve": {
-      "apekit": "./src/serve/node/index.ts",
-      "bun": "./lib/serve/bun/index.js",
-      "deno": "./lib/serve/deno/index.js",
-      "node": "./lib/serve/node/index.js"
-    },
     "./*": {
-      "apekit": "./src/default/*.ts",
-      "default": "./lib/default/*.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
-  },
-  "devDependencies": {
-    "undici-types": "7.8.0"
   }
 }

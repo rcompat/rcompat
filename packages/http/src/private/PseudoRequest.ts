@@ -1,12 +1,12 @@
 import is from "@rcompat/invariant/is";
 import busboy from "busboy";
 import type { IncomingMessage } from "node:http";
-import type { RequestDuplex } from "undici-types";
 import { Readable } from "node:stream";
 import { arrayBuffer, blob, json, text } from "node:stream/consumers";
+import type { RequestDuplex } from "undici-types";
 
-export type Entry = [PropertyKey, unknown];
-export type CallableEntriesFn = {entries: () => Iterable<readonly [PropertyKey, any]>};
+export type CallableEntriesFn = {entries: ()
+  => Iterable<readonly [PropertyKey, any]>};
 
 const no_body = ["GET", "HEAD"];
 
