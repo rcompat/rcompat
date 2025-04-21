@@ -12,10 +12,11 @@ import type WritableInput from "#WritableInput";
 import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
-import type Dictionary from "@rcompat/record/Dictionary";
-import type { Replacer, StringClass } from "@rcompat/string/StringLike";
+import type Dictionary from "@rcompat/type/Dictionary";
+import type StringClass from "@rcompat/type/string/Class";
+import type StringReplacer from "@rcompat/type/string/Replacer";
 import {
-  copyFile, lstat, mkdir, readdir, realpath, rm
+    copyFile, lstat, mkdir, readdir, realpath, rm
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
@@ -53,7 +54,7 @@ export default class FileRef implements StringClass {
     return lstat(this.#path);
   }
 
-  [Symbol.replace](string: string, replacement: string | Replacer) {
+  [Symbol.replace](string: string, replacement: string | StringReplacer) {
     return string.replace(this.toString(), replacement/* TS bug*/ as never);
   }
 

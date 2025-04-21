@@ -1,4 +1,4 @@
-import type { Size } from "../../default/bun/Webview.js";
+import type { Size } from "../../public/bun/Webview.js";
 // @ts-expect-error asset import
 import worker from "./init.js" with { type: "file" };
 

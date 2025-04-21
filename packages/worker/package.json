@@ -22,10 +22,10 @@
   "type": "module",
   "exports": {
     ".": {
-      "apekit": "./src/bun/index.ts",
-      "bun": "./lib/bun/index.js",
-      "deno": "./lib/deno/index.js",
-      "node": "./lib/node/index.js"
+      "apekit": "./src/bun.ts",
+      "bun": "./lib/bun.js",
+      "deno": "./lib/deno.js",
+      "node": "./lib/node.js"
     }
   }
 }

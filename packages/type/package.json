@@ -21,12 +21,20 @@
   },
   "type": "module",
   "imports": {
+    "#string/*": {
+      "apekit": "./src/private/string/*.ts",
+      "default": "./lib/private/string/*.js"
+    },
     "#*": {
       "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
+    "./string/*": {
+      "apekit": "./src/public/string/*.ts",
+      "default": "./lib/public/string/*.js"
+    },
     "./*": {
       "apekit": "./src/public/*.ts",
       "default": "./lib/public/*.js"

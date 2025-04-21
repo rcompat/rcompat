@@ -5,7 +5,7 @@ import map from "#types/map";
 import record from "#types/record";
 import set from "#types/set";
 import string from "#types/string";
-import type Dictionary from "@rcompat/record/Dictionary";
+import type Dictionary from "@rcompat/type/Dictionary";
 import type UnknownMap from "@rcompat/type/UnknownMap";
 import type UnknownSet from "@rcompat/type/UnknownSet";
 

@@ -32,6 +32,7 @@
   "type": "module",
   "imports": {
     "#native": {
+      "apekit": "./src/private/native/node.ts",
       "bun": "./lib/private/native/bun.js",
       "deno": "./lib/private/native/deno.js",
       "default": "./lib/private/native/node.js"

@@ -41,8 +41,8 @@
       "node": "./lib/worker/node/*/index.js"
     },
     ".": {
-      "apekit": "./src/default/bun/Webview.ts",
-      "bun": "./lib/default/bun/Webview.js"
+      "apekit": "./src/public/bun/Webview.ts",
+      "bun": "./lib/public/bun/Webview.js"
     }
   }
 }

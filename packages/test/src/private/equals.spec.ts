@@ -1,6 +1,6 @@
 import fn from "#equals";
 import test from "#index";
-import type Dictionary from "@rcompat/record/Dictionary";
+import type Dictionary from "@rcompat/type/Dictionary";
 
 test.case("string", assert => {
   assert(fn("", "")).true();
@@ -106,7 +106,8 @@ test.case("Set", assert => {
   assert(fn(new Set([2, 1, 2]), new Set([2, 1]))).true();
   assert(fn(new Set([0]), new Set(Array.from({ length: 10 }, _ => 0)))).true();
   assert(fn(new Set([{ foo: "bar" }]), new Set([{ foo: "bar" }]))).true();
-  assert(fn(new Set([{ foo: "bar" }, { bar: "baz" }]), new Set([{ bar: "baz" }, { foo: "bar" }]))).true();
+  assert(fn(new Set([{ foo: "bar" }, { bar: "baz" }]),
+    new Set([{ bar: "baz" }, { foo: "bar" }]))).true();
 
   assert(fn(s0, new Set(["bar"]))).false();
   assert(fn(new Set([1, 2]), new Set([1, 2, 3]))).false();

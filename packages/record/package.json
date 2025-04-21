@@ -25,8 +25,8 @@
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {

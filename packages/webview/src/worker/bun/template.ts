@@ -1,7 +1,7 @@
 declare const self: Worker;
 
-import Webview from "../../default/bun/Webview.js";
-import type { Size } from "../../default/bun/Webview.js";
+import type { Size } from "../../public/bun/Webview.js";
+import Webview from "../../public/bun/Webview.js";
 
 let webview: Webview;
 
@@ -15,7 +15,7 @@ const events: any = {
   run() {
     webview.run();
   },
-  destroy() { 
+  destroy() {
     webview.destroy();
   },
   set_html(html: string) {

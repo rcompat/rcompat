@@ -1,4 +1,4 @@
-import numeric from "@rcompat/invariant/numeric";
+import numeric from "#numeric";
 import test from "@rcompat/test";
 import type Asserter from "@rcompat/test/Asserter";
 import NEVER from "@rcompat/test/NEVER";

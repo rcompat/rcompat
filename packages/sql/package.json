@@ -26,11 +26,17 @@
     "better-sqlite3": "^11.9.1"
   },
   "type": "module",
+  "imports": {
+    "#sqlite": {
+      "bun": "./lib/private/sqlite/bun.js",
+      "deno": "./lib/private/sqlite/deno.js",
+      "node": "./lib/private/sqlite/node.js"
+    }
+  },
   "exports": {
-    "./sqlite": {
-      "bun": "./lib/sqlite/bun/index.js",
-      "deno": "./lib/sqlite/deno/index.js",
-      "node": "./lib/sqlite/node/index.js"
+    "./*": {
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

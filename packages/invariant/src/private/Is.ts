@@ -1,9 +1,9 @@
-import type AnyConstructibleFunction from "#AnyConstructibleFunction";
 import assert from "#assert";
 import constructible from "#constructible";
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
-import type Dictionary from "@rcompat/record/Dictionary";
+import type Constructible from "@rcompat/type/Constructible";
+import type Dictionary from "@rcompat/type/Dictionary";
 
 type UnknownFunction = (...params: unknown[]) => unknown;
 
@@ -107,24 +107,30 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  constructible(error?: ErrorFallbackFunction | string): AnyConstructibleFunction {
+  constructible(error?: ErrorFallbackFunction | string): Constructible {
     const def = `\`${this.#value}\` must be constructible`;
     const condition = constructible(this.#value);
     return this.#test({ condition, def, error });
   }
 
-  instance<C extends AnyConstructibleFunction>(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
+  instance<
+    C extends Constructible
+  >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must be an instance ${Class.name}`;
     const condition = this.#value instanceof Class;
     return this.#test({ condition, def, error });
   }
 
-  of<C extends AnyConstructibleFunction>(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
+  of<
+    C extends Constructible
+  >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
     return this.instance(Class, error);
   }
 
-  subclass<C extends AnyConstructibleFunction>(Class: C, error?: ErrorFallbackFunction | string): C {
+  subclass<
+    C extends Constructible
+  >(Class: C, error?: ErrorFallbackFunction | string): C {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must subclass ${Class.name}`;
     // Todo: Remove any
@@ -132,11 +138,13 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  sub<C extends AnyConstructibleFunction>(Class: C, error?: ErrorFallbackFunction): C {
+  sub<C extends Constructible>(Class: C, error?: ErrorFallbackFunction): C {
     return this.subclass(Class, error);
   }
 
-  anyOf<T extends AnyConstructibleFunction>(Classes: T[], error?: ErrorFallbackFunction | string): InstanceType<T> {
+  anyOf<
+    T extends Constructible
+  >(Classes: T[], error?: ErrorFallbackFunction | string): InstanceType<T> {
     const classes = Classes instanceof Array ? Classes : [Classes];
     const classes_str = classes.map(c => `\`${c.name}\``).join(", ");
     const def = `\`${this.#value}\` must instance any of ${classes_str}`;

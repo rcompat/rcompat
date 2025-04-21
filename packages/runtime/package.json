@@ -22,14 +22,15 @@
   "type": "module",
   "exports": {
     ".": {
-      "bun": "./lib/default/bun.js",
-      "deno": "./lib/default/deno.js",
-      "workerd": "./lib/default/cloudflare.js",
-      "netlify": "./lib/default/netlify.js",
-      "edge-light": "./lib/default/vercel.js",
-      "fastly": "./lib/default/fastly.js",
-      "browser": "./lib/default/browser.js",
-      "node": "./lib/default/node.js"
+      "bun": "./lib/public/bun.js",
+      "deno": "./lib/public/deno.js",
+      "workerd": "./lib/public/cloudflare.js",
+      "netlify": "./lib/public/netlify.js",
+      "edge-light": "./lib/public/vercel.js",
+      "fastly": "./lib/public/fastly.js",
+      "browser": "./lib/public/browser.js",
+      "node": "./lib/public/node.js",
+      "default": "./lib/public/node.js"
     }
   } 
 }

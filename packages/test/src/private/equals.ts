@@ -6,7 +6,7 @@ import nul from "#types/null";
 import record from "#types/record";
 import scalar from "#types/scalar";
 import set from "#types/set";
-import type Dictionary from "@rcompat/record/Dictionary";
+import type Dictionary from "@rcompat/type/Dictionary";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 import type UnknownMap from "@rcompat/type/UnknownMap";
 import type UnknownSet from "@rcompat/type/UnknownSet";
