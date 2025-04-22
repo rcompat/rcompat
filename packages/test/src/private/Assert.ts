@@ -83,7 +83,4 @@ export default class Assert<T> {
   fail(reason: string) {
       this.#failed(reason);
   }
-
-  // type check, no body
-  type<_Expected extends T>() {}
 };
