@@ -24,7 +24,7 @@ export default class Assert<T> {
     this.#report(false, expected, actual);
   }
 
-  equals<_Expected extends T>(expected: unknown) {
+  equals(expected: T) {
     this.#report(equals(this.#actual, expected), expected);
   }
 
@@ -81,6 +81,6 @@ export default class Assert<T> {
   }
 
   fail(reason: string) {
-      this.#failed(reason);
+    this.#failed(reason);
   }
 };
