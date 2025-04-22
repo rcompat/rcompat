@@ -24,7 +24,7 @@ export default class Assert<T> {
     this.#report(false, expected, actual);
   }
 
-  equals(expected: unknown) {
+  equals<_Expected extends T>(expected: unknown) {
     this.#report(equals(this.#actual, expected), expected);
   }
 
