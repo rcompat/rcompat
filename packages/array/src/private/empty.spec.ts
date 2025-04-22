@@ -1,9 +1,9 @@
 import empty from "#empty";
 import test from "@rcompat/test";
-import NEVER from "@rcompat/test/NEVER";
+import undef from "@rcompat/test/undef";
 
 test.case("no params", assert => {
-  assert(() => empty(NEVER(undefined))).throws();
+  assert(() => empty(undef)).throws();
 });
 test.case("empty array", assert => {
   assert(empty([])).true();

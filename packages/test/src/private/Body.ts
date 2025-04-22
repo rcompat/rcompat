@@ -1,4 +1,4 @@
-import Asserter from "#Asserter";
+import type Asserter from "#Asserter";
 
 type Body = (asserter: Asserter) => void;
 

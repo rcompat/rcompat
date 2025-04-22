@@ -32,6 +32,7 @@ export default class Test {
   }
 
   run() {
-    this.#body(<T>(actual: T) => new Assert<T>(actual, this));
+    const asserter = <T>(actual: T) => new Assert<T>(actual, this);
+    this.#body(asserter);
   }
 };

@@ -12,20 +12,28 @@ export default class Assert<T> {
     this.#test = test;
   }
 
-  #report(expected: unknown, passed: boolean) {
-    this.#test.report(this.#actual, expected, passed);
+  #report(passed: boolean, expected: unknown, actual?: unknown) {
+    this.#test.report(actual ?? this.#actual, expected, passed);
+  }
+
+  #passed() {
+    this.#report(true, undefined);
+  }
+
+  #failed(expected: unknown, actual?: unknown) {
+    this.#report(false, expected, actual);
   }
 
   equals(expected: T) {
-    this.#report(expected, equals(this.#actual, expected))
+    this.#report(equals(this.#actual, expected), expected);
   }
 
   nequals(expected: unknown) {
-    this.#report(expected, !equals(this.#actual, expected))
+    this.#report(!equals(this.#actual, expected), expected)
   }
 
   #static(expected: unknown) {
-    this.#report(expected as T, equals(this.#actual as boolean, expected));
+    this.#report(equals(this.#actual as boolean, expected), expected);
   }
 
   true() {
@@ -45,30 +53,35 @@ export default class Assert<T> {
   }
 
   instance(expected: UnknownFunction) {
-    this.#report(expected, this.#actual instanceof expected);
+    this.#report(this.#actual instanceof expected, expected);
   }
 
   throws(expected?: string) {
     try {
       (this.#actual as () => unknown)();
-      this.#report("[void]" as T, false);
+      this.#failed("[did not throw]");
     } catch (error) {
       const { message } = E(error);
-      const messaged = expected !== undefined;
 
-      this.#report(message as T, messaged ? equals(message, expected) : true);
+      if (expected === undefined || expected === message) {
+        this.#passed();
+      } else {
+        this.#failed(expected, message);
+      }
     }
   }
 
   tries() {
     try {
       (this.#actual as () => unknown)();
-      this.#report("[void]" as T, true);
+      this.#passed();
     } catch (error) {
-      const { message } = E(error);
-
-      this.#report(`[threw] ${message}` as T, false);
+      this.#failed(E(error).message, "[did not throw]");
     }
+  }
+
+  fail(reason: string) {
+      this.#failed(reason);
   }
 
   // type check, no body

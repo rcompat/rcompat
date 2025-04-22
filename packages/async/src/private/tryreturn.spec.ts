@@ -1,10 +1,10 @@
 import tryreturn from "#tryreturn";
 import test from "@rcompat/test";
-import NEVER from "@rcompat/test/NEVER";
+import undef from "@rcompat/test/undef";
 
 test.case("`try` faulty", async assert => {
   try {
-    await tryreturn(NEVER(undefined)).orelse(async () => null);
+    await tryreturn(undef).orelse(async () => null);
   } catch (error: any) {
     assert(error.message).equals("`undefined` must be of type function");
   }

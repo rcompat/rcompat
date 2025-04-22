@@ -1,7 +1,8 @@
 import non_records from "#non-records";
 import override from "#override";
 import test from "@rcompat/test";
-import NEVER from "@rcompat/test/NEVER";
+import undef from "@rcompat/test/undef";
+import never from "@rcompat/test/never";
 
 test.case("typedoc", assert => {
  assert(override({}, { foo: "bar" })).equals({ foo: "bar" });
@@ -13,12 +14,12 @@ test.case("typedoc", assert => {
 test.case("faulty params", assert => {
   const base = { keys: "values" };
   const over = { key: "value" };
-  assert(() => override(NEVER(undefined), NEVER(undefined))).throws();
-  assert(() => override(NEVER(undefined), over)).throws();
-  assert(() => override(base, NEVER(undefined))).throws();
+  assert(() => override(undef, undef)).throws();
+  assert(() => override(undef, over)).throws();
+  assert(() => override(base, undef)).throws();
   non_records.forEach(non_record => {
-    assert(() => override(NEVER(non_record), { foo: "bar" })).throws();
-    assert(() => override({ foo: "bar" }, NEVER(non_record))).throws();
+    assert(() => override(never(non_record), { foo: "bar" })).throws();
+    assert(() => override({ foo: "bar" }, never(non_record))).throws();
   });
 });
 
@@ -72,14 +73,14 @@ test.case("function", assert => {
     const base = { key: { subkey: fn } };
     const over = { key: { subkey: "subvalue", subkey2: "subvalue2" } };
     const overridden = { key: { subkey: "subvalue", subkey2: "subvalue2" } };
-    assert(override(base, over)).equals(NEVER(overridden));
+    assert(override(base, over)).equals(never(overridden));
   }
   {
     const fn = () => undefined;
     const base = { fn, foo: "bar" };
     const over = { fn: { foo: "bar" }, fn2: { bar: "baz" } };
     const overridden = { fn: { foo: "bar" }, foo: "bar", fn2: { bar: "baz" } };
-    assert(override(base, over)).equals(NEVER(overridden));
+    assert(override(base, over)).equals(never(overridden));
   }
 });
 
@@ -92,7 +93,7 @@ test.case("arrays don't recurse", assert => {
     modules: [{ name: "primate:htmx" } ],
   };
 
-  assert(override(base, over)).equals(NEVER(over));
+  assert(override(base, over)).equals(never(over));
 });
 
 test.case("config enhancement", assert => {

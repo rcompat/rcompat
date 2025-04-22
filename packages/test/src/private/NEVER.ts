@@ -1,5 +1,3 @@
-const NEVER = (value: unknown) => value as never;
+const never = (value: unknown) => value as never;
 
-NEVER.undefined = NEVER(undefined);
-
-export default NEVER;
+export default never;

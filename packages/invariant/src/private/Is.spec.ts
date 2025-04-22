@@ -1,6 +1,6 @@
 import Is from "#Is";
 import test from "@rcompat/test";
-import NEVER from "@rcompat/test/NEVER";
+import never from "@rcompat/test/never";
 
 const fixturesMap = {
   string: ["", String()],
@@ -21,7 +21,7 @@ test.case("non objects", assert => {
     const non_values = fixtures.filter(entry => entry[0] !== key)
       .flatMap(([, value]) => value);
     values.forEach(value => {
-      assert(new Is(value)[key]()).equals(NEVER(value));
+      assert(new Is(value)[key]()).equals(never(value));
       non_values.forEach(non_value =>
         assert(() => new Is(non_value)[key]()).throws());
     });

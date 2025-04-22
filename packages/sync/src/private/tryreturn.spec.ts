@@ -2,11 +2,11 @@ import tryreturn from "#tryreturn";
 import identity from "@rcompat/function/identity";
 import test from "@rcompat/test";
 import E from "@rcompat/test/E";
-import NEVER from "@rcompat/test/NEVER";
+import undef from "@rcompat/test/undef";
 
 test.case("`try` faulty", assert => {
   try {
-    tryreturn(NEVER.undefined).orelse(identity);
+    tryreturn(undef).orelse(identity);
   } catch (error) {
     assert(E(error).message).equals("`undefined` must be of type function");
   }
@@ -23,7 +23,7 @@ test.case("`try` faulty", assert => {
 
 test.case("`orelse` faulty", assert => {
   try {
-    tryreturn(() => null).orelse(NEVER.undefined);
+    tryreturn(() => null).orelse(undef);
   } catch (error) {
     assert(E(error).message).equals("`undefined` must be of type function");
   }

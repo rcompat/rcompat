@@ -1,7 +1,7 @@
 import numeric from "#numeric";
 import test from "@rcompat/test";
 import type Asserter from "@rcompat/test/Asserter";
-import NEVER from "@rcompat/test/NEVER";
+import never from "@rcompat/test/never";
 
 const trues = (assert: Asserter, strings: unknown, number: number) => {
   const array = Array.isArray(strings) ? strings : [strings];
@@ -13,7 +13,7 @@ const trues = (assert: Asserter, strings: unknown, number: number) => {
 
 const falses = (assert: Asserter, ...strings: unknown[]) => {
   strings.forEach(string => {
-    assert(numeric(NEVER(string))).false();
+    assert(numeric(never(string))).false();
   });
 };
 
@@ -31,7 +31,7 @@ test.case("numeric", assert => {
   trues(assert, "123e-4", 0.0123);
   trues(assert, "-123e-4", -0.0123);
 
-  falses(assert, 
+  falses(assert,
     "1n", "1,0",
     "Infinity", "-Infinity",
     "NaN", "-NaN",
