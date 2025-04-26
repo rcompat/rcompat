@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/type",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "standard types for rcompat",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
