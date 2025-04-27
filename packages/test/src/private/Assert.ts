@@ -26,38 +26,43 @@ export default class Assert<T> {
 
   equals(expected: unknown) {
     this.#report(equals(this.#actual, expected), expected);
+    return this;
   }
 
   nequals(expected: unknown) {
     this.#report(!equals(this.#actual, expected), expected)
+    return this;
   }
 
   type<_Expected extends T>() {
     // noop
+    return this;
   }
 
   #static(expected: unknown) {
     this.#report(equals(this.#actual as boolean, expected), expected);
+    return this;
   }
 
   true() {
-    this.#static(true);
+    return this.#static(true);
   }
 
   false() {
-    this.#static(false);
+    return this.#static(false);
   }
 
   null() {
-    this.#static(null);
+    return this.#static(null);
   }
 
   undefined() {
-    this.#static(undefined);
+    return this.#static(undefined);
   }
 
   instance(expected: UnknownFunction) {
     this.#report(this.#actual instanceof expected, expected);
+    return this;
   }
 
   throws(expected?: string) {
@@ -73,6 +78,7 @@ export default class Assert<T> {
         this.#failed(expected, message);
       }
     }
+    return this;
   }
 
   tries() {
@@ -82,6 +88,7 @@ export default class Assert<T> {
     } catch (error) {
       this.#failed(E(error).message, "[did not throw]");
     }
+    return this;
   }
 
   fail(reason: string) {
