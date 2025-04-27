@@ -2,7 +2,7 @@ import assert from "#assert";
 import constructible from "#constructible";
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
-import type Constructible from "@rcompat/type/Constructible";
+import type Instance from "@rcompat/type/Instance";
 import type Dictionary from "@rcompat/type/Dictionary";
 
 type UnknownFunction = (...params: unknown[]) => unknown;
@@ -107,14 +107,14 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  constructible(error?: ErrorFallbackFunction | string): Constructible {
+  constructible(error?: ErrorFallbackFunction | string): Instance {
     const def = `\`${this.#value}\` must be constructible`;
     const condition = constructible(this.#value);
     return this.#test({ condition, def, error });
   }
 
   instance<
-    C extends Constructible
+    C extends Instance
   >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must be an instance ${Class.name}`;
@@ -123,13 +123,13 @@ export default class Is {
   }
 
   of<
-    C extends Constructible
+    C extends Instance
   >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
     return this.instance(Class, error);
   }
 
   subclass<
-    C extends Constructible
+    C extends Instance
   >(Class: C, error?: ErrorFallbackFunction | string): C {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must subclass ${Class.name}`;
@@ -138,12 +138,12 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  sub<C extends Constructible>(Class: C, error?: ErrorFallbackFunction): C {
+  sub<C extends Instance>(Class: C, error?: ErrorFallbackFunction): C {
     return this.subclass(Class, error);
   }
 
   anyOf<
-    T extends Constructible
+    T extends Instance
   >(Classes: T[], error?: ErrorFallbackFunction | string): InstanceType<T> {
     const classes = Classes instanceof Array ? Classes : [Classes];
     const classes_str = classes.map(c => `\`${c.name}\``).join(", ");

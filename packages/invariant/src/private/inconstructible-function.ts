@@ -1,5 +1,5 @@
-import type Constructible from "@rcompat/type/Constructible";
+import type Instance from "@rcompat/type/Instance";
 import inconstructible from "#inconstructible";
 
-export default (value: Constructible): boolean =>
+export default (value: Instance): boolean =>
   inconstructible(value) && typeof value === "function";
