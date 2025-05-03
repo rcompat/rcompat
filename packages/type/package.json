@@ -21,10 +21,6 @@
   },
   "type": "module",
   "imports": {
-    "#string/*": {
-      "apekit": "./src/private/string/*.ts",
-      "default": "./lib/private/string/*.js"
-    },
     "#*": {
       "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"

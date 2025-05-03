@@ -13,10 +13,10 @@ import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 import type Dictionary from "@rcompat/type/Dictionary";
-import type StringClass from "@rcompat/type/string/Class";
-import type StringReplacer from "@rcompat/type/string/Replacer";
+import type StringClass from "@rcompat/type/StringClass";
+import type StringReplacer from "@rcompat/type/StringReplacer";
 import {
-    copyFile, lstat, mkdir, readdir, realpath, rm
+  copyFile, lstat, mkdir, readdir, realpath, rm
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";

@@ -1,4 +1,4 @@
-import type StringReplacer from "#string/Replacer";
+import type StringReplacer from "#StringReplacer";
 
 type StringClass = {
   toString(): string;

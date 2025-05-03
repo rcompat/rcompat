@@ -1,4 +1,4 @@
-import type StringClass from "#string/Class";
+import type StringClass from "#StringClass";
 
 type StringLike = string | StringClass;
 
