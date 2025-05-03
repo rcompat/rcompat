@@ -51,7 +51,7 @@ export default class Assert<const Actual> {
 
   nottype<const Expected extends Not<Equals<Actual, Expected>> extends true
     ? unknown
-    : "actual and expected types are same">() {
+    : "actual and expected types are same">(_expected?: Expected) {
     return this;
   }
 

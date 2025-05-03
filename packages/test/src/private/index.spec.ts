@@ -45,18 +45,49 @@ test.case("type", assert => {
 
 test.case("type without values", assert => {
   assert<"foo">().nottype<string>();
+  assert<"foo">().nottype("foo" as string);
+  assert("foo").nottype<string>();
+  assert("foo").nottype("foo" as string);
 
   assert<string>().nottype<"foo">();
+  assert<string>().nottype("foo");
+  assert("foo" as string).nottype<"foo">();
+  assert("foo" as string).nottype("foo");
 
   assert<"foo">().nottype<"bar">();
+  assert<"foo">().nottype("bar");
+  assert("foo").nottype<"bar">();
+  assert("foo").nottype("bar");
 
   assert<0>().nottype<1>();
+  assert<0>().nottype(1);
+  assert(0).nottype<1>();
+  assert(0).nottype(1);
+
   assert<1>().nottype<number>();
+  assert<1>().nottype(1 as number);
+  assert(1).nottype<number>();
+  assert(1).nottype(1 as number);
+
   assert<number>().nottype<1>();
+  assert<number>().nottype(1);
+  assert(1 as number).nottype<1>();
+  assert(1 as number).nottype(1);
 
   assert<0n>().nottype<1n>();
+  assert<0n>().nottype(1n);
+  assert(0n).nottype<1n>();
+  assert(0n).nottype(1n);
+
   assert<1n>().nottype<bigint>();
+  assert<1n>().nottype(1n as bigint);
+  assert(1n).nottype<bigint>();
+  assert(1n).nottype(1n as bigint);
+
   assert<bigint>().nottype<1n>();
+  assert<bigint>().nottype(1n);
+  assert(1n as bigint).nottype<1n>();
+  assert(1n as bigint).nottype(1n);
 
   assert<true>().nottype<false>();
   assert<true>().nottype<boolean>();
@@ -83,5 +114,5 @@ test.case("type without values", assert => {
   assert<[number, string]>().nottype<[string, number]>();
 
   assert<EO>().nottype<[]>();
-  assert<[]>().nottype<{}>();
+  assert<[]>().nottype<EO>();
 });
