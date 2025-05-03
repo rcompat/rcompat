@@ -1,5 +1,5 @@
 import Assert from "#Assert";
-import Body from "#Body";
+import type Body from "#Body";
 import Result from "#Result";
 import type FileRef from "@rcompat/fs/FileRef";
 
@@ -32,7 +32,7 @@ export default class Test {
   }
 
   run() {
-    const asserter = <T>(actual: T) => new Assert<T>(actual, this);
+    const asserter = <T>(actual?: T) => new Assert<T>(this, actual);
     this.#body(asserter);
   }
 };

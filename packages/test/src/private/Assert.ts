@@ -1,13 +1,22 @@
 import E from "#E";
-import type Test from "#Test";
 import equals from "#equals";
+import type Test from "#Test";
+import type Not from "@rcompat/type/Not";
+import type Print from "@rcompat/type/Print";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
-export default class Assert<T> {
-  #actual: T;
-  #test: Test;
+type Equals<X, Y> =
+  (<T>() => T extends X ? true : false) extends <T>() => T extends Y
+    ? true
+    : false
+    ? true
+    : false;
 
-  constructor(actual: T, test: Test) {
+export default class Assert<const Actual> {
+  #test: Test;
+  #actual?: Actual;
+
+  constructor(test: Test, actual?: Actual) {
     this.#actual = actual;
     this.#test = test;
   }
@@ -34,8 +43,15 @@ export default class Assert<T> {
     return this;
   }
 
-  type<_Expected extends T>() {
-    // noop
+  type<const Expected extends Equals<Actual, Expected> extends true
+    ? unknown
+    : Print<Actual>>() {
+    return this;
+  }
+
+  nottype<const Expected extends Not<Equals<Actual, Expected>> extends true
+    ? unknown
+    : "actual and expected types are same">() {
     return this;
   }
 
@@ -91,7 +107,14 @@ export default class Assert<T> {
     return this;
   }
 
-  fail(reason: string) {
-    this.#failed(reason);
+  fail<const Expected extends Not<Equals<Actual, Expected>> extends true
+    ? unknown
+    : "was supposed to fail but didn't">(): void;
+  fail(reason: string): void;
+
+  fail(reason?: string) {
+    if (reason !== undefined) {
+      this.#failed(reason);
+    }
   }
 };
