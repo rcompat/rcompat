@@ -1,5 +1,7 @@
+const s_name = Symbol("Name");
+
 class Printable<Name extends string> {
-  get Name(): Name {
+  get [s_name](): Name {
     return undefined as unknown as Name;
   }
 }

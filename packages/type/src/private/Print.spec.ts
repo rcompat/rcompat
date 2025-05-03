@@ -63,14 +63,18 @@ test.case("generics", assert => {
   assert<Print<Awaited<Promise<1>>>>().type<"1">();
   assert<Print<Awaited<Promise<bigint>>>>().type<"bigint">();
 
-  class Test<T> extends PrintableGeneric<"Test", T> {}
-  assert<Print<Test<unknown>>>().type<"Test<unknown>">();
-  assert<Print<Test<string>>>().type<"Test<string>">();
+  class Class<T> extends PrintableGeneric<"Class", T> {}
+  assert<Print<Class<unknown>>>().type<"Class<unknown>">();
+  assert<Print<Class<string>>>().type<"Class<string>">();
 
-  class Test2<T> extends PrintableGeneric<"Test2", T> {}
-  assert<Print<Test<Test2<unknown>>>>().type<"Test<Test2<unknown>>">();
-  assert<Print<Test<Test2<[string, boolean]>>>>()
-    .type<"Test<Test2<[string, boolean]>>">();
+  class Class2<T> extends PrintableGeneric<"Class2", T> {}
+  assert<Print<Class<Class2<Date>>>>().type<"Class<Class2<Date>>">();
+  assert<Print<Class<Class2<[string, boolean]>>>>()
+    .type<"Class<Class2<[string, boolean]>>">();
+
+  class Generic<Name extends string, T> extends PrintableGeneric<Name, T> {};
+  class Class3<T> extends Generic<"Class3", T> {};
+  assert<Print<Class3<unknown>>>().type<"Class3<unknown>">();
 });
 
 test.case("literals", assert => {
