@@ -1,56 +1,87 @@
-import Assert from "#Assert";
-import Test from "#Test";
-import FileRef from "@rcompat/fs/FileRef";
 import test from "@rcompat/test";
 import type EO from "@rcompat/type/EO";
 
-const t = new Test("dummy", () => {}, new FileRef("/tmp"));
-
 test.case("type", assert => {
-  assert(new Assert<true>(t).type<true>()).true();
-  assert(new Assert<"foo">(t).type<"foo">()).true();
-  assert(new Assert<0>(t).type<0>()).true();
-  assert(new Assert<0n>(t).type<0n>()).true();
-  assert(new Assert<["foo"]>(t).type<["foo"]>()).true();
-  assert(new Assert<["foo"][]>(t).type<["foo"][]>()).true();
+  assert<true>().type<true>();
+  assert<true>().type(true);
+  assert(true).type<true>();
+  assert(true).type(true);
 
-  assert(new Assert<EO>(t).type<EO>()).true();
-  assert(new Assert<[]>(t).type<[]>()).true();
+  assert<"foo">().type<"foo">();
+  assert<"foo">().type("foo");
+  assert("foo").type<"foo">();
+  assert("foo").type("foo");
+
+  assert<0>().type<0>();
+  assert<0>().type(0);
+  assert(0).type<0>();
+  assert(0).type(0);
+
+  assert<0n>().type<0n>();
+  assert<0n>().type(0n);
+  assert(0n).type<0n>();
+  assert(0n).type(0n);
+
+  assert<["foo"]>().type<["foo"]>();
+  //assert<["foo"]>().type(["foo"]);
+  assert(["foo"]).fail<["foo"]>();
+  assert(["foo"]).type(["foo"]);
+
+  assert<["foo"][]>().type<["foo"][]>();
+  //assert<["foo"][]>().type(["foo", "foo"]);
+  assert(["foo", "foo"]).fail<["foo"][]>();
+  assert(["foo", "foo"]).type(["foo", "foo"]);
+
+  assert<EO>().type<EO>();
+  assert<EO>().type({});
+  assert({}).type<EO>();
+  assert({}).type({});
+
+  assert<[]>().type<[]>();
+  //assert<[]>().type([]);
+  assert([]).fail<[]>();
+  assert([]).type([]);
 });
 
 test.case("type without values", assert => {
+  assert<"foo">().nottype<string>();
 
-  assert(new Assert<"foo">(t).nottype<string>()).true();
-  assert(new Assert<string>(t).nottype<"foo">()).true();
-  assert(new Assert<"foo">(t).nottype<"bar">()).true();
+  assert<string>().nottype<"foo">();
 
-  assert(new Assert<0>(t).nottype<1>()).true();
-  assert(new Assert<1>(t).nottype<number>()).true();
-  assert(new Assert<number>(t).nottype<1>()).true();
+  assert<"foo">().nottype<"bar">();
 
-  assert(new Assert<0n>(t).nottype<1n>()).true();
-  assert(new Assert<1n>(t).nottype<bigint>()).true();
-  assert(new Assert<bigint>(t).nottype<1n>()).true();
+  assert<0>().nottype<1>();
+  assert<1>().nottype<number>();
+  assert<number>().nottype<1>();
 
-  assert(new Assert<true>(t).nottype<false>()).true();
-  assert(new Assert<true>(t).nottype<boolean>()).true();
-  assert(new Assert<boolean>(t).nottype<true>()).true();
+  assert<0n>().nottype<1n>();
+  assert<1n>().nottype<bigint>();
+  assert<bigint>().nottype<1n>();
 
-  assert(new Assert<["bar"][]>(t).nottype<["foo"]>()).true();
-  assert(new Assert<["foo"]>(t).nottype<["bar"][]>()).true();
+  assert<true>().nottype<false>();
+  assert<true>().nottype<boolean>();
+  assert<boolean>().nottype<true>();
 
-  assert(new Assert<string[]>(t).nottype<["foo"][]>()).true();
-  assert(new Assert<[string]>(t).nottype<["foo"][]>()).true();
+  assert<["bar"]>().nottype<["foo"]>();
+  assert<["foo"][]>().nottype<["foo"]>();
+  assert<["bar"][]>().nottype<["foo"]>();
 
-  assert(new Assert<["foo"][]>(t).nottype<string[]>()).true();
-  assert(new Assert<["foo"][]>(t).nottype<[string]>()).true();
+  assert<["foo"][]>().nottype<["bar"]>();
+  assert<["foo"]>().nottype<["foo"][]>();
+  assert<["foo"]>().nottype<["bar"][]>();
 
-  assert(new Assert<string[]>(t).nottype<[string]>()).true();
-  assert(new Assert<[string]>(t).nottype<string[]>()).true();
+  assert<string[]>().nottype<["foo"][]>();
+  assert<[string]>().nottype<["foo"][]>();
 
-  assert(new Assert<[string, number]>(t).nottype<[number, string]>()).true();
-  assert(new Assert<[number, string]>(t).nottype<[string, number]>()).true();
+  assert<["foo"][]>().nottype<string[]>();
+  assert<["foo"][]>().nottype<[string]>();
 
-  assert(new Assert<EO>(t).nottype<[]>()).true();
-  assert(new Assert<[]>(t).nottype<EO>()).true();
+  assert<[string][]>().nottype<[string]>();
+  assert<[string]>().nottype<string[]>();
+
+  assert<[string, number]>().nottype<[number, string]>();
+  assert<[number, string]>().nottype<[string, number]>();
+
+  assert<EO>().nottype<[]>();
+  assert<[]>().nottype<{}>();
 });

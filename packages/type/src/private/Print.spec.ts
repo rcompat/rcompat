@@ -1,7 +1,7 @@
 import test from "@rcompat/test";
 import type Print from "#Print";
-import Printable from "#Printable";
-import PrintableGeneric from "#PrintableGeneric";
+import type Printable from "#Printable";
+import type PrintableGeneric from "#PrintableGeneric";
 
 test.case("primitives", assert => {
   assert<Print<string>>().type<"string">();

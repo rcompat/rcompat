@@ -45,7 +45,7 @@ export default class Assert<const Actual> {
 
   type<const Expected extends Equals<Actual, Expected> extends true
     ? unknown
-    : Print<Actual>>() {
+    : Print<Actual>>(_expected?: Expected) {
     return this;
   }
 

@@ -17,7 +17,8 @@
   "scripts": {
     "build": "npm run clean && tsc",
     "clean": "rm -rf ./lib",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && npx proby"
   },
   "devDependencies": {
     "@rcompat/fs": "workspace:^"
