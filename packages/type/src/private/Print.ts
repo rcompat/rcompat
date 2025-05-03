@@ -56,8 +56,8 @@ type ArrayToString<T> =
   IsUnion<T> extends true ? `(${Print<T>})` : `${Print<T>}`;
 
 type ClassToString<T> =
-  T extends Printable<infer N extends string>
-    ? T extends PrintableGeneric<infer _, infer P>
+  T extends { Name: infer N extends string }
+    ? T extends { Type: infer P }
       ? `${N}<${Print<P>}>` : `${N}` :
   T extends String ? "String" :
   T extends Boolean ? "Boolean" :

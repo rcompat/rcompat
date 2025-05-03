@@ -1,11 +1,5 @@
-import Printable from "#Printable";
+import type Printable from "#Printable";
 
-const s_type = Symbol("Type");
-
-class PrintableGeneric<Name extends string, Type> extends Printable<Name> {
-  get [s_type]() {
-    return undefined as Type;
-  }
+export default interface PrintableGeneric<Type> extends Printable {
+  readonly Type: Type;
 }
-
-export { PrintableGeneric as default };

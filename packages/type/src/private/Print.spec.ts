@@ -34,7 +34,11 @@ test.case("classes", assert => {
   class Local {};
   assert<Print<Local>>().type<"Object">();
 
-  class Test extends Printable<"Test"> {}
+  class Test implements Printable {
+    get Name(): "Test" {
+      return "Test";
+    };
+  }
   assert<Print<Test>>().type<"Test">();
 });
 
@@ -63,16 +67,37 @@ test.case("generics", assert => {
   assert<Print<Awaited<Promise<1>>>>().type<"1">();
   assert<Print<Awaited<Promise<bigint>>>>().type<"bigint">();
 
-  class Class<T> extends PrintableGeneric<"Class", T> {}
+  class Class<T> implements PrintableGeneric<T> {
+    get Name(): "Class" {
+      return "Class";
+    };
+    get Type() {
+      return undefined as T;
+    }
+  }
   assert<Print<Class<unknown>>>().type<"Class<unknown>">();
   assert<Print<Class<string>>>().type<"Class<string>">();
 
-  class Class2<T> extends PrintableGeneric<"Class2", T> {}
+  class Class2<T> implements PrintableGeneric<T> {
+    get Name(): "Class2" {
+      return "Class2";
+    };
+    get Type() {
+      return undefined as T;
+    }
+  }
   assert<Print<Class<Class2<Date>>>>().type<"Class<Class2<Date>>">();
   assert<Print<Class<Class2<[string, boolean]>>>>()
     .type<"Class<Class2<[string, boolean]>>">();
 
-  class Generic<Name extends string, T> extends PrintableGeneric<Name, T> {};
+  class Generic<Name extends string, T> implements PrintableGeneric<T> {
+    get Name(): Name {
+      return undefined as unknown as Name;
+    };
+    get Type() {
+      return undefined as T;
+    }
+  }
   class Class3<T> extends Generic<"Class3", T> {};
   assert<Print<Class3<unknown>>>().type<"Class3<unknown>">();
 });
