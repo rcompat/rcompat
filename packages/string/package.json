@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/string",
-  "version": "0.7.0",
-  "description": "rcompat string module",
+  "version": "0.7.1",
+  "description": "Standard library string abtractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

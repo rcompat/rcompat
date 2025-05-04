@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/http",
-  "version": "0.11.0",
-  "description": "HTTP module",
+  "version": "0.11.1",
+  "description": "Standard library HTTP servers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -30,7 +30,7 @@
     "@rcompat/record": "workspace:^",
     "@rcompat/streams": "workspace:^",
     "busboy": "^1.6.0",
-    "ws": "^8.18.1"
+    "ws": "^8.18.2"
   },
   "type": "module",
   "imports": {

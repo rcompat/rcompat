@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/record",
-  "version": "0.7.0",
-  "description": "record helpers",
+  "version": "0.7.1",
+  "description": "Standrd library record helpers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

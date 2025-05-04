@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/crypto",
-  "version": "0.8.0",
-  "description": "rcompat crypto module",
+  "version": "0.8.1",
+  "description": "Standard library cryptographic functions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

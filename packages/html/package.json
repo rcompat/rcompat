@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/html",
-  "version": "0.4.0",
-  "description": "rcompat HTML module",
+  "version": "0.4.1",
+  "description": "Standard library HTML handling",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

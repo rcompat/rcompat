@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.11.0",
-  "description": "rcompat webview module",
+  "version": "0.11.1",
+  "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -26,7 +26,7 @@
     "@rcompat/record": "workspace:^"
   },
   "devDependencies": {
-    "esbuild": "^0.25.1"
+    "esbuild": "^0.25.3"
   },
   "type": "module",
   "exports": {

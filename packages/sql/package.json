@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/sql",
-  "version": "0.7.0",
-  "description": "rcompat SQL module",
+  "version": "0.7.1",
+  "description": "Standard library SQL abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

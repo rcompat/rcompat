@@ -1,37 +1,41 @@
 # rcompat
 
-JavaScript interoperability and runtime compatibility layer for servers.
+Standard library for JavaScript runtimes.
 
 ## What is rcompat?
 
-A unified interface for Node, Deno and Bun. Similar to jQuery, just for
-servers.
+A standard library for JavaScript runtimes, consistenly working across Node,
+Deno, Bun and future runtimes.
 
 ## Packages
 
-| Package                                 | Function                          |
+| Package                                 | Purpose                           |
 |-----------------------------------------|-----------------------------------|
-|[@rcompat/args](packages/args)           | program arguments                 |
-|[@rcompat/array](packages/array)         | array utilities                   |
-|[@rcompat/async](packages/async)         | async utilities                   |
-|[@rcompat/build](packages/build)         | build system                      |
-|[@rcompat/cli](packages/cli)             | cli apps                          |
-|[@rcompat/crypto](packages/crypto)       | cryptographic functions           |
-|[@rcompat/env](packages/env)             | loading environment files         |
-|[@rcompat/fs](packages/fs)               | filesystem functions              |
-|[@rcompat/function](packages/function)   | function utilities                |
-|[@rcompat/http](packages/http)           | http servers                      |
-|[@rcompat/invariant](packages/invariant) | runtime validation                |
-|[@rcompat/module](packages/module)       | module loading                    |
-|[@rcompat/object](packages/object)       | object utilities                  |
-|[@rcompat/package](packages/package)     | package utilities                 |
+|[@rcompat/args](packages/args)           | Program arguments                 |
+|[@rcompat/array](packages/array)         | Array functions                   |
+|[@rcompat/async](packages/async)         | Async abstractions                |
+|[@rcompat/build](packages/build)         | Client builder                    |
+|[@rcompat/cli](packages/cli)             | CLI tools                         |
+|[@rcompat/crypto](packages/crypto)       | Cryptographic functions           |
+|[@rcompat/env](packages/env)             | Environment handling              |
+|[@rcompat/fs](packages/fs)               | Filesystem access                 |
+|[@rcompat/function](packages/function)   | Function helpers                  |
+|[@rcompat/html](packages/html)           | HTML handling                     |
+|[@rcompat/http](packages/http)           | HTTP servers                      |
+|[@rcompat/invariant](packages/invariant) | Function invariance               |
+|[@rcompat/package](packages/package)     | Package helpers                   |
+|[@rcompat/proby](packages/proby)         | Test runner                       |
+|[@rcompat/record](packages/record)       | Record helpers                    |
+|[@rcompat/runtime](packages/runtime)     | Runtime detection                 |
 |[@rcompat/sql](packages/sql)             | SQL abstractions                  |
-|[@rcompat/platform](packages/platform)   | platform querying                 |
-|[@rcompat/stdio](packages/stdio)         | process handling                  |
-|[@rcompat/streams](packages/streams)     | stream utilities                  |
-|[@rcompat/string](packages/string)       | string utilities                  |
-|[@rcompat/sync](packages/sync)           | sync utilities                    |
-|[@rcompat/webview](packages/webview)     | native webview library            |
+|[@rcompat/stdio](packages/stdio)         | Input/output                      |
+|[@rcompat/streams](packages/streams)     | Stream abstractions               |
+|[@rcompat/string](packages/string)       | String abstractions               |
+|[@rcompat/sync](packages/sync)           | Sync abstractions                 |
+|[@rcompat/test](packages/test)           | Testing                           |
+|[@rcompat/type](packages/type)           | Types                             |
+|[@rcompat/webview](packages/webview)     | Webview                           |
+|[@rcompat/worker](packages/worker)       | Web workers                       |
 
 ## Motivation
 
@@ -62,8 +66,8 @@ rcompat is designed with many modules in mind, including `@rcompat/fs` for
 filesystem operations, `@rcompat/http` for using a modern HTTP server working
 with WHATWG `Request`/`Response` (which Node doesn't support; rcompat wraps
 a Node request object into a WHATWG `Request` as it comes in),
-`@rcompat/invariant` for ensuring runtime invariants, `@rcompat/object` for
-object transformations, and many more useful modules and abstractions.
+`@rcompat/invariant` for ensuring runtime invariants, `@rcompat/record` for
+record handling, and many more useful modules and abstractions.
 
 The standard library is designed to accommodate modern development needs: for
 example, `@rcompat/http` supports WebSockets (natively on Deno/Bun, and using
@@ -97,9 +101,9 @@ target everything.
 For example, here's how you can read a file and parse it as JSON.
 
 ```js
-import file from "@rcompat/fs/file";
+import FileRef from "@rcompat/fs/FileRef";
 
-console.log(await file("./users.json").json());
+console.log(await new FileRef("./users.json").json());
 ```
 
 Again, this code runs successfully on Node, Deno or Bun, taking advantage of
@@ -108,7 +112,7 @@ optimizations native to every runtime.
 ## Evolving standard — input needed
 
 rcompat has been quietly developed the last few months in conjunction with
-[Primate](https://primatejs.com)'s development and is largely influenced by its
+[Primate](https://primate.run)'s development and is largely influenced by its
 needs. We'd like to invite more participation by other projects / individuals
 in order to converge on APIs that best serve everyone and are the most useful
 on a broad basis.

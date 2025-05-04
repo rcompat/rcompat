@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/streams",
-  "version": "0.6.0",
-  "description": "rcompat streams module",
+  "version": "0.6.1",
+  "description": "Standard library stream abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

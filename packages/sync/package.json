@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/sync",
   "version": "0.6.0",
-  "description": "rcompat sync module",
+  "description": "Standard library sync abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

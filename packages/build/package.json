@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/build",
-  "version": "0.11.0",
-  "description": "rcompat build module",
+  "version": "0.11.1",
+  "description": "Standard library client builder",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -23,7 +23,7 @@
     "@rcompat/function": "workspace:^",
     "@rcompat/invariant": "workspace:^",
     "@rcompat/record": "workspace:^",
-    "esbuild": "^0.25.1"
+    "esbuild": "^0.25.3"
   },
   "type": "module",
   "imports": {

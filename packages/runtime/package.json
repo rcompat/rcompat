@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/runtime",
-  "version": "0.4.0",
-  "description": "runtime detection",
+  "version": "0.4.1",
+  "description": "Standard library runtime detection",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
