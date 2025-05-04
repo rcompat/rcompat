@@ -8,7 +8,7 @@ const text = (path: string) => readFile(path, { encoding: "utf8" });
 
 const node: Native = {
   async arrayBuffer(path: string) {
-    return (await readFile(path)).buffer;
+    return (await readFile(path)).buffer as ArrayBuffer;
   },
   text(path: string) {
     return text(path);

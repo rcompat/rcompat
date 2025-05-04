@@ -3,7 +3,7 @@ import type WritableInput from "#WritableInput";
 
 const deno: Native = {
   async arrayBuffer(path: string) {
-    return (await Deno.readFile(path)).buffer;
+    return (await Deno.readFile(path)).buffer as ArrayBuffer;
   },
   async json(path: string) {
     return JSON.parse(await Deno.readTextFile(path));
