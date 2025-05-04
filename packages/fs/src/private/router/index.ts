@@ -13,9 +13,6 @@ const defaults = {
   import: true,
 } satisfies Config;
 
-export type NodePredicate<Route extends Import, Special extends Import> =
-  (node: Node<Route, Special>) => boolean | undefined;
-
 export default class Router<Route extends Import, Special extends Import> {
   static Error = errors;
 
@@ -65,7 +62,7 @@ export default class Router<Route extends Import, Special extends Import> {
         throw new errors.DoubleRoute(dynamics[1].path);
       }
       if (dynamics.length === 0) {
-        return;
+        return true;
       }
       const [dynamic] = dynamics;
       if (dynamic.optional && !dynamic.leaf) {
@@ -75,7 +72,7 @@ export default class Router<Route extends Import, Special extends Import> {
         throw new errors.RestRoute(dynamic.path);
       }
 
-      return undefined;
+      return true;
     });
 
     return this;
@@ -99,7 +96,7 @@ export default class Router<Route extends Import, Special extends Import> {
     return this.#root.max((node: Node<Route, Special>) => node.specials()
       .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
   }
- 
+
   static init<Route extends Import, Special extends Import>(config: Config, objects: [string, Route | Special][]) {
     return new Router<Route, Special>(config).init(objects);
   }

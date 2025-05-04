@@ -1,8 +1,7 @@
 import type Import from "#router/Import";
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
-
-import type { NodePredicate } from "./index.js";
+import type NodePredicate from "#router/NodePredicate";
 
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
@@ -65,7 +64,7 @@ export default class Node<Route extends Import, Special extends Import> {
   #children: Node<Route, Special>[] = [];
   #path: string;
   #type: symbol;
-  #file: Route | Special | undefined;
+  #file?: Route | Special;
   static #config: NodeConfig;
 
   constructor(parent: Node<Route, Special> | null, path: string, file?: Route | Special) {
@@ -83,7 +82,7 @@ export default class Node<Route extends Import, Special extends Import> {
     return this.#config;
   }
 
-  check(predicate: NodePredicate<Route, Special>): undefined {
+  check(predicate: NodePredicate<Route, Special>) {
     predicate(this);
 
     for (const child of this.#children) {
@@ -197,7 +196,7 @@ export default class Node<Route extends Import, Special extends Import> {
     return file && Node.config.predicate(file, request);
   }
 
-  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute<Route, Special> | undefined {
+  return(_request: never, parts: string[], match_catch: boolean, params: Params, file = this.#file): MatchedRoute<Route, Special> | void {
     const path = this.#path;
     const specials = this.collect();
 
@@ -277,7 +276,7 @@ export default class Node<Route extends Import, Special extends Import> {
     }
   }
 
-  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute<Route, Special> | undefined {
+  match(request: Request, parts: string[], match_catch = true, params = {}): MatchedRoute<Route, Special> | void {
     // root node itself cannot be matched
     if (this.#type === ROOT) {
       return this.next(request, parts, match_catch, params);

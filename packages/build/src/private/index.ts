@@ -14,9 +14,9 @@ export interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {
     host: string,
     port: number
-  } | undefined,
-  excludes?: string[] | undefined,
-  name?: string | undefined,
+  },
+  excludes?: string[],
+  name?: string,
 }
 type PluginPath = string;
 
