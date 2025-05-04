@@ -83,7 +83,7 @@ export default class Router<Route extends Import, Special extends Import> {
     const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
 
     this.init(directory === undefined ? [] : await Promise.all(
-      (await FileRef.collect(directory, { recursive: true }, re))
+      (await FileRef.collect(directory, re, { recursive: true }))
         .map(async (file: FileRef) => [
           `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
           this.#config.import && await file.import(),

@@ -133,10 +133,9 @@ export default class FileRef implements StringClass {
     return paths;
   }
 
-
-  async collect(options?: DirectoryOptions, pattern?: CollectPattern) {
-    maybe(options).object();
+  async collect(pattern?: CollectPattern, options?: DirectoryOptions) {
     maybe(pattern).anyOf(["string", RegExp]);
+    maybe(options).object();
 
     let files: FileRef[] = [];
     try {
@@ -151,7 +150,7 @@ export default class FileRef implements StringClass {
         continue;
       }
       if (options?.recursive && await file.kind() === Kind.Directory) {
-        subfiles = subfiles.concat(await file.collect(options, pattern));
+        subfiles = subfiles.concat(await file.collect(pattern, options));
       } else if (pattern === undefined ||
           new RegExp(pattern, "u").test(file.path)) {
         subfiles.push(file);
