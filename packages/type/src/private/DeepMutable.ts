@@ -1,4 +1,4 @@
-import type Dictionary from "#Dictionary"
+import type Dictionary from "#Dictionary";
 
 type DeepMutable<T> =
   T extends readonly [...infer E extends readonly unknown[]]

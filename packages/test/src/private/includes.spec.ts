@@ -119,7 +119,8 @@ test.case("Set", assert => {
   assert(fn(set(2, 1, 2), set(2, 1))).true();
   assert(fn(set(0), set(...Array.from({ length: 10 }, _ => 0)))).true();
   assert(fn(set({ foo: "bar" }), set({ foo: "bar" }))).true();
-  assert(fn(set({ foo: "bar" }, { bar: "baz" }), set({ bar: "baz" }, { foo: "bar" }))).true();
+  assert(fn(set({ foo: "bar" }, { bar: "baz" }),
+    set({ bar: "baz" }, { foo: "bar" }))).true();
   assert(fn(set(1, 2, 3), set(1, 2))).true();
   assert(fn(set({ foo: "bar" }, { bar: "baz" }), set({ bar: "baz" }))).true();
   assert(fn(set("foo", "bar"), set("bar"))).true();
@@ -151,7 +152,8 @@ test.case("Map", assert => {
   assert(fn(map(o1), map(o1))).true();
   assert(fn(map(o0), map())).true();
   assert(fn(map({ foo: "bar", bar: []}), map({ foo: "bar" }))).true();
-  assert(fn(map({ foo: "bar", bar: [0, 1]}), map({ foo: "bar", bar: [0] }))).true();
+  assert(fn(map({ foo: "bar", bar: [0, 1]}), map({ foo: "bar", bar: [0] })))
+    .true();
 
   assert(fn(map(o0), map(o1))).false();
   assert(fn(map(o2), map(o1))).false();

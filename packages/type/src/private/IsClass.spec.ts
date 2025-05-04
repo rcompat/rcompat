@@ -1,3 +1,4 @@
+import type EO from "#EO";
 import type IsClass from "#IsClass";
 import test from "@rcompat/test";
 
@@ -16,7 +17,7 @@ test.case("true", assert => {
   assert<IsClass<ReadableStream>>().type<true>();
   assert<IsClass<WritableStream>>().type<true>();
   assert<IsClass<FormData>>().type<true>();
-  assert<IsClass<{}>>().type<true>();
+  assert<IsClass<EO>>().type<true>();
 
   class Test {};
   assert<IsClass<Test>>().type<true>();

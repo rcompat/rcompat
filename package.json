@@ -23,7 +23,7 @@
     "@types/busboy": "^1.5.4",
     "@types/node": "^22.15.3",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.15",
+    "apekit": "^0.0.16",
     "proby": "workspace:^",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.8.3"

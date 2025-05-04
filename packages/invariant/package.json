@@ -19,9 +19,6 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
-  "devDependencies": {
-    "@rcompat/record": "workspace:^"
-  },
   "type": "module",
   "imports": {
     "#*": {
