@@ -46,6 +46,7 @@ export default class Assert<const Actual> {
   type<const Expected extends Equals<Actual, Expected> extends true
     ? unknown
     : Print<Actual>>(_expected?: Expected) {
+    this.pass();
     return this;
   }
 
@@ -105,6 +106,10 @@ export default class Assert<const Actual> {
       this.#failed(E(error).message, "[did not throw]");
     }
     return this;
+  }
+
+  pass() {
+    this.#passed();
   }
 
   fail<const Expected extends Not<Equals<Actual, Expected>> extends true
