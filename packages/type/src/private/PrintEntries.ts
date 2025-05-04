@@ -1,5 +1,5 @@
-import type UnionToTuple from "#UnionToTuple";
 import type Print from "#Print";
+import type UnionToTuple from "#UnionToTuple";
 
 type PrintEntries<T, Keys extends unknown[] = UnionToTuple<keyof T>> =
   Keys extends [infer K, ...infer Rest] ?

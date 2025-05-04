@@ -1,7 +1,7 @@
-import test from "@rcompat/test";
 import type Print from "#Print";
 import type Printable from "#Printable";
 import type PrintableGeneric from "#PrintableGeneric";
+import test from "@rcompat/test";
 
 test.case("primitives", assert => {
   assert<Print<string>>().type<"string">();
@@ -43,6 +43,24 @@ test.case("classes", assert => {
 });
 
 test.case("generics", assert => {
+  assert<Print<Set<unknown>>>().type<"Set<unknown>">();
+  assert<Print<Set<void>>>().type<"Set<void>">();
+  assert<Print<Set<never>>>().type<"Set<never>">();
+  assert<Print<Set<any>>>().type<"Set<any>">();
+  assert<Print<Set<string>>>().type<"Set<string>">();
+  assert<Print<Set<String>>>().type<"Set<String>">();
+  assert<Print<Set<[string, number]>>>().type<"Set<[string, number]>">();
+  assert<Print<Set<Set<1>>>>().type<"Set<Set<1>>">();
+  assert<Print<Set<Set<bigint>>>>().type<"Set<Set<bigint>>">();
+
+  assert<Print<WeakSet<{ foo: string }>>>().type<"WeakSet<{ foo: string }>">();
+
+  assert<Print<Map<string, unknown>>>().type<"Map<string, unknown>">();
+  assert<Print<Map<unknown, unknown>>>().type<"Map<unknown, unknown>">();
+  assert<Print<Map<Symbol, Set<[1n]>>>>().type<"Map<Symbol, Set<[1n]>>">();
+
+  assert<Print<WeakMap<{ foo: 1n }, 2n>>>().type<"WeakMap<{ foo: 1n }, 2n>">();
+
   assert<Print<Promise<unknown>>>().type<"Promise<unknown>">();
   assert<Print<Promise<void>>>().type<"Promise<void>">();
   assert<Print<Promise<never>>>().type<"Promise<never>">();
@@ -60,6 +78,19 @@ test.case("generics", assert => {
   assert<Print<ReadonlyArray<void>>>().type<"ReadonlyArray<void>">();
   assert<Print<ReadonlyArray<Promise<[boolean]>>>>()
     .type<"ReadonlyArray<Promise<[boolean]>>">();
+
+  assert<Print<Int8Array>>().type<"Int8Array">();
+  assert<Print<Uint8Array>>().type<"Uint8Array">();
+  assert<Print<Uint8ClampedArray>>().type<"Uint8ClampedArray">();
+  assert<Print<Int16Array>>().type<"Int16Array">();
+  assert<Print<Uint16Array>>().type<"Uint16Array">();
+  assert<Print<Int32Array>>().type<"Int32Array">();
+  assert<Print<Uint32Array>>().type<"Uint32Array">();
+  assert<Print<BigInt64Array>>().type<"BigInt64Array">();
+  assert<Print<BigUint64Array>>().type<"BigUint64Array">();
+  assert<Print<Float16Array>>().type<"Float16Array">();
+  assert<Print<Float32Array>>().type<"Float32Array">();
+  assert<Print<Float64Array>>().type<"Float64Array">();
 
   assert<Print<Awaited<"foo">>>().type<"'foo'">();
   assert<Print<Awaited<Promise<"foo">>>>().type<"'foo'">();
