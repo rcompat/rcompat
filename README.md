@@ -31,7 +31,6 @@ Deno, Bun and future runtimes.
 |[@rcompat/stdio](packages/stdio)         | Input/output                      |
 |[@rcompat/streams](packages/streams)     | Stream abstractions               |
 |[@rcompat/string](packages/string)       | String abstractions               |
-|[@rcompat/sync](packages/sync)           | Sync abstractions                 |
 |[@rcompat/test](packages/test)           | Testing                           |
 |[@rcompat/type](packages/type)           | Types                             |
 |[@rcompat/webview](packages/webview)     | Webview                           |
