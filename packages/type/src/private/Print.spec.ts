@@ -157,6 +157,8 @@ test.case("unions", assert => {
   assert<Print<true | false>>().type<"boolean">();
   assert<Print<true | boolean>>().type<"boolean">();
   assert<Print<false | boolean>>().type<"boolean">();
+  assert<Print<boolean | undefined>>().type<"boolean | undefined">();
+  assert<Print<undefined | boolean>>().type<"boolean | undefined">();
 
   assert<Print<boolean | Boolean>>().fail<"boolean | Boolean">();
   assert<Print<true | false | Boolean>>().fail<"boolean | Boolean">();
