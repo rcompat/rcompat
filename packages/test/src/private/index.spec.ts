@@ -22,6 +22,12 @@ test.case("type", assert => {
   assert(0n).type<0n>();
   assert(0n).type(0n);
 
+  type BU = boolean | undefined;
+  assert<BU>().type<BU>();
+  assert<BU>().nottype(true as BU);
+  assert(true as BU).nottype<BU>();
+  //assert(true as BU).type<true as BU>();
+
   assert<["foo"]>().type<["foo"]>();
   //assert<["foo"]>().type(["foo"]);
   assert(["foo"]).fail<["foo"]>();
