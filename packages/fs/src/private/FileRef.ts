@@ -20,6 +20,7 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
+import type Printable from "@rcompat/type/Printable";
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
@@ -41,13 +42,17 @@ const assert_boundary = (directory: FileRef) => {
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
-export default class FileRef implements StringClass {
+export default class FileRef implements StringClass, Printable {
   #path: string;
   #streamable = s_streamable;
 
   constructor(path: Path) {
     defined(path);
     this.#path = parse(as_string(path));
+  }
+
+  get Name() {
+    return "FileRef";
   }
 
   #stats() {
