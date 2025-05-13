@@ -52,7 +52,7 @@ export default class FileRef implements StringClass, Printable {
   }
 
   get Name() {
-    return "FileRef";
+    return "FileRef" as const;
   }
 
   #stats() {
