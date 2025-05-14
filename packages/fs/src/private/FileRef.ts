@@ -13,6 +13,7 @@ import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 import type Dictionary from "@rcompat/type/Dictionary";
+import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
 import type StringReplacer from "@rcompat/type/StringReplacer";
 import {
@@ -20,7 +21,6 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
-import type Printable from "@rcompat/type/Printable";
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
