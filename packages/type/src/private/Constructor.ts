@@ -1,3 +1,3 @@
-type Constructor<T = object> = abstract new (...args: never) => T;
+type Constructor<T = object> = new (...args: never) => T;
 
 export type { Constructor as default };

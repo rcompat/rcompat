@@ -1,4 +1,4 @@
-import type Instance from "@rcompat/type/Instance";
+import type Constructor from "@rcompat/type/Constructor";
 import constructible from "#constructible";
 
-export default (value: Instance) => !constructible(value);
+export default (c: Constructor) => !constructible(c);
