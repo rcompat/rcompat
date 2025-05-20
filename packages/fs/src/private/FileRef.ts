@@ -1,5 +1,3 @@
-import type CollectFilter from "#CollectFilter";
-import type DirectoryFilter from "#DirectoryFilter";
 import type DirectoryOptions from "#DirectoryOptions";
 import Kind from "#Kind";
 import native from "#native";
@@ -21,6 +19,8 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
+
+type Filter = (file: FileRef) => boolean;
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
@@ -109,8 +109,8 @@ export default class FileRef implements StringClass, Printable {
     return Kind.Link;
   }
 
-  async list(filter?: DirectoryFilter, options?: Dictionary) {
-    maybe(filter).function();
+  async list(filter?: Filter, options?: Dictionary) {
+    maybe(filter).instance(Function);
     maybe(options).object();
 
     const path = this.#path;
@@ -118,8 +118,9 @@ export default class FileRef implements StringClass, Printable {
     const paths = await readdir(path, options);
 
     return paths
+      .map(subpath => FileRef.join(path, subpath))
       .filter(filter ?? (() => true))
-      .map(subpath => FileRef.join(path, subpath));
+    ;
   }
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
@@ -127,7 +128,7 @@ export default class FileRef implements StringClass, Printable {
   }
 
   async glob(pattern: string) {
-    let paths = await this.list(name => !name.startsWith("."));
+    let paths = await this.list(file => file.path.startsWith("."));
     for (const file of paths) {
       if (await file.kind() === Kind.Directory) {
         paths = paths.concat(await file.glob(pattern));
@@ -138,9 +139,8 @@ export default class FileRef implements StringClass, Printable {
     return paths;
   }
 
-  async collect(filter?: CollectFilter, options?: DirectoryOptions) {
-    maybe(filter).anyOf(["string", RegExp, Function]);
-    maybe(options).object();
+  async collect(filter?: Filter) {
+    maybe(filter).instance(Function);
 
     let files: FileRef[] = [];
     try {
@@ -154,10 +154,9 @@ export default class FileRef implements StringClass, Printable {
       if (file.name.startsWith(".")) {
         continue;
       }
-      if (options?.recursive && await file.kind() === Kind.Directory) {
-        subfiles = subfiles.concat(await file.collect(filter, options));
-      } else if (filter === undefined ||
-          new RegExp(filter, "u").test(file.path)) {
+      if (await file.kind() === Kind.Directory) {
+        subfiles = subfiles.concat(await file.collect(filter));
+      } else if (filter === undefined || filter(file)) {
         subfiles.push(file);
       }
     }
@@ -253,9 +252,9 @@ export default class FileRef implements StringClass, Printable {
     return new FileRef(path).json();
   }
 
-  async copy(to: FileRef, filter?: DirectoryFilter): Promise<unknown> {
+  async copy(to: FileRef, filter?: Filter): Promise<unknown> {
     ensure_parents(to);
-    maybe(filter).function();
+    maybe(filter).instance(Function);
 
     const path = this.#path;
     const kind = await this.kind();

@@ -2,7 +2,7 @@ import blue from "@rcompat/cli/color/blue";
 import green from "@rcompat/cli/color/green";
 import red from "@rcompat/cli/color/red";
 import print from "@rcompat/cli/print";
-import FileRef from "@rcompat/fs/FileRef";
+import type FileRef from "@rcompat/fs/FileRef";
 import type Result from "@rcompat/test/Result";
 import type Test from "@rcompat/test/Test";
 import repository from "@rcompat/test/repository";
@@ -11,7 +11,7 @@ const endings = [".spec.ts", ".spec.js"];
 
 export default async (root: FileRef, subrepo?: string) => {
   const files = await root.list(file =>
-    endings.some(ending => file.endsWith(ending)), { recursive: true });
+    endings.some(ending => file.path.endsWith(ending)), { recursive: true });
 
   if (files.length === 0) {
     return;
