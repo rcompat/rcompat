@@ -11,6 +11,7 @@ import defined from "@rcompat/invariant/defined";
 import is from "@rcompat/invariant/is";
 import maybe from "@rcompat/invariant/maybe";
 import type Dictionary from "@rcompat/type/Dictionary";
+import type MaybePromise from "@rcompat/type/MaybePromise";
 import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
 import type StringReplacer from "@rcompat/type/StringReplacer";
@@ -20,7 +21,7 @@ import {
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
 
-type Filter = (file: FileRef) => boolean;
+type FilePredicate = (file: FileRef) => MaybePromise<boolean>;
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
@@ -109,22 +110,30 @@ export default class FileRef implements StringClass, Printable {
     return Kind.Link;
   }
 
-  async list(filter?: Filter, options?: Dictionary) {
-    maybe(filter).instance(Function);
+  async list(predicate?: FilePredicate, options?: Dictionary) {
+    maybe(predicate).instance(Function);
     maybe(options).object();
 
     const path = this.#path;
 
     const paths = await readdir(path, options);
 
-    return paths
+    return Promise.all(paths
       .map(subpath => FileRef.join(path, subpath))
-      .filter(filter ?? (() => true))
+      .filter(predicate ?? (() => true)))
     ;
   }
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
     return new FileRef(path).list(...params);
+  }
+
+  async listFiles(options?: Dictionary) {
+    return this.list(file => file.isFile());
+  }
+
+  static listFiles(path: Path, options?: Dictionary)  {
+    return new FileRef(path).listFiles(options);
   }
 
   async glob(pattern: string) {
@@ -139,8 +148,8 @@ export default class FileRef implements StringClass, Printable {
     return paths;
   }
 
-  async collect(filter?: Filter) {
-    maybe(filter).instance(Function);
+  async collect(predicate?: FilePredicate) {
+    maybe(predicate).instance(Function);
 
     let files: FileRef[] = [];
     try {
@@ -155,8 +164,8 @@ export default class FileRef implements StringClass, Printable {
         continue;
       }
       if (await file.kind() === Kind.Directory) {
-        subfiles = subfiles.concat(await file.collect(filter));
-      } else if (filter === undefined || filter(file)) {
+        subfiles = subfiles.concat(await file.collect(predicate));
+      } else if (predicate === undefined || predicate(file)) {
         subfiles.push(file);
       }
     }
@@ -252,15 +261,15 @@ export default class FileRef implements StringClass, Printable {
     return new FileRef(path).json();
   }
 
-  async copy(to: FileRef, filter?: Filter): Promise<unknown> {
+  async copy(to: FileRef, predicate?: FilePredicate): Promise<unknown> {
     ensure_parents(to);
-    maybe(filter).instance(Function);
+    maybe(predicate).instance(Function);
 
     const path = this.#path;
     const kind = await this.kind();
 
     if (kind === Kind.Link) {
-      return new FileRef(await realpath(path)).copy(to, filter);
+      return new FileRef(await realpath(path)).copy(to, predicate);
     }
 
     if (kind === Kind.Directory) {
@@ -268,7 +277,7 @@ export default class FileRef implements StringClass, Printable {
       await to.remove();
       await to.create();
       // copy all files
-      return Promise.all((await this.list(filter))
+      return Promise.all((await this.list(predicate))
         .map(({ name }) => FileRef.join(path, name).copy(to.join(name))));
     }
 
