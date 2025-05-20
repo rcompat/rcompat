@@ -1,4 +1,4 @@
-import type CollectPattern from "#CollectPattern";
+import type CollectFilter from "#CollectFilter";
 import type DirectoryFilter from "#DirectoryFilter";
 import type DirectoryOptions from "#DirectoryOptions";
 import Kind from "#Kind";
@@ -138,8 +138,8 @@ export default class FileRef implements StringClass, Printable {
     return paths;
   }
 
-  async collect(pattern?: CollectPattern, options?: DirectoryOptions) {
-    maybe(pattern).anyOf(["string", RegExp]);
+  async collect(filter?: CollectFilter, options?: DirectoryOptions) {
+    maybe(filter).anyOf(["string", RegExp, Function]);
     maybe(options).object();
 
     let files: FileRef[] = [];
@@ -155,9 +155,9 @@ export default class FileRef implements StringClass, Printable {
         continue;
       }
       if (options?.recursive && await file.kind() === Kind.Directory) {
-        subfiles = subfiles.concat(await file.collect(pattern, options));
-      } else if (pattern === undefined ||
-          new RegExp(pattern, "u").test(file.path)) {
+        subfiles = subfiles.concat(await file.collect(filter, options));
+      } else if (filter === undefined ||
+          new RegExp(filter, "u").test(file.path)) {
         subfiles.push(file);
       }
     }
@@ -184,6 +184,11 @@ export default class FileRef implements StringClass, Printable {
   isFile() {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
+  }
+
+  isDirectory() {
+    return this.exists().then((exists: any) =>
+      exists ? this.#stats().then((stats: any) => stats.isDirectory()) : false);
   }
 
   get path() {
