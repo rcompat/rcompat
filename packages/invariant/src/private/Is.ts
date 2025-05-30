@@ -52,7 +52,7 @@ export default class Is {
     }
 
     // has a toString method
-    if ("toString" in (x as { toString: () => void })) {
+    if (x!.toString !== undefined) {
       return x!.toString();
     }
 
