@@ -39,7 +39,7 @@ export default class Assert<const Actual> {
   }
 
   nequals(expected: unknown) {
-    this.#report(!equals(this.#actual, expected), expected)
+    this.#report(!equals(this.#actual, expected), expected);
     return this;
   }
 

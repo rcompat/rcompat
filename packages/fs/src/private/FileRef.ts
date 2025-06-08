@@ -95,7 +95,7 @@ export default class FileRef implements StringClass, Printable {
   }
 
   async kind() {
-    is(await this.exists()).true();
+    is(await this.exists()).true(`file does not exist: ${this.path}`);
 
     const stats = await this.#stats();
 
