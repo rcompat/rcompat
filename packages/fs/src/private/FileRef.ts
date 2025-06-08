@@ -199,6 +199,12 @@ export default class FileRef implements StringClass, Printable {
       exists ? this.#stats().then((stats: any) => stats.isDirectory()) : false);
   }
 
+  bare(append?: string) {
+    const bare = this.directory.join(this.base);
+
+    return append === undefined ? bare : new FileRef(`${bare}${append}`);
+  }
+
   get path() {
     return this.#path;
   }

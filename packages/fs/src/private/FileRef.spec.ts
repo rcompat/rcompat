@@ -2,6 +2,13 @@ import FileRef from "#FileRef";
 import crypto from "@rcompat/crypto";
 import test from "@rcompat/test";
 
+test.case("bare", assert => {
+  const filename = "/tmp/1.ts";
+  const file = new FileRef(filename);
+  assert(file.bare().path).equals("/tmp/1");
+  assert(file.bare(".js").path).equals("/tmp/1.js");
+});
+
 test.case("file doesn't exist", async assert => {
   const filename = "/tmp/1";
   const error = `file does not exists: ${filename}`;
