@@ -189,12 +189,12 @@ export default class FileRef implements StringClass, Printable {
     }
   }
 
-  isFile() {
+  isFile(): Promise<boolean> {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
   }
 
-  isDirectory() {
+  isDirectory(): Promise<boolean> {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isDirectory()) : false);
   }
