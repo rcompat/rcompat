@@ -17,6 +17,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc && npm run build-worker",
+    "test": "npm run build && npx proby",
     "build-worker": "./build-worker.sh && npm run copy-platform",
     "clean": "rm -rf ./lib",
     "copy-platform": "cp -a ./src/platform ./lib",

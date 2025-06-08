@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "test": "npm run build && npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },

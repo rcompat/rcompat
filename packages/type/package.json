@@ -16,9 +16,9 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
+    "test": "npm run build && npx proby",
     "clean": "rm -rf ./lib",
-    "prepublishOnly": "npm run build",
-    "test": "npm run build && npx proby"
+    "prepublishOnly": "npm run build"
   },
   "type": "module",
   "imports": {
