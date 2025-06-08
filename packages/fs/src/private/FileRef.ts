@@ -202,7 +202,7 @@ export default class FileRef implements StringClass, Printable {
   bare(append?: string) {
     const bare = this.directory.join(this.base);
 
-    return append === undefined ? bare : this.append(append);
+    return append === undefined ? bare : bare.append(append);
   }
 
   append(suffix: string) {
