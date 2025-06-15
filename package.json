@@ -13,15 +13,15 @@
     "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "npx proby"
+    "test": "pnpm run build && npx proby"
   },
   "private": true,
   "devDependencies": {
     "@rcompat/test": "workspace:^",
     "@rcompat/type": "workspace:^",
-    "@types/bun": "^1.2.15",
+    "@types/bun": "^1.2.16",
     "@types/busboy": "^1.5.4",
-    "@types/node": "^22.15.29",
+    "@types/node": "^24.0.1",
     "@types/ws": "^8.18.1",
     "apekit": "^0.0.16",
     "proby": "workspace:^",
