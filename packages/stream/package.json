@@ -1,6 +1,6 @@
 {
-  "name": "@rcompat/streams",
-  "version": "0.6.1",
+  "name": "@rcompat/stream",
+  "version": "0.1.0",
   "description": "Standard library stream abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/streams"
+    "directory": "packages/stream"
   },
   "scripts": {
     "build": "npm run clean && tsc",
