@@ -4,7 +4,7 @@ Standard library for JavaScript runtimes.
 
 ## What is rcompat?
 
-A standard library for JavaScript runtimes, consistenly working across Node,
+A standard library for JavaScript runtimes, consistently working across Node,
 Deno, Bun and future runtimes.
 
 ## Packages
@@ -126,5 +126,4 @@ MIT
 
 ## Contributing
 
-By contributing to rcompat, you agree that your contributions will be licensed
-under its MIT license.
+See [Contributing](CONTRIBUTING.md)
