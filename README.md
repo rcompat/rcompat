@@ -14,7 +14,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/args](packages/args)             | Program arguments                |
 |[@rcompat/array](packages/array)           | Array functions                  |
 |[@rcompat/async](packages/async)           | Async abstractions               |
-|[@rcompat/bufferview](packages/bufferview) | Working with binary buffer data  |
+|[@rcompat/bufferview](packages/bufferview) | Buffer abstractions              |
 |[@rcompat/build](packages/build)           | Client builder                   |
 |[@rcompat/cli](packages/cli)               | CLI tools                        |
 |[@rcompat/crypto](packages/crypto)         | Cryptographic functions          |
