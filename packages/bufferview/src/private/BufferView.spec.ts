@@ -482,7 +482,7 @@ test.case("Hello world!", assert => {
   const view = new BufferView(new ArrayBuffer(codes.length));
 
   codes.forEach(e => {
-    view.writeU8(e)
+    view.writeU8(e);
   });
   const str = view.toString();
   assert(str === "Hello world!").true();
