@@ -23,24 +23,17 @@ We recommend joining our Discord server at https://discord.gg/RSg4NNwM4f to
 coordinate development. The rcompat channels are under the category `rcompat`.
 
 Make sure you have Node, Deno and Bun installed in case you need to test
-individual implementations. In addition, install PNPM as rcompat uses a
+individual implementations. In addition, install pnpm as rcompat uses a
 monorepo for development with the `workspace` protocol which isn't supported by
-NPM.
+npm.
 
-## Build
+## Development cycle
 
-To build the project, run `pnpm run build` in the root directory. You can also
-build individual packages in their respective directories.
+To build the project, run `pnpm run build` in the root directory. To test, run
+`pnpm run test` and to lint, run `pnpm run lint`.
 
-## Test
-
-To test the project, run `pnpm run test` in the root directory. You can also
-test individual packages in their respective directories.
-
-## Lint
-
-To test the project, run `pnpm run lint` in the root directory. You can also
-test individual packages in their respective directories.
+You can also run the same command for individual packages in their respective
+directories.
 
 ## Coding style
 
@@ -48,7 +41,7 @@ test individual packages in their respective directories.
 * One class / object / type for file, unless the supporting code is only used
 once
 * If you need helper functions, consider using existing helpers from other
-rcompat packages or creating the helper function in a proper package
+rcompat packages or creating the helper function in an appropriate package
 
 ## Package layout
 
@@ -71,6 +64,11 @@ individual runtimes, use a [runtime key][runtime-keys].
 rcompat should ideally have no dependencies. In the few cases it has
 dependencies, they are slated for removal or considered too much of an effort
 to implement non-natively. Consult chat before adding any new dependencies.
+
+## New / renaming packages
+
+If you think a new package is in order or a package needs to be renamed,
+consult chat or raise the matter in an issue.
 
 [runtime-keys]: https://runtime-keys.proposal.wintercg.org
 [wintertc]: https://min-common-api.proposal.wintertc.org
