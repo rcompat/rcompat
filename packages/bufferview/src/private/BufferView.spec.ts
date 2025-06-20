@@ -1,9 +1,8 @@
 import BufferView from "#BufferView";
 import test from "@rcompat/test";
+import type Asserter from "@rcompat/test/Asserter";
 
-type Asserter = Parameters<Parameters<typeof test.case>[1]>[0];
-
-const byteCompare = (
+const equals = (
   assert: Asserter,
   buffer: Uint8Array,
   bytes: ArrayLike<number>,
@@ -19,7 +18,8 @@ test.case("i8", assert => {
     .writeI8(-1)
     .writeI8(2)
     .writeI8(100);
-  byteCompare(assert, view.toBytes(), [
+
+  equals(assert, view.toBytes(), [
     255,
     2,
     100,
@@ -39,7 +39,7 @@ test.case("u8", assert => {
     .writeU8(255)
     .writeU8(2)
     .writeU8(100);
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     255,
     2,
     100,
@@ -58,7 +58,7 @@ test.case("i16", assert => {
     .writeI16(0x1234)
     .writeI16(0x5678);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x34,
     0x12,
     0x78,
@@ -69,7 +69,7 @@ test.case("i16", assert => {
   view.littleEndian = false;
   view.writeI16(0x1234).writeI16(0x5678);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -93,7 +93,7 @@ test.case("u16", assert => {
     .writeU16(0x1234)
     .writeU16(0x5678);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x34,
     0x12,
     0x78,
@@ -104,7 +104,7 @@ test.case("u16", assert => {
   view.littleEndian = false;
   view.writeI16(0x1234).writeI16(0x5678);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -127,7 +127,7 @@ test.case("i32", assert => {
     .writeI32(0x12345678)
     .writeI32(0x9ABCDEF0);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x78,
     0x56,
     0x34,
@@ -142,7 +142,7 @@ test.case("i32", assert => {
   view.littleEndian = false;
   view.writeI32(0x12345678).writeI32(0x9ABCDEF0);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -169,7 +169,7 @@ test.case("u32", assert => {
     .writeU32(0x12345678)
     .writeU32(0x9ABCDEF0);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x78,
     0x56,
     0x34,
@@ -184,7 +184,7 @@ test.case("u32", assert => {
   view.littleEndian = false;
   view.writeU32(0x12345678).writeU32(0x9ABCDEF0);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -211,7 +211,7 @@ test.case("i64", assert => {
     .writeI64(0x123456789ABCDEF0n)
     .writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -234,7 +234,7 @@ test.case("i64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -270,7 +270,7 @@ test.case("u64", assert => {
     .writeU64(0x123456789ABCDEF0n)
     .writeU64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -293,7 +293,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -326,7 +326,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -349,7 +349,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -385,7 +385,7 @@ test.case("u64", assert => {
     .writeU64(0x123456789ABCDEF0n)
     .writeU64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -408,7 +408,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0x12,
     0x34,
     0x56,
@@ -444,7 +444,7 @@ test.case("string", assert => {
   const view = new BufferView(new ArrayBuffer(helloWorld.length))
     .write("Hello World");
 
-  byteCompare(assert, view.toBytes(), helloWorld);
+  equals(assert, view.toBytes(), helloWorld);
 
   view.position = 0;
   const string = view.read(helloWorld.length);
@@ -462,7 +462,7 @@ test.case("bytes", assert => {
 
   view.writeBytes(expected);
 
-  byteCompare(assert, view.toBytes(), bytes);
+  equals(assert, view.toBytes(), bytes);
 
   view.position = 0;
   const read = view.readBytes(bytes.length);
@@ -497,7 +497,7 @@ test.case("float32", assert => {
     .writeF32(testValue, true)
     .writeF32(testValue, false);
 
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0xdf,
     0x47,
     0x45,
@@ -518,7 +518,7 @@ test.case("float64", assert => {
   const view = new BufferView(new ArrayBuffer(16))
     .writeF64(testValue)
     .writeF64(testValue, false);
-  byteCompare(assert, view.toBytes(), [
+  equals(assert, view.toBytes(), [
     0xad,
     0xfa,
     0x5c,
@@ -569,5 +569,5 @@ test.case("constructor", assert => {
   assert(new BufferView(example, 0, 0).byteLength === 0).true();
   assert(new BufferView(example, 1, 7).byteLength === 7).true();
 
-  byteCompare(assert, new BufferView(example, 3, 4).toBytes(), [3, 4, 5, 6]);
+  equals(assert, new BufferView(example, 3, 4).toBytes(), [3, 4, 5, 6]);
 });

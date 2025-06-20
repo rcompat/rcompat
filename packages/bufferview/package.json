@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/bufferview",
-  "version": "0.0.1",
-  "description": "A simple set of encoding and decoding functions designed for cross compatibility between Node, Bun, Deno, and the Browser.",
+  "version": "0.1.0",
+  "description": "Standard library buffer abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -20,6 +20,10 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "@rcompat/invariant": "workspace:^",
+    "@rcompat/string": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {
@@ -30,12 +34,7 @@
   "exports": {
     ".": {
       "apekit": "./src/public/index.ts",
-      "bun": "./lib/public/index.js",
-      "deno": "./lib/public/index.js",
-      "node": "./lib/public/index.js"
+      "default": "./lib/public/index.js"
     }
-  },
-  "dependencies": {
-    "@rcompat/invariant": "workspace:^"
   }
 }

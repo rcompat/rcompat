@@ -1,7 +1,8 @@
-function utf8Size(str: string): number {
+function utf8size(string: string): number {
   let size = 0;
-  for (let i = 0; i < str.length; i++) {
-    const code = str.codePointAt(i)!;
+
+  for (let i = 0; i < string.length; i++) {
+    const code = string.codePointAt(i)!;
 
     if (code <= 0x7f) {
       size++;
@@ -23,4 +24,4 @@ function utf8Size(str: string): number {
   return size;
 }
 
-export default utf8Size;
+export default utf8size;
