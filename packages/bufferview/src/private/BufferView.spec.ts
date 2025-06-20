@@ -512,3 +512,32 @@ test.case("float32", assert => {
   assert(view.readF32() === testValue).true();
   assert(view.readF32(false) === testValue).true();
 });
+
+test.case("float64", assert => {
+  const testValue = 1234.5678;
+  const view = new BufferView(new ArrayBuffer(16))
+    .writeF64(testValue)
+    .writeF64(testValue, false);
+  byteCompare(assert, view.toBytes(), [
+    0xad,
+    0xfa,
+    0x5c,
+    0x6d,
+    0x45,
+    0x4a,
+    0x93,
+    0x40,
+    0x40,
+    0x93,
+    0x4a,
+    0x45,
+    0x6d,
+    0x5c,
+    0xfa,
+    0xad,
+  ]);
+
+  view.position = 0;
+  assert(view.readF64() === testValue).true();
+  assert(view.readF64(false) === testValue).true();
+});
