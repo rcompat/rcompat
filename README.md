@@ -12,26 +12,26 @@ Deno, Bun and future runtimes.
 | Package                                   | Purpose                          |
 |-------------------------------------------|----------------------------------|
 |[@rcompat/args](packages/args)             | Program arguments                |
-|[@rcompat/array](packages/array)           | Array functions                  |
-|[@rcompat/async](packages/async)           | Async abstractions               |
-|[@rcompat/bufferview](packages/bufferview) | Buffer abstractions              |
+|[@rcompat/array](packages/array)           | Array handling                   |
+|[@rcompat/assert](packages/assert)         | Invariant assertions             |
+|[@rcompat/async](packages/async)           | Async operations                 |
+|[@rcompat/bufferview](packages/bufferview) | Buffers                          |
 |[@rcompat/build](packages/build)           | Client builder                   |
 |[@rcompat/cli](packages/cli)               | CLI tools                        |
 |[@rcompat/crypto](packages/crypto)         | Cryptographic functions          |
-|[@rcompat/env](packages/env)               | Environment handling             |
+|[@rcompat/env](packages/env)               | Environment loading              |
 |[@rcompat/fs](packages/fs)                 | Filesystem access                |
-|[@rcompat/function](packages/function)     | Function helpers                 |
+|[@rcompat/function](packages/function)     | Function handling                |
 |[@rcompat/html](packages/html)             | HTML handling                    |
 |[@rcompat/http](packages/http)             | HTTP servers                     |
-|[@rcompat/invariant](packages/invariant)   | Function invariance              |
 |[@rcompat/package](packages/package)       | Package helpers                  |
 |[@rcompat/proby](packages/proby)           | Test runner                      |
 |[@rcompat/record](packages/record)         | Record helpers                   |
 |[@rcompat/runtime](packages/runtime)       | Runtime detection                |
 |[@rcompat/sql](packages/sql)               | SQL abstractions                 |
 |[@rcompat/stdio](packages/stdio)           | Input/output                     |
-|[@rcompat/streams](packages/streams)       | Stream abstractions              |
-|[@rcompat/string](packages/string)         | String abstractions              |
+|[@rcompat/stream](packages/stream)         | Stream handling                  |
+|[@rcompat/string](packages/string)         | String handling                  |
 |[@rcompat/test](packages/test)             | Testing                          |
 |[@rcompat/type](packages/type)             | Types                            |
 |[@rcompat/webview](packages/webview)       | Webview                          |

@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/function",
   "version": "0.8.0",
-  "description": "Standard library function helpers",
+  "description": "Standard library function handling",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
