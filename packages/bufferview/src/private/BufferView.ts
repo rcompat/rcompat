@@ -1,5 +1,7 @@
 import assert from "@rcompat/invariant/assert";
-import sizeOfStringUtf8 from "./sizeof/string/utf8.js";
+import sizeOfStringUtf8 from "./string/utf8-size.js";
+
+const BUFFER_VIEW_OVERFLOW_ERROR = "BufferView overflow.";
 
 const SIZE_8 = 1;
 const SIZE_16 = 2;
@@ -28,7 +30,10 @@ class BufferView {
     return this.#position;
   }
   set position(position: number) {
-    assert(position >= 0 && position < this.#byteLength, "BufferView position out of bounds.");
+    assert(
+      position >= 0 && position < this.#byteLength,
+      "BufferView position out of bounds.",
+    );
     this.#position = position;
   }
 
@@ -37,7 +42,13 @@ class BufferView {
     offset: number = 0,
     byteLength: number = buffer.byteLength - offset,
   ) {
-    assert(buffer instanceof ArrayBuffer || buffer instanceof SharedArrayBuffer || ArrayBuffer.isView(buffer), "BufferView expects an ArrayBuffer, SharedArrayBuffer, or ArrayBufferView.");
+    assert(
+      buffer instanceof ArrayBuffer
+      || buffer instanceof SharedArrayBuffer
+      || ArrayBuffer.isView(buffer),
+      "BufferView expects an ArrayBuffer, SharedArrayBuffer, or "
+      + "ArrayBufferView.",
+    );
     assert(offset >= 0, "BufferView offset must be positive.");
     assert(byteLength >= 0, "BufferView byteLength must be positive.");
 
@@ -50,9 +61,16 @@ class BufferView {
     }
 
     // this is likely a Uint8Array
-    const { buffer: arrayBuffer, byteOffset: arrayBufferOffset, byteLength: arrayBufferByteLength } = buffer;
+    const {
+      buffer: arrayBuffer,
+      byteOffset: arrayBufferOffset,
+      byteLength: arrayBufferByteLength,
+    } = buffer;
     const computedOffset = arrayBufferOffset + offset;
-    assert(arrayBufferByteLength >= computedOffset + byteLength, "BufferView overflow.");
+    assert(
+      arrayBufferByteLength >= computedOffset + byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
 
     this.#buffer = arrayBuffer;
     this.#offset = computedOffset;
@@ -63,13 +81,20 @@ class BufferView {
 
   subarray(offset: number, byteLength: number) {
     assert(offset >= 0, "BufferView offset must be positive.");
-    assert(offset + byteLength <= this.#byteLength, "BufferView overflow.");
+    assert(offset + byteLength <= this.#byteLength, BUFFER_VIEW_OVERFLOW_ERROR);
     return new BufferView(this.#buffer, this.#offset + offset, byteLength);
   }
 
   readBytes(length: number) {
-    assert(this.#position + length <= this.#byteLength, "BufferView overflow.");
-    const value = new Uint8Array(this.#buffer, this.#offset + this.#position, length);
+    assert(
+      this.#position + length <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
+    const value = new Uint8Array(
+      this.#buffer,
+      this.#offset + this.#position,
+      length,
+    );
     const output = new Uint8Array(length);
     output.set(value);
     this.#position += length;
@@ -77,7 +102,10 @@ class BufferView {
   }
 
   read(length: number) {
-    assert(this.#position + length <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + length <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = new TextDecoder().decode(
       new Uint8Array(this.#buffer, this.#offset + this.#position, length));
     this.#position += length;
@@ -85,66 +113,96 @@ class BufferView {
   }
 
   readI8() {
-    assert(this.#position + SIZE_8 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_8 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     return this.#view.getInt8(this.#position++);
   }
 
   readU8() {
-    assert(this.#position + SIZE_8 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_8 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     return this.#view.getUint8(this.#position++);
   }
 
   readI16(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_16 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_16 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getInt16(this.#position, littleEndian);
     this.#position += SIZE_16;
     return value;
   }
 
   readU16(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_16 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_16 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getUint16(this.#position, littleEndian);
     this.#position += SIZE_16;
     return value;
   }
 
   readI32(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getInt32(this.#position, littleEndian);
     this.#position += SIZE_32;
     return value;
   }
 
   readU32(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getUint32(this.#position, littleEndian);
     this.#position += SIZE_32;
     return value;
   }
 
   readI64(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getBigInt64(this.#position, littleEndian);
     this.#position += SIZE_64;
     return value;
   }
 
   readU64(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getBigUint64(this.#position, littleEndian);
     this.#position += SIZE_64;
     return value;
   }
 
   readF32(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getFloat32(this.#position, littleEndian);
     this.#position += SIZE_32;
     return value;
   }
 
   readF64(littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     const value = this.#view.getFloat64(this.#position, littleEndian);
     this.#position += SIZE_64;
     return value;
@@ -153,81 +211,121 @@ class BufferView {
   write(value: string) {
     const encoder = new TextEncoder();
     const stringLength = sizeOfStringUtf8(value);
-    assert(this.#position + stringLength <= this.#byteLength, "BufferView overflow.");
-    encoder.encodeInto(value, new Uint8Array(this.#buffer, this.#offset + this.#position, stringLength));
+    assert(
+      this.#position + stringLength <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
+    encoder.encodeInto(
+      value,
+      new Uint8Array(this.#buffer, this.#offset + this.#position, stringLength),
+    );
     return this;
   }
 
   writeBytes(value: Uint8Array) {
-    assert(this.#position + value.length <= this.#byteLength, "BufferView overflow.");
-    new Uint8Array(this.#buffer, this.#offset + this.#position, value.length).set(value);
+    assert(
+      this.#position + value.length <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
+    new Uint8Array(this.#buffer, this.#offset + this.#position, value.length)
+      .set(value);
     this.#position += value.length;
     return this;
   }
 
   writeI8(value: number) {
-    assert(this.#position + SIZE_8 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_8 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setInt8(this.#position++, value);
     return this;
   }
 
   writeU8(value: number) {
-    assert(this.#position + SIZE_8 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_8 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setUint8(this.#position++, value);
     return this;
   }
 
   writeI16(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_16 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_16 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setInt16(this.#position, value, littleEndian);
     this.#position += SIZE_16;
     return this;
   }
 
   writeU16(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_16 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_16 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setUint16(this.#position, value, littleEndian);
     this.#position += SIZE_16;
     return this;
   }
 
   writeI32(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setInt32(this.#position, value, littleEndian);
     this.#position += SIZE_32;
     return this;
   }
 
   writeU32(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setUint32(this.#position, value, littleEndian);
     this.#position += SIZE_32;
     return this;
   }
 
   writeI64(value: bigint, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setBigInt64(this.#position, value, littleEndian);
     this.#position += SIZE_64;
     return this;
   }
 
   writeU64(value: bigint, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setBigUint64(this.#position, value, littleEndian);
     this.#position += SIZE_64;
     return this;
   }
 
   writeF32(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_32 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_32 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setFloat32(this.#position, value, littleEndian);
     this.#position += SIZE_32;
     return this;
   }
 
   writeF64(value: number, littleEndian = this.littleEndian) {
-    assert(this.#position + SIZE_64 <= this.#byteLength, "BufferView overflow.");
+    assert(
+      this.#position + SIZE_64 <= this.#byteLength,
+      BUFFER_VIEW_OVERFLOW_ERROR,
+    );
     this.#view.setFloat64(this.#position, value, littleEndian);
     this.#position += SIZE_64;
     return this;
@@ -237,6 +335,11 @@ class BufferView {
     const bytes = new Uint8Array(this.#byteLength);
     bytes.set(new Uint8Array(this.#buffer, this.#offset, this.#byteLength));
     return bytes;
+  }
+
+  toString() {
+    return new TextDecoder()
+      .decode(new Uint8Array(this.#buffer, this.#offset, this.#byteLength));
   }
 }
 
