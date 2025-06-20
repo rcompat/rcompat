@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/async",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Standard library async abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.11.2",
+  "version": "0.2.0",
   "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

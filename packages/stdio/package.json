@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/stdio",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Standard library input/output",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
