@@ -541,3 +541,33 @@ test.case("float64", assert => {
   assert(view.readF64() === testValue).true();
   assert(view.readF64(false) === testValue).true();
 });
+
+test.case("constructor", assert => {
+  const example = new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7]);
+
+  assert(() => new BufferView(example, 0, 8)).tries();
+  assert(() => new BufferView(example, 1, 8)).throws();
+  assert(() => new BufferView(example, 0, 9)).throws();
+
+
+  assert(() => new BufferView(example, 1, 7)).tries();
+  assert(() => new BufferView(example, 2, 6)).tries();
+  assert(() => new BufferView(example, 3, 5)).tries();
+
+  assert(() => new BufferView (example, 7, 1)).tries();
+
+  assert(() => new BufferView(example, 0, 0)).tries();
+
+
+  assert(new BufferView(example, 4).byteLength === 4).true();
+
+  assert(() => new BufferView(example, 1000)).throws();
+  // Believe it or not, this is a valid case.
+  // new Uint8Array(new ArrayBuffer(8), 8).byteLength === 0
+  assert(() => new BufferView(example, 8)).tries();
+
+  assert(new BufferView(example, 0, 0).byteLength === 0).true();
+  assert(new BufferView(example, 1, 7).byteLength === 7).true();
+
+  byteCompare(assert, new BufferView(example, 3, 4).toBytes(), [3, 4, 5, 6]);
+});

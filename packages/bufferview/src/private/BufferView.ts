@@ -60,22 +60,17 @@ class BufferView {
       return this;
     }
 
-    // this is likely a Uint8Array
-    const {
-      buffer: arrayBuffer,
-      byteOffset: arrayBufferOffset,
-      byteLength: arrayBufferByteLength,
-    } = buffer;
-    const computedOffset = arrayBufferOffset + offset;
-    assert(
-      arrayBufferByteLength >= computedOffset + byteLength,
-      BUFFER_VIEW_OVERFLOW_ERROR,
+    // all of the bounds checks are done by DataView itself
+    const view = new DataView(
+      buffer.buffer,
+      buffer.byteOffset + offset,
+      byteLength,
     );
 
-    this.#buffer = arrayBuffer;
-    this.#offset = computedOffset;
-    this.#byteLength = byteLength;
-    this.#view = new DataView(arrayBuffer, computedOffset, byteLength);
+    this.#buffer = view.buffer;
+    this.#offset = view.byteOffset;
+    this.#byteLength = view.byteLength;
+    this.#view = view;
     return this;
   }
 
