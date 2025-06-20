@@ -1,7 +1,7 @@
 {
-  "name": "@rcompat/string",
-  "version": "0.7.3",
-  "description": "Standard library string abtractions",
+  "name": "@rcompat/bufferview",
+  "version": "0.1.0",
+  "description": "Standard library buffer abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/string"
+    "directory": "packages/bufferview"
   },
   "scripts": {
     "build": "npm run clean && tsc",
@@ -21,7 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/invariant": "workspace:^"
+    "@rcompat/invariant": "workspace:^",
+    "@rcompat/string": "workspace:^"
   },
   "type": "module",
   "imports": {
@@ -31,9 +32,9 @@
     }
   },
   "exports": {
-    "./*": {
-      "apekit": "./src/public/*.ts",
-      "default": "./lib/public/*.js"
+    ".": {
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }
