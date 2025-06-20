@@ -21,8 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@rcompat/assert": "workspace:^",
     "@rcompat/function": "workspace:^",
-    "@rcompat/invariant": "workspace:^",
     "@rcompat/record": "workspace:^",
     "esbuild": "^0.25.5"
   },

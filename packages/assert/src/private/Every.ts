@@ -1,7 +1,7 @@
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
-import assert from "@rcompat/invariant/assert";
+import assert from "#assert";
 
 interface TestOptions {
   condition: boolean,

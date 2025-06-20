@@ -1,4 +1,4 @@
-import assert from "@rcompat/invariant/assert";
+import assert from "@rcompat/assert";
 import utf8size from "@rcompat/string/utf8size";
 
 const OVERFLOW_ERROR = "BufferView overflow.";

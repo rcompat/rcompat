@@ -1,7 +1,7 @@
 import reload_defaults from "#reload/defaults";
 import reload_path from "#reload/path";
-import assert from "@rcompat/invariant/assert";
-import is from "@rcompat/invariant/is";
+import assert from "@rcompat/assert";
+import is from "@rcompat/assert/is";
 import exclude from "@rcompat/record/exclude";
 import type Dictionary from "@rcompat/type/Dictionary";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
@@ -12,11 +12,11 @@ const mode_keys = Object.keys(modes);
 
 export interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {
-    host: string,
-    port: number
-  },
-  excludes?: string[],
-  name?: string,
+    host: string;
+    port: number;
+  };
+  excludes?: string[];
+  name?: string;
 }
 type PluginPath = string;
 
@@ -103,7 +103,7 @@ export default class Build {
       },
       plugins: this.#plugins,
       ...options,
-    }
+    };
 
     if (this.development) {
       const context = await esbuild.context(build_options as never);

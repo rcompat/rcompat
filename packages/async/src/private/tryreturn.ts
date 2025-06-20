@@ -1,4 +1,4 @@
-import is from "@rcompat/invariant/is";
+import is from "@rcompat/assert/is";
 
 const $backup = Symbol("backup");
 

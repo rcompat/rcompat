@@ -4,8 +4,9 @@ export type GetResultType<T, P> = P extends `${infer P1}.${infer Rest}`
     : undefined
   : P extends keyof T
     ? T[P]
-    : undefined
+    : undefined;
 
-export default <T extends object, P extends string>(object: T, path: P): GetResultType<T, P> =>
+export default <T extends object, P extends string>(object: T, path: P):
+  GetResultType<T, P> =>
   path.split(".").reduce((subobject, key) =>
-    (subobject as never)[key], object) as never
+    (subobject as never)[key], object) as never;

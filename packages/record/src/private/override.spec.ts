@@ -1,8 +1,8 @@
 import non_records from "#non-records";
 import override from "#override";
 import test from "@rcompat/test";
-import undef from "@rcompat/test/undef";
 import never from "@rcompat/test/never";
+import undef from "@rcompat/test/undef";
 
 test.case("typedoc", assert => {
  assert(override({}, { foo: "bar" })).equals({ foo: "bar" });

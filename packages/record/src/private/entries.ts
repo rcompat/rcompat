@@ -1,4 +1,4 @@
-import is from "@rcompat/invariant/is";
+import is from "@rcompat/assert/is";
 import type Entry from "@rcompat/type/Entry";
 
 class Entries<K extends string, V> {
@@ -41,7 +41,7 @@ class Entries<K extends string, V> {
   }
 
   [Symbol.iterator](): IterableIterator<Entry<K, V>> {
-    return this.#entries.values()
+    return this.#entries.values();
   }
 }
 

@@ -1,5 +1,5 @@
-import is from "@rcompat/invariant/is";
-import maybe from "@rcompat/invariant/maybe";
+import is from "@rcompat/assert/is";
+import maybe from "@rcompat/assert/maybe";
 
 class Cache {
   #entries: Record<symbol, unknown> = {};

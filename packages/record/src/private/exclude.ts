@@ -1,4 +1,4 @@
-import is from "@rcompat/invariant/is";
+import is from "@rcompat/assert/is";
 import entries from "@rcompat/record/entries";
 
 export default <T extends object, const E extends keyof T>

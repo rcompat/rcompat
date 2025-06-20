@@ -1,6 +1,6 @@
 import type Conf from "#Conf";
 import FileRef from "@rcompat/fs/FileRef";
-import is from "@rcompat/invariant/is";
+import is from "@rcompat/assert/is";
 
 export default (conf: Conf) => {
   is(conf).object();
@@ -8,4 +8,4 @@ export default (conf: Conf) => {
   const { ssl } = conf;
 
   return ssl?.key instanceof FileRef && ssl.cert instanceof FileRef;
-}
+};

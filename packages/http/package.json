@@ -24,10 +24,10 @@
     "undici-types": "7.10.0"
   },
   "dependencies": {
+    "@rcompat/assert": "workspace:^",
     "@rcompat/async": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/function": "workspace:^",
-    "@rcompat/invariant": "workspace:^",
     "@rcompat/record": "workspace:^",
     "busboy": "^1.6.0",
     "ws": "^8.18.2"

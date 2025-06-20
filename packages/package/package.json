@@ -24,26 +24,30 @@
     "@rcompat/record": "workspace:^"
   },
   "dependencies": {
-    "@rcompat/fs": "workspace:^",
-    "@rcompat/invariant": "workspace:^"
+    "@rcompat/assert": "workspace:^",
+    "@rcompat/fs": "workspace:^"
   },
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/*/index.ts",
-      "default": "./lib/private/*/index.js"
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    },
+    "#packager": {
+      "apekit": "./src/private/packager/index.ts",
+      "bun": "./lib/private/packager/bun.js",
+      "deno": "./lib/private/packager/deno.js",
+      "default": "./lib/private/packager/node.js"
     }
   },
   "exports": {
     "./packager": {
-      "apekit": "./src/packager/index.ts",
-      "bun": "./lib/packager/bun.js",
-      "deno": "./lib/packager/deno.js",
-      "node": "./lib/packager/node.js"
+      "apekit": "./src/public/packager.ts",
+      "default": "./lib/public/packager.js"
     },
     "./*": {
-      "apekit": "./src/public/*/index.ts",
-      "default": "./lib/public/*/index.js"
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

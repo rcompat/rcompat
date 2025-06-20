@@ -1,4 +1,4 @@
-import assert from "@rcompat/invariant/assert";
+import assert from "@rcompat/assert";
 
 const globify = (pattern: string) => pattern
   // . -> real dots need escaping
