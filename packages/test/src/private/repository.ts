@@ -18,10 +18,9 @@ class Repository {
     this.#current = file;
   }
 
-  *run() {
+  async *run() {
     for (const test of this.#tests) {
-      test.run();
-      yield test;
+      yield await test.run();
     }
   }
 }

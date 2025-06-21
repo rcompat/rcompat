@@ -31,8 +31,9 @@ export default class Test {
     this.#results.push(new Result<T>(actual, expected, passed));
   }
 
-  run() {
+  async run() {
     const asserter = <T>(actual?: T) => new Assert<T>(this, actual);
-    this.#body(asserter);
+    await this.#body(asserter);
+    return this;
   }
 };

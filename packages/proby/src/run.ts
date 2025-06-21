@@ -28,7 +28,7 @@ export default async (root: FileRef, subrepo?: string) => {
 
   const failed: [Test, Result<unknown>][] = [];
 
-  for (const test of repository.run()) {
+  for await (const test of repository.run()) {
     for (const result of test.results) {
       if (result.passed) {
         print(green("o"));
