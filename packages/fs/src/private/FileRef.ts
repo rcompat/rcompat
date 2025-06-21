@@ -189,6 +189,10 @@ export default class FileRef implements StringClass, Printable {
     }
   }
 
+  static exists(path: Path) {
+    return new FileRef(path).exists();
+  }
+
   isFile(): Promise<boolean> {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);

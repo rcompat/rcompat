@@ -2,6 +2,11 @@ import FileRef from "#FileRef";
 import crypto from "@rcompat/crypto";
 import test from "@rcompat/test";
 
+test.case("exists", async assert => {
+  assert(await FileRef.exists("/tmp")).true();
+  assert(await FileRef.exists("/tmp/tmp/tmp")).false();
+});
+
 test.case("bare", assert => {
   const filename = "/tmp/1.ts";
   const file = new FileRef(filename);
