@@ -1,0 +1,42 @@
+{
+  "name": "@rcompat/sqlite",
+  "version": "0.1.0",
+  "description": "Standard library SQLite client",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [
+    "/lib/**/*.js",
+    "/lib/**/*.d.ts",
+    "!/**/*.spec.*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcompat/rcompat",
+    "directory": "packages/sqlite"
+  },
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "test": "npm run build && npx proby",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build"
+  },
+  "type": "module",
+  "imports": {
+    "#*": {
+      "apekit": "./src/private/api/*.ts",
+      "bun": "./lib/private/bun/*.js",
+      "deno": "./lib/private/deno/*.js",
+      "default": "./lib/private/node/*.js"
+    },
+    "#api/*": {
+      "apekit": "./src/private/api/*.ts",
+      "default": "./lib/private/api/*.ts"
+    }
+  },
+  "exports": {
+    ".": {
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
+    }
+  }
+}
