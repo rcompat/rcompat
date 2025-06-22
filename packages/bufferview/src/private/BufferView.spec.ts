@@ -445,6 +445,7 @@ test.case("string", assert => {
     .write("Hello World");
 
   equals(assert, view.toBytes(), helloWorld);
+  assert(view.position === helloWorld.length).true();
 
   view.position = 0;
   const string = view.read(helloWorld.length);

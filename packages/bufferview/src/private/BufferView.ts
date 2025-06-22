@@ -197,6 +197,8 @@ export default class BufferView {
       value,
       new Uint8Array(this.#buffer, this.#offset + this.#position, size),
     );
+    this.#position += size;
+
     return this;
   }
 
