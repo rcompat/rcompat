@@ -1,8 +1,8 @@
+import Database from "#api/Database";
+import type Options from "#api/Options";
+import Statement from "#Statement";
 // @ts-expect-error jsr
 import { Database as DenoSqlite } from "jsr:@db/sqlite@0.11";
-import Database from "#Database";
-import type Options from "#Options";
-import Statement from "#Statement";
 
 export default class extends Database {
   #opened = false;

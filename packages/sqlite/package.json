@@ -14,23 +14,29 @@
     "url": "https://github.com/rcompat/rcompat",
     "directory": "packages/sqlite"
   },
+  "devDependencies": {
+    "@rcompat/fs": "workspace:^"
+  },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npm run test:node && npm run test:deno && npm run test:bun",
+    "test:node": "npm run build && npx proby",
+    "test:deno": "deno task build && deno run npm:proby",
+    "test:bun": "bun run build && bunx --bun proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/api/*.ts",
+      "apekit": "./src/private/node/*.ts",
       "bun": "./lib/private/bun/*.js",
       "deno": "./lib/private/deno/*.js",
       "default": "./lib/private/node/*.js"
     },
     "#api/*": {
       "apekit": "./src/private/api/*.ts",
-      "default": "./lib/private/api/*.ts"
+      "default": "./lib/private/api/*.js"
     }
   },
   "exports": {

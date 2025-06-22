@@ -1,5 +1,5 @@
 type Options = {
-  readonly: boolean;
+  readonly?: boolean;
 };
 
 export type { Options as default };

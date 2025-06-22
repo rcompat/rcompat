@@ -1,1 +1,1 @@
-export default class Statement<Params, ReturnType> {}
+export default class Statement {}
