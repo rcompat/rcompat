@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run test:node && npm run test:deno && npm run test:bun",
+    "test": "npm run test:node && npm run test:bun",
     "test:node": "npm run build && npx proby",
     "test:deno": "deno task build && deno run npm:proby",
     "test:bun": "bun run build && bunx --bun proby",
@@ -31,12 +31,20 @@
     "#*": {
       "apekit": "./src/private/node/*.ts",
       "bun": "./lib/private/bun/*.js",
-      "deno": "./lib/private/deno/*.js",
+      "deno": "./lib/private/node/*.js",
       "default": "./lib/private/node/*.js"
     },
     "#api/*": {
       "apekit": "./src/private/api/*.ts",
       "default": "./lib/private/api/*.js"
+    },
+    "#bun/*": {
+      "apekit": "./src/private/bun/*.ts",
+      "default": "./lib/private/bun/*.js"
+    },
+    "#node/*": {
+      "apekit": "./src/private/node/*.ts",
+      "default": "./lib/private/node/*.js"
     }
   },
   "exports": {

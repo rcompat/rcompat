@@ -1,7 +1,7 @@
 import Database from "#api/Database";
 import defaults from "#api/defaults";
 import type Options from "#api/Options";
-import Statement from "#Statement";
+import NodeStatement from "#node/Statement";
 import { DatabaseSync as NodeSqlite } from "node:sqlite";
 
 export default class extends Database {
@@ -9,8 +9,7 @@ export default class extends Database {
   #client: NodeSqlite;
 
   constructor(path: string, options: Options = defaults) {
-    super(path, options);
-
+    super();
     this.#client = new NodeSqlite(path, {
       readOnly: options.readonly ?? false,
     });
@@ -25,7 +24,7 @@ export default class extends Database {
     // noop if db already close
   }
 
-  query(sql: string) {
-    return new Statement();
+  prepare(sql: string) {
+    return new NodeStatement(this.#client.prepare(sql));
   }
 }

@@ -1,11 +1,13 @@
-import type Options from "#api/Options";
+import type Param from "#api/Param";
+import type PrimitiveParam from "#api/PrimitiveParam";
 import type Statement from "#api/Statement";
-import defaults from "#api/defaults";
 
 export default abstract class Database {
-  constructor(path: string, options: Options = defaults) {}
-
   abstract close(): void;
 
-  abstract query<Params, ReturnType>(sql: string): Statement;
+  abstract prepare(sql: string): Statement;
+
+  exec(sql: string, first?: Param, ...rest: PrimitiveParam[]) {
+    return this.prepare(sql).run(first, ...rest);
+  }
 }
