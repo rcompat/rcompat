@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/bufferview",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Standard library buffers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
