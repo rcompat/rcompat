@@ -66,7 +66,7 @@ test.case("all", assert => {
   ]);
 });
 
-test.case("named parameters", assert => {
+test.case("named parameters ($)", assert => {
   const db = new Database(":memory:");
 
   db.exec(USER_TABLE);
@@ -76,5 +76,40 @@ test.case("named parameters", assert => {
   assert(db.prepare("SELECT * FROM user ORDER by id DESC").get()).equals({
     id: 1, name: "Donald",
   });
+});
 
+test.case("named parameters (@)", assert => {
+  const db = new Database(":memory:");
+
+  db.exec(USER_TABLE);
+  const insert1 = db.prepare("INSERT INTO user (id, name) VALUES (@id, @name)");
+  insert1.run({ "@id": 1, "@name": "Donald" });
+
+  assert(db.prepare("SELECT * FROM user ORDER by id DESC").get()).equals({
+    id: 1, name: "Donald",
+  });
+});
+
+test.case("named parameters (:)", assert => {
+  const db = new Database(":memory:");
+
+  db.exec(USER_TABLE);
+  const insert1 = db.prepare("INSERT INTO user (id, name) VALUES (:id, :name)");
+  insert1.run({ ":id": 1, ":name": "Donald" });
+
+  assert(db.prepare("SELECT * FROM user ORDER by id DESC").get()).equals({
+    id: 1, name: "Donald",
+  });
+});
+
+test.case("safe integers", assert => {
+  const db = new Database(":memory:", { safeIntegers: true });
+
+  db.exec(USER_TABLE);
+  const insert1 = db.prepare("INSERT INTO user (id, name) VALUES ($id, $name)");
+  insert1.run({ $id: 1, $name: "Donald" });
+
+  assert(db.prepare("SELECT * FROM user ORDER by id DESC").get()).equals({
+    id: 1n, name: "Donald",
+  });
 });
