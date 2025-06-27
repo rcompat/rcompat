@@ -27,9 +27,11 @@ export default async (handler: Handler, conf: Conf): Promise<Server> => {
   return {
     upgrade(request: Request, actions) {
       server.upgrade(request, { data: { actions } });
+
+      return null;
     },
     stop() {
       server.stop();
-    }
+    },
   };
 };

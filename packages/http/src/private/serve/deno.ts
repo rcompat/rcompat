@@ -21,9 +21,11 @@ export default async (handler: Handler, conf: Conf): Promise<Server> => {
     upgrade(request: Request, actions) {
       const { socket } = Deno.upgradeWebSocket(request);
       handle_ws(socket as WebSocket, actions);
+
+      return null;
     },
     stop() {
       abort_controller.abort();
-    }
+    },
   };
 };

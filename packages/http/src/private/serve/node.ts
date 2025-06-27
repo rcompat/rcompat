@@ -89,6 +89,8 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
       wss.handleUpgrade(original, original.socket, null_buffer, socket => {
         handle_ws(socket, actions);
       });
+
+      return null;
     },
     stop() {
       server.close();
