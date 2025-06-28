@@ -54,9 +54,8 @@ export default class Router<Route extends Import, Special extends Import> {
 
     // check for duplicates
     this.#root.check((node: Node<Route, Special>) => {
-      if (node.doubled) {
-        throw new errors.DoubleRoute(node.path);
-      }
+      node.unique();
+
       const dynamics = node.dynamics();
       if (dynamics.length > 1) {
         throw new errors.DoubleRoute(dynamics[1].path);

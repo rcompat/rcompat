@@ -49,7 +49,6 @@ const routes = [
   r("bool/[b1=boolean]", "b1"),
   r("opt/[[optional]]", "o1"),
   ["opt/+layout", { default: identity, recursive: true, name: "optl0" }],
-  ["svelte/+guard", { default: identity, name: "g0" }],
   r("optp/[p1]/[[optional]]", "op1"),
   r("optn/[[opt=number]]", "optn"),
   r("rest/[...rest]", "rest"),
@@ -62,6 +61,14 @@ const routes = [
 
 test.case("errors", assert => {
   const dbls = [
+    [
+      r("headers"),
+      r("headers"),
+    ],
+    [
+      r("[p1]/headers"),
+      r("[p1]/headers"),
+    ],
     // same dynamic
     [
       r("[p1]", "p1"),

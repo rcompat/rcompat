@@ -2,6 +2,7 @@ import type Import from "#router/Import";
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
 import type NodePredicate from "#router/NodePredicate";
+import * as errors from "./errors.js";
 
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
@@ -300,26 +301,32 @@ export default class Node<Route extends Import, Special extends Import> {
     return this.file !== undefined;
   }
 
-  get doubled() {
-    const statics = this.statics();
-    const optionals = this.optionals();
-    const has_optionals = optionals.length > 0;
+  unique() {
+    const children = this.#children;
 
-    if (has_optionals && this.has_file) {
-      return true;
-    }
-    for (const $static of statics) {
-      if ($static.path === "index" && $static.file !== undefined) {
-        if (this.#type === STATIC && this.has_file) {
-          return true;
-        }
-
-        if (has_optionals) {
-          return true;
-        }
+    Object.entries(children.reduce((counts: Record<string, number>, child) =>
+      ({...counts, [child.path]: (counts[child.path] ?? 0) + 1})
+    , {})).map(([path, count]) => {
+      if (count > 1) {
+        throw new errors.DoubleRoute(path);
       }
+    });
+
+    const has_optionals = this.optionals().length > 0;
+    if (has_optionals && this.has_file) {
+      throw new errors.DoubleRoute(this.path);
     }
-    return false;
+
+    for (const $static of this.statics()) {
+        if ($static.path === "index" && $static.file !== undefined) {
+            if (this.#type === STATIC && this.has_file) {
+                throw new errors.DoubleRoute(this.path);
+            }
+            if (has_optionals) {
+                throw new errors.DoubleRoute(this.path);
+            }
+        }
+    }
   }
 
   get parent() {
