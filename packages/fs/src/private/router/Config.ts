@@ -1,7 +1,7 @@
 import type NodeConfig from "#router/NodeConfig";
 
 export default interface Config extends NodeConfig {
-  import: boolean,
+  import: boolean;
   directory?: string;
-  extensions: [string];
+  extensions: string[];
 }
