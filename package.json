@@ -19,11 +19,11 @@
   "devDependencies": {
     "@rcompat/test": "workspace:^",
     "@rcompat/type": "workspace:^",
-    "@types/bun": "^1.2.16",
+    "@types/bun": "^1.2.17",
     "@types/busboy": "^1.5.4",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.7",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.16",
+    "apekit": "^0.0.17",
     "proby": "workspace:^",
     "types-deno": "^0.2.0-1.43.5",
     "typescript": "^5.8.3"
