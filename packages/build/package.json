@@ -28,20 +28,12 @@
   },
   "type": "module",
   "imports": {
-    "#reload/*": {
-      "apekit": "./src/private/reload/*.ts",
-      "default": "./lib/private/reload/*.js"
-    },
     "#*": {
       "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    "./reload/*": {
-      "apekit": "./src/public/reload/*.ts",
-      "default": "./lib/public/reload/*.js"
-    },
     "./*": {
       "apekit": "./src/public/*.ts",
       "default": "./lib/public/*.js"
