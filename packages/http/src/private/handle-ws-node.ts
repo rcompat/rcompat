@@ -2,18 +2,16 @@ import type Actions from "#Actions";
 import type WebSocket from "ws";
 
 export default (socket: WebSocket, actions: Actions) => {
-  if (actions.message !== undefined) {
-    const action = actions.message;
+  const { open, message, close } = actions;
 
+  if (message !== undefined) {
     socket.addEventListener("message", event => {
-      action(socket, event.data as string);
+      message(socket, event.data as string);
     });
   }
-  if (actions.open !== undefined) {
-    socket.addEventListener("open", actions.open);
-    actions.open(socket);
+  if (close !== undefined) {
+    socket.addEventListener("close", () => close(socket));
   }
-  if (actions.close !== undefined) {
-    socket.addEventListener("close", actions.close);
-  }
+
+  open?.(socket);
 };
