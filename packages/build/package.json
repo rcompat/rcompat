@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/build",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Standard library client builder",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
