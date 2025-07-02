@@ -15,4 +15,5 @@ export default (socket: WebSocket, actions: Actions) => {
   if (actions.close !== undefined) {
     socket.addEventListener("close", actions.close);
   }
+  socket.emit("open", socket);
 };
