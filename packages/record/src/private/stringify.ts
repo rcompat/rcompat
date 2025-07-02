@@ -1,10 +1,10 @@
 export interface ObjectStringifyReplacerFunction {
-  (this: unknown, key: string, value: unknown): unknown
+  (this: unknown, key: string, value: unknown): unknown;
 }
 
 export interface ObjectStringifyOptions {
-  replacer?: ObjectStringifyReplacerFunction,
-  space?: number
+  replacer?: ObjectStringifyReplacerFunction;
+  space?: number;
 }
 
 export default (value: Record<string, unknown>, {

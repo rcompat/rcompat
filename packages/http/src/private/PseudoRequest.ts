@@ -46,7 +46,7 @@ export default class PseudoRequest {
 
   get body() {
     if (this.#parsable) {
-      this.#body = Readable.toWeb(this.#incoming);
+      this.#body = Readable.toWeb(this.#incoming) as ReadableStream;
     }
     return this.#body;
   }
@@ -60,7 +60,7 @@ export default class PseudoRequest {
   }
 
   get credentials() {
-     return "same-origin";
+    return "same-origin";
   }
 
   get destination() {

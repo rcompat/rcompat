@@ -40,47 +40,47 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
   const server = module.createServer(options,
     async (node_request: IncomingMessage, node_response: ServerResponse) => {
 
-    // handler gets a WHATWG Request, and returns a WHATWG Response
-    //
-    // 1. wrap a node request in a WHATWG request
-    const url = get_url(node_request);
+      // handler gets a WHATWG Request, and returns a WHATWG Response
+      //
+      // 1. wrap a node request in a WHATWG request
+      const url = get_url(node_request);
 
-    if (url === null) {
-      node_response.end();
-      return;
-    }
+      if (url === null) {
+        node_response.end();
+        return;
+      }
 
-    const request = new PseudoRequest(`${url}`, node_request);
+      const request = new PseudoRequest(`${url}`, node_request);
 
-    const response = await tryreturn(async () => await handler(request as unknown as Request))
-      .orelse(async () =>
-        new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
+      const response = await tryreturn(async () => await handler(request as unknown as Request))
+        .orelse(async () =>
+          new Response(null, { status: Status.INTERNAL_SERVER_ERROR }));
 
-    // keep the connection alive (101 switching protocols)
-    if (response === null) {
-      return;
-    }
+      // keep the connection alive (101 switching protocols)
+      if (response === null) {
+        return;
+      }
 
-    [...response.headers.entries()].forEach(([name, value]) => {
-      node_response.setHeader(name, value);
-    });
+      [...response.headers.entries()].forEach(([name, value]) => {
+        node_response.setHeader(name, value);
+      });
 
-    node_response.writeHead(response.status);
+      node_response.writeHead(response.status);
 
-    // no body, end response
-    if (response.body === null) {
-      return node_response.end();
-    }
+      // no body, end response
+      if (response.body === null) {
+        return node_response.end();
+      }
 
-    // 2. copy from a WHATWG response into a node response
-    const { body } = response;
+      // 2. copy from a WHATWG response into a node response
+      const { body } = response;
 
-    try {
-      await body.pipeTo(Writable.toWeb(node_response));
-    } catch {
-      await body.cancel();
-    }
-  }).listen($conf.port, $conf.host);
+      try {
+        await body.pipeTo(Writable.toWeb(node_response));
+      } catch {
+        await body.cancel();
+      }
+    }).listen($conf.port, $conf.host);
 
   return {
     upgrade(request: Request, actions: Actions) {

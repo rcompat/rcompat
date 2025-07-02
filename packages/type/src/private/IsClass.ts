@@ -9,10 +9,10 @@ type IsClass<T> =
     IsAny<T>,
     Is<T, Math>,
     Is<T, JSON>,
-    Is<T, Atomics>
+    Is<T, Atomics>,
   ]> extends true ? false :
-  T extends object & { constructor: unknown }
-    ? true
-    : false;
+    T extends object & { constructor: unknown }
+      ? true
+      : false;
 
 export type { IsClass as default };

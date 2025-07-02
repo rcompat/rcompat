@@ -1,4 +1,4 @@
-import PseudoRequest from "#PseudoRequest";
+import type PseudoRequest from "#PseudoRequest";
 
 type RequestLike = Request | PseudoRequest;
 

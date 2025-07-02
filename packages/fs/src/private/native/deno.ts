@@ -19,6 +19,6 @@ const deno: Native = {
       ? Deno.writeFile(path, input.stream())
       : Deno.writeTextFile(path, input);
   },
-}
+};
 
 export default deno;

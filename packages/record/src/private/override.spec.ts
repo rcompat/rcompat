@@ -5,9 +5,9 @@ import never from "@rcompat/test/never";
 import undef from "@rcompat/test/undef";
 
 test.case("typedoc", assert => {
- assert(override({}, { foo: "bar" })).equals({ foo: "bar" });
- assert(override({ foo: "bar" }, { foo: "baz" })).equals({ foo: "baz" });
- assert(override({ foo: { bar: "baz" } }, { foo: { bar: "baz2"} }))
+  assert(override({}, { foo: "bar" })).equals({ foo: "bar" });
+  assert(override({ foo: "bar" }, { foo: "baz" })).equals({ foo: "baz" });
+  assert(override({ foo: { bar: "baz" } }, { foo: { bar: "baz2"} }))
     .equals({ foo: { bar: "baz2"} });
 });
 

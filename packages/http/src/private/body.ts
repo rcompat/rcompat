@@ -23,12 +23,12 @@ export default {
     return type === null
       ? null
       : tryreturn(async () => {
-          const contentType = type.split(";")[0];
+        const contentType = type.split(";")[0];
 
-          return is_supported(contentType)
-            ? contents[contentType](request)
-            : null;
-        })
+        return is_supported(contentType)
+          ? contents[contentType](request)
+          : null;
+      })
         .orelse(_ => {
           throw new Error(`cannot parse body with content type ${type}`);
         });

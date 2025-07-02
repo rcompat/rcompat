@@ -21,7 +21,7 @@ const checks = [
   [fn.is, <T>(x: T, y: T) => fn.is(y) && fn.equal(x as UnknownFunction, y)],
   [record.is, <T>(x: T, y: T) => record.is(y)
     && record.equal(x as Dictionary, y)],
-  [(_: unknown) => true, <T>(_: T, _1: T) => false]
+  [(_: unknown) => true, <T>(_: T, _1: T) => false],
 ] as const;
 
 const equals = <T>(x: T, y: T): boolean => typeof x === typeof y

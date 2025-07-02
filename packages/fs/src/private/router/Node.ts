@@ -269,7 +269,7 @@ export default class Node<Route extends Import, Special extends Import> {
 
       const name = this.#path.slice(4, -1);
       const next_params = {
-          ...params,
+        ...params,
         [name]: `${first}/${rest.join("/")}`,
       };
       // rest stops recursing
@@ -318,14 +318,14 @@ export default class Node<Route extends Import, Special extends Import> {
     }
 
     for (const $static of this.statics()) {
-        if ($static.path === "index" && $static.file !== undefined) {
-            if (this.#type === STATIC && this.has_file) {
-                throw new errors.DoubleRoute(this.path);
-            }
-            if (has_optionals) {
-                throw new errors.DoubleRoute(this.path);
-            }
+      if ($static.path === "index" && $static.file !== undefined) {
+        if (this.#type === STATIC && this.has_file) {
+          throw new errors.DoubleRoute(this.path);
         }
+        if (has_optionals) {
+          throw new errors.DoubleRoute(this.path);
+        }
+      }
     }
   }
 

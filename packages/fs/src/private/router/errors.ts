@@ -5,7 +5,7 @@ const BaseError = class extends Error {
     super(message);
     this.route = route;
   }
-}
+};
 
 const DoubleRoute = class extends BaseError {
   constructor(route: string) {

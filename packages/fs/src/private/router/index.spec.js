@@ -10,7 +10,7 @@ const r = (route, expected = route) => [route, {
     },
     post() {
       return expected;
-    }
+    },
   },
 }];
 

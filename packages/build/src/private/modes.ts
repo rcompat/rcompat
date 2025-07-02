@@ -1,5 +1,5 @@
 import reload_path from "#reload/path";
-import * as esbuild from "esbuild";
+import type * as esbuild from "esbuild";
 
 const default_name = "app";
 

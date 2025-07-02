@@ -7,7 +7,7 @@ type PrintEntries<T, Keys extends unknown[] = UnionToTuple<keyof T>> =
       Rest extends []
         ? `${K}: ${Print<T[K]>}`
         : `${K}: ${Print<T[K]>}, ${PrintEntries<T, Rest>}`
-    : never
-  : "";
+      : never
+    : "";
 
 export type { PrintEntries as default };

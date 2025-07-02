@@ -6,12 +6,12 @@ import type PrintBoolean from "#PrintBoolean";
 
 type PrintUnion<T> =
   [T] extends [boolean] ? [boolean] extends [T] ? "boolean" : `${T}` :
-  UnionToTuple<T> extends infer Tuple extends unknown[] ?
-    {
-      [K in keyof Tuple]: PrintBoolean<Print<Tuple[K]>>
-    } extends infer Printed extends string[]
-      ? Join<Unique<Printed>, " |">
-      : never
-    : never;
+    UnionToTuple<T> extends infer Tuple extends unknown[] ?
+      {
+        [K in keyof Tuple]: PrintBoolean<Print<Tuple[K]>>
+      } extends infer Printed extends string[]
+        ? Join<Unique<Printed>, " |">
+        : never
+      : never;
 
 export type { PrintUnion as default };

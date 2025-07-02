@@ -16,7 +16,7 @@ import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
 import type StringReplacer from "@rcompat/type/StringReplacer";
 import {
-  copyFile, lstat, mkdir, readdir, realpath, rm
+  copyFile, lstat, mkdir, readdir, realpath, rm,
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
@@ -210,7 +210,7 @@ export default class FileRef implements StringClass, Printable {
   }
 
   append(suffix: string) {
-     return new FileRef(`${this.path}${suffix}`);
+    return new FileRef(`${this.path}${suffix}`);
   }
 
   get path() {
@@ -359,6 +359,6 @@ export default class FileRef implements StringClass, Printable {
   static resolve(path?: string) {
     maybe(path).string();
 
-   return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
+    return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
   }
 }

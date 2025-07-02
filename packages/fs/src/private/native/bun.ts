@@ -15,8 +15,8 @@ const bun: Native = {
     return Bun.file(path).text();
   },
   async write(path: string, input: WritableInput) {
-    await Bun.write(path, input)
+    await Bun.write(path, input);
   },
-}
+};
 
 export default bun;

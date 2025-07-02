@@ -5,14 +5,14 @@ export const form = "application/x-www-form-urlencoded";
 export const json = "application/json";
 export const multipart = "multipart/form-data";
 export const pdf = "application/pdf";
-export const rss = "application/rss+xml"
+export const rss = "application/rss+xml";
 export const xml = "application/xml";
 
 // text
 export const css = "text/css";
 export const csv = "text/csv";
-export const html = "text/html"
-export const js = "text/javascript"
+export const html = "text/html";
+export const js = "text/javascript";
 export const sse = "text/event-stream";
 export const txt = "text/plain";
 
@@ -48,7 +48,7 @@ const regex = /\.(?<extension>[a-z1-9]*)$/u;
 const match = (filename: string) => filename.match(regex)?.groups?.extension;
 
 export const resolve = (name: string) => {
-    const matched = match(name);
+  const matched = match(name);
 
-    return isExtension(matched) ? extensions[matched] : DEFAULT_EXTENSION;
+  return isExtension(matched) ? extensions[matched] : DEFAULT_EXTENSION;
 };

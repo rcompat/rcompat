@@ -31,7 +31,7 @@ export default class Assert<const Actual> {
 
   #failed(expected: unknown, actual?: unknown) {
     this.#report(false, expected, actual);
- }
+  }
 
   equals(expected: unknown) {
     this.#report(equals(this.#actual, expected), expected);

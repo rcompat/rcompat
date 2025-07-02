@@ -4,9 +4,9 @@ import type TypeofTypeMap from "#TypesOfTypeMap";
 import assert from "#assert";
 
 interface TestOptions {
-  condition: boolean,
-  error: ErrorFallbackFunction | undefined,
-  def: string
+  condition: boolean;
+  error: ErrorFallbackFunction | undefined;
+  def: string;
 }
 
 const test = ({ condition, def, error }: TestOptions): void =>
@@ -25,7 +25,7 @@ export default class Every {
   }
 
   #typeof<
-    T extends keyof TypeofTypeMap
+    T extends keyof TypeofTypeMap,
   >(type: T, error?: ErrorFallbackFunction) {
     const def = `all the values must be of type ${type}`;
     const condition = this.#values.every(v => typeof v === type);

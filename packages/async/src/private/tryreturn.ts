@@ -4,19 +4,19 @@ const $backup = Symbol("backup");
 
 export interface AsyncTryReturnTrialBackup<T> extends PromiseLike<T> {
   [$backup]: AsyncTryReturnTrialBackupFunction<unknown> | undefined;
-  orelse:<U>(backup: AsyncTryReturnTrialBackupFunction<U>) => AsyncTryReturnTrialBackup<T | U>
+  orelse: <U>(backup: AsyncTryReturnTrialBackupFunction<U>) => AsyncTryReturnTrialBackup<T | U>;
 }
 
 export interface AsyncTryReturnTrialBackupFunction<U> {
-  (error: unknown): Promise<U>
+  (error: unknown): Promise<U>;
 }
 
 export interface AsyncTryReturnTrialFunction<T> {
-  (): Promise<T>
+  (): Promise<T>;
 }
 
 export interface AsyncTryReturnTrial {
-  <T>(trial: AsyncTryReturnTrialFunction<T>): AsyncTryReturnTrialBackup<T>
+  <T>(trial: AsyncTryReturnTrialFunction<T>): AsyncTryReturnTrialBackup<T>;
 }
 
 export default (trial => ({

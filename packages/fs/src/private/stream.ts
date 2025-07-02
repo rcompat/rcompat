@@ -11,4 +11,4 @@ export default <T>(input : Streamable<T>): ReadableStream => {
   }
 
   throw new Error("input unstreamable");
-}
+};

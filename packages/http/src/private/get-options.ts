@@ -6,8 +6,8 @@ export default async (conf: Conf) => {
   is(conf).object();
 
   return is_secure(conf)
-  ? {
-    key: await conf.ssl!.key.text(),
-    cert: await conf.ssl!.cert.text(),
-  } : {};
+    ? {
+      key: await conf.ssl!.key.text(),
+      cert: await conf.ssl!.cert.text(),
+    } : {};
 };

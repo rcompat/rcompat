@@ -88,6 +88,7 @@ export default class Build {
     const { method, headers, body } = request;
 
     return paths.includes(pathname)
+      // @ts-expect-error types
       ? fetch(`${url}${pathname}`, { headers, method, body, duplex: "half" })
       : fallback();
   }

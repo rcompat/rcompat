@@ -13,4 +13,4 @@ export default (command: string, options: SpawnOptions) => {
     stdout: Readable.toWeb(stdout),
     stderr: Readable.toWeb(stderr),
   };
-}
+};

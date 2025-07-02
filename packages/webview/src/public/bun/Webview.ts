@@ -7,14 +7,14 @@ import platform from "./platform.js";
 const default_library = `${import.meta.dir}/../../platform/${platform}-webview.bin`;
 
 export interface WebviewOptions {
-  debug: boolean,
-  library?: BunFile,
+  debug: boolean;
+  library?: BunFile;
 }
 
 export interface Size {
-  width: number,
-  height: number,
-  hint: 0 | 1 | 2 | 3,
+  width: number;
+  height: number;
+  hint: 0 | 1 | 2 | 3;
 }
 
 const default_size: Size = {

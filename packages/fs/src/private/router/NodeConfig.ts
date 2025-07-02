@@ -1,6 +1,6 @@
 export default interface NodeConfig {
   specials: Record<PropertyKey, {
-    recursive: boolean
+    recursive: boolean;
   }>;
   predicate: (route: { default: unknown }, request: Request) => boolean;
 }

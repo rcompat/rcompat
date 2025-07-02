@@ -13,7 +13,7 @@ export default (library: string) => class {
         this.#onclosed?.();
         this.#worker.terminate();
       }
-    }
+    };
     this.message("construct", [debug, library]);
   }
 
@@ -40,5 +40,5 @@ export default (library: string) => class {
   closed(callback: () => void) {
     this.#onclosed = callback;
   }
-}
+};
 

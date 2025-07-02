@@ -20,7 +20,7 @@ const paths = [
   "c",
 ];
 
-type AnyStringFunction = keyof { [K in keyof string as string[K] extends (arg: string) => unknown ? K : never]: true }
+type AnyStringFunction = keyof { [K in keyof string as string[K] extends (arg: string) => unknown ? K : never]: true };
 
 const is = (c: string, key: AnyStringFunction) => paths.flatMap((path, i) => path[key](c) ? [i] : []);
 const includes = (c: string) => is(c, "includes");

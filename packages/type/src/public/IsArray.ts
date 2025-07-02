@@ -1,1 +1,1 @@
-export { default } from "#IsArray"
+export { default } from "#IsArray";

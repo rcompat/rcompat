@@ -220,7 +220,7 @@ test.case("object", assert => {
   assert<Print<{ foo: number }>>().type<"{ foo: number }">();
   assert<Print<{ foo: 0n }>>().type<"{ foo: 0n }">();
 
-  const _1: { foo: "bar", count: number } = { foo: "bar", count: 1};
+  const _1: { foo: "bar"; count: number } = { foo: "bar", count: 1};
   assert<Print<typeof _1>>().type<"{ foo: 'bar', count: number }">();
   assert<Print<{ a: true; b: string[] }>>().type<"{ a: true, b: string[] }">();
 

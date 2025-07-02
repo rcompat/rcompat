@@ -23,10 +23,10 @@ const events: any = {
   },
   set_size(size: Size) {
     webview.size = size;
-  }
+  },
 };
 
-self.addEventListener("message", (event: Bun.MessageEvent) => {
+self.addEventListener("message", (event: MessageEvent) => {
   const { name, params = [] } = event.data;
   events[name](...params);
 });

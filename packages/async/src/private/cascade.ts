@@ -21,11 +21,11 @@ import is from "@rcompat/assert/is";
 // }}}
 
 export interface CascadeFunction<I = any, O = any> {
-  (input: I, next?: CascadeFunction<I, O>): Promise<O | undefined> | O | undefined
+  (input: I, next?: CascadeFunction<I, O>): Promise<O | undefined> | O | undefined;
 }
 
 export interface CascadedFunction<I = any, O = any> {
-  (input: I): Promise<O> | O | undefined
+  (input: I): Promise<O> | O | undefined;
 }
 
 export default (fns: CascadeFunction[], final_fn?: CascadedFunction): CascadedFunction => {
