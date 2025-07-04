@@ -4,4 +4,4 @@ const preset: TransformOptions = {
   loader: "ts",
 };
 
-export { preset as default }
+export { preset as default };
