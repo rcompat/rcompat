@@ -18,7 +18,7 @@ export const txt = "text/plain";
 
 // image
 export const jpeg = "image/jpeg";
-export const jpg = jpeg;
+export const jpg = "image/jpeg";
 export const png = "image/png";
 export const svg = "image/svg+xml";
 export const webp = "image/webp";

@@ -27,7 +27,6 @@
     "@rcompat/assert": "workspace:^",
     "@rcompat/async": "workspace:^",
     "@rcompat/fs": "workspace:^",
-    "@rcompat/function": "workspace:^",
     "@rcompat/record": "workspace:^",
     "busboy": "^1.6.0",
     "ws": "^8.18.3"

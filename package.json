@@ -13,7 +13,9 @@
     "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "pnpm run build && npx proby"
+    "test": "pnpm run build && npx proby",
+    "sweep": "rm -rf node_modules pnpm-lock.yaml {app,package}s/*/node_modules",
+    "knip": "knip"
   },
   "private": true,
   "devDependencies": {
@@ -25,6 +27,7 @@
     "@types/node": "^24.0.10",
     "@types/ws": "^8.18.1",
     "apekit": "^0.0.18",
+    "knip": "^5.61.3",
     "proby": "workspace:^",
     "typescript": "^5.8.3"
   }

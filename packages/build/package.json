@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
-    "@rcompat/function": "workspace:^",
     "@rcompat/record": "workspace:^",
     "esbuild": "^0.25.5"
   },
