@@ -1,4 +1,12 @@
-const scalars = ["bigint", "boolean", "number", "string", "symbol", "undefined"];
+const scalars = [
+  "bigint",
+  "boolean",
+  "number",
+  "string",
+  "symbol",
+  "undefined",
+];
+
 type Scalar = typeof scalars[number];
 
 const is = (x: unknown): x is Scalar => scalars.includes(typeof x as Scalar);

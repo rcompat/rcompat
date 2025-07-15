@@ -10,4 +10,5 @@ export interface ObjectStringifyOptions {
 export default (value: Record<string, unknown>, {
   replacer = undefined,
   space = 2,
-}: ObjectStringifyOptions = {}): string => JSON.stringify(value, replacer, space);
+}: ObjectStringifyOptions = {}): string =>
+  JSON.stringify(value, replacer, space);
