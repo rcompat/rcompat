@@ -10,13 +10,13 @@ import type WritableInput from "#WritableInput";
 import defined from "@rcompat/assert/defined";
 import is from "@rcompat/assert/is";
 import maybe from "@rcompat/assert/maybe";
-import type Dictionary from "@rcompat/type/Dictionary";
+import type Dict from "@rcompat/type/Dict";
 import type MaybePromise from "@rcompat/type/MaybePromise";
 import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
 import type StringReplacer from "@rcompat/type/StringReplacer";
 import {
-  copyFile, lstat, mkdir, readdir, realpath, rm,
+    copyFile, lstat, mkdir, readdir, realpath, rm,
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
@@ -110,7 +110,7 @@ export default class FileRef implements StringClass, Printable {
     return Kind.Link;
   }
 
-  async list(predicate?: FilePredicate, options?: Dictionary) {
+  async list(predicate?: FilePredicate, options?: Dict) {
     maybe(predicate).instance(Function);
     maybe(options).object();
 
@@ -126,14 +126,6 @@ export default class FileRef implements StringClass, Printable {
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
     return new FileRef(path).list(...params);
-  }
-
-  async listFiles(options?: Dictionary) {
-    return this.list(file => file.isFile());
-  }
-
-  static listFiles(path: Path, options?: Dictionary)  {
-    return new FileRef(path).listFiles(options);
   }
 
   async glob(pattern: string) {

@@ -1,8 +1,8 @@
-import type Dictionary from "#Dictionary";
+import type Dict from "#Dict";
 import type IndexedKeys from "#IndexedKeys";
 import type PrintEntries from "#PrintEntries";
 
-type PrintRecord<T extends Dictionary> = IndexedKeys<T> extends true
+type PrintRecord<T extends Dict> = IndexedKeys<T> extends true
   ? `{ ${PrintEntries<T>} }`
   : "{}";
 

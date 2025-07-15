@@ -1,7 +1,7 @@
-import type Import from "#router/Import";
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
 import type NodePredicate from "#router/NodePredicate";
+import type Import from "@rcompat/type/Import";
 import * as errors from "./errors.js";
 
 const ROOT = Symbol("root");

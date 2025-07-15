@@ -1,7 +1,5 @@
-import type Dictionary from "#Dictionary";
+import type Dict from "#Dict";
 
-type Import = Dictionary & {
-  default?: unknown;
-};
+type Import = Dict & { default: unknown };
 
 export type { Import as default };

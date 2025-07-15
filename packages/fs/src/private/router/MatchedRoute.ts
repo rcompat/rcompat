@@ -1,4 +1,4 @@
-import type Import from "#router/Import";
+import type Import from "@rcompat/type/Import";
 
 export default interface MatchedRoute<Route extends Import, Special extends Import> {
   path: string;

@@ -1,6 +1,6 @@
 import fn from "#equals";
 import test from "#index";
-import type Dictionary from "@rcompat/type/Dictionary";
+import type Dict from "@rcompat/type/Dict";
 
 test.case("string", assert => {
   assert(fn("", "")).true();
@@ -117,7 +117,7 @@ test.case("Set", assert => {
 });
 
 test.case("Map", assert => {
-  const map = (o: Dictionary) => new Map(Object.entries(o));
+  const map = (o: Dict) => new Map(Object.entries(o));
 
   const o0 = { foo: "bar" };
   const o1 = { foo: { bar: "baz" }};
@@ -146,7 +146,7 @@ test.case("function", assert => {
   const fn4 = (_: unknown, __: unknown) => true;
 
   assert(fn0).equals(fn1);
-  assert(fn0).nequals(fn2)
+  assert(fn0).nequals(fn2);
   assert(fn2).nequals(fn1);
   assert(fn2).equals(fn3);
   assert(fn0).nequals(fn3);

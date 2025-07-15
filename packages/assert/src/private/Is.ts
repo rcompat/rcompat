@@ -3,7 +3,7 @@ import constructible from "#constructible";
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
 import type Constructor from "@rcompat/type/Constructor";
-import type Dictionary from "@rcompat/type/Dictionary";
+import type Dict from "@rcompat/type/Dict";
 
 type UnknownFunction = (...params: unknown[]) => unknown;
 
@@ -122,7 +122,7 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  defined(error?: ErrorFallbackFunction | string): Dictionary {
+  defined(error?: ErrorFallbackFunction | string): Dict {
     const def = `\`${this.#value_string}\` must be defined`;
     const condition = this.#value !== undefined;
     return this.#test({ condition, def, error });

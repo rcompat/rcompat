@@ -3,7 +3,7 @@ import reload_path from "#reload/path";
 import assert from "@rcompat/assert";
 import is from "@rcompat/assert/is";
 import exclude from "@rcompat/record/exclude";
-import type Dictionary from "@rcompat/type/Dictionary";
+import type Dict from "@rcompat/type/Dict";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 import * as esbuild from "esbuild";
 import { dev, default as modes, prod } from "./modes.js";
@@ -27,7 +27,7 @@ export default class Build {
   #options;
   #name;
   #plugins: esbuild.Plugin[] = [];
-  #artifacts: Dictionary<string> = {};
+  #artifacts: Dict<string> = {};
   #exports: string[] = [];
   #context?: esbuild.BuildContext;
 

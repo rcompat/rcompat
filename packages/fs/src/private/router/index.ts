@@ -1,8 +1,8 @@
 import FileRef from "#FileRef";
 import type Config from "#router/Config";
-import type Import from "#router/Import";
 import Node from "#router/Node";
 import override from "@rcompat/record/override";
+import type Import from "@rcompat/type/Import";
 import * as errors from "./errors.js";
 
 const defaults = {

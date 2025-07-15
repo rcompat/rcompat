@@ -1,4 +1,4 @@
-import type Dictionary from "#Dictionary";
+import type Dict from "#Dict";
 import type IsAny from "#IsAny";
 import type IsArray from "#IsArray";
 import type IsClass from "#IsClass";
@@ -29,9 +29,9 @@ type Print<T> =
                           IsTuple<T> extends true ? PrintTuple<T> :
                             IsArray<T> extends true ?
                               T extends (infer E)[] ? `${PrintArray<E>}[]` :
-                                T extends ReadonlyArray<infer E> ? `ReadonlyArray<${Print<E>}>` :
-                                  "array" :
-                              T extends Dictionary ? PrintRecord<T> :
+                                T extends ReadonlyArray<infer E> ? 
+                                  `ReadonlyArray<${Print<E>}>` : "array" :
+                              T extends Dict ? PrintRecord<T> :
                                 IsClass<T> extends true ? PrintClass<T> :
                                   never;
 
