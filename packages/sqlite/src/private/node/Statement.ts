@@ -16,7 +16,7 @@ export default class implements Statement {
       return this.#statement.get();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.get(first, ...rest);
+      return this.#statement.get(first as Record<string, PrimitiveParam>);
     }
     return this.#statement.get(first, ...rest);
   }
@@ -26,7 +26,7 @@ export default class implements Statement {
       return this.#statement.all();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.all(first, ...rest);
+      return this.#statement.all(first as Record<string, PrimitiveParam>);
     }
     return this.#statement.all(first, ...rest);
   }
@@ -36,7 +36,7 @@ export default class implements Statement {
       return this.#statement.run();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.run(first, ...rest);
+      return this.#statement.run(first as Record<string, PrimitiveParam>);
     }
     return this.#statement.run(first, ...rest);
   }
