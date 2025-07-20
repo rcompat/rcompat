@@ -1,6 +1,6 @@
 {
   "name": "proby",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Standard library test runner",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
