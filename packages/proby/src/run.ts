@@ -6,11 +6,10 @@ import type FileRef from "@rcompat/fs/FileRef";
 import type Result from "@rcompat/test/Result";
 import type Test from "@rcompat/test/Test";
 import repository from "@rcompat/test/repository";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 const endings = [".spec.ts", ".spec.js"];
 
-function stringify(value: unknown): string {
+function stringify_scalar(value: unknown) {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
 
@@ -25,10 +24,21 @@ function stringify(value: unknown): string {
   if (typeof value === "function") {
     return `[Function${value.name ? `: ${value.name}` : ""}]`;
   }
+}
+
+function stringify(value: unknown) {
+  const scalar = stringify_scalar(value);
+
+  if (scalar !== undefined) {
+    return scalar;
+  }
 
   if (typeof value === "object") {
     try {
-      return JSON.stringify(value, (_, sub) => stringify(sub));
+      return JSON.stringify(value, (_, sub) => {
+        const s = stringify_scalar(sub);
+        return s !== undefined ? s : sub;
+      });
     } catch {
       return "[Object (circular or unserializable)]";
     }
