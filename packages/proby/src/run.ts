@@ -9,6 +9,32 @@ import repository from "@rcompat/test/repository";
 
 const endings = [".spec.ts", ".spec.js"];
 
+const primitives = ["bigint", "boolean", "string", "number", "symbol"]
+
+function stringify(value: unknown): string {
+  if (value === null) return "null";
+  if (value === undefined) return "undefined";
+
+  if (primitives.includes(typeof value)) {
+    return value.toString();
+  }
+
+  if (typeof value === "function") {
+    return `[Function${value.name ? `: ${value.name}` : ""}]`;
+  }
+
+  if (typeof value === "object") {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return "[Object (circular or unserializable)]";
+    }
+  }
+
+  // Fallback
+  return String(value);
+}
+
 export default async (root: FileRef, subrepo?: string) => {
   const files = await root.list(file =>
     endings.some(ending => file.path.endsWith(ending)), { recursive: true });
@@ -45,8 +71,8 @@ export default async (root: FileRef, subrepo?: string) => {
     print("\n");
     for (const [ test, result ] of failed) {
       print(`${test.file.debase(root)} ${red(test.name)} \n`);
-      print(`  expected  ${result.expected}\n`);
-      print(`  actual    ${result.actual}\n`);
+      print(`  expected  ${stringify(result.expected)}\n`);
+      print(`  actual    ${stringify(result.actual)}\n`);
     }
   }
   print("\n");
