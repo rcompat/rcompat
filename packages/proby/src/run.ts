@@ -6,17 +6,20 @@ import type FileRef from "@rcompat/fs/FileRef";
 import type Result from "@rcompat/test/Result";
 import type Test from "@rcompat/test/Test";
 import repository from "@rcompat/test/repository";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 const endings = [".spec.ts", ".spec.js"];
-
-const primitives = ["bigint", "boolean", "string", "number", "symbol"]
 
 function stringify(value: unknown): string {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
 
-  if (primitives.includes(typeof value)) {
+  if (["string", "number", "boolean", "symbol"].includes(typeof value)) {
     return value.toString();
+  }
+
+  if (typeof value === "bigint") {
+    return value.toString() + "n";
   }
 
   if (typeof value === "function") {
@@ -25,13 +28,12 @@ function stringify(value: unknown): string {
 
   if (typeof value === "object") {
     try {
-      return JSON.stringify(value);
+      return JSON.stringify(value, (_, sub) => stringify(sub));
     } catch {
       return "[Object (circular or unserializable)]";
     }
   }
 
-  // Fallback
   return String(value);
 }
 
