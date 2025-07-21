@@ -23,6 +23,7 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/crypto": "workspace:^",
+    "@rcompat/function": "workspace:^",
     "@rcompat/record": "workspace:^"
   },
   "type": "module",
