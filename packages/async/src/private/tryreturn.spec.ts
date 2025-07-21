@@ -18,7 +18,7 @@ test.case("no `orelse`", async assert => {
 });
 test.case("`orelse` faulty", async assert => {
   try {
-    await tryreturn(async () => null).orelse(undefined as never);
+    await tryreturn(async () => null).orelse(undef);
   } catch (error: any) {
     assert(error.message).equals("`undefined` must be of type function");
   }

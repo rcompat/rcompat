@@ -1,3 +1,3 @@
-import never from "#never";
+import any from "#any";
 
-export default never(undefined);
+export default any(undefined);

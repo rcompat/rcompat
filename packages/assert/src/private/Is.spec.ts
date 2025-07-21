@@ -1,8 +1,8 @@
 import Is from "#Is";
 import test from "@rcompat/test";
-import never from "@rcompat/test/never";
+import any from "@rcompat/test/any";
 
-const fixturesMap = {
+const fix = {
   string: ["", String()],
   number: [0, Number(0)],
   bigint: [0n],
@@ -14,14 +14,14 @@ const fixturesMap = {
   undefined: [undefined],
 } satisfies Partial<Record<keyof Is, unknown[]>>;
 
-const fixtures = Object.entries(fixturesMap) as [keyof typeof fixturesMap, unknown[]][];
+const fixtures = Object.entries(fix) as [keyof typeof fix, unknown[]][];
 
 test.case("non objects", assert => {
   fixtures.forEach(([key, values]) => {
     const non_values = fixtures.filter(entry => entry[0] !== key)
       .flatMap(([, value]) => value);
     values.forEach(value => {
-      assert(new Is(value)[key]()).equals(never(value));
+      assert(new Is(value)[key]()).equals(any(value));
       non_values.forEach(non_value =>
         assert(() => new Is(non_value)[key]()).throws());
     });
