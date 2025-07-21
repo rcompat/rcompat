@@ -21,11 +21,12 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "undici-types": "7.11.0"
+    "undici-types": "7.12.0"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/async": "workspace:^",
+    "@rcompat/function": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/record": "workspace:^",
     "busboy": "^1.6.0",
