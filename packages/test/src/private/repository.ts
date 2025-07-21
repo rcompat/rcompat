@@ -1,26 +1,34 @@
 import type Body from "#Body";
-import Test from "#Test";
+import type End from "#End";
+import Suite from "#Suite";
 import type FileRef from "@rcompat/fs/FileRef";
 
 class Repository {
-  #tests: Test[] = [];
-  #current?: FileRef;
+  #suites: Suite[] = [];
 
-  reset() {
-    this.#tests = [];
+  get #suite() {
+    return this.#suites.at(-1)!;
   }
 
   put(name: string, body: Body) {
-    this.#tests.push(new Test(name, body, this.#current!));
+    this.#suite.test(name, body);
   }
 
-  current(file: FileRef) {
-    this.#current = file;
+  ended(end: End) {
+    this.#suite.ended(end);
   }
 
-  async *run() {
-    for (const test of this.#tests) {
-      yield await test.run();
+  suite(file: FileRef) {
+    this.#suites.push(new Suite(file));
+  }
+
+  reset() {
+    this.#suites = [];
+  }
+
+  *next() {
+    for (const suite of this.#suites) {
+      yield suite;
     }
   }
 }
