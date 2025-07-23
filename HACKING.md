@@ -1,9 +1,9 @@
-# Licensing
+## Licensing
 
 In contributing to rcompat, you agree that your contributions will be licensed
 under its MIT license.
 
-# Intro
+## Intro
 
 rcompat is a standard library for JavaScript runtimes, particularly Node, Deno
 and Bun in their current versions.
