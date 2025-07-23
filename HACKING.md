@@ -40,7 +40,7 @@ directories.
 ## Coding style
 
 * One class / object / type for file, unless the supporting code is only used
-once
+once.
 * If you need helper functions, consider using existing helpers from other
 rcompat packages or creating the helper function in an appropriate package.
 
