@@ -127,4 +127,4 @@ MIT
 
 ## Contributing
 
-See [Contributing](CONTRIBUTING.md)
+See [Hacking](HACKING.md)
