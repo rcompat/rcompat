@@ -10,9 +10,9 @@ const $root = await root();
 const spec_json = $root.join("spec.json");
 
 if (await spec_json.exists()) {
-//  console.log(`spec.json exists, reading`);
+  //  console.log(`spec.json exists, reading`);
 } else {
-//  console.log(`spec.json missing, continuing with defaults`);
+  //  console.log(`spec.json missing, continuing with defaults`);
 }
 
 type Type = Promise<"monorepo" | "repo" | undefined>;
