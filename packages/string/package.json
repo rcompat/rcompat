@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/string",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Standard library string abtractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
