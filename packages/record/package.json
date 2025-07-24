@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/record",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Standrd library object record",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
