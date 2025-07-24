@@ -25,9 +25,8 @@ We recommend joining our Discord server at https://discord.gg/RSg4NNwM4f to
 coordinate development. The rcompat channels are under the category `rcompat`.
 
 Make sure you have Node, Deno and Bun installed in case you need to test
-individual implementations. In addition, install pnpm as rcompat uses a
-monorepo for development with the `workspace` protocol which isn't supported by
-npm.
+individual implementations. In addition, install pnpm as we use a monorepo for
+development with the `workspace` protocol which isn't supported by npm.
 
 ## Development cycle
 
@@ -52,7 +51,7 @@ Private code should be scoped to the package only and imported within the
 package with a hash (`#`) import defined in `package.json`'s `imports` field.
 In particular, packages should not use relative imports as these break easily.
 
-Public code represents the API surface and should contain individual files 
+Public code represents the API surface and should contain individual files
 reexporting private code and no meaningful code. Typically:
 
 `export { default } from "#IMPORT_NAME";`

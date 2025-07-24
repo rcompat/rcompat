@@ -26,7 +26,7 @@
     "@types/deno": "^2.3.0",
     "@types/node": "^24.1.0",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.23",
+    "apekit": "^0.0.26",
     "knip": "^5.62.0",
     "proby": "workspace:^",
     "typescript": "^5.8.3"

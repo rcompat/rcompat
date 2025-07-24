@@ -7,7 +7,7 @@ const isNumeric = (value: string): boolean =>
 export default (value: string): boolean => {
   try {
     return isNumeric(value);
-  } catch (_) {
+  } catch {
     return false;
   }
 };
