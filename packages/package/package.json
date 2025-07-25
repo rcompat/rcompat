@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/package",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "description": "Standard library package helpers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
