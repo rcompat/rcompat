@@ -16,7 +16,7 @@ import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
 import type StringReplacer from "@rcompat/type/StringReplacer";
 import {
-    copyFile, lstat, mkdir, readdir, realpath, rm,
+  copyFile, lstat, mkdir, readdir, realpath, rm,
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
@@ -121,7 +121,7 @@ export default class FileRef implements StringClass, Printable {
     return Promise.all(paths
       .map(subpath => FileRef.join(path, subpath))
       .filter(predicate ?? (() => true)))
-    ;
+      ;
   }
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
@@ -317,6 +317,10 @@ export default class FileRef implements StringClass, Printable {
     ensure_parents(this);
 
     return native.write(this.path, input);
+  }
+
+  static write(path: Path, input: WritableInput) {
+    return new FileRef(path).write(input);
   }
 
   async discover(filename: string): Promise<FileRef> {

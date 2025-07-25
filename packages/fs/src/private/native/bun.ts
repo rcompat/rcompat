@@ -15,6 +15,14 @@ const bun: Native = {
     return Bun.file(path).text();
   },
   async write(path: string, input: WritableInput) {
+    if (input instanceof Response) {
+      await Bun.write(path, await input.arrayBuffer());
+      return;
+    }
+    if (input instanceof ReadableStream) {
+      await Bun.write(path, new Response(input));
+      return
+    }
     await Bun.write(path, input);
   },
 };

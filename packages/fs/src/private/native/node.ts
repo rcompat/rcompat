@@ -22,7 +22,13 @@ const node: Native = {
       unknown as ReadableStream<Uint8Array>;
   },
   async write(path: string, input: WritableInput) {
-    await writeFile(path, input instanceof Blob ? input.stream() : input);
+    if (input instanceof Blob || input instanceof Response) {
+      return writeFile(path, new Uint8Array(await input.arrayBuffer()));
+    }
+    if (input instanceof ArrayBuffer) {
+      return writeFile(path, new Uint8Array(input));
+    }
+    return writeFile(path, input);
   },
 };
 

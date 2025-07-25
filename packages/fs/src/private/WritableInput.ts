@@ -1,3 +1,3 @@
-type WritableInput = string | Blob;
+type WritableInput = string | Blob | ArrayBuffer | Response | ReadableStream;
 
 export type { WritableInput as default };

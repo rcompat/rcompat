@@ -14,10 +14,14 @@ const deno: Native = {
   text(path: string) {
     return Deno.readTextFile(path);
   },
-  write(path: string, input: WritableInput) {
-    return input instanceof Blob
-      ? Deno.writeFile(path, input.stream())
-      : Deno.writeTextFile(path, input);
+  async write(path: string, input: WritableInput) {
+    if (input instanceof Blob || input instanceof Response) {
+      return Deno.writeFile(path, new Uint8Array(await input.arrayBuffer()));
+    }
+    if (input instanceof ArrayBuffer) {
+      return Deno.writeFile(path, new Uint8Array(input));
+    }
+    return Deno.writeTextFile(path, input);
   },
 };
 
