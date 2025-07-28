@@ -19,7 +19,7 @@ webview.run();
 ```
 
 ## start a server and a webview in a worker, nonblocking
-### worker.js
+### worker.ts
 ```ts
 import platform from "@rcompat/webview/default";
 import Webview from "@rcompat/webview";
@@ -30,7 +30,7 @@ webview.navigate("http://localhost:8181");
 webview.run();
 ```
 
-### app.js
+### app.ts
 ```ts
 import serve from "@rcompat/http/serve";
 
@@ -43,22 +43,23 @@ const html = `
 
 serve(() => new Response(html, { headers }), { port: 8181 });
 
-new Worker("worker.js");
+new Worker("worker.ts");
 ```
 
 ## compile into executable
 
-`bun build app.js worker.js --compile [--minify]`
+`bun build app.ts worker.ts --compile [--minify]`
 
 ## cross-compile
 ### build.ts
 ```ts
 import args from "@rcompat/args";
 import FileRef from "@rcompat/fs/FileRef";
+
 const p = "--platform=";
 const platform = args.find(arg => arg.startsWith(p))?.slice(p) ?? "default";
 
-await new FileRef(import.meta.dirname).join("worker.js").write(`
+await new FileRef(import.meta.dirname).join("worker.ts").write(`
   import platform from "@rcompat/webview/${platform}";
   import Webview from "@rcompat/webview";
 
@@ -82,11 +83,11 @@ const html = `
 const server = await serve(() =>
   new Response(html, { headers }), { port: 8181 });
 
-const worker = new Worker("worker.js");
+const worker = new Worker("worker.ts");
 
 worker.addEventListener("message", event => {
   event.data === "destroyed" && server.stop();
 });
 ```
 
-`bun --platform=linux-x64 build.ts && bun build app.js worker.js --compile --target=bun-linux-x64 [--minify]`
+`bun --platform=linux-x64 build.ts && bun build app.ts worker.ts --compile --target=bun-linux-x64 [--minify]`
