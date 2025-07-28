@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.2.0",
+  "version": "0.11.3",
   "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -39,11 +39,12 @@
     "./worker/*": {
       "bun": "./lib/worker/bun/*/index.js",
       "deno": "./lib/worker/deno/*/index.js",
-      "node": "./lib/worker/node/*/index.js"
+      "node": "./lib/worker/node/*/index.js",
+      "default": "./lib/worker/bun/*/index.js"
     },
     ".": {
       "apekit": "./src/public/bun/Webview.ts",
-      "bun": "./lib/public/bun/Webview.js"
+      "default": "./lib/public/bun/Webview.js"
     }
   }
 }

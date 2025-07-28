@@ -61,4 +61,6 @@ export default class Webview {
     this.#handle = null;
     globalThis.postMessage("destroyed");
   }
+
+  closed(_cb: () => void) { }
 }
