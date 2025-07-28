@@ -6,7 +6,7 @@
   "license": "MIT",
   "files": [
     "/lib/**/*.js",
-    "/lib/**/platform/*.bin",
+    "/lib/**/webview.bin",
     "/lib/**/*.d.ts",
     "!/**/*.spec.*"
   ],
@@ -16,11 +16,10 @@
     "directory": "packages/webview"
   },
   "scripts": {
-    "build": "npm run clean && tsc && npm run build-worker",
+    "build": "npm run clean && tsc && npm run copy-platforms",
     "test": "npm run build && npx proby",
-    "build-worker": "./build-worker.sh && npm run copy-platform",
     "clean": "rm -rf ./lib",
-    "copy-platform": "cp -a ./src/platform ./lib",
+    "copy-platforms": "scripts/copy-platforms.sh",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -30,21 +29,20 @@
     "esbuild": "^0.25.8"
   },
   "type": "module",
+  "imports": {
+    "#*": {
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
+    }
+  },
   "exports": {
-    "./worker": {
-      "bun": "./lib/worker/bun/index.js",
-      "deno": "./lib/worker/deno/index.js",
-      "node": "./lib/worker/node/index.js"
-    },
-    "./worker/*": {
-      "bun": "./lib/worker/bun/*/index.js",
-      "deno": "./lib/worker/deno/*/index.js",
-      "node": "./lib/worker/node/*/index.js",
-      "default": "./lib/worker/bun/*/index.js"
-    },
     ".": {
-      "apekit": "./src/public/bun/Webview.ts",
-      "default": "./lib/public/bun/Webview.js"
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
+    },
+    "./*": {
+      "apekit": "./src/public/*.ts",
+      "default": "./lib/public/*.js"
     }
   }
 }

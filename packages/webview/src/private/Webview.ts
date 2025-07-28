@@ -1,17 +1,14 @@
+import cstring from "#cstring";
+import dlopen from "#dlopen";
 import override from "@rcompat/record/override";
 import type { BunFile } from "bun";
-import cstring from "./cstring.js";
-import dlopen from "./dlopen.js";
-import platform from "./platform.js";
 
-const default_library = `${import.meta.dir}/../../platform/${platform}-webview.bin`;
-
-export interface WebviewOptions {
+interface Init {
+  platform: BunFile;
   debug: boolean;
-  library?: BunFile;
 }
 
-export interface Size {
+interface Size {
   width: number;
   height: number;
   hint: 0 | 1 | 2 | 3;
@@ -25,16 +22,16 @@ const default_size: Size = {
 
 export default class Webview {
   #handle: any = null;
-  #library: any;
+  #platform: any;
 
-  constructor({ debug, library }: WebviewOptions = { debug: false }) {
-    this.#library = dlopen(library ?? default_library);
-    this.#handle = this.symbol("create")(Number(debug), null);
+  constructor(init: Init) {
+    this.#platform = dlopen(init.platform);
+    this.#handle = this.symbol("create")(Number(init.debug ?? false), null);
     this.size = default_size;
   }
 
   symbol(name: string) {
-    return this.#library.symbols[`webview_${name}`];
+    return this.#platform.symbols[`webview_${name}`];
   }
 
   navigate(url: string) {
@@ -61,6 +58,4 @@ export default class Webview {
     this.#handle = null;
     globalThis.postMessage("destroyed");
   }
-
-  closed(_cb: () => void) { }
 }
