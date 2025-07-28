@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -24,9 +24,6 @@
   },
   "dependencies": {
     "@rcompat/record": "workspace:^"
-  },
-  "devDependencies": {
-    "esbuild": "^0.25.8"
   },
   "type": "module",
   "imports": {
