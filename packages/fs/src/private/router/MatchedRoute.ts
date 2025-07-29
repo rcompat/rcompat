@@ -1,8 +1,6 @@
-import type Import from "@rcompat/type/Import";
-
-export default interface MatchedRoute<Route extends Import, Special extends Import> {
+export default interface MatchedRoute {
   path: string;
-  file: Route;
-  specials: {[s in string]?: Special[]};
+  fullpath: string;
+  specials: { [s in string]?: string[] };
   params: Record<PropertyKey, unknown>;
 }
