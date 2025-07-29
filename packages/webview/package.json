@@ -27,9 +27,18 @@
   },
   "type": "module",
   "imports": {
+    "#bun/*": {
+      "apekit": "./src/private/bun/*.ts",
+      "default": "./lib/private/bun/*.js"
+    },
+    "#deno/*": {
+      "apekit": "./src/private/deno/*.ts",
+      "default": "./lib/private/deno/*.js"
+    },
     "#*": {
       "apekit": "./src/private/*.ts",
-      "default": "./lib/private/*.js"
+      "deno": "./lib/private/deno/*.js",
+      "default": "./lib/private/bun/*.js"
     }
   },
   "exports": {

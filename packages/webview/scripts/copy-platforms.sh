@@ -8,6 +8,5 @@ find "$SRC_BASE" -type f -name "webview.bin" | while read -r src_file; do
 
   dest_dir="$DEST_BASE/$platform_dir"
   mkdir -p "$dest_dir"
-
   cp "$src_file" "$dest_dir/webview.bin"
 done
