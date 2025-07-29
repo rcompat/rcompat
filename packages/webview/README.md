@@ -1,6 +1,6 @@
 # webview
 
-Note: this package currently only works in Bun. Deno and Node bindings will be
+Note: this package currently only works in Bun and Deno. Node bindings will be
 added at a later date.
 
 ## install
@@ -17,7 +17,6 @@ const webview = new Webview({ platform });
 webview.navigate("https://primate.run");
 webview.run();
 ```
-
 ## start a server and a webview in a worker, nonblocking
 ### worker.ts
 ```ts
@@ -43,12 +42,18 @@ const html = `
 
 serve(() => new Response(html, { headers }), { port: 8181 });
 
+// bun
 new Worker("worker.ts");
+
+// deno
+new Worker(new URL("worker.ts", import.meta.url).href, { type: "module" });
 ```
 
 ## compile into executable
 
 `bun build app.ts worker.ts --compile [--minify]`
+or
+`deno compile --no-check --include worker.ts app.ts`
 
 ## cross-compile
 ### build.ts
@@ -83,7 +88,13 @@ const html = `
 const server = await serve(() =>
   new Response(html, { headers }), { port: 8181 });
 
+// bun
 const worker = new Worker("worker.ts");
+
+// deno
+const worker = new Worker(new URL("worker.ts", import.meta.url).href, {
+  type: "module"
+});
 
 worker.addEventListener("message", event => {
   event.data === "destroyed" && server.stop();
@@ -91,3 +102,5 @@ worker.addEventListener("message", event => {
 ```
 
 `bun --platform=linux-x64 build.ts && bun build app.ts worker.ts --compile --target=bun-linux-x64 [--minify]`
+or
+`deno -A build.ts --platform=linux-x64 && deno compile --no-check --include worker.ts --target=x86_64-unknown-linux-gnu app.ts`
