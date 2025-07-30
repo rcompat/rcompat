@@ -1,8 +1,8 @@
 import FileRef from "#FileRef";
 import type Config from "#router/Config";
+import * as errors from "#router/errors";
 import Node from "#router/Node";
 import override from "@rcompat/record/override";
-import * as errors from "./errors.js";
 
 const defaults: Config = {
   directory: undefined,
@@ -10,7 +10,7 @@ const defaults: Config = {
   specials: {},
 };
 
-export default class Router {
+export default class FileRouter {
   static Error = errors;
 
   #root: Node;
@@ -95,10 +95,10 @@ export default class Router {
   }
 
   static init(config: Config, objects: string[]) {
-    return new Router(config).init(objects);
+    return new FileRouter(config).init(objects);
   }
 
   static load(config: Config) {
-    return new Router(config).load();
+    return new FileRouter(config).load();
   }
 }
