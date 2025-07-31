@@ -98,7 +98,7 @@ export default class Is {
     return this.#typeof("symbol", error);
   }
 
-  function(error?: ErrorFallbackFunction | string): TypeofTypeMap['function'] {
+  function(error?: ErrorFallbackFunction | string): TypeofTypeMap["function"] {
     return this.#typeof("function", error);
   }
 

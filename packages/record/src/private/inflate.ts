@@ -1,10 +1,10 @@
 import is from "@rcompat/assert/is";
 import maybe from "@rcompat/assert/maybe";
 
-export type InflateImpl3Result<P extends string, T, B extends string> =
+type InflateImpl3Result<P extends string, T, B extends string> =
   P extends `${infer P1}${B}${infer Rest}` ?
-    { [K in P1]: InflateImpl3Result<Rest, T, B> } :
-    { [K in P]: T };
+  { [K in P1]: InflateImpl3Result<Rest, T, B> } :
+  { [K in P]: T };
 
 const DEFAULT_BY = ".";
 type DEFAULT_BY = typeof DEFAULT_BY;

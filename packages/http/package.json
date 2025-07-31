@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/http",
-  "version": "0.12.6",
+  "version": "0.13.0",
   "description": "Standard library HTTP servers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -26,7 +26,6 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/async": "workspace:^",
-    "@rcompat/function": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/record": "workspace:^",
     "busboy": "^1.6.0",

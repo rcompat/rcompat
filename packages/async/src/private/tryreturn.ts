@@ -2,20 +2,20 @@ import is from "@rcompat/assert/is";
 
 const $backup = Symbol("backup");
 
-export interface AsyncTryReturnTrialBackup<T> extends PromiseLike<T> {
+interface AsyncTryReturnTrialBackup<T> extends PromiseLike<T> {
   [$backup]: AsyncTryReturnTrialBackupFunction<unknown> | undefined;
   orelse: <U>(backup: AsyncTryReturnTrialBackupFunction<U>) => AsyncTryReturnTrialBackup<T | U>;
 }
 
-export interface AsyncTryReturnTrialBackupFunction<U> {
+interface AsyncTryReturnTrialBackupFunction<U> {
   (error: unknown): Promise<U>;
 }
 
-export interface AsyncTryReturnTrialFunction<T> {
+interface AsyncTryReturnTrialFunction<T> {
   (): Promise<T>;
 }
 
-export interface AsyncTryReturnTrial {
+interface AsyncTryReturnTrial {
   <T>(trial: AsyncTryReturnTrialFunction<T>): AsyncTryReturnTrialBackup<T>;
 }
 
@@ -31,7 +31,7 @@ export default (trial => ({
         const maybePromiseTrial = await trial();
 
         return maybePromiseTrial instanceof Promise ? await maybePromiseTrial : maybePromiseTrial;
-      } catch(error) {
+      } catch (error) {
         return this[$backup]!(error);
       }
     })().then(onFulfilled as never, onRejected);

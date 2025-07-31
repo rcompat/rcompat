@@ -11,6 +11,7 @@ import defined from "@rcompat/assert/defined";
 import is from "@rcompat/assert/is";
 import maybe from "@rcompat/assert/maybe";
 import type Dict from "@rcompat/type/Dict";
+import type JSONValue from "@rcompat/type/JSONValue";
 import type MaybePromise from "@rcompat/type/MaybePromise";
 import type Printable from "@rcompat/type/Printable";
 import type StringClass from "@rcompat/type/StringClass";
@@ -259,12 +260,12 @@ export default class FileRef implements StringClass, Printable {
     return new FileRef(path).text();
   }
 
-  json() {
-    return native.json(this.path);
+  json<T extends JSONValue>() {
+    return native.json(this.path) as Promise<T>;
   }
 
-  static json(path: Path) {
-    return new FileRef(path).json();
+  static json<T extends JSONValue>(path: Path) {
+    return new FileRef(path).json<T>();
   }
 
   async copy(to: FileRef, predicate?: FilePredicate): Promise<unknown> {
@@ -321,6 +322,14 @@ export default class FileRef implements StringClass, Printable {
 
   static write(path: Path, input: WritableInput) {
     return new FileRef(path).write(input);
+  }
+
+  writeJSON(input: JSONValue) {
+    return this.write(JSON.stringify(input, null, 2));
+  }
+
+  static writeJSON(path: Path, input: JSONValue) {
+    return new FileRef(path).writeJSON(input);
   }
 
   async discover(filename: string): Promise<FileRef> {

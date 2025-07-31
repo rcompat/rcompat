@@ -42,7 +42,7 @@ export type Extension = keyof typeof extensions;
 export const DEFAULT_EXTENSION = extensions.bin;
 
 export const isExtension = (extension: unknown): extension is Extension =>
-  typeof extension === 'string' && extension in extensions;
+  typeof extension === "string" && extension in extensions;
 
 const regex = /\.(?<extension>[a-z1-9]*)$/u;
 const match = (filename: string) => filename.match(regex)?.groups?.extension;

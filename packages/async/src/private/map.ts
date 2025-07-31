@@ -1,4 +1,4 @@
-export interface AsyncMapMapper<T, U> {
+interface AsyncMapMapper<T, U> {
   (t: T, index: number, arr: T[]): Promise<U>;
 }
 

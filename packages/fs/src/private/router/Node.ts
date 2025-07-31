@@ -1,6 +1,6 @@
-import MatchedRoute from "#router/MatchedRoute";
+import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
-import NodePredicate from "#router/NodePredicate";
+import type NodePredicate from "#router/NodePredicate";
 import * as errors from "./errors.js";
 
 type Match = MatchedRoute | undefined;
@@ -293,7 +293,7 @@ export default class Node {
     return this.#match_recurse(request, parts, match_catch, params);
   }
 
-  flatten(): { path: string, fullpath: string | undefined, type: symbol }[] {
+  flatten(): { path: string; fullpath: string | undefined; type: symbol }[] {
     const children = this.#children.map(child => ({
       path: child.path, fullpath: child.fullpath, type: child.type,
     }));

@@ -21,7 +21,7 @@ const bun: Native = {
     }
     if (input instanceof ReadableStream) {
       await Bun.write(path, new Response(input));
-      return
+      return;
     }
     await Bun.write(path, input);
   },

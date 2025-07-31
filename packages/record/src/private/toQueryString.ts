@@ -1,4 +1,4 @@
-import Dict from "@rcompat/type/Dict";
+import type Dict from "@rcompat/type/Dict";
 
 export default function toQueryString(dict: Dict<string>) {
   return Object.entries(dict)

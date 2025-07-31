@@ -33,7 +33,6 @@ test.case("i8", assert => {
   ).true();
 });
 
-
 test.case("u8", assert => {
   const view = new BufferView(new ArrayBuffer(3))
     .writeU8(255)
@@ -86,7 +85,6 @@ test.case("i16", assert => {
 
   assert(byte === 0x3412 && view.position === 4).true();
 });
-
 
 test.case("u16", assert => {
   const view = new BufferView(new ArrayBuffer(4))
@@ -264,7 +262,6 @@ test.case("i64", assert => {
   assert(byte === -0xf21436587a9cbeen && view.position === 16).true();
 });
 
-
 test.case("u64", assert => {
   const view = new BufferView(new ArrayBuffer(16))
     .writeU64(0x123456789ABCDEF0n)
@@ -379,7 +376,6 @@ test.case("u64", assert => {
   assert(byte === -0xf21436587a9cbeen && view.position === 16).true();
 });
 
-
 test.case("u64", assert => {
   const view = new BufferView(new ArrayBuffer(16))
     .writeU64(0x123456789ABCDEF0n)
@@ -437,7 +433,6 @@ test.case("u64", assert => {
 
   assert(byte === 0xF0DEBC9A78563412n && view.position === 16).true();
 });
-
 
 test.case("string", assert => {
   const helloWorld = new TextEncoder().encode("Hello World");
@@ -550,7 +545,6 @@ test.case("constructor", assert => {
   assert(() => new BufferView(example, 1, 8)).throws();
   assert(() => new BufferView(example, 0, 9)).throws();
 
-
   assert(() => new BufferView(example, 1, 7)).tries();
   assert(() => new BufferView(example, 2, 6)).tries();
   assert(() => new BufferView(example, 3, 5)).tries();
@@ -558,7 +552,6 @@ test.case("constructor", assert => {
   assert(() => new BufferView (example, 7, 1)).tries();
 
   assert(() => new BufferView(example, 0, 0)).tries();
-
 
   assert(new BufferView(example, 4).byteLength === 4).true();
 

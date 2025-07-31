@@ -10,7 +10,7 @@ import { dev, default as modes, prod } from "./modes.js";
 
 const mode_keys = Object.keys(modes);
 
-export interface BuildOptions extends esbuild.BuildOptions {
+interface BuildOptions extends esbuild.BuildOptions {
   hotreload?: {
     host: string;
     port: number;

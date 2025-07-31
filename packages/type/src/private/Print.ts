@@ -23,9 +23,9 @@ type Print<T> =
               T extends string ? string extends T ? "string" : `'${T}'` :
                 T extends number ? number extends T ? "number" : `${T}` :
                   T extends bigint ? bigint extends T ? "bigint" : `${T}n` :
-                    T extends symbol ? `symbol` :
-                      T extends null ? `null` :
-                        T extends undefined ? `undefined` :
+                    T extends symbol ? "symbol" :
+                      T extends null ? "null" :
+                        T extends undefined ? "undefined" :
                           IsTuple<T> extends true ? PrintTuple<T> :
                             IsArray<T> extends true ?
                               T extends (infer E)[] ? `${PrintArray<E>}[]` :

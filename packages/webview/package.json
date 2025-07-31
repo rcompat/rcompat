@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "build": "npm run clean && tsc && npm run copy-platforms",
     "test": "npm run build && npx proby",
     "clean": "rm -rf ./lib",
-    "copy-platforms": "scripts/copy-platforms.sh",
+    "copy-platforms": "./scripts/copy-platforms.sh",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/assert",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Standard library invariant assertions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

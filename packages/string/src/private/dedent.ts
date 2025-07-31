@@ -1,7 +1,7 @@
 type TemplateStrings = string | TemplateStringsArray;
 
 export default function dedent(string: TemplateStrings, ...values: unknown[]) {
-  let raw = typeof string === "string" ? [string] : string.raw;
+  const raw = typeof string === "string" ? [string] : string.raw;
 
   // Interpolate values into template string
   let result = "";

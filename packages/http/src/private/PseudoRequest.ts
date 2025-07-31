@@ -6,7 +6,7 @@ import { arrayBuffer, blob, json, text } from "node:stream/consumers";
 import type { ReadableStream } from "node:stream/web";
 import type { RequestDuplex } from "undici-types";
 
-export type CallableEntriesFn = {
+type CallableEntriesFn = {
   entries: () => Iterable<readonly [PropertyKey, any]>;
 };
 
@@ -148,7 +148,7 @@ export default class PseudoRequest {
     let resolve: (value: FormData) => void;
 
     bb.on("file", (name, file, info) => {
-      const buffers: any[]= [];
+      const buffers: any[] = [];
       const { mimeType: type } = info;
 
       file.on("data", data => {

@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix",
     "test": "pnpm run build && npx proby",
     "sweep": "rm -rf node_modules pnpm-lock.yaml {app,package}s/*/node_modules",
-    "knip": "knip"
+    "knip": "knip --no-config-hints"
   },
   "private": true,
   "devDependencies": {
@@ -27,6 +27,7 @@
     "@types/node": "^24.1.0",
     "@types/ws": "^8.18.1",
     "apekit": "^0.0.26",
+    "eslint": "^9.32.0",
     "knip": "^5.62.0",
     "proby": "workspace:^",
     "typescript": "^5.8.3"

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/package",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "Standard library package helpers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -19,9 +19,6 @@
     "test": "npm run build && npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
-  },
-  "devDependencies": {
-    "@rcompat/record": "workspace:^"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",

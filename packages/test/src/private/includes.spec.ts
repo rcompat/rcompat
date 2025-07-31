@@ -82,19 +82,19 @@ test.case("object", assert => {
 
 test.case("Array", assert => {
   assert(fn([], [])).true();
-  assert(fn(["", ], ["", ])).true();
+  assert(fn(["" ], ["" ])).true();
   assert(fn(["",, ""], ["",, ""])).true();
   assert(fn([ { foo: "bar" }], [ { foo: "bar" }])).true();
   assert(fn(["foo"], [])).true();
   assert(fn(["foo", "bar"], ["bar"])).true();
   assert(fn(["foo", ["bar", "baz"]], ["foo", ["baz"]])).true();
-  assert(fn(["", "foo"], ["", ])).true();
+  assert(fn(["", "foo"], ["" ])).true();
   assert(fn(["foo", "bar", "baz", "bat"], ["bar", "baz"])).true();
 
   assert(fn([], ["foo"])).false();
-  assert(fn(["", ], ["", "foo"])).false();
-  assert(fn(["", ], [, "foo"])).false();
-  assert(fn(["", ], [, ""])).false();
+  assert(fn(["" ], ["", "foo"])).false();
+  assert(fn(["" ], [, "foo"])).false();
+  assert(fn(["" ], [, ""])).false();
   assert(fn(["foo", "bar", "baz", "bat"], ["bar", "bat"])).false();
 });
 

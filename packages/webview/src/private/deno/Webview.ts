@@ -6,7 +6,7 @@ type Symbol = keyof typeof symbols;
 
 interface Init {
   platform: string;
-  debug: boolean;
+  debug?: boolean;
 }
 
 interface Size {
@@ -59,7 +59,7 @@ export default class Webview {
       this.#symbol("terminate")(this.#handle);
       this.#symbol("destroy")(this.#handle);
       this.#handle = null;
-      globalThis.postMessage?.("destroyed");
+      globalThis.postMessage("destroyed");
     }
   }
 }
