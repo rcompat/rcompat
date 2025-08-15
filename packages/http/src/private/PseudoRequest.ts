@@ -161,19 +161,18 @@ export default class PseudoRequest {
             type: mimeType,
           }));
         });
-
-        bb.on("field", (key, value) => {
-          formData.set(key, value);
-        });
-
-        bb.on("close", () => {
-          resolve(formData);
-        });
-
-        bb.once("error", reject);
-
-        this.#incoming.pipe(bb);
       });
+      bb.on("field", (key, value) => {
+        formData.set(key, value);
+      });
+
+      bb.on("close", () => {
+        resolve(formData);
+      });
+
+      bb.once("error", reject);
+
+      this.#incoming.pipe(bb);
     });
   }
 
