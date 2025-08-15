@@ -222,6 +222,10 @@ export default class FileRef implements StringClass, Printable {
     return basename(this.path, this.extension);
   }
 
+  get core() {
+    return basename(this.path, this.fullExtension);
+  }
+
   get extension() {
     return extname(this.path);
   }

@@ -1,7 +1,7 @@
 {
-  "name": "@rcompat/assert",
-  "version": "0.2.0",
-  "description": "Standard library invariant assertions",
+  "name": "@rcompat/is",
+  "version": "0.1.0",
+  "description": "Standard library value qualifying",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -12,16 +12,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/assert"
+    "directory": "packages/is"
   },
   "scripts": {
     "build": "tsc",
     "test": "npm run build && npx proby",
     "clean": "rm -rf ./lib",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "@rcompat/is": "workspace:^"
+    "prepublishOnly": "npm run build",
+    "knip": "knip --no-config-hints"
   },
   "type": "module",
   "imports": {
@@ -31,10 +29,6 @@
     }
   },
   "exports": {
-    ".": {
-      "apekit": "./src/public/index.ts",
-      "default": "./lib/public/index.js"
-    },
     "./*": {
       "apekit": "./src/public/*.ts",
       "default": "./lib/public/*.js"

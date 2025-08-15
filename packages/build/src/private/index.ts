@@ -15,7 +15,6 @@ interface BuildOptions extends esbuild.BuildOptions {
     host: string;
     port: number;
   };
-  excludes?: string[];
   name?: string;
 }
 type PluginPath = string;
@@ -35,7 +34,7 @@ export default class Build {
     is(options).object();
     assert(mode_keys.includes(mode), `mode must be one of "${dev}", "${prod}"`);
 
-    const { excludes, name, ...rest } = exclude(options, ["hotreload"]);
+    const { name, ...rest } = exclude(options, ["hotreload"]);
 
     this.#name = name;
     this.#hotreload = {
@@ -46,7 +45,6 @@ export default class Build {
       // defaults
       bundle: true,
       format: "esm" as const,
-      external: excludes,
       ...modes[mode](name),
       ...rest,
     };

@@ -1,9 +1,9 @@
 import assert from "#assert";
-import constructible from "#constructible";
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
-import type Constructor from "@rcompat/type/Constructor";
+import newable from "@rcompat/is/newable";
 import type Dict from "@rcompat/type/Dict";
+import type Newable from "@rcompat/type/Newable";
 
 type UnknownFunction = (...params: unknown[]) => unknown;
 
@@ -94,7 +94,7 @@ export default class Is {
     return this.#typeof("boolean", error);
   }
 
-  symbol(error?:  | string): symbol {
+  symbol(error?: | string): symbol {
     return this.#typeof("symbol", error);
   }
 
@@ -128,14 +128,14 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  constructible(error?: ErrorFallbackFunction | string): Constructor {
-    const def = `\`${this.#value_string}\` must be constructible`;
-    const condition = constructible(this.#value);
+  newable(error?: ErrorFallbackFunction | string): Newable {
+    const def = `\`${this.#value_string}\` must be newable`;
+    const condition = newable(this.#value);
     return this.#test({ condition, def, error });
   }
 
   instance<
-    C extends Constructor,
+    C extends Newable,
   >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must be an instance ${Class.name}`;
@@ -143,14 +143,8 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  of<
-    C extends Constructor,
-  >(Class: C, error?: ErrorFallbackFunction | string): InstanceType<C> {
-    return this.instance(Class, error);
-  }
-
   subclass<
-    C extends Constructor,
+    C extends Newable,
   >(Class: C, error?: ErrorFallbackFunction | string): C {
     // Todo: Remove any
     const def = `\`${(this.#value as any)?.name}\` must subclass ${Class.name}`;
@@ -159,12 +153,12 @@ export default class Is {
     return this.#test({ condition, def, error });
   }
 
-  sub<C extends Constructor>(Class: C, error?: ErrorFallbackFunction): C {
+  sub<C extends Newable>(Class: C, error?: ErrorFallbackFunction): C {
     return this.subclass(Class, error);
   }
 
   anyOf<
-    T extends Constructor,
+    T extends Newable,
   >(Classes: T[], error?: ErrorFallbackFunction | string): InstanceType<T> {
     const classes = Classes instanceof Array ? Classes : [Classes];
     const classes_str = classes.map(c => `\`${c.name}\``).join(", ");

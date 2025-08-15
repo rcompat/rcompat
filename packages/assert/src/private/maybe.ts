@@ -1,6 +1,6 @@
 import Is from "#Is";
+import nullish from "@rcompat/is/nullish";
 import type Nullish from "@rcompat/type/Nullish";
-import is_nullish from "#is-nullish";
 
 const operations = [
   // typeof
@@ -10,13 +10,13 @@ const operations = [
   // other types
   "array", "object",
   // misc
-  "defined", "constructible", "instance", "of", "subclass", "sub", "anyOf",
+  "defined", "newable", "instance", "subclass", "sub", "anyOf",
   // sizes
   "integer", "isize", "usize",
 ] as const;
 
 const return_nullish = (value: unknown): Nullish | true =>
-  is_nullish(value) ? value : true;
+  nullish(value) ? value : true;
 
 export default (value: unknown) => {
   const is = new Is(value);
