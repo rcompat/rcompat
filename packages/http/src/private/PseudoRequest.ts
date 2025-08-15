@@ -143,30 +143,37 @@ export default class PseudoRequest {
   }
 
   async formData(): Promise<FormData> {
+    this.#use_body();
+
     const bb = busboy({ headers: this.#incoming.headers });
-    const form_data = new FormData();
-    let resolve: (value: FormData) => void;
+    const formData = new FormData();
 
-    bb.on("file", (name, file, info) => {
-      const buffers: any[] = [];
-      const { mimeType: type } = info;
+    return new Promise((resolve, reject) => {
+      bb.on("file", (name, file, info) => {
+        const chunks: Buffer[] = [];
+        const { filename, mimeType } = info;
 
-      file.on("data", data => {
-        buffers.push(data);
-      }).on("close", () => {
-        form_data.set(name, new Blob([Buffer.concat(buffers)], { type }));
+        file.on("data", chunk => chunks.push(chunk));
+        file.on("close", () => {
+          const buffer = Buffer.concat(chunks);
+
+          formData.append(name, new File([buffer], filename, {
+            type: mimeType,
+          }));
+        });
+
+        bb.on("field", (key, value) => {
+          formData.set(key, value);
+        });
+
+        bb.on("close", () => {
+          resolve(formData);
+        });
+
+        bb.once("error", reject);
+
+        this.#incoming.pipe(bb);
       });
-    });
-    bb.on("field", (name, value) => {
-      form_data.set(name, value);
-    });
-    bb.on("close", () => {
-      resolve(form_data);
-    });
-    this.#incoming.pipe(bb);
-
-    return new Promise($resolve => {
-      resolve = $resolve;
     });
   }
 
