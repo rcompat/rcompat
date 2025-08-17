@@ -9,8 +9,8 @@ type UnknownFunction = (...params: unknown[]) => unknown;
 
 interface TestOptions {
   condition: boolean;
-  error: ErrorFallbackFunction | string | undefined;
   def: string;
+  error: ErrorFallbackFunction | string | undefined;
 };
 
 const test = ({ condition, def, error }: TestOptions): void =>

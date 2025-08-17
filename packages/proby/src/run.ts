@@ -13,7 +13,7 @@ function stringify_scalar(value: unknown) {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
 
-  if (["string", "number", "boolean", "symbol"].includes(typeof value)) {
+  if (["boolean", "number", "string", "symbol"].includes(typeof value)) {
     return value.toString();
   }
 

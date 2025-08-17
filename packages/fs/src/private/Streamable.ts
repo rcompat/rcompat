@@ -1,4 +1,4 @@
-type Streamable<T> = ReadableStream<T>
-  | { stream: () => ReadableStream<T>; streamable?: symbol };
+type Streamable<T> = { stream: () => ReadableStream<T>; streamable?: symbol }
+  | ReadableStream<T>;
 
 export type { Streamable as default };

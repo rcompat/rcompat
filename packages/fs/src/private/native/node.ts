@@ -10,9 +10,6 @@ const node: Native = {
   async arrayBuffer(path: string) {
     return (await readFile(path)).buffer as ArrayBuffer;
   },
-  text(path: string) {
-    return text(path);
-  },
   async json(path: string) {
     return JSON.parse(await text(path));
   },
@@ -20,6 +17,9 @@ const node: Native = {
     const options = { flags: "r" };
     return Readable.toWeb(fs.createReadStream(path, options)) as
       unknown as ReadableStream<Uint8Array>;
+  },
+  text(path: string) {
+    return text(path);
   },
   async write(path: string, input: WritableInput) {
     if (input instanceof Blob || input instanceof Response) {

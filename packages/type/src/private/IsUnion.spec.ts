@@ -3,11 +3,11 @@ import test from "@rcompat/test";
 
 test.case("true", assert => {
   assert<IsUnion<0 | 1>>().type<true>();
-  assert<IsUnion<"foo" | "bar">>().type<true>();
-  assert<IsUnion<string | number>>().type<true>();
-  assert<IsUnion<string | number | boolean>>().type<true>();
+  assert<IsUnion<"bar" | "foo">>().type<true>();
+  assert<IsUnion<number | string>>().type<true>();
+  assert<IsUnion<boolean | number | string>>().type<true>();
   assert<IsUnion<boolean>>().type<true>();
-  assert<IsUnion<true | false>>().type<true>();
+  assert<IsUnion<false | true>>().type<true>();
   assert<IsUnion<boolean | Boolean>>().type<true>();
 });
 

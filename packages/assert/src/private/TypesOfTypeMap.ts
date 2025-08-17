@@ -1,12 +1,12 @@
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 type TypeofTypeMap = {
-  string: string;
-  number: number;
   bigint: bigint;
   boolean: boolean;
-  symbol: symbol;
   function: UnknownFunction;
+  number: number;
+  string: string;
+  symbol: symbol;
   undefined: undefined;
 };
 

@@ -1,4 +1,4 @@
 export default interface Changes {
-  changes: number | bigint;
-  lastInsertRowid: number | bigint;
+  changes: bigint | number;
+  lastInsertRowid: bigint | number;
 };

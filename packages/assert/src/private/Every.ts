@@ -5,8 +5,8 @@ import assert from "#assert";
 
 interface TestOptions {
   condition: boolean;
-  error: ErrorFallbackFunction | undefined;
   def: string;
+  error: ErrorFallbackFunction | undefined;
 }
 
 const test = ({ condition, def, error }: TestOptions): void =>

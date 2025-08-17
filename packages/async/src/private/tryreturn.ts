@@ -22,6 +22,14 @@ interface AsyncTryReturnTrial {
 export default (trial => ({
   [$backup]: undefined,
 
+  orelse(backup) {
+    is(trial).function();
+    is(backup).function();
+    this[$backup] = backup;
+
+    return this;
+  },
+
   then(onFulfilled, onRejected) {
     return (async () => {
       is(trial).function();
@@ -35,13 +43,5 @@ export default (trial => ({
         return this[$backup]!(error);
       }
     })().then(onFulfilled as never, onRejected);
-  },
-
-  orelse(backup) {
-    is(trial).function();
-    is(backup).function();
-    this[$backup] = backup;
-
-    return this;
   },
 })) satisfies AsyncTryReturnTrial as AsyncTryReturnTrial;

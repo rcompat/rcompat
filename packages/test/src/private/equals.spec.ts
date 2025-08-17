@@ -70,7 +70,7 @@ test.case("object", assert => {
   assert(fn({ foo: "bar" }, {})).false();
   assert(fn({ foo: "bar"}, { foo: "baz" })).false();
   assert(fn({ foo: "bar"}, { bar: "baz" })).false();
-  assert(fn({ foo: "bar"}, { foo: "bar", bar: [] })).false();
+  assert(fn({ foo: "bar"}, { bar: [], foo: "bar" })).false();
 });
 
 test.case("Array", assert => {
@@ -121,7 +121,7 @@ test.case("Map", assert => {
 
   const o0 = { foo: "bar" };
   const o1 = { foo: { bar: "baz" }};
-  const o2 = { foo: "bar", bar: "baz" };
+  const o2 = { bar: "baz", foo: "bar" };
   const m0 = map(o0);
 
   assert(fn(new Map(), new Map())).true();
@@ -134,8 +134,8 @@ test.case("Map", assert => {
   assert(fn(map(o2), map(o1))).false();
   assert(fn(map({ foo: "bar"}), map({ foo: "baz" }))).false();
   assert(fn(map({ foo: "bar"}), map({ bar: "baz" }))).false();
-  assert(fn(map({ foo: "bar"}), map({ foo: "bar", bar: [] }))).false();
-  assert(fn(map({ foo: "bar", bar: []}), map({ foo: "bar" }))).false();
+  assert(fn(map({ foo: "bar"}), map({ bar: [], foo: "bar" }))).false();
+  assert(fn(map({ bar: [], foo: "bar"}), map({ foo: "bar" }))).false();
 });
 
 test.case("function", assert => {

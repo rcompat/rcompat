@@ -1,8 +1,8 @@
 import type { TransformOptions } from "esbuild";
 
 const preset: TransformOptions = {
-  loader: "tsx",
   jsx: "automatic",
+  loader: "tsx",
   tsconfigRaw: {
     compilerOptions: {
       jsx: "react-jsx",

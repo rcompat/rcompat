@@ -8,17 +8,17 @@ test.case("1-tuple", assert => {
 
 test.case("2-tuple", assert => {
   // order doesn't matter
-  assert<TupleToUnion<[string, boolean]>>().type<string | boolean>();
-  assert<TupleToUnion<[boolean, string]>>().type<string | boolean>();
+  assert<TupleToUnion<[string, boolean]>>().type<boolean | string>();
+  assert<TupleToUnion<[boolean, string]>>().type<boolean | string>();
 
   // repetitions elided
   assert<TupleToUnion<[string, string]>>().type<string>();
-  assert<TupleToUnion<[string, boolean, string]>>().type<string | boolean>();
+  assert<TupleToUnion<[string, boolean, string]>>().type<boolean | string>();
 });
 
 test.case("n-tuple", assert => {
   assert<TupleToUnion<[string, boolean, number]>>()
-    .type<string | boolean | number>();
+    .type<boolean | number | string>();
 });
 
 test.case("marginals", assert => {
@@ -30,6 +30,6 @@ test.case("marginals", assert => {
 });
 
 test.case("there and back again", assert => {
-  assert<TupleToUnion<UnionToTuple<string | boolean>>>()
-    .type<string | boolean>();
+  assert<TupleToUnion<UnionToTuple<boolean | string>>>()
+    .type<boolean | string>();
 });

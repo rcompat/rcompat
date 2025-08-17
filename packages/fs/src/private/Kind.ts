@@ -1,15 +1,15 @@
 import type FileRef from "#FileRef";
 
 const Kind = {
-  File: "file",
   Directory: "directory",
-  Link: "link",
-  None: "none",
+  File: "file",
   is: {
-    file: async (file: FileRef) => await file.kind() === Kind.File,
     directory: async (file: FileRef) => await file.kind() === Kind.Directory,
+    file: async (file: FileRef) => await file.kind() === Kind.File,
     link: async (file: FileRef) => await file.kind() === Kind.Link,
   },
+  Link: "link",
+  None: "none",
 };
 
 export default Kind;

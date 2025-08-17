@@ -166,7 +166,7 @@ export default class Node {
     if (parent === null) {
       return collected;
     }
-    for (const { path, fullpath } of parent.specials()) {
+    for (const { fullpath, path } of parent.specials()) {
       const name = path.slice(1);
       const { recursive } = Node.#config.specials?.[name] ?? {};
       // skip non-recursive specials
@@ -217,26 +217,26 @@ export default class Node {
 
     // static match
     if (this.#path === parts[0]) {
-      return { path, fullpath: fullpath as string, specials: specials, params };
+      return { fullpath: fullpath as string, params, path, specials: specials };
     }
     // catch always matches
     if (match_catch && this.catch) {
       return {
-        path, fullpath: fullpath as string, specials,
-        params: {
+        fullpath: fullpath as string, params: {
           ...params,
           [this.#path.slice(1, -1)]: parts[0],
-        },
+        }, path,
+        specials,
       };
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
       return {
-        path, fullpath: fullpath as string, specials,
-        params: {
+        fullpath: fullpath as string, params: {
           ...params,
           [name]: params[name] ? params[name] : parts[0],
-        },
+        }, path,
+        specials,
       };
     }
   }
@@ -245,7 +245,7 @@ export default class Node {
     if (this.#fullpath !== undefined) {
       return this.return(request as never, parts, match_catch, params);
     }
-    const [{ type = undefined, fullpath = undefined } = {}] = this.dynamics();
+    const [{ fullpath = undefined, type = undefined } = {}] = this.dynamics();
 
     // this node has no file, but might have an OPTIONAL_CATCH child
     if (type === OPTIONAL_CATCH) {
@@ -293,9 +293,9 @@ export default class Node {
     return this.#match_recurse(request, parts, match_catch, params);
   }
 
-  flatten(): { path: string; fullpath: string | undefined; type: symbol }[] {
+  flatten(): { fullpath: string | undefined; path: string; type: symbol }[] {
     const children = this.#children.map(child => ({
-      path: child.path, fullpath: child.fullpath, type: child.type,
+      fullpath: child.fullpath, path: child.path, type: child.type,
     }));
 
     const subchildren = this.leaf

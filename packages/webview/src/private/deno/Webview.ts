@@ -5,20 +5,20 @@ import type symbols from "#deno/symbols";
 type Symbol = keyof typeof symbols;
 
 interface Init {
-  platform: string;
   debug?: boolean;
+  platform: string;
 }
 
 interface Size {
-  width: number;
   height: number;
   hint: 0 | 1 | 2 | 3;
+  width: number;
 }
 
 const default_size: Size = {
-  width: 1280,
   height: 720,
   hint: 0,
+  width: 1280,
 };
 
 export default class Webview {
@@ -45,7 +45,7 @@ export default class Webview {
   }
 
   set size(size: Size) {
-    const { width, height, hint } = { ...default_size, ...size };
+    const { height, hint, width } = { ...default_size, ...size };
     this.#symbol("set_size")(this.#handle, width, height, hint);
   }
 

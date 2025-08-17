@@ -11,7 +11,7 @@ type IsClass<T> =
     Is<T, JSON>,
     Is<T, Atomics>,
   ]> extends true ? false :
-  T extends object & { constructor: unknown }
+  T extends { constructor: unknown } & object
   ? true
   : false;
 

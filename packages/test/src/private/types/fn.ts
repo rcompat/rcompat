@@ -4,4 +4,4 @@ const is = (x: unknown): x is UnknownFunction => typeof x === "function";
 
 const equal = <T extends UnknownFunction>(x: T, y: T) => x.length === y.length;
 
-export default { is, equal };
+export default { equal, is };

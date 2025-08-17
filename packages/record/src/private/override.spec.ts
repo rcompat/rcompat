@@ -79,7 +79,7 @@ test.case("function", assert => {
     const fn = () => undefined;
     const base = { fn, foo: "bar" };
     const over = { fn: { foo: "bar" }, fn2: { bar: "baz" } };
-    const overridden = { fn: { foo: "bar" }, foo: "bar", fn2: { bar: "baz" } };
+    const overridden = { fn: { foo: "bar" }, fn2: { bar: "baz" }, foo: "bar" };
     assert(override(base, over)).equals(any(overridden));
   }
 });
@@ -105,20 +105,20 @@ test.case("config enhancement", assert => {
       context: "guest",
     },
     paths: {
-      public: "public",
-      static: "static",
-      routes: "routes",
       components: "components",
+      public: "public",
+      routes: "routes",
+      static: "static",
     },
   };
 
   const additional = {
     debug: true,
-    environment: "testing",
     defaults: {
       context: "user",
       mode: "operational",
     },
+    environment: "testing",
     paths: {
       client: "client",
     },
@@ -127,18 +127,18 @@ test.case("config enhancement", assert => {
   const overridden  = {
     base: "/",
     debug: true,
-    environment: "testing",
     defaults: {
       action: "index",
       context: "user",
       mode: "operational",
     },
+    environment: "testing",
     paths: {
       client: "client",
-      public: "public",
-      static: "static",
-      routes: "routes",
       components: "components",
+      public: "public",
+      routes: "routes",
+      static: "static",
     },
   };
 

@@ -3,7 +3,7 @@ import type Param from "#api/Param";
 import type PrimitiveParam from "#api/PrimitiveParam";
 
 export default abstract class Statement {
-  abstract get(first?: Param, ...rest: PrimitiveParam[]): unknown | null;
+  abstract get(first?: Param, ...rest: PrimitiveParam[]): null | unknown;
 
   abstract all(first?: Param, ...rest: PrimitiveParam[]): unknown[];
 

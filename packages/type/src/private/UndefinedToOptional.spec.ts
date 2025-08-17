@@ -10,22 +10,22 @@ test.case("pass", assert => {
   ;
 
   assert<UndefinedToOptional<{
-    foo: string | undefined;
     bar: number | undefined;
+    foo: string | undefined;
   }>>()
-    .type<{ foo?: string; bar?: number }>()
-    .type<{ foo?: string | undefined; bar?: number }>()
-    .type<{ foo?: string; bar?: number | undefined }>()
-    .type<{ foo?: string | undefined; bar?: number | undefined }>()
+    .type<{ bar?: number; foo?: string }>()
+    .type<{ bar?: number; foo?: string | undefined }>()
+    .type<{ bar?: number | undefined; foo?: string }>()
+    .type<{ bar?: number | undefined; foo?: string | undefined }>()
   ;
 
   assert<UndefinedToOptional<{
-    foo: string | undefined;
     bar: number | undefined;
     baz?: boolean;
+    foo: string | undefined;
   }>>()
-    .type<{ foo?: string; bar?: number; baz?: boolean }>()
-    .type<{ foo?: string; bar?: number; baz?: boolean | undefined }>()
+    .type<{ bar?: number; baz?: boolean; foo?: string }>()
+    .type<{ bar?: number; baz?: boolean | undefined; foo?: string }>()
   ;
 });
 

@@ -10,5 +10,5 @@ test.case("empty object", assert => {
 });
 test.case("non empty object", assert => {
   assert(empty({ foo: "bar" })).false();
-  assert(empty({ foo: "bar", bar: { baz: "baz2" } })).false();
+  assert(empty({ bar: { baz: "baz2" }, foo: "bar" })).false();
 });

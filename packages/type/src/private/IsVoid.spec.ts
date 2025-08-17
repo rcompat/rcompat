@@ -15,5 +15,5 @@ test.case("false", assert => {
   assert<IsVoid<0>>().type<false>();
   assert<IsVoid<true>>().type<false>();
   assert<IsVoid<false>>().type<false>();
-  assert<IsVoid<void | number>>().type<false>();
+  assert<IsVoid<number | void>>().type<false>();
 });

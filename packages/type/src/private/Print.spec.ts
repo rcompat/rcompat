@@ -147,26 +147,26 @@ test.case("literals", assert => {
 test.case("unions", assert => {
   assert<Print<0 | 1>>().type<"0 | 1">();
   assert<Print<0 | 1 | 2>>().type<"0 | 1 | 2">();
-  assert<Print<string | number>>().type<"string | number">();
-  assert<Print<string | number | boolean>>()
+  assert<Print<number | string>>().type<"string | number">();
+  assert<Print<boolean | number | string>>()
     .type<"string | number | boolean">();
-  assert<Print<string | Date>>().type<"string | Date">();
-  assert<Print<string | Blob>>().type<"string | Blob">();
+  assert<Print<Date | string>>().type<"string | Date">();
+  assert<Print<Blob | string>>().type<"string | Blob">();
   assert<Print<number | String>>().type<"number | String">();
   assert<Print<boolean | String>>().type<"boolean | String">();
-  assert<Print<true | false>>().type<"boolean">();
-  assert<Print<true | boolean>>().type<"boolean">();
-  assert<Print<false | boolean>>().type<"boolean">();
+  assert<Print<false | true>>().type<"boolean">();
+  assert<Print<boolean | true>>().type<"boolean">();
+  assert<Print<boolean | false>>().type<"boolean">();
   assert<Print<boolean | undefined>>().type<"boolean | undefined">();
-  assert<Print<undefined | boolean>>().type<"boolean | undefined">();
+  assert<Print<boolean | undefined>>().type<"boolean | undefined">();
 
   assert<Print<boolean | Boolean>>().fail<"boolean | Boolean">();
-  assert<Print<true | false | Boolean>>().fail<"boolean | Boolean">();
-  assert<Print<true | Boolean>>().fail<"true | Boolean">();
-  assert<Print<false | Boolean>>().fail<"false | Boolean">();
-  assert<Print<string | Boolean>>().type<"string | Boolean">();
-  assert<Print<String | Boolean>>().type<"String | Boolean">();
-  assert<Print<File | Blob>>().type<"Blob | File">();
+  assert<Print<Boolean | false | true>>().fail<"boolean | Boolean">();
+  assert<Print<Boolean | true>>().fail<"true | Boolean">();
+  assert<Print<Boolean | false>>().fail<"false | Boolean">();
+  assert<Print<Boolean | string>>().type<"string | Boolean">();
+  assert<Print<Boolean | String>>().type<"String | Boolean">();
+  assert<Print<Blob | File>>().type<"Blob | File">();
 });
 
 test.case("tuples", assert => {
@@ -204,7 +204,7 @@ test.case("arrays", assert => {
   assert<Print<void[]>>().type<"void[]">();
   assert<Print<null[]>>().type<"null[]">();
   assert<Print<undefined[]>>().type<"undefined[]">();
-  assert<Print<(string | number)[]>>().type<"(string | number)[]">();
+  assert<Print<(number | string)[]>>().type<"(string | number)[]">();
   assert<Print<Array<unknown>>>().type<"unknown[]">();
 
 });
@@ -220,7 +220,7 @@ test.case("object", assert => {
   assert<Print<{ foo: number }>>().type<"{ foo: number }">();
   assert<Print<{ foo: 0n }>>().type<"{ foo: 0n }">();
 
-  const _1: { foo: "bar"; count: number } = { foo: "bar", count: 1};
+  const _1: { count: number; foo: "bar" } = { count: 1, foo: "bar"};
   assert<Print<typeof _1>>().type<"{ foo: 'bar', count: number }">();
   assert<Print<{ a: true; b: string[] }>>().type<"{ a: true, b: string[] }">();
 

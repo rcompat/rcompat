@@ -75,19 +75,19 @@ export default class Build {
     const { host, port } = this.#hotreload;
 
     return {
-      url: `http://${host}:${port}`,
       paths: [`/${name}.js`, `/${name}.css`, reload_path],
+      url: `http://${host}:${port}`,
     };
   }
 
   proxy(request: Request, fallback: UnknownFunction) {
     const { paths, url } = this.#hot();
     const { pathname } = new URL(request.url);
-    const { method, headers, body } = request;
+    const { body, headers, method } = request;
 
     return paths.includes(pathname)
       // @ts-expect-error types
-      ? fetch(`${url}${pathname}`, { headers, method, body, duplex: "half" })
+      ? fetch(`${url}${pathname}`, { body, duplex: "half", headers, method })
       : fallback();
   }
 
@@ -96,11 +96,11 @@ export default class Build {
 
     const { stdin, ...options } = this.#options;
     const build_options = {
+      plugins: this.#plugins,
       stdin: {
         ...stdin,
         contents: this.#exports.join("\n"),
       },
-      plugins: this.#plugins,
       ...options,
     };
 

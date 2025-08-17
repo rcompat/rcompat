@@ -1,8 +1,8 @@
-type JSONPrimitive = string | number | boolean | null;
+type JSONPrimitive = boolean | null | number | string;
 
 type JSONValue =
+  | { [key: string]: JSONValue }
   | JSONPrimitive
-  | JSONValue[]
-  | { [key: string]: JSONValue };
+  | JSONValue[];
 
 export type { JSONValue as default };

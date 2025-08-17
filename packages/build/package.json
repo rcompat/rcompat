@@ -23,7 +23,7 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/record": "workspace:^",
-    "esbuild": "^0.25.8"
+    "esbuild": "^0.25.9"
   },
   "type": "module",
   "imports": {

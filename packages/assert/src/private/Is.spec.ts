@@ -3,14 +3,14 @@ import test from "@rcompat/test";
 import any from "@rcompat/test/any";
 
 const fix = {
-  string: ["", String()],
-  number: [0, Number(0)],
   bigint: [0n],
   boolean: [true, false],
   function: [() => undefined, function() {
     return undefined;
   }],
   null: [null],
+  number: [0, Number(0)],
+  string: ["", String()],
   undefined: [undefined],
 } satisfies Partial<Record<keyof Is, unknown[]>>;
 

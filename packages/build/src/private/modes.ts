@@ -8,18 +8,18 @@ export const prod = "production";
 
 export default {
   [dev]: (name = default_name): esbuild.BuildOptions => ({
-    minify: false,
-    splitting: false,
     banner: {
       js: `new EventSource("${reload_path}").addEventListener("change",
         () => globalThis.location.reload());`,
     },
     entryNames: name,
+    minify: false,
+    splitting: false,
   }),
   [prod]: (name = default_name): esbuild.BuildOptions => ({
-    minify: true,
-    splitting: true,
     banner: {},
     entryNames: `${name}-[hash]`,
+    minify: true,
+    splitting: true,
   }),
 };

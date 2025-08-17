@@ -4,20 +4,20 @@ import override from "@rcompat/record/override";
 import type { BunFile } from "bun";
 
 interface Init {
-  platform: BunFile;
   debug: boolean;
+  platform: BunFile;
 }
 
 interface Size {
-  width: number;
   height: number;
   hint: 0 | 1 | 2 | 3;
+  width: number;
 }
 
 const default_size: Size = {
-  width: 1280,
   height: 720,
   hint: 0,
+  width: 1280,
 };
 
 export default class Webview {
@@ -43,7 +43,7 @@ export default class Webview {
   }
 
   set size(size: Size) {
-    const { width, height, hint } = override(default_size, size);
+    const { height, hint, width } = override(default_size, size);
     this.symbol("set_size")(this.#handle, width, height, hint);
   }
 

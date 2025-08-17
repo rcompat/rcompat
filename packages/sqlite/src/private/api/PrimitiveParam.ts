@@ -1,8 +1,8 @@
 type PrimitiveParam =
-  | string
-  | number
   | bigint
   | NodeJS.TypedArray
-  | null;
+  | null
+  | number
+  | string;
 
 export type { PrimitiveParam as default };
