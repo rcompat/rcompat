@@ -9,23 +9,23 @@ import type { WebSocket } from "undici-types";
 export default async (handler: Handler, conf: Conf): Promise<Server> => {
   const abort_controller = new AbortController();
   Deno.serve({
-    port: conf.port,
     hostname: conf.host,
     // suppress default "Listening on" message
     onListen: identity,
+    port: conf.port,
     signal: abort_controller.signal,
     ...await get_options(conf),
   }, handler);
 
   return {
+    stop() {
+      abort_controller.abort();
+    },
     upgrade(request: Request, actions) {
       const { socket } = Deno.upgradeWebSocket(request);
       handle_ws(socket as WebSocket, actions);
 
       return null;
-    },
-    stop() {
-      abort_controller.abort();
     },
   };
 };

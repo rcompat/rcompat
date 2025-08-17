@@ -29,7 +29,7 @@ const defaults: Conf = {
 };
 
 type NullableHandler = (request: Request) =>
-  Response | Promise<Response> | Promise<null>;
+  Promise<null> | Promise<Response> | Response;
 
 export default async (handler: NullableHandler, conf?: Conf): Promise<Server> => {
   const $conf = override(defaults, conf ?? {});
@@ -83,6 +83,9 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
     }).listen($conf.port, $conf.host);
 
   return {
+    stop() {
+      server.close();
+    },
     upgrade(request: Request, actions: Actions) {
       const { original } = request as unknown as PseudoRequest;
       const null_buffer = Buffer.from([]);
@@ -91,9 +94,6 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
       });
 
       return null;
-    },
-    stop() {
-      server.close();
     },
   };
 };

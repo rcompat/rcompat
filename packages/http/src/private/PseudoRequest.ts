@@ -18,7 +18,7 @@ const unimplemented = () => {
 
 export default class PseudoRequest {
   #incoming: IncomingMessage;
-  #body: ReadableStream<any> | null = null;
+  #body: null | ReadableStream<any> = null;
   #body_used = false;
   #headers = new Headers();
   #url;
