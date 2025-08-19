@@ -1,6 +1,7 @@
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
 import type NodePredicate from "#router/NodePredicate";
+import type Dict from "@rcompat/type/Dict";
 import * as errors from "./errors.js";
 
 type Match = MatchedRoute | undefined;
@@ -58,8 +59,6 @@ const to_type = (path: string) => {
   }
   return STATIC;
 };
-
-type Params = Record<PropertyKey, unknown>;
 
 export default class Node {
   #parent: Node | null;
@@ -194,7 +193,7 @@ export default class Node {
     return interim;
   }
 
-  next(request: Request, parts: string[], match_catch: boolean, params: Params) {
+  next(request: Request, parts: string[], match_catch: boolean, params: Dict) {
     // match static routes first
     for (const child of this.statics()) {
       const matched = child.match(request, parts, match_catch, params);
@@ -211,7 +210,7 @@ export default class Node {
     }
   }
 
-  return(_request: never, parts: string[], match_catch: boolean, params: Params, fullpath = this.#fullpath): Match {
+  return(_request: never, parts: string[], match_catch: boolean, params: Dict, fullpath = this.#fullpath): Match {
     const path = this.#path;
     const specials = this.collect();
 
@@ -241,7 +240,7 @@ export default class Node {
     }
   }
 
-  #match_anchor(request: Request, parts: string[], match_catch: boolean, params: Params) {
+  #match_anchor(request: Request, parts: string[], match_catch: boolean, params: Dict) {
     if (this.#fullpath !== undefined) {
       return this.return(request as never, parts, match_catch, params);
     }
@@ -257,7 +256,7 @@ export default class Node {
     }
   }
 
-  #match_recurse(request: Request, parts: string[], match_catch: boolean, params: Params) {
+  #match_recurse(request: Request, parts: string[], match_catch: boolean, params: Dict) {
     const [first, ...rest] = parts;
 
     // current path matches first
@@ -315,7 +314,7 @@ export default class Node {
   unique() {
     const children = this.#children;
 
-    Object.entries(children.reduce((counts: Record<string, number>, child) =>
+    Object.entries(children.reduce((counts: Dict<number>, child) =>
       ({ ...counts, [child.path]: (counts[child.path] ?? 0) + 1 })
       , {})).map(([path, count]) => {
         if (count > 1) {
