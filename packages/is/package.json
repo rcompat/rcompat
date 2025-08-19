@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/is",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Standard library value qualifying",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
