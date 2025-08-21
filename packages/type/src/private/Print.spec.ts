@@ -31,7 +31,7 @@ test.case("classes", assert => {
   assert<Print<ReadableStream>>().type<"ReadableStream">();
   assert<Print<WritableStream>>().type<"WritableStream">();
 
-  class Local {};
+  class Local { };
   assert<Print<Local>>().type<"Object">();
 
   class Test implements Printable {
@@ -129,7 +129,7 @@ test.case("generics", assert => {
       return undefined as T;
     }
   }
-  class Class3<T> extends Generic<"Class3", T> {};
+  class Class3<T> extends Generic<"Class3", T> { };
   assert<Print<Class3<unknown>>>().type<"Class3<unknown>">();
 });
 
@@ -220,26 +220,26 @@ test.case("object", assert => {
   assert<Print<{ foo: number }>>().type<"{ foo: number }">();
   assert<Print<{ foo: 0n }>>().type<"{ foo: 0n }">();
 
-  const _1: { count: number; foo: "bar" } = { count: 1, foo: "bar"};
+  const _1: { count: number; foo: "bar" } = { count: 1, foo: "bar" };
   assert<Print<typeof _1>>().type<"{ foo: 'bar', count: number }">();
   assert<Print<{ a: true; b: string[] }>>().type<"{ a: true, b: string[] }">();
 
-  const _t = { foo: [ "bar", 1n ]};
-  const _t2 = { foo: [ "bar", 1n ]} as const;
+  const _t = { foo: ["bar", 1n] };
+  const _t2 = { foo: ["bar", 1n] } as const;
 
   assert<Print<typeof _t>>().type<"{ foo: (string | bigint)[] }">();
   assert<Print<typeof _t2>>().fail<"{ foo: ['bar', 1n] }">();
-  assert<Print<{ foo: { bar: "baz" }}>>().type<"{ foo: { bar: 'baz' } }">();
-  assert<Print<{ foo: { bar: string }}>>().type<"{ foo: { bar: string } }">();
-  assert<Print<{ foo: ["bar", 1n]}>>().type<"{ foo: ['bar', 1n] }">();
-  assert<Print<{ foo: [string, bigint]}>>().type<"{ foo: [string, bigint] }">();
-  assert<Print<{ foo: string[]}>>().type<"{ foo: string[] }">();
-  assert<Print<{ foo: [string[]]}>>().type<"{ foo: [string[]] }">();
+  assert<Print<{ foo: { bar: "baz" } }>>().type<"{ foo: { bar: 'baz' } }">();
+  assert<Print<{ foo: { bar: string } }>>().type<"{ foo: { bar: string } }">();
+  assert<Print<{ foo: ["bar", 1n] }>>().type<"{ foo: ['bar', 1n] }">();
+  assert<Print<{ foo: [string, bigint] }>>().type<"{ foo: [string, bigint] }">();
+  assert<Print<{ foo: string[] }>>().type<"{ foo: string[] }">();
+  assert<Print<{ foo: [string[]] }>>().type<"{ foo: [string[]] }">();
 
   const _s_foo = Symbol("foo");
-  assert<Print<{ [_s_foo]: [string[]]}>>().type<"{}">();
+  assert<Print<{ [_s_foo]: [string[]] }>>().type<"{}">();
 
-  assert<Print<{ foo: [string, { bar: [symbol] }]}>>()
+  assert<Print<{ foo: [string, { bar: [symbol] }] }>>()
     .type<"{ foo: [string, { bar: [symbol] }] }">();
 
 });

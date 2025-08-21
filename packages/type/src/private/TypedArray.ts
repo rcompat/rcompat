@@ -10,6 +10,7 @@ type TypedArray =
   | Uint16Array<ArrayBuffer>
   | Uint32Array<ArrayBuffer>
   | Uint8Array<ArrayBuffer>
-  | Uint8ClampedArray<ArrayBuffer>;
+  | Uint8ClampedArray<ArrayBuffer>
+  ;
 
 export type { TypedArray as default };

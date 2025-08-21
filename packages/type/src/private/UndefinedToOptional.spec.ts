@@ -7,7 +7,7 @@ test.case("pass", assert => {
   }>>()
     .type<{ foo?: string }>()
     .type<{ foo?: string | undefined }>()
-  ;
+    ;
 
   assert<UndefinedToOptional<{
     bar: number | undefined;
@@ -17,7 +17,7 @@ test.case("pass", assert => {
     .type<{ bar?: number; foo?: string | undefined }>()
     .type<{ bar?: number | undefined; foo?: string }>()
     .type<{ bar?: number | undefined; foo?: string | undefined }>()
-  ;
+    ;
 
   assert<UndefinedToOptional<{
     bar: number | undefined;
@@ -26,7 +26,7 @@ test.case("pass", assert => {
   }>>()
     .type<{ bar?: number; baz?: boolean; foo?: string }>()
     .type<{ bar?: number; baz?: boolean | undefined; foo?: string }>()
-  ;
+    ;
 });
 
 test.case("fail", assert => {
