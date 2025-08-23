@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fs",
-  "version": "0.19.3",
+  "version": "0.20.0",
   "description": "Standard library filesystem access",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

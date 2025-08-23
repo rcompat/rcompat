@@ -1,4 +1,4 @@
-import type StreamSource from "#StreamableSource";
+import type StreamSource from "#StreamSource";
 
 const STREAMABLE = Symbol.for("std:Streamable");
 
@@ -16,8 +16,6 @@ function isBlob(x: any): x is Blob {
 type NamedStreamSource<T = unknown> = { name: string } & StreamSource<T>;
 
 export default abstract class Streamable<T = unknown> {
-  declare readonly name?: string;
-
   constructor() {
     Object.defineProperty(this, STREAMABLE, { value: true });
   }
