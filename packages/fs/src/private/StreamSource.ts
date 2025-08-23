@@ -1,9 +1,9 @@
 import type Streamable from "#Streamable";
 
-type StreamableSource<T = unknown> =
+type StreamSource<T = unknown> =
   | Blob
   | ReadableStream<T>
   | Streamable<T>
   ;
 
-export type { StreamableSource as default };
+export type { StreamSource as default };
