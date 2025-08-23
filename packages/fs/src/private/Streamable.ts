@@ -11,6 +11,13 @@ function isBlob(x: any): x is Blob {
     ;
 }
 
+export declare namespace Streamable {
+  export type Source<T = unknown> =
+    | Blob
+    | ReadableStream<T>
+    | Streamable<T>;
+}
+
 export default abstract class Streamable<T = unknown> {
   constructor() {
     Object.defineProperty(this, STREAMBLE, { value: true });
