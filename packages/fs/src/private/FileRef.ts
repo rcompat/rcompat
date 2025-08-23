@@ -279,7 +279,8 @@ export default class FileRef
     const kind = await this.kind();
 
     if (kind === Kind.Link) {
-      return new FileRef(await realpath(path)).copy(to, predicate);
+      await new FileRef(await realpath(path)).copy(to, predicate);
+      return;
     }
 
     if (kind === Kind.Directory) {
@@ -289,6 +290,7 @@ export default class FileRef
       // copy all files
       await Promise.all((await this.list(predicate))
         .map(({ name }) => FileRef.join(path, name).copy(to.join(name))));
+      return;
     }
 
     await copyFile(path, to.path);
