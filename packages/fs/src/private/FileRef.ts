@@ -4,8 +4,8 @@ import native from "#native";
 import parse from "#parse";
 import type Path from "#Path";
 import type RemoveOptions from "#RemoveOptions";
-import s_streamable from "#s_streamable";
 import separator from "#separator";
+import Streamable from "#Streamable";
 import type WritableInput from "#WritableInput";
 import defined from "@rcompat/assert/defined";
 import is from "@rcompat/assert/is";
@@ -44,11 +44,13 @@ const assert_boundary = (directory: FileRef) => {
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
-export default class FileRef implements StringClass, Printable {
+export default class FileRef
+  extends Streamable
+  implements StringClass, Printable {
   #path: string;
-  #streamable = s_streamable;
 
   constructor(path: Path) {
+    super();
     defined(path);
     this.#path = parse(as_string(path));
   }
@@ -117,12 +119,13 @@ export default class FileRef implements StringClass, Printable {
 
     const path = this.#path;
 
-    const paths = await readdir(path, options);
+    const names = await readdir(path, options);
+    const files = names.map(n => FileRef.join(path, n));
+    if (!predicate) return files;
 
-    return Promise.all(paths
-      .map(subpath => FileRef.join(path, subpath))
-      .filter(predicate ?? (() => true)))
-      ;
+    const mapped = await Promise.all(files
+      .map(async f => await predicate(f) ? f : null));
+    return mapped.filter(Boolean) as FileRef[];
   }
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
@@ -158,7 +161,7 @@ export default class FileRef implements StringClass, Printable {
       }
       if (await file.kind() === Kind.Directory) {
         subfiles = subfiles.concat(await file.collect(predicate));
-      } else if (predicate === undefined || predicate(file)) {
+      } else if (predicate === undefined || await predicate(file)) {
         subfiles.push(file);
       }
     }
@@ -235,10 +238,6 @@ export default class FileRef implements StringClass, Printable {
     return name.slice(name.indexOf("."));
   }
 
-  get streamable() {
-    return this.#streamable;
-  }
-
   up(levels: number): FileRef {
     if (levels === 0) {
       return this;
@@ -272,8 +271,8 @@ export default class FileRef implements StringClass, Printable {
     return new FileRef(path).json<T>();
   }
 
-  async copy(to: FileRef, predicate?: FilePredicate): Promise<unknown> {
-    ensure_parents(to);
+  async copy(to: FileRef, predicate?: FilePredicate): Promise<void> {
+    await ensure_parents(to);
     maybe(predicate).instance(Function);
 
     const path = this.#path;
@@ -288,11 +287,11 @@ export default class FileRef implements StringClass, Printable {
       await to.remove();
       await to.create();
       // copy all files
-      return Promise.all((await this.list(predicate))
+      await Promise.all((await this.list(predicate))
         .map(({ name }) => FileRef.join(path, name).copy(to.join(name))));
     }
 
-    return copyFile(path, to.path);
+    await copyFile(path, to.path);
   }
 
   async create(options?: DirectoryOptions) {
@@ -321,7 +320,7 @@ export default class FileRef implements StringClass, Printable {
   async write(input: WritableInput) {
     ensure_parents(this);
 
-    return native.write(this.path, input);
+    await native.write(this.path, input);
   }
 
   static write(path: Path, input: WritableInput) {
@@ -357,7 +356,7 @@ export default class FileRef implements StringClass, Printable {
     return new FileRef(path);
   }
 
-  stream(): ReadableStream {
+  stream(): ReadableStream<Uint8Array> {
     return native.stream(this.path);
   }
 
