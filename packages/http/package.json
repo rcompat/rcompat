@@ -21,7 +21,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "undici-types": "7.14.0"
+    "undici-types": "7.15.0"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
