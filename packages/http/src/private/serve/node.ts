@@ -14,9 +14,11 @@ import { WebSocketServer } from "ws";
 
 const wss = new WebSocketServer({ noServer: true });
 
-const get_url = (request: IncomingMessage) => {
+function toURL(request: IncomingMessage) {
   try {
-    return new URL(request.url as string, `http://${request.headers.host}`);
+    const host = request.headers.host ?? "localhost";
+    const raw = request.url ?? "/";
+    return new URL(`http://${host}${raw}`);
   } catch (error) {
     console.error(error);
     return null;
@@ -43,7 +45,7 @@ export default async (handler: NullableHandler, conf?: Conf): Promise<Server> =>
       // handler gets a WHATWG Request, and returns a WHATWG Response
       //
       // 1. wrap a node request in a WHATWG request
-      const url = get_url(node_request);
+      const url = toURL(node_request);
 
       if (url === null) {
         node_response.end();
