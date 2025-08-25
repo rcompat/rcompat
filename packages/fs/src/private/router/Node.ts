@@ -60,6 +60,14 @@ const to_type = (path: string) => {
   return STATIC;
 };
 
+function decodeParam(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    // keep invalid encodings as-is
+    return s;
+  }
+};
 export default class Node {
   #parent: Node | null;
   #children: Node[] = [];
@@ -218,23 +226,23 @@ export default class Node {
     if (this.#path === parts[0]) {
       return { fullpath: fullpath as string, params, path, specials: specials };
     }
+
     // catch always matches
     if (match_catch && this.catch) {
+      const key = this.#path.slice(1, -1);
       return {
-        fullpath: fullpath as string, params: {
-          ...params,
-          [this.#path.slice(1, -1)]: parts[0],
-        }, path,
+        fullpath: fullpath as string,
+        params: { ...params, [key]: decodeParam(parts[0]) },
+        path,
         specials,
       };
     }
     if (match_catch && this.rest) {
       const name = this.#path.slice(4, -1);
+      const raw = params[name] ? params[name] : parts[0];
       return {
-        fullpath: fullpath as string, params: {
-          ...params,
-          [name]: params[name] ? params[name] : parts[0],
-        }, path,
+        fullpath: fullpath as string,
+        params: { ...params, [name]: decodeParam(raw as string) }, path,
         specials,
       };
     }
@@ -265,15 +273,14 @@ export default class Node {
       return this.next(request, rest, match_catch, params);
     }
     if (this.catch) {
-      const next_params = { ...params, [this.#path.slice(1, -1)]: first };
+      const key = this.#path.slice(1, -1);
+      const next_params = { ...params, [key]: decodeParam(first) };
       return this.next(request, rest, match_catch, next_params);
     }
     if (this.rest) {
       const name = this.#path.slice(4, -1);
-      const next_params = {
-        ...params,
-        [name]: `${first}/${rest.join("/")}`,
-      };
+      const joined = [first, ...rest].join("/");
+      const next_params = { ...params, [name]: joined };
       // rest stops recursing
       return this.return(request as never, [first, ...rest], match_catch, next_params);
     }
