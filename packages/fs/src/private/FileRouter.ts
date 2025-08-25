@@ -35,11 +35,19 @@ export default class FileRouter {
   }
 
   match(request: Request) {
-    const path = new URL(request.url).pathname;
-    const [_, ...parts] = path.split("/").map(p => p === "" ? "index" : p);
-    const $parts = parts.filter((part, i) => i === 0 || part !== "index");
-    const root = this.#root;
+    const pathname = new URL(request.url).pathname;
+    const deslashed = pathname.replace(/\/{2,}/g, "/");
+    const detrailed = deslashed !== "/" && deslashed.endsWith("/")
+      ? deslashed.slice(0, -1)
+      : deslashed;
+    let parts = detrailed.split("/").slice(1);
+    if (parts.length > 0 && parts.at(-1) === "index") {
+      parts = parts.slice(0, -1);
+    }
+    const $parts = parts.length > 0 ? parts : ["index"];
 
+    const root = this.#root;
+    // prefer a static index file if present
     return root.match(request, $parts.concat("index"), false)
       ?? root.match(request, $parts);
   }
