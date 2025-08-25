@@ -40,16 +40,33 @@ export default class FileRouter {
     const detrailed = deslashed !== "/" && deslashed.endsWith("/")
       ? deslashed.slice(0, -1)
       : deslashed;
-    let parts = detrailed.split("/").slice(1);
-    if (parts.length > 0 && parts.at(-1) === "index") {
-      parts = parts.slice(0, -1);
-    }
-    const $parts = parts.length > 0 ? parts : ["index"];
+
+    const segments = detrailed.split("/").filter(Boolean);
+    if (segments.at(-1) === "index") segments.pop();
 
     const root = this.#root;
-    // prefer a static index file if present
-    return root.match(request, $parts.concat("index"), false)
-      ?? root.match(request, $parts);
+
+    // 1) Prefer static ".../index"
+    const index = root.match(request, [...segments, "index"], false);
+    if (index) return index;
+
+    // 2) If root, optionally support routes/[[...]].ts or routes/[[id]].ts
+    // with empty param
+    if (segments.length === 0) {
+      const optional = root.dynamics().find(d => d.optional);
+      if (optional?.fullpath) {
+        return {
+          fullpath: optional.fullpath,
+          params: {},
+          path: optional.path,
+          specials: optional.collect(),
+        };
+      }
+      return undefined;
+    }
+
+    // 3) Fallback to exact parts (static or dynamic)
+    return root.match(request, segments);
   }
 
   init(objects: string[]) {

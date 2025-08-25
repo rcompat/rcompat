@@ -329,17 +329,9 @@ export default class Node {
         }
       });
 
-    const has_optionals = this.optionals().length > 0;
-    if (has_optionals && this.has_fullpath) {
-      throw new errors.DoubleRoute(this.path);
-    }
-
     for (const $static of this.statics()) {
       if ($static.path === "index" && $static.fullpath !== undefined) {
         if (this.#type === STATIC && this.has_fullpath) {
-          throw new errors.DoubleRoute(this.path);
-        }
-        if (has_optionals) {
           throw new errors.DoubleRoute(this.path);
         }
       }
