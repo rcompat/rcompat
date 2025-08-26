@@ -181,3 +181,62 @@ test.case("deep static paths and normalization", assert => {
   expect("/a/b/c/");
   expect("/a/b/c/index");
 });
+
+test.case("conflict: segment static + optional child", assert => {
+  try {
+    init(["user", "user/[[id]]"]);
+    assert(false).true(); // should not reach
+  } catch (e: any) {
+    assert(e instanceof FileRouter.Error.DoubleRoute).true();
+  }
+});
+
+test.case("conflict: segment index + optional child", assert => {
+  try {
+    init(["user/index", "user/[[id]]"]);
+    assert(false).true(); // should not reach
+  } catch (e: any) {
+    assert(e instanceof FileRouter.Error.DoubleRoute).true();
+  }
+});
+
+test.case("allowed: static sibling with dynamic child", assert => {
+  const router = init(["user", "user/[id]"]);
+
+  const s = router.match(request("/user"));
+  assert(!!s).true();
+  assert(s!.fullpath).equals("user");
+
+  const d = router.match(request("/user/42"));
+  assert(!!d).true();
+  assert(d!.fullpath).equals("user/[id]");
+  assert(d!.params["id"]).equals("42");
+});
+
+test.case("allowed: optional only handles bare and with param", assert => {
+  const router = init(["user/[[id]]"]);
+
+  const a = router.match(request("/user"));
+  assert(!!a).true();
+  assert(a!.fullpath).equals("user/[[id]]");
+  assert(a!.params["id"]).equals(undefined);
+
+  const b = router.match(request("/user/alex"));
+  assert(!!b).true();
+  assert(b!.fullpath).equals("user/[[id]]");
+  assert(b!.params["id"]).equals("alex");
+});
+
+test.case("allowed: optional rest only handles bare and nested", assert => {
+  const router = init(["docs/[[...slug]]"]);
+
+  const a = router.match(request("/docs"));
+  assert(!!a).true();
+  assert(a!.fullpath).equals("docs/[[...slug]]");
+  assert(a!.params["slug"]).equals(undefined);
+
+  const b = router.match(request("/docs/guides/getting-started"));
+  assert(!!b).true();
+  assert(b!.fullpath).equals("docs/[[...slug]]");
+  assert(b!.params["slug"]).equals("guides/getting-started");
+});

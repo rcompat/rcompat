@@ -70,7 +70,7 @@ export default class FileRouter {
   }
 
   init(objects: string[]) {
-    for (const path of objects.toSorted(([a], [b]) => a > b ? 1 : -1)) {
+    for (const path of objects.toSorted((a, b) => a.localeCompare(b))) {
       this.#add(this.#root, FileRef.webpath(path).split("/"), path);
     }
 

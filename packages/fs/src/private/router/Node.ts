@@ -321,17 +321,31 @@ export default class Node {
   unique() {
     const children = this.#children;
 
-    Object.entries(children.reduce((counts: Dict<number>, child) =>
-      ({ ...counts, [child.path]: (counts[child.path] ?? 0) + 1 })
-      , {})).map(([path, count]) => {
-        if (count > 1) {
-          throw new errors.DoubleRoute(path);
-        }
-      });
+    const counts = children.reduce((acc, child) => {
+      const key = `${child.path}::${child.type.toString()}`;
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {} as Dict<number>);
+
+    for (const [key, count] of Object.entries(counts)) {
+      if (count > 1) {
+        const seg = key.split("::")[0];
+        throw new errors.DoubleRoute(seg);
+      }
+    }
+
+    const has_optionals = this.optionals().length > 0;
+
+    if (has_optionals && this.has_fullpath) {
+      throw new errors.DoubleRoute(this.path);
+    }
 
     for (const $static of this.statics()) {
       if ($static.path === "index" && $static.fullpath !== undefined) {
         if (this.#type === STATIC && this.has_fullpath) {
+          throw new errors.DoubleRoute(this.path);
+        }
+        if (has_optionals) {
           throw new errors.DoubleRoute(this.path);
         }
       }
