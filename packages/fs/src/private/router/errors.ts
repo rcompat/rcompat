@@ -25,4 +25,10 @@ const RestRoute = class extends BaseError {
   }
 };
 
-export { DoubleRoute, OptionalRoute, RestRoute };
+const DoubleParam = class extends BaseError {
+  constructor(param: string) {
+    super("double param", param);
+  }
+};
+
+export { DoubleParam, DoubleRoute, OptionalRoute, RestRoute };

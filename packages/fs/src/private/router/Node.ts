@@ -5,6 +5,8 @@ import type Dict from "@rcompat/type/Dict";
 import * as errors from "./errors.js";
 
 type Match = MatchedRoute | undefined;
+type Params = Dict<string | undefined>;
+type Specials = Dict<string[] | undefined>;
 
 const ROOT = Symbol("root");
 const SPECIAL = Symbol("special");
@@ -38,23 +40,23 @@ const type_to_string = (symbol: symbol) => {
   }
 };
 
-const to_type = (path: string) => {
-  if (path.startsWith("+")) {
+const to_type = (segment: string) => {
+  if (segment.startsWith("+")) {
     return SPECIAL;
   }
-  if (path.startsWith("[[...")) {
+  if (segment.startsWith("[[...")) {
     return OPTIONAL_REST;
   }
-  if (path.startsWith("[...")) {
+  if (segment.startsWith("[...")) {
     return REST;
   }
-  if (path.startsWith("[[")) {
+  if (segment.startsWith("[[")) {
     return OPTIONAL_CATCH;
   }
-  if (path.startsWith("[")) {
+  if (segment.startsWith("[")) {
     return CATCH;
   }
-  if (path === "$") {
+  if (segment === "$") {
     return ROOT;
   }
   return STATIC;
@@ -70,11 +72,13 @@ function decodeParam(s: string) {
 };
 export default class Node {
   #parent: Node | null;
-  #children: Node[] = [];
-  #path: string;
+  #segment: string;
   #type: symbol;
-  #fullpath?: string;
+  #path?: string;
   static #config: NodeConfig;
+  #statics: Node[] = [];
+  #dynamics: Node[] = [];
+  #specials: Node[] = [];
 
   static set config(config: NodeConfig) {
     this.#config = { ...config };
@@ -84,23 +88,23 @@ export default class Node {
     return this.#config;
   }
 
-  constructor(parent: Node | null, path: string, fullpath?: string) {
+  constructor(parent: Node | null, segment: string, path?: string) {
     this.#parent = parent;
-    this.#type = to_type(path);
-    this.#path = path.startsWith("[[") ? path.slice(1, -1) : path;
-    this.#fullpath = fullpath;
+    this.#type = to_type(segment);
+    this.#segment = segment.startsWith("[[") ? segment.slice(1, -1) : segment;
+    this.#path = path;
   }
 
   get parent() {
     return this.#parent;
   }
 
-  get path() {
-    return this.#path;
+  get segment() {
+    return this.#segment;
   }
 
-  get fullpath() {
-    return this.#fullpath;
+  get path() {
+    return this.#path;
   }
 
   get type() {
@@ -124,11 +128,17 @@ export default class Node {
   }
 
   get leaf() {
-    return this.#children.length === 0;
+    return this.#statics.length
+      + this.#dynamics.length
+      + this.#specials.length === 0;
   }
 
-  get has_fullpath() {
-    return this.fullpath !== undefined;
+  get has_path() {
+    return this.path !== undefined;
+  }
+
+  get #children() {
+    return [...this.#statics, ...this.#dynamics, ...this.#specials];
   }
 
   check(predicate: NodePredicate) {
@@ -140,179 +150,210 @@ export default class Node {
   }
 
   statics() {
-    return this.#children.filter(child => child.type === STATIC);
+    return this.#statics;
   }
 
   optionals() {
-    return this.#children.filter(({ type }) =>
-      type === OPTIONAL_CATCH || type === OPTIONAL_REST);
+    return this.#dynamics
+      .filter(({ type }) => type === OPTIONAL_CATCH || type === OPTIONAL_REST);
   }
 
   dynamics() {
-    return this.#children.filter(child => child.dynamic);
+    return this.#dynamics;
   }
 
   specials() {
-    return this.#children.filter(child => child.type === SPECIAL);
+    return this.#specials;
   }
 
   // collects depth values for all nodes that satisfy a predicate, returning
   // the highest max
   max(predicate: NodePredicate, depth = 1) {
-    const max = predicate(this) ? [depth] : [depth - 1];
+    let max = predicate(this) ? depth : 0;
     for (const child of this.#children) {
-      max.push(child.max(predicate, depth + 1));
+      const child_max = child.max(predicate, depth + 1);
+      if (child_max > max) {
+        max = child_max;
+      }
     }
-    return Math.max(...[...max].flat());
+    return max;
   }
 
-  collect(collected: { [s in string]?: string[] } = {}, recursed = false): { [s in string]?: string[] } {
+  collect(collected: Specials = {}, recursed = new Set<string>()): Specials {
     const { parent } = this;
-
-    // root
     if (parent === null) {
       return collected;
     }
-    for (const { fullpath, path } of parent.specials()) {
-      const name = path.slice(1);
+    for (const $special of parent.specials()) {
+      const name = $special.#segment.slice(1);
       const { recursive } = Node.#config.specials?.[name] ?? {};
-      // skip non-recursive specials
-      if (recursed && !recursive) {
+      if (!recursive && recursed.has(name)) {
         continue;
       }
       const arr = collected[name] === undefined ? [] : collected[name];
-      collected[name] = arr.concat(fullpath as never);
+      collected[name] = arr.concat($special.#path as never);
+      if (!recursive) {
+        recursed.add(name);
+      }
     }
-    return parent.collect(collected, true);
+    return parent.collect(collected, recursed);
   }
 
-  filed(path: string, fullpath: string) {
-    this.#children.push(new Node(this, path, fullpath));
+  filed(segment: string, path: string) {
+    const child = new Node(this, segment, path);
+    if (child.type === SPECIAL) {
+      this.#specials.push(child);
+    } else if (child.dynamic) {
+      this.#dynamics.push(child);
+    } else {
+      this.#statics.push(child);
+    }
   }
 
-  interim(path: string) {
-    for (const child of this.#children) {
-      if (child.path === path) {
+  interim(segment: string) {
+    const target_array = to_type(segment) === STATIC
+      ? this.#statics
+      : this.#dynamics;
+    for (const child of target_array) {
+      if (child.#segment === segment) {
         return child;
       }
     }
-    const interim = new Node(this, path);
-    this.#children.push(interim);
+    const interim = new Node(this, segment);
+    if (interim.type === STATIC) {
+      this.#statics.push(interim);
+    } else {
+      this.#dynamics.push(interim);
+    }
     return interim;
   }
 
-  next(request: Request, parts: string[], match_catch: boolean, params: Dict) {
-    // match static routes first
-    for (const child of this.statics()) {
-      const matched = child.match(request, parts, match_catch, params);
+  next(parts: string[], params: Params) {
+    if (parts.length === 0) return undefined;
+
+    const [first] = parts;
+    // prefer static child for the segment if exists
+    const static_child = this.#statics.find(child => child.#segment === first);
+    if (static_child) {
+      // commit to static branch
+      return static_child.match(parts, params);
+    }
+    // no static claimed, try dynamic
+    for (const child of this.#dynamics) {
+      const matched = child.match(parts, params);
       if (matched !== undefined) {
         return matched;
       }
     }
-    // then match dynamic routes
-    for (const child of this.dynamics()) {
-      const matched = child.match(request, parts, match_catch, params);
-      if (matched !== undefined) {
-        return matched;
-      }
-    }
+    return undefined;
   }
 
-  return(_request: never, parts: string[], match_catch: boolean, params: Dict, fullpath = this.#fullpath): Match {
-    const path = this.#path;
+  return(parts: string[], params: Params, path = this.#path): Match {
+    const segment = this.#segment;
     const specials = this.collect();
-
-    // static match
-    if (this.#path === parts[0]) {
-      return { fullpath: fullpath as string, params, path, specials: specials };
+    // Static exact match
+    if (parts.length > 0 && this.#segment === parts[0]) {
+      return { params, path: path as string, segment, specials };
     }
-
-    // catch always matches
-    if (match_catch && this.catch) {
-      const key = this.#path.slice(1, -1);
-      return {
-        fullpath: fullpath as string,
-        params: { ...params, [key]: decodeParam(parts[0]) },
-        path,
-        specials,
-      };
+    // For empty parts (end of path)
+    if (parts.length === 0) {
+      // Required dynamics don't match empty
+      if (this.dynamic && !this.optional) {
+        return undefined;
+      }
+      return { params, path: path as string, segment, specials };
     }
-    if (match_catch && this.rest) {
-      const name = this.#path.slice(4, -1);
-      const raw = params[name] ? params[name] : parts[0];
-      return {
-        fullpath: fullpath as string,
-        params: { ...params, [name]: decodeParam(raw as string) }, path,
-        specials,
-      };
+    // Dynamic matches (catch/rest) for non-empty
+    const next = { ...params };
+    if (this.catch) {
+      const key = this.#segment.slice(1, -1);
+      const captured = parts[0] as string | undefined;
+      // Required catch needs a capture
+      if (captured === undefined && !this.optional) {
+        return undefined;
+      }
+      if (captured !== undefined) {
+        next[key] = decodeParam(captured);
+      }
+      return { params: next, path: path as string, segment, specials };
     }
-  }
-
-  #match_anchor(request: Request, parts: string[], match_catch: boolean, params: Dict) {
-    if (this.#fullpath !== undefined) {
-      return this.return(request as never, parts, match_catch, params);
-    }
-    const [{ fullpath = undefined, type = undefined } = {}] = this.dynamics();
-
-    // this node has no file, but might have an OPTIONAL_CATCH child
-    if (type === OPTIONAL_CATCH) {
-      return this.return(request as never, parts, match_catch, params, fullpath);
-    }
-    // this node has no file, but might have an OPTIONAL_REST field
-    if (type === OPTIONAL_REST) {
-      return this.return(request as never, parts, match_catch, params, fullpath);
+    if (this.rest) {
+      const name = this.#segment.slice(4, -1);
+      const raw = parts.join("/");
+      // Required rest needs a non-empty capture
+      if (raw === "" && !this.optional) {
+        return undefined;
+      }
+      if (raw !== "") {
+        next[name] = decodeParam(raw);
+      }
+      return { params: next, path: path as string, segment, specials };
     }
   }
 
-  #match_recurse(request: Request, parts: string[], match_catch: boolean, params: Dict) {
+  #match_anchor(parts: string[], params: Params) {
+    if (this.#path !== undefined) {
+      return this.return(parts, params);
+    }
+    const optional = this.dynamics().find(d => d.optional);
+    if (optional) {
+      return optional.return([], params, optional.#path);
+    }
+  }
+
+  #match_recurse(parts: string[], params: Params) {
+    if (parts.length === 0) {
+      return undefined;
+    }
     const [first, ...rest] = parts;
 
     // current path matches first
     // static match is first
-    if (this.#path === first) {
-      return this.next(request, rest, match_catch, params);
+    if (this.#segment === first) {
+      return this.next(rest, params);
     }
     if (this.catch) {
-      const key = this.#path.slice(1, -1);
+      const key = this.#segment.slice(1, -1);
       const next_params = { ...params, [key]: decodeParam(first) };
-      return this.next(request, rest, match_catch, next_params);
+      return this.next(rest, next_params);
     }
     if (this.rest) {
-      const name = this.#path.slice(4, -1);
-      const joined = [first, ...rest].join("/");
-      const next_params = { ...params, [name]: joined };
+      const name = this.#segment.slice(4, -1);
+      const next_params = { ...params, [name]: parts.join("/") };
       // rest stops recursing
-      return this.return(request as never, [first, ...rest], match_catch, next_params);
+      return this.return([first, ...rest], next_params);
     }
   }
 
-  match(request: Request, parts: string[], match_catch = true, params = {}): Match {
-    // root node itself cannot be matched
+  match(parts: string[], params: Params = {}): Match {
+
     if (this.#type === ROOT) {
-      return this.next(request, parts, match_catch, params);
+      if (parts.length === 0) {
+        const optional = this.dynamics().find(d => d.optional);
+        if (optional) {
+          return optional.return([], params, optional.#path);
+        }
+        return undefined;
+      }
+      return this.next(parts, params);
     }
-    // anchor
-    if (parts.length === 1) {
-      return this.#match_anchor(request, parts, match_catch, params);
+    if (parts.length <= 1) {
+      return this.#match_anchor(parts, params);
     }
-
-    return this.#match_recurse(request, parts, match_catch, params);
+    return this.#match_recurse(parts, params);
   }
 
-  flatten(): { fullpath: string | undefined; path: string; type: symbol }[] {
-    const children = this.#children.map(child => ({
-      fullpath: child.fullpath, path: child.path, type: child.type,
-    }));
+  flatten(): { path: string | undefined; segment: string; type: symbol }[] {
+    const children = this.#children;
 
-    const subchildren = this.leaf
-      ? []
-      : this.#children.flatMap(child => child.flatten());
-
-    return children.concat(subchildren);
+    return children.map(({ path, segment, type }) =>
+      ({ path, segment, type })).concat(
+        this.leaf ? [] : children.flatMap(child => child.flatten()),
+      );
   }
 
   print(i = 0) {
-    console.log(`${"-".repeat(i)}${this.#path} (${type_to_string(this.#type)})`);
+    console.log(`${"-".repeat(i)}${this.#segment} (${type_to_string(this.#type)})`);
     for (const child of this.#children) {
       child.print(i + 1);
     }
@@ -321,8 +362,9 @@ export default class Node {
   unique() {
     const children = this.#children;
 
+    // Count duplicates by (path,type) so optional vs required don't collide.
     const counts = children.reduce((acc, child) => {
-      const key = `${child.path}::${child.type.toString()}`;
+      const key = `${child.#segment}::${child.#type.toString()}`;
       acc[key] = (acc[key] ?? 0) + 1;
       return acc;
     }, {} as Dict<number>);
@@ -336,17 +378,17 @@ export default class Node {
 
     const has_optionals = this.optionals().length > 0;
 
-    if (has_optionals && this.has_fullpath) {
-      throw new errors.DoubleRoute(this.path);
+    if (has_optionals && this.has_path) {
+      throw new errors.DoubleRoute(this.#segment);
     }
 
     for (const $static of this.statics()) {
-      if ($static.path === "index" && $static.fullpath !== undefined) {
-        if (this.#type === STATIC && this.has_fullpath) {
-          throw new errors.DoubleRoute(this.path);
+      if ($static.#segment === "index" && $static.#path !== undefined) {
+        if (this.#type === STATIC && this.has_path) {
+          throw new errors.DoubleRoute(this.#segment);
         }
         if (has_optionals) {
-          throw new errors.DoubleRoute(this.path);
+          throw new errors.DoubleRoute(this.#segment);
         }
       }
     }

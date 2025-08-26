@@ -24,49 +24,54 @@ export default class FileRouter {
     this.#root = new Node(null, "$");
   }
 
-  #add(node: Node, parts: string[], fullpath: string) {
+  #add(node: Node, parts: string[], path: string) {
+    const names = parts
+      .filter(p => p.startsWith("["))
+      .map(p => p.replace(/\[|\]|\.{3}/g, ""));
+
+    const seen = new Set<string>();
+    for (const name of names) {
+      if (seen.has(name)) {
+        throw new errors.DoubleParam(name);
+      }
+      seen.add(name);
+    }
+
     const [first, ...rest] = parts;
     // leaves
     if (parts.length === 1) {
-      node.filed(first, fullpath);
+      node.filed(first, path);
     } else {
-      this.#add(node.interim(first), rest, fullpath);
+      this.#add(node.interim(first), rest, path);
     }
   }
 
-  match(request: Request) {
-    const pathname = new URL(request.url).pathname;
+  #normalize(pathname: string): string[] {
     const deslashed = pathname.replace(/\/{2,}/g, "/");
     const detrailed = deslashed !== "/" && deslashed.endsWith("/")
       ? deslashed.slice(0, -1)
       : deslashed;
 
     const segments = detrailed.split("/").filter(Boolean);
-    if (segments.at(-1) === "index") segments.pop();
 
-    const root = this.#root;
-
-    // 1) Prefer static ".../index"
-    const index = root.match(request, [...segments, "index"], false);
-    if (index) return index;
-
-    // 2) If root, optionally support routes/[[...]].ts or routes/[[id]].ts
-    // with empty param
-    if (segments.length === 0) {
-      const optional = root.dynamics().find(d => d.optional);
-      if (optional?.fullpath) {
-        return {
-          fullpath: optional.fullpath,
-          params: {},
-          path: optional.path,
-          specials: optional.collect(),
-        };
-      }
-      return undefined;
+    if (segments.at(-1) === "index" && segments.at(-2) !== "index") {
+      return segments.slice(0, -1);
     }
+    return segments;
+  }
 
-    // 3) Fallback to exact parts (static or dynamic)
-    return root.match(request, segments);
+  match(request: Request) {
+    const root = this.#root;
+    const segments = this.#normalize(new URL(request.url).pathname);
+
+    // 1) Try exact parts first (static or dynamic)
+    const exact = root.match(segments);
+    if (exact !== undefined) return exact;
+
+    // 2) If no exact, try appending "index"
+    const index_segments = [...segments, "index"];
+    const index_match = root.match(index_segments);
+    if (index_match && index_match.segment === "index") return index_match;
   }
 
   init(objects: string[]) {
@@ -80,17 +85,17 @@ export default class FileRouter {
 
       const dynamics = node.dynamics();
       if (dynamics.length > 1) {
-        throw new errors.DoubleRoute(dynamics[1].path);
+        throw new errors.DoubleRoute(dynamics[1].segment);
       }
       if (dynamics.length === 0) {
         return true;
       }
       const [dynamic] = dynamics;
       if (dynamic.optional && !dynamic.leaf) {
-        throw new errors.OptionalRoute(dynamic.path);
+        throw new errors.OptionalRoute(dynamic.segment);
       }
       if (dynamic.rest && !dynamic.leaf) {
-        throw new errors.RestRoute(dynamic.path);
+        throw new errors.RestRoute(dynamic.segment);
       }
 
       return true;
@@ -116,7 +121,8 @@ export default class FileRouter {
 
   depth(special: string) {
     return this.#root.max((node: Node) => node.specials()
-      .filter(({ path }: { path: string }) => path.slice(1) === special).length > 0);
+      .filter(({ segment }: { segment: string }) =>
+        segment.slice(1) === special).length > 0);
   }
 
   static init(config: Config, objects: string[]) {
