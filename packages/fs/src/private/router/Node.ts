@@ -169,7 +169,7 @@ export default class Node {
   // collects depth values for all nodes that satisfy a predicate, returning
   // the highest max
   max(predicate: NodePredicate, depth = 1) {
-    let max = predicate(this) ? depth : 0;
+    let max = predicate(this) ? depth : 1;
     for (const child of this.#children) {
       const child_max = child.max(predicate, depth + 1);
       if (child_max > max) {
