@@ -177,6 +177,16 @@ test.case("unions", assert => {
   assert<Print<Boolean | string>>().type<"string | Boolean">();
   assert<Print<Boolean | String>>().type<"String | Boolean">();
   assert<Print<Blob | File>>().type<"Blob | File">();
+
+  class A implements Printable {
+    get Name(): "A" { return "A"; }
+  }
+  class B implements Printable {
+    get Name(): "B" { return "B"; }
+  }
+
+  assert<Print<A | B>>().type<"A | B">();
+
 });
 
 test.case("tuples", assert => {
