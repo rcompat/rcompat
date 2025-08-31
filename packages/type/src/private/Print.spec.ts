@@ -53,13 +53,13 @@ test.case("generics", assert => {
   assert<Print<Set<Set<1>>>>().type<"Set<Set<1>>">();
   assert<Print<Set<Set<bigint>>>>().type<"Set<Set<bigint>>">();
 
-  assert<Print<WeakSet<{ foo: string }>>>().type<"WeakSet<{ foo: string }>">();
+  assert<Print<WeakSet<{ foo: string }>>>().type<"WeakSet<{ foo: string; }>">();
 
   assert<Print<Map<string, unknown>>>().type<"Map<string, unknown>">();
   assert<Print<Map<unknown, unknown>>>().type<"Map<unknown, unknown>">();
   assert<Print<Map<Symbol, Set<[1n]>>>>().type<"Map<Symbol, Set<[1n]>>">();
 
-  assert<Print<WeakMap<{ foo: 1n }, 2n>>>().type<"WeakMap<{ foo: 1n }, 2n>">();
+  assert<Print<WeakMap<{ foo: 1n }, 2n>>>().type<"WeakMap<{ foo: 1n; }, 2n>">();
 
   assert<Print<Promise<unknown>>>().type<"Promise<unknown>">();
   assert<Print<Promise<void>>>().type<"Promise<void>">();
@@ -74,10 +74,20 @@ test.case("generics", assert => {
   const _p = Promise.resolve();
   assert<Print<typeof _p>>().type<"Promise<void>">();
 
-  assert<Print<ReadonlyArray<unknown>>>().type<"ReadonlyArray<unknown>">();
-  assert<Print<ReadonlyArray<void>>>().type<"ReadonlyArray<void>">();
+  assert<Print<Readonly<1>>>().type<"1">();
+  assert<Print<Readonly<true>>>().type<"true">();
+  assert<Print<Readonly<unknown>>>().type<"{}">();
+  assert<Print<Readonly<{ ok: boolean }>>>()
+    .type<"Readonly<{ ok: boolean; }>">();
+
+  assert<Print<readonly unknown[]>>().type("readonly unknown[]");
+  assert<Print<ReadonlyArray<unknown>>>().type<"readonly unknown[]">();
+  assert<Print<readonly void[]>>().type("readonly void[]");
+  assert<Print<ReadonlyArray<void>>>().type<"readonly void[]">();
+  assert<Print<readonly Promise<[boolean]>[]>>()
+    .type("readonly Promise<[boolean]>[]");
   assert<Print<ReadonlyArray<Promise<[boolean]>>>>()
-    .type<"ReadonlyArray<Promise<[boolean]>>">();
+    .type<"readonly Promise<[boolean]>[]">();
 
   assert<Print<Int8Array>>().type<"Int8Array">();
   assert<Print<Uint8Array>>().type<"Uint8Array">();
@@ -212,34 +222,36 @@ test.case("arrays", assert => {
 test.case("object", assert => {
   const _0 = {};
   assert<Print<typeof _0>>().type<"{}">();
-  assert<Print<{ foo: "bar" }>>().type<"{ foo: 'bar' }">();
-  assert<Print<{ foo: string }>>().type<"{ foo: string }">();
-  assert<Print<{ foo: true }>>().type<"{ foo: true }">();
-  assert<Print<{ foo: boolean }>>().type<"{ foo: boolean }">();
-  assert<Print<{ foo: 0 }>>().type<"{ foo: 0 }">();
-  assert<Print<{ foo: number }>>().type<"{ foo: number }">();
-  assert<Print<{ foo: 0n }>>().type<"{ foo: 0n }">();
+  assert<Print<{ foo: "bar" }>>().type<"{ foo: 'bar'; }">();
+  assert<Print<{ foo: string }>>().type<"{ foo: string; }">();
+  assert<Print<{ foo: true }>>().type<"{ foo: true; }">();
+  assert<Print<{ foo: boolean }>>().type<"{ foo: boolean; }">();
+  assert<Print<{ foo: 0 }>>().type<"{ foo: 0; }">();
+  assert<Print<{ foo: number }>>().type<"{ foo: number; }">();
+  assert<Print<{ foo: 0n }>>().type<"{ foo: 0n; }">();
 
   const _1: { count: number; foo: "bar" } = { count: 1, foo: "bar" };
-  assert<Print<typeof _1>>().type<"{ foo: 'bar'; count: number }">();
-  assert<Print<{ a: true; b: string[] }>>().type<"{ a: true; b: string[] }">();
+  assert<Print<typeof _1>>().type<"{ foo: 'bar'; count: number; }">();
+  assert<Print<{ a: true; b: string[] }>>().type<"{ a: true; b: string[]; }">();
 
   const _t = { foo: ["bar", 1n] };
   const _t2 = { foo: ["bar", 1n] } as const;
 
-  assert<Print<typeof _t>>().type<"{ foo: (string | bigint)[] }">();
-  assert<Print<typeof _t2>>().fail<"{ foo: ['bar', 1n] }">();
-  assert<Print<{ foo: { bar: "baz" } }>>().type<"{ foo: { bar: 'baz' } }">();
-  assert<Print<{ foo: { bar: string } }>>().type<"{ foo: { bar: string } }">();
-  assert<Print<{ foo: ["bar", 1n] }>>().type<"{ foo: ['bar', 1n] }">();
-  assert<Print<{ foo: [string, bigint] }>>().type<"{ foo: [string, bigint] }">();
-  assert<Print<{ foo: string[] }>>().type<"{ foo: string[] }">();
-  assert<Print<{ foo: [string[]] }>>().type<"{ foo: [string[]] }">();
+  assert<Print<typeof _t>>().type<"{ foo: (string | bigint)[]; }">();
+  assert<Print<typeof _t2>>().fail<"{ foo: ['bar', 1n]; }">();
+  assert<Print<{ foo: { bar: "baz" } }>>().type<"{ foo: { bar: 'baz'; }; }">();
+  assert<Print<{ foo: { bar: string } }>>()
+    .type<"{ foo: { bar: string; }; }">();
+  assert<Print<{ foo: ["bar", 1n] }>>().type<"{ foo: ['bar', 1n]; }">();
+  assert<Print<{ foo: [string, bigint] }>>()
+    .type<"{ foo: [string, bigint]; }">();
+  assert<Print<{ foo: string[] }>>().type<"{ foo: string[]; }">();
+  assert<Print<{ foo: [string[]] }>>().type<"{ foo: [string[]]; }">();
 
   const _s_foo = Symbol("foo");
   assert<Print<{ [_s_foo]: [string[]] }>>().type<"{}">();
 
   assert<Print<{ foo: [string, { bar: [symbol] }] }>>()
-    .type<"{ foo: [string, { bar: [symbol] }] }">();
+    .type<"{ foo: [string, { bar: [symbol]; }]; }">();
 
 });

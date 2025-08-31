@@ -1,12 +1,15 @@
 import type Dict from "#Dict";
+import type HasSpecificKeys from "#HasSpecificKeys";
 import type IsAny from "#IsAny";
 import type IsArray from "#IsArray";
 import type IsClass from "#IsClass";
+import type IsEqual from "#IsEqual";
 import type IsNever from "#IsNever";
 import type IsTuple from "#IsTuple";
 import type IsUnion from "#IsUnion";
 import type IsUnknown from "#IsUnknown";
 import type IsVoid from "#IsVoid";
+import type Mutable from "#Mutable";
 import type PrintArray from "#PrintArray";
 import type PrintClass from "#PrintClass";
 import type PrintRecord from "#PrintRecord";
@@ -29,9 +32,15 @@ type Print<T> =
   IsTuple<T> extends true ? PrintTuple<T> :
   IsArray<T> extends true ?
   T extends (infer E)[] ? `${PrintArray<E>}[]` :
-  T extends ReadonlyArray<infer E> ?
-  `ReadonlyArray<${Print<E>}>` : "array" :
-  T extends Dict ? PrintRecord<T> :
+  T extends ReadonlyArray<infer E> ? `readonly ${Print<E>}[]` : "array" :
+  T extends Dict ?
+  // If T is a fully readonly, concrete object (like Readonly<{ ok: boolean }>),
+  // print it wrapped as Readonly<...>. Otherwise print the record normally.
+  IsEqual<T, Readonly<T>> extends true ?
+  HasSpecificKeys<T> extends true ?
+  `Readonly<${PrintRecord<Mutable<T>>}>` :
+  PrintRecord<T> :
+  PrintRecord<T> :
   IsClass<T> extends true ? PrintClass<T> :
   never
   ;

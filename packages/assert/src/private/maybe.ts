@@ -8,9 +8,9 @@ const operations = [
   // eq
   "undefined", "null",
   // other types
-  "array", "object",
+  "array", "object", "record", "uuid",
   // misc
-  "defined", "newable", "instance", "subclass", "sub", "anyOf",
+  "defined", "newable", "instance", "subclass", "anyOf",
   // sizes
   "integer", "isize", "usize",
 ] as const;
