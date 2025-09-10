@@ -1,8 +1,8 @@
 type JSONPrimitive = boolean | null | number | string;
 
 type JSONValue =
-  | { [key: string]: JSONValue }
+  | { readonly [key: string]: JSONValue }
   | JSONPrimitive
-  | JSONValue[];
+  | readonly JSONValue[];
 
 export type { JSONValue as default };
