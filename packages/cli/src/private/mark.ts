@@ -1,8 +1,7 @@
 import dim from "#color/dim";
-import FileRef from "@rcompat/fs/FileRef";
 
 const stringify = (params: unknown[]) => params.map(param => {
-  if (param instanceof FileRef) {
+  if (param?.toString !== undefined) {
     return param.toString();
   }
   if (param instanceof Error) {
