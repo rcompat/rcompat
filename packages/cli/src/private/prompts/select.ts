@@ -1,7 +1,7 @@
 import dim from "#color/dim";
 import red from "#color/red";
+import readline from "#prompts/readline";
 import write from "#prompts/write";
-import readline from "@rcompat/stdio/readline";
 
 type Option<T> = { label: string; value: T };
 type Args<T> = { initial?: number; message: string; options: Array<Option<T>> };

@@ -1,8 +1,8 @@
 import dim from "#color/dim";
 import red from "#color/red";
+import readline from "#prompts/readline";
 import type TextOptions from "#prompts/TextOptions";
 import write from "#prompts/write";
-import readline from "@rcompat/stdio/readline";
 
 const CANCEL = Symbol.for("@rcompat/cli.prompts.CANCEL");
 
@@ -24,9 +24,15 @@ export default async (opts: TextOptions): Promise<string | typeof CANCEL> => {
     const answer = line.trim() || initial || "";
 
     if (validate) {
-      const out = await validate(answer);
-      if (typeof out === "string" && out) {
-        write(`${red(`✖ ${out}`)}\n`);
+      try {
+        const out = await validate(answer);
+        if (typeof out === "string" && out) {
+          write(`${red(`✖ ${out}`)}\n`);
+          continue;
+        }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        write(`${red(`✖ ${msg || "Invalid input"}`)}\n`);
         continue;
       }
     }
