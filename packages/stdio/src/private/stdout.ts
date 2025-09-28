@@ -1,1 +1,1 @@
-export { stderr as default } from "node:process";
+export { stdout as default } from "node:process";
