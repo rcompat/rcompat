@@ -1,23 +1,26 @@
+import { stdin, stdout } from "node:process";
 import * as readline from "node:readline";
 
 export default (): Promise<null | string> =>
   new Promise((resolve) => {
-    const r = readline
-      .createInterface({ input: process.stdin, output: process.stdout });
+    const r = readline.createInterface({
+      crlfDelay: Infinity,
+      historySize: 0,
+      input: stdin,
+      output: stdout,
+      terminal: Boolean(stdout.isTTY),
+    });
 
     let done = false;
-    const finish = (value: null | string) => {
+    const finish = (val: null | string) => {
       if (done) return;
       done = true;
-      // remove listeners then close; closing releases the event loop hold.
-      r.removeAllListeners();
-      r.close();
-      resolve(value);
+      try { r.removeAllListeners(); } catch { }
+      try { r.close(); } catch { }
+      resolve(val);
     };
 
     r.once("line", (line) => finish(line));
-    // Ctrl+C -> null (caller treats as cancel)
-    r.once("SIGINT", () => finish(null));
-    // Ctrl+D / EOF
-    r.once("close", () => finish(null));
+    r.once("SIGINT", () => finish(null)); // Ctrl+C
+    r.once("close", () => finish(null)); // Ctrl+D / EOF
   });
