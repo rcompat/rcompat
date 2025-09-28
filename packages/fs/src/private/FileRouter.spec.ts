@@ -617,6 +617,6 @@ test.case("depth: max with specials", assert => {
 
   // max depth of layout specials
   assert(router.depth("layout")).equals(2);
-  assert(router.depth("guard")).equals(0);
-  assert(router.depth("error")).equals(0);
+  assert(router.depth("guard")).equals(1);
+  assert(router.depth("error")).equals(1);
 });
