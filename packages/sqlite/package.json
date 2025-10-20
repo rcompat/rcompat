@@ -23,6 +23,9 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "@rcompat/fs": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {

@@ -1,6 +1,5 @@
 import FileRef from "#FileRef";
 import test from "@rcompat/test";
-import crypto from "@rcompat/crypto";
 
 test.case("exists", async assert => {
   assert(await FileRef.exists("/tmp")).true();
