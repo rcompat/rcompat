@@ -14,6 +14,9 @@ const bun: Native = {
   text(path: string) {
     return Bun.file(path).text();
   },
+  async byteLength(path: string) {
+    return Bun.file(path).size;
+  },
   async write(path: string, input: WritableInput) {
     if (input instanceof Response) {
       await Bun.write(path, await input.arrayBuffer());

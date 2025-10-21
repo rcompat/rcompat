@@ -271,6 +271,14 @@ export default class FileRef
     return new FileRef(path).json<T>();
   }
 
+  byteLength() {
+    return native.byteLength(this.path);
+  }
+
+  static byteLength(path: Path) {
+    return new FileRef(path).byteLength();
+  }
+
   async copy(to: FileRef, predicate?: FilePredicate): Promise<void> {
     await ensure_parents(to);
     maybe(predicate).instance(Function);

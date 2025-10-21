@@ -20,6 +20,15 @@ test.case("file doesn't exist", async assert => {
   //assert(() => file.copy(new FileRef("/tmp/2"))).throws(error);
 });
 
+test.case("byte length", async assert => {
+  const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
+  const file = new FileRef(filename);
+  await file.write("hello, world.");
+  const length = await file.byteLength();
+  assert(length).equals(13);
+  await file.remove();
+});
+
 test.case("write", async assert => {
   const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
   const file = new FileRef(filename);

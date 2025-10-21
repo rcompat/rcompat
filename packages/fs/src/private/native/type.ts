@@ -5,5 +5,6 @@ export default interface Native {
   json(path: string): Promise<unknown>;
   stream(path: string): ReadableStream<Uint8Array>;
   text(path: string): Promise<string>;
+  byteLength(path: string): Promise<number>;
   write(path: string, input: WritableInput): Promise<void>;
 };
