@@ -21,6 +21,9 @@ const node: Native = {
   text(path: string) {
     return text(path);
   },
+  async byteLength(path: string) {
+    return Buffer.byteLength(await readFile(path));
+  },
   async write(path: string, input: WritableInput) {
     if (input instanceof Blob || input instanceof Response) {
       return writeFile(path, new Uint8Array(await input.arrayBuffer()));

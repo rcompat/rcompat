@@ -14,6 +14,9 @@ const deno: Native = {
   text(path: string) {
     return Deno.readTextFile(path);
   },
+  async byteLength(path: string) {
+    return (await Deno.readFile(path)).byteLength;
+  },
   async write(path: string, input: WritableInput) {
     if (input instanceof Blob || input instanceof Response) {
       return Deno.writeFile(path, new Uint8Array(await input.arrayBuffer()));
