@@ -25,6 +25,15 @@
   },
   "type": "module",
   "imports": {
+    "#native": {
+      "apekit": "./src/private/native/node.ts",
+      "bun": "./lib/private/native/bun.js",
+      "deno": "./lib/private/native/deno.js",
+      "default": "./lib/private/native/node.js"
+    },
+    "#native/type": {
+      "apekit": "./src/private/native/type.ts"
+    },
     "#*": {
       "apekit": "./src/private/*.ts",
       "default": "./lib/private/*.js"
