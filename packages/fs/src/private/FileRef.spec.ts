@@ -25,7 +25,7 @@ test.case("byte length", async assert => {
   const file = new FileRef(filename);
   await file.write("hello, world.");
   const length = await file.byteLength();
-  assert(length).equals(13);
+  assert(length).equals(14);
   await file.remove();
 });
 
@@ -33,7 +33,7 @@ test.case("write", async assert => {
   const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
   const file = new FileRef(filename);
   await file.write("test");
-  assert(await file.text()).equals("test");
+  assert(await file.text()).equals("test\n");
   await file.remove();
 });
 test.case("write with path", async assert => {
@@ -41,7 +41,7 @@ test.case("write with path", async assert => {
   const file = new FileRef(filename);
   await file.directory.create();
   await file.write("test");
-  assert(await file.text()).equals("test");
+  assert(await file.text()).equals("test\n");
   await file.remove();
   await file.directory.remove();
 });

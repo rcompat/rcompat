@@ -330,7 +330,11 @@ export default class FileRef
   async write(input: WritableInput) {
     ensure_parents(this);
 
-    await native.write(this.path, input);
+    const to_write = typeof input === "string" && !input.endsWith("\n")
+      ? input + "\n"
+      : input;
+
+    await native.write(this.path, to_write);
   }
 
   static write(path: Path, input: WritableInput) {
