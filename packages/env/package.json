@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/env",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Standard library environment loading",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -30,8 +30,8 @@
   "imports": {
     "#js-env": {
       "apekit": "./src/private/js-env/node.ts",
-      "bun": "./src/private/js-env/bun.ts",
-      "default": "./src/private/js-env/node.ts"
+      "bun": "./lib/private/js-env/bun.js",
+      "default": "./lib/private/js-env/node.js"
     },
     "#*": {
       "apekit": "./src/private/*.ts",
@@ -39,6 +39,10 @@
     }
   },
   "exports": {
+    ".": {
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
+    },
     "./*": {
       "apekit": "./src/public/*.ts",
       "default": "./lib/public/*.js"
