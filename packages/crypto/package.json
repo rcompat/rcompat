@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/crypto",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Standard library cryptographic functions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

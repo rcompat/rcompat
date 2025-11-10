@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fs",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Standard library filesystem access",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
+    "@rcompat/crypto": "workspace:^",
     "@rcompat/record": "workspace:^"
   },
   "type": "module",
