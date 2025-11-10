@@ -10,6 +10,7 @@ import type WritableInput from "#WritableInput";
 import defined from "@rcompat/assert/defined";
 import is from "@rcompat/assert/is";
 import maybe from "@rcompat/assert/maybe";
+import hash from "@rcompat/crypto/hash";
 import type Dict from "@rcompat/type/Dict";
 import type JSONValue from "@rcompat/type/JSONValue";
 import type MaybePromise from "@rcompat/type/MaybePromise";
@@ -255,6 +256,14 @@ export default class FileRef
     return new FileRef(path).arrayBuffer();
   }
 
+  async bytes(): Promise<Uint8Array> {
+    return new Uint8Array(await this.arrayBuffer());
+  }
+
+  static bytes(path: Path) {
+    return new FileRef(path).bytes();
+  }
+
   text() {
     return native.text(this.path);
   }
@@ -382,5 +391,9 @@ export default class FileRef
     maybe(path).string();
 
     return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
+  }
+
+  async hash(algorithm = "SHA-256"): Promise<string> {
+    return await hash(await this.arrayBuffer(), algorithm);
   }
 }
