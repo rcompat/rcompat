@@ -17,8 +17,7 @@
   },
   "dependencies": {
     "@rcompat/cli": "workspace:^",
-    "@rcompat/fs": "workspace:^",
-    "@rcompat/package": "workspace:^"
+    "@rcompat/fs": "workspace:^"
   },
   "peerDependencies": {
     "@rcompat/test": "workspace:^"

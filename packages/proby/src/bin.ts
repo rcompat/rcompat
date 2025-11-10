@@ -3,7 +3,7 @@
 import red from "@rcompat/cli/color/red";
 import print from "@rcompat/cli/print";
 import type FileRef from "@rcompat/fs/FileRef";
-import root from "@rcompat/package/root";
+import root from "@rcompat/fs/project/root";
 import run from "./run.js";
 
 const $root = await root();

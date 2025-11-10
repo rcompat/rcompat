@@ -24,7 +24,6 @@ Deno, Bun and future runtimes.
 |[@rcompat/function](packages/function)     | Function handling                |
 |[@rcompat/html](packages/html)             | HTML handling                    |
 |[@rcompat/http](packages/http)             | HTTP servers                     |
-|[@rcompat/package](packages/package)       | Package helpers                  |
 |[@rcompat/proby](packages/proby)           | Test runner                      |
 |[@rcompat/record](packages/record)         | Record helpers                   |
 |[@rcompat/runtime](packages/runtime)       | Runtime detection                |
