@@ -99,19 +99,21 @@ export default class FileRef
   }
 
   async kind() {
-    is(await this.exists()).true(`file does not exist: ${this.path}`);
+    try {
+      const stats = await this.#stats();
 
-    const stats = await this.#stats();
+      if (stats.isFile()) {
+        return Kind.File;
+      }
 
-    if (stats.isFile()) {
-      return Kind.File;
+      if (stats.isDirectory()) {
+        return Kind.Directory;
+      }
+
+      return Kind.Link;
+    } catch {
+      return Kind.None;
     }
-
-    if (stats.isDirectory()) {
-      return Kind.Directory;
-    }
-
-    return Kind.Link;
   }
 
   async list(predicate?: FilePredicate, options?: Dict) {
@@ -160,7 +162,11 @@ export default class FileRef
       if (file.name.startsWith(".")) {
         continue;
       }
-      if (await file.kind() === Kind.Directory) {
+      const kind = await file.kind();
+      if (kind === Kind.None) {
+        continue;
+      }
+      if (kind === Kind.Directory) {
         subfiles = subfiles.concat(await file.collect(predicate));
       } else if (predicate === undefined || await predicate(file)) {
         subfiles.push(file);
