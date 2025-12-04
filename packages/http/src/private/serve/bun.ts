@@ -7,6 +7,7 @@ import type { ServerWebSocket } from "bun";
 
 export default async (handler: Handler, conf: Conf): Promise<Server> => {
   const server = Bun.serve({
+    idleTimeout: conf.timeout ?? 10,
     fetch: handler,
     hostname: conf.host,
     port: conf.port,

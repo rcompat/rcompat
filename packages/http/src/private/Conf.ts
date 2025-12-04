@@ -7,4 +7,5 @@ export default interface Conf {
     cert: FileRef;
     key: FileRef;
   };
+  timeout?: number;
 }
