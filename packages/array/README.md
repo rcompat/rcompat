@@ -170,5 +170,5 @@ MIT
 
 ## Contributing
 
-See [HACKING.md](../../HACKING.md) in the repository root.
+See [CONTRIBUING.md](../../CONTRIBUTING.md) in the repository root.
 
