@@ -1,5 +1,5 @@
-import stdin from "@rcompat/stdio/stdin";
-import stdout from "@rcompat/stdio/stdout";
+import stdin from "@rcompat/io/stdin";
+import stdout from "@rcompat/io/stdout";
 
 let active: null | Promise<null | string> = null;
 

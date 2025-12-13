@@ -1,4 +1,4 @@
-import isatty from "@rcompat/stdio/isatty";
+import isatty from "@rcompat/io/isatty";
 
 export default function spinner() {
   let active = false;

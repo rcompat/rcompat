@@ -1,3 +1,3 @@
-import stdout from "@rcompat/stdio/stdout";
+import stdout from "@rcompat/io/stdout";
 
 export default (...messages: string[]) => stdout.write(messages.join(" "));

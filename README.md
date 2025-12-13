@@ -28,7 +28,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/record](packages/record)         | Record helpers                   |
 |[@rcompat/runtime](packages/runtime)       | Runtime detection                |
 |[@rcompat/sql](packages/sql)               | SQL abstractions                 |
-|[@rcompat/stdio](packages/stdio)           | Input/output                     |
+|[@rcompat/io](packages/io)                 | Input/output                     |
 |[@rcompat/stream](packages/stream)         | Stream handling                  |
 |[@rcompat/string](packages/string)         | String handling                  |
 |[@rcompat/test](packages/test)             | Testing                          |

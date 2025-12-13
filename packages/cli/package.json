@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@rcompat/fs": "workspace:^",
-    "@rcompat/stdio": "workspace:^"
+    "@rcompat/io": "workspace:^"
   },
   "type": "module",
   "imports": {
