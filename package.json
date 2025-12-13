@@ -21,14 +21,14 @@
   "devDependencies": {
     "@rcompat/test": "workspace:^",
     "@rcompat/type": "workspace:^",
-    "@types/bun": "^1.3.2",
+    "@types/bun": "^1.3.4",
     "@types/busboy": "^1.5.4",
     "@types/deno": "^2.5.0",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.1",
     "@types/ws": "^8.18.1",
     "apekit": "^0.0.41",
-    "eslint": "^9.39.1",
-    "knip": "^5.69.1",
+    "eslint": "^9.39.2",
+    "knip": "^5.73.4",
     "proby": "workspace:^",
     "typescript": "^5.9.3"
   }
