@@ -22,15 +22,15 @@ Returns elements from the first array that are not present in the second array
 (set difference).
 
 ```js
-import difference from "@rcompat/array/difference";
+import array from "@rcompat/array";
 
-difference([1, 2, 3, 4], [2, 4]);
+array.difference([1, 2, 3, 4], [2, 4]);
 // [1, 3]
 
-difference(["a", "b", "c"], ["b"]);
+array.difference(["a", "b", "c"], ["b"]);
 // ["a", "c"]
 
-difference([1, 2], [1, 2]);
+array.difference([1, 2], [1, 2]);
 // []
 ```
 
@@ -39,15 +39,15 @@ difference([1, 2], [1, 2]);
 Checks if an array is empty.
 
 ```js
-import empty from "@rcompat/array/empty";
+import array from "@rcompat/array";
 
-empty([]);
+array.empty([]);
 // true
 
-empty(["foo"]);
+array.empty(["foo"]);
 // false
 
-empty([[]]);
+array.empty([[]]);
 // false (contains one element, an empty array)
 ```
 
@@ -57,15 +57,15 @@ Normalizes a value to an array. If the value is already an array, it is
 returned as-is. Otherwise, the value is wrapped in an array.
 
 ```js
-import to from "@rcompat/array/to";
+import array from "@rcompat/array";
 
-to("hello");
+array.to("hello");
 // ["hello"]
 
-to(["hello"]);
+array.to(["hello"]);
 // ["hello"]
 
-to(42);
+array.to(42);
 // [42]
 
 to([1, 2, 3]);
@@ -122,16 +122,15 @@ Ensures a value is an array.
 ### Processing user input
 
 ```js
-import to from "@rcompat/array/to";
-import empty from "@rcompat/array/empty";
+import array from "@rcompat/array";
 
 function processIds(ids) {
-  const idArray = to(ids);
-  
-  if (empty(idArray)) {
+  const idArray = array.to(ids);
+
+  if (array.empty(idArray)) {
     return "No IDs provided";
   }
-  
+
   return `Processing ${idArray.length} ID(s)`;
 }
 
@@ -143,15 +142,15 @@ processIds([]);              // "No IDs provided"
 ### Finding new items
 
 ```js
-import difference from "@rcompat/array/difference";
+import array from "@rcompat/array";
 
 const previousTags = ["javascript", "typescript", "node"];
 const currentTags = ["javascript", "typescript", "deno", "bun"];
 
-const newTags = difference(currentTags, previousTags);
+const newTags = array.difference(currentTags, previousTags);
 // ["deno", "bun"]
 
-const removedTags = difference(previousTags, currentTags);
+const removedTags = array.difference(previousTags, currentTags);
 // ["node"]
 ```
 
