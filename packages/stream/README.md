@@ -31,10 +31,10 @@ bun add @rcompat/stream
 ### Convert stream to string
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
 // From a ReadableStream
-const stream = new ReadableStream({
+const readable = new ReadableStream({
   start(controller) {
     controller.enqueue(new TextEncoder().encode("Hello, "));
     controller.enqueue(new TextEncoder().encode("World!"));
@@ -42,29 +42,28 @@ const stream = new ReadableStream({
   }
 });
 
-const text = await stringify(stream);
+const text = await stream.stringify(readable);
 console.log(text); // "Hello, World!"
 ```
 
 ### With fetch response
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
 const response = await fetch("https://example.com/data.txt");
-const text = await stringify(response.body);
+const text = await stream.stringify(response.body);
 console.log(text);
 ```
 
 ### With file streams
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 import FileRef from "@rcompat/fs/FileRef";
 
 const file = new FileRef("./data.txt");
-const stream = await file.stream();
-const content = await stringify(stream);
+const content = await stream.stringify(await file.stream());
 console.log(content);
 ```
 
@@ -73,9 +72,9 @@ console.log(content);
 ### `stringify`
 
 ```ts
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
-stringify(stream: ReadableStream): Promise<string>;
+stream.stringify(readable: ReadableStream): Promise<string>;
 ```
 
 Reads all chunks from a `ReadableStream`, decodes them as UTF-8 text, and
@@ -106,13 +105,13 @@ const decoder = new TextDecoder();
 async function stringify(stream) {
   const reader = stream.getReader();
   const chunks = [];
-  
+
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
     chunks.push(decoder.decode(value));
   }
-  
+
   return chunks.join("");
 }
 ```
@@ -122,11 +121,11 @@ async function stringify(stream) {
 ### Process streaming API response
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
 async function fetchJSON(url) {
   const response = await fetch(url);
-  const text = await stringify(response.body);
+  const text = await stream.stringify(response.body);
   return JSON.parse(text);
 }
 
@@ -136,31 +135,31 @@ const data = await fetchJSON("https://api.example.com/users");
 ### Read subprocess output
 
 ```js
-import stringify from "@rcompat/stream/stringify";
-import spawn from "@rcompat/stdio/spawn";
+import stream from "@rcompat/stream";
+import spawn from "@rcompat/io/spawn";
 
 const { stdout } = spawn("ls -la", { cwd: "." });
-const output = await stringify(stdout);
+const output = await stream.stringify(stdout);
 console.log(output);
 ```
 
 ### Collect streaming chunks
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
 async function collectSSE(url) {
   const response = await fetch(url);
-  // Note: For actual SSE, you'd process chunks individually
-  // This example just collects everything
-  return await stringify(response.body);
+  // note: For actual SSE, you'd process chunks individually
+  // this example just collects everything
+  return await stream.stringify(response.body);
 }
 ```
 
 ### Transform and stringify
 
 ```js
-import stringify from "@rcompat/stream/stringify";
+import stream from "@rcompat/stream";
 
 const source = new ReadableStream({
   start(controller) {
@@ -170,7 +169,7 @@ const source = new ReadableStream({
   }
 });
 
-// Transform stream (uppercase)
+// transform stream (uppercase)
 const transformed = source.pipeThrough(new TransformStream({
   transform(chunk, controller) {
     const text = new TextDecoder().decode(chunk);
@@ -178,7 +177,7 @@ const transformed = source.pipeThrough(new TransformStream({
   }
 }));
 
-const result = await stringify(transformed);
+const result = await stream.stringify(transformed);
 console.log(result); // "LINE1\nLINE2\n"
 ```
 
