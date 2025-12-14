@@ -1,3 +1,3 @@
 export default interface Native {
-  utf8ByteLength(path: string): number;
+  utf8_bytelength(path: string): number;
 };

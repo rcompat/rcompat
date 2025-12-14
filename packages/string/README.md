@@ -33,48 +33,48 @@ bun add @rcompat/string
 ```js
 import Base64 from "@rcompat/string/Base64";
 
-// Encode to Base64
+// encode to Base64
 const encoded = Base64.encode("Hello, World!");
 console.log(encoded); // "SGVsbG8sIFdvcmxkIQ=="
 
-// Decode from Base64
+// decode from Base64
 const decoded = Base64.decode(encoded);
 console.log(decoded); // "Hello, World!"
 ```
 
-### Convert to camelCase
+### Convert to camelcase
 
 ```js
-import camelcased from "@rcompat/string/camelcased";
+import string from "@rcompat/string";
 
-// From kebab-case
-camelcased("hello-world"); // "helloWorld"
-camelcased("my-component"); // "myComponent"
+// from kebab-case
+string.camelcased("hello-world"); // "helloWorld"
+string.camelcased("my-component"); // "myComponent"
 
-// From snake_case
-camelcased("hello_world"); // "helloWorld"
-camelcased("user_profile"); // "userProfile"
+// from snake_case
+string.camelcased("hello_world"); // "helloWorld"
+string.camelcased("user_profile"); // "userProfile"
 
-// Mixed
-camelcased("my-user_name"); // "myUserName"
+// mixed
+string.camelcased("my-user_name"); // "myUserName"
 ```
 
 ### Dedent multi-line strings
 
 ```js
-import dedent from "@rcompat/string/dedent";
+import string from "@rcompat/string";
 
-// As a template tag
-const sql = dedent`
+// as a template tag
+const sql = string.dedent`
   SELECT *
   FROM users
   WHERE active = true
 `;
 // "SELECT *\nFROM users\nWHERE active = true"
 
-// With interpolation
+// with interpolation
 const table = "users";
-const query = dedent`
+const query = string.dedent`
   SELECT *
   FROM ${table}
   WHERE id = 1
@@ -84,22 +84,22 @@ const query = dedent`
 ### Convert glob to RegExp
 
 ```js
-import globify from "@rcompat/string/globify";
+import string from "@rcompat/string";
 
-// Simple wildcards
-const pattern = globify("*.js");
+// simple wildcards
+const pattern = string.globify("*.js");
 pattern.test("app.js"); // true
 pattern.test("app.ts"); // false
 pattern.test("dir/app.js"); // false
 
-// Double wildcard (recursive)
-const recursive = globify("**/*.js");
+// double wildcard (recursive)
+const recursive = string.globify("**/*.js");
 recursive.test("app.js"); // true
 recursive.test("src/app.js"); // true
 recursive.test("src/lib/app.js"); // true
 
-// Single character wildcard
-const single = globify("file?.txt");
+// single character wildcard
+const single = string.globify("file?.txt");
 single.test("file1.txt"); // true
 single.test("fileA.txt"); // true
 single.test("file10.txt"); // false
@@ -108,37 +108,36 @@ single.test("file10.txt"); // false
 ### Capitalize first letter
 
 ```js
-import upperfirst from "@rcompat/string/upperfirst";
+import string from "@rcompat/string";
 
-upperfirst("hello"); // "Hello"
-upperfirst("world"); // "World"
-upperfirst("javaScript"); // "JavaScript"
+string.upperfirst("hello"); // "Hello"
+string.upperfirst("world"); // "World"
+string.upperfirst("javaScript"); // "JavaScript"
 ```
 
 ### Get UTF-8 byte length
 
 ```js
-import utf8ByteLength from "@rcompat/string/utf8-bytelength";
+import utf8 from "@rcompat/string/utf8";
 
 // ASCII (1 byte per character)
-utf8ByteLength("hello"); // 5
+utf8.bytelength("hello"); // 5
 
-// Unicode (variable bytes)
-utf8ByteLength("héllo"); // 6 (é = 2 bytes)
-utf8ByteLength("日本語"); // 9 (3 bytes each)
-utf8ByteLength("🎉"); // 4 (emoji = 4 bytes)
+// unicode (variable bytes)
+utf8.bytelength("héllo"); // 6 (é = 2 bytes)
+utf8.bytelength("日本語"); // 9 (3 bytes each)
+utf8.bytelength("🎉"); // 4 (emoji = 4 bytes)
 ```
 
-### Calculate UTF-8 size (pure JS)
+### Get UTF-8 size
 
 ```js
-import utf8size from "@rcompat/string/utf8size";
+import utf8 from "@rcompat/string/utf8";
 
-// Same results, pure JavaScript implementation
-utf8size("hello"); // 5
-utf8size("héllo"); // 6
-utf8size("日本語"); // 9
-utf8size("🎉"); // 4
+utf8.size("hello"); // 5
+utf8.size("héllo"); // 6
+utf8.size("日本語"); // 9
+utf8.size("🎉"); // 4
 ```
 
 ## API Reference
@@ -162,9 +161,9 @@ Object with methods for Base64 encoding and decoding.
 ### `camelcased`
 
 ```ts
-import camelcased from "@rcompat/string/camelcased";
+import string from "@rcompat/string";
 
-camelcased(string: string): string;
+string.camelcased(string: string): string;
 ```
 
 Converts kebab-case or snake_case strings to camelCase.
@@ -172,10 +171,10 @@ Converts kebab-case or snake_case strings to camelCase.
 ### `dedent`
 
 ```ts
-import dedent from "@rcompat/string/dedent";
+import string from "@rcompat/string";
 
-dedent(string: string): string;
-dedent(strings: TemplateStringsArray, ...values: unknown[]): string;
+string.dedent(string: string): string;
+string.dedent(strings: TemplateStringsArray, ...values: unknown[]): string;
 ```
 
 Removes common leading whitespace from multi-line strings. Can be used as
@@ -184,9 +183,9 @@ a template tag or called directly with a string.
 ### `globify`
 
 ```ts
-import globify from "@rcompat/string/globify";
+import string from "@rcompat/string";
 
-globify(pattern: string): RegExp;
+string.globify(pattern: string): RegExp;
 ```
 
 Converts a glob pattern to a `RegExp`.
@@ -201,29 +200,29 @@ Converts a glob pattern to a `RegExp`.
 ### `upperfirst`
 
 ```ts
-import upperfirst from "@rcompat/string/upperfirst";
+import string from "@rcompat/string";
 
-upperfirst(string: string): string;
+string.upperfirst(string: string): string;
 ```
 
 Capitalizes the first character of a string.
 
-### `utf8-bytelength`
+### `utf8.bytelength`
 
 ```ts
-import utf8ByteLength from "@rcompat/string/utf8-bytelength";
+import utf8 from "@rcompat/string/utf8";
 
-utf8ByteLength(string: string): number;
+utf8.bytelength(string: string): number;
 ```
 
 Returns the UTF-8 byte length of a string using native `Buffer.byteLength`.
 
-### `utf8size`
+### `utf8.size`
 
 ```ts
-import utf8size from "@rcompat/string/utf8size";
+import utf8 from "@rcompat/string/utf8";
 
-utf8size(string: string): number;
+utf8.size(string: string): number;
 ```
 
 Pure JavaScript implementation to calculate UTF-8 byte size. Useful when
@@ -234,13 +233,12 @@ you need a dependency-free solution or for environments without `Buffer`.
 ### Generate component names
 
 ```js
-import camelcased from "@rcompat/string/camelcased";
-import upperfirst from "@rcompat/string/upperfirst";
+import string from "@rcompat/string";
 
 function toComponentName(filename) {
-    // "my-button.svelte" -> "MyButton"
-    const name = filename.replace(/\.\w+$/, "");
-    return upperfirst(camelcased(name));
+// "my-button.svelte" -> "MyButton"
+const name = filename.replace(/\.\w+$/, "");
+return string.upperfirst(string.camelcased(name));
 }
 
 toComponentName("my-button.svelte"); // "MyButton"
@@ -250,10 +248,10 @@ toComponentName("user_profile.vue"); // "UserProfile"
 ### Build SQL queries
 
 ```js
-import dedent from "@rcompat/string/dedent";
+import string from "@rcompat/string";
 
 function buildQuery(table, conditions) {
-    return dedent`
+  return string.dedent`
     SELECT *
     FROM ${table}
     WHERE ${conditions.join(" AND ")}
@@ -267,11 +265,11 @@ const query = buildQuery("users", ["active = true", "role = 'admin'"]);
 ### File matching
 
 ```js
-import globify from "@rcompat/string/globify";
+import string from "@rcompat/string";
 
 function matchFiles(files, pattern) {
-    const regex = globify(pattern);
-    return files.filter((file) => regex.test(file));
+  const regex = string.globify(pattern);
+  return files.filter((file) => regex.test(file));
 }
 
 const files = ["app.js", "app.ts", "src/utils.js", "src/lib/helper.js"];
@@ -284,14 +282,14 @@ matchFiles(files, "src/**/*.js"); // ["src/utils.js", "src/lib/helper.js"]
 ### Validate content length
 
 ```js
-import utf8ByteLength from "@rcompat/string/utf8-bytelength";
+import utf8 from "@rcompat/string/utf8";
 
 function validateContent(content, maxBytes = 1024) {
-    const bytes = utf8ByteLength(content);
-    if (bytes > maxBytes) {
-        throw new Error(`Content exceeds ${maxBytes} bytes (got ${bytes})`);
-    }
-    return content;
+  const bytes = utf8.bytelength(content);
+  if (bytes > maxBytes) {
+    throw new Error(`Content exceeds ${maxBytes} bytes (got ${bytes})`);
+  }
+  return content;
 }
 
 validateContent("Hello"); // OK
@@ -304,13 +302,13 @@ validateContent("日本語".repeat(500)); // Error: exceeds limit
 import Base64 from "@rcompat/string/Base64";
 
 function encodeState(state) {
-    const json = JSON.stringify(state);
-    return Base64.encode(json);
+  const json = JSON.stringify(state);
+  return Base64.encode(json);
 }
 
 function decodeState(encoded) {
-    const json = Base64.decode(encoded);
-    return JSON.parse(json);
+  const json = Base64.decode(encoded);
+  return JSON.parse(json);
 }
 
 const state = { page: 1, filter: "active" };

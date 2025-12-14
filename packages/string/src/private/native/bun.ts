@@ -1,8 +1,8 @@
 import type Native from "#native/type";
-import { Buffer } from 'node:buffer';
+import { Buffer } from "node:buffer";
 
 const bun: Native = {
-  utf8ByteLength(str: string) {
+  utf8_bytelength(str: string) {
     return Buffer.byteLength(str, "utf8");
   },
 };

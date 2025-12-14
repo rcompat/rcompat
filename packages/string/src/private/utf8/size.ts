@@ -1,4 +1,4 @@
-function utf8size(string: string): number {
+export default function utf8Size(string: string): number {
   let size = 0;
 
   for (let i = 0; i < string.length; i++) {
@@ -23,5 +23,3 @@ function utf8size(string: string): number {
 
   return size;
 }
-
-export default utf8size;

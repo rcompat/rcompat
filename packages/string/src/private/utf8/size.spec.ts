@@ -1,4 +1,4 @@
-import size from "#utf8size";
+import size from "#utf8/size";
 import test from "@rcompat/test";
 
 test.case("ascii (1 byte)", assert => {
