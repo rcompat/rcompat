@@ -40,7 +40,7 @@
     }
   },
   "exports": {
-    "*": {
+    ".": {
       "apekit": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
