@@ -33,16 +33,16 @@ bun add @rcompat/sqlite
 ```js
 import Database from "@rcompat/sqlite";
 
-// File-based database
+// file-based database
 const db = new Database("./data.db");
 
-// In-memory database
+// in-memory database
 const memDb = new Database(":memory:");
 
-// Read-only mode
+// read-only mode
 const readOnly = new Database("./data.db", { readonly: true });
 
-// Safe integers (returns BigInt for integers)
+// safe integers (returns BigInt for integers)
 const safeDb = new Database("./data.db", { safeIntegers: true });
 ```
 
@@ -53,7 +53,7 @@ import Database from "@rcompat/sqlite";
 
 const db = new Database(":memory:");
 
-// Create a table
+// create a table
 db.exec(`
   CREATE TABLE users (
     id INTEGER PRIMARY KEY,
@@ -62,7 +62,7 @@ db.exec(`
   )
 `);
 
-// Insert data
+// insert data
 db.exec("INSERT INTO users (name, email) VALUES (?, ?)", "Alice", "alice@example.com");
 ```
 
@@ -75,7 +75,7 @@ const db = new Database(":memory:");
 
 db.exec("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)");
 
-// Prepare a statement for reuse
+// prepare a statement for reuse
 const insert = db.prepare("INSERT INTO users (name) VALUES (?)");
 
 insert.run("Alice");   // { changes: 1, lastInsertRowid: 1 }
@@ -96,11 +96,11 @@ db.exec("INSERT INTO users (name) VALUES (?)", "Bob");
 
 const query = db.prepare("SELECT * FROM users");
 
-// Get first row
+// get first row
 query.get();
 // { id: 1, name: "Alice" }
 
-// Get all rows
+// get all rows
 query.all();
 // [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
 ```
@@ -222,7 +222,7 @@ import Database from "@rcompat/sqlite";
 
 const db = new Database(":memory:");
 
-// Create
+// create
 db.exec(`
   CREATE TABLE products (
     id INTEGER PRIMARY KEY,
@@ -231,25 +231,25 @@ db.exec(`
   )
 `);
 
-// Insert
+// insert
 const insert = db.prepare("INSERT INTO products (name, price) VALUES (?, ?)");
 insert.run("Widget", 9.99);
 insert.run("Gadget", 19.99);
 
-// Read
+// read
 const findById = db.prepare("SELECT * FROM products WHERE id = ?");
 const product = findById.get(1);
 // { id: 1, name: "Widget", price: 9.99 }
 
-// Update
+// update
 const update = db.prepare("UPDATE products SET price = ? WHERE id = ?");
 update.run(14.99, 1);
 
-// Delete
+// delete
 const remove = db.prepare("DELETE FROM products WHERE id = ?");
 remove.run(2);
 
-// List all
+// list all
 const all = db.prepare("SELECT * FROM products").all();
 // [{ id: 1, name: "Widget", price: 14.99 }]
 ```
@@ -263,7 +263,7 @@ const db = new Database("./app.db");
 
 function transferFunds(fromId, toId, amount) {
   db.exec("BEGIN TRANSACTION");
-  
+
   try {
     db.exec("UPDATE accounts SET balance = balance - ? WHERE id = ?", amount, fromId);
     db.exec("UPDATE accounts SET balance = balance + ? WHERE id = ?", amount, toId);
