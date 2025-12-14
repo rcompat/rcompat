@@ -31,30 +31,50 @@ bun add @rcompat/type
 ### Basic types
 
 ```ts
+<<<<<<< HEAD
 import type { Dict, Maybe, Nullish, Primitive } from "@rcompat/type";
+=======
+import type Dict from "@rcompat/type/Dict";
+import type Maybe from "@rcompat/type/Maybe";
+import type Nullish from "@rcompat/type/Nullish";
+import type Primitive from "@rcompat/type/Primitive";
+>>>>>>> c7faedb (docs: webview package)
 
 // Dict<V> = Record<string, V>
 const config: Dict<string> = { host: "localhost", port: "3000" };
 
 // Maybe<T> = T | undefined
 function find(id: number): Maybe<User> {
+<<<<<<< HEAD
   return users.get(id);
+=======
+    return users.get(id);
+>>>>>>> c7faedb (docs: webview package)
 }
 
 // Nullish = null | undefined
 function isNullish(value: unknown): value is Nullish {
+<<<<<<< HEAD
   return value == null;
+=======
+    return value == null;
+>>>>>>> c7faedb (docs: webview package)
 }
 
 // Primitive = bigint | boolean | null | number | string | symbol | undefined
 function isPrimitive(value: unknown): value is Primitive {
+<<<<<<< HEAD
   return value !== Object(value);
+=======
+    return value !== Object(value);
+>>>>>>> c7faedb (docs: webview package)
 }
 ```
 
 ### Type predicates
 
 ```ts
+<<<<<<< HEAD
 import type { IsAny, IsNever, IsUnion, IsTuple, IsArray } from "@rcompat/type";
 
 // check if type is `any`
@@ -74,6 +94,31 @@ type G = IsTuple<[string, number]>; // true
 type H = IsTuple<string[]>; // false
 
 // check if type is an array
+=======
+import type IsAny from "@rcompat/type/IsAny";
+import type IsNever from "@rcompat/type/IsNever";
+import type IsUnion from "@rcompat/type/IsUnion";
+import type IsTuple from "@rcompat/type/IsTuple";
+import type IsArray from "@rcompat/type/IsArray";
+
+// Check if type is `any`
+type A = IsAny<any>; // true
+type B = IsAny<string>; // false
+
+// Check if type is `never`
+type C = IsNever<never>; // true
+type D = IsNever<void>; // false
+
+// Check if type is a union
+type E = IsUnion<string | number>; // true
+type F = IsUnion<string>; // false
+
+// Check if type is a tuple
+type G = IsTuple<[string, number]>; // true
+type H = IsTuple<string[]>; // false
+
+// Check if type is an array
+>>>>>>> c7faedb (docs: webview package)
 type I = IsArray<string[]>; // true
 type J = IsArray<[string]>; // true (tuples are arrays)
 ```
@@ -81,6 +126,7 @@ type J = IsArray<[string]>; // true (tuples are arrays)
 ### Type transformations
 
 ```ts
+<<<<<<< HEAD
 import type {
   Mutable, DeepMutable, Not, UnionToTuple, TupleToUnion,
 } from "@rcompat/type";
@@ -90,11 +136,25 @@ type Writable = Mutable<Readonly<{ a: string }>>;
 // { a: string }
 
 // recursively remove readonly
+=======
+import type Mutable from "@rcompat/type/Mutable";
+import type DeepMutable from "@rcompat/type/DeepMutable";
+import type Not from "@rcompat/type/Not";
+import type UnionToTuple from "@rcompat/type/UnionToTuple";
+import type TupleToUnion from "@rcompat/type/TupleToUnion";
+
+// Remove readonly modifier
+type Writable = Mutable<Readonly<{ a: string }>>;
+// { a: string }
+
+// Recursively remove readonly
+>>>>>>> c7faedb (docs: webview package)
 type DeepWritable = DeepMutable<
     Readonly<{ nested: Readonly<{ value: number }> }>
 >;
 // { nested: { value: number } }
 
+<<<<<<< HEAD
 // boolean negation
 type Yes = Not<false>; // true
 type No = Not<true>; // false
@@ -104,6 +164,17 @@ type Tuple = UnionToTuple<"a" | "b" | "c">;
 // ["a", "b", "c"]
 
 // convert tuple to union
+=======
+// Boolean negation
+type Yes = Not<false>; // true
+type No = Not<true>; // false
+
+// Convert union to tuple
+type Tuple = UnionToTuple<"a" | "b" | "c">;
+// ["a", "b", "c"]
+
+// Convert tuple to union
+>>>>>>> c7faedb (docs: webview package)
 type Union = TupleToUnion<["a", "b", "c"]>;
 // "a" | "b" | "c"
 ```
@@ -111,6 +182,7 @@ type Union = TupleToUnion<["a", "b", "c"]>;
 ### Function types
 
 ```ts
+<<<<<<< HEAD
 import type { Newable, UnknownFunction } from "@rcompat/type";
 
 // constructor type
@@ -122,11 +194,30 @@ function createInstance<T>(Ctor: Newable<T>): T {
 function wrap(fn: UnknownFunction) {
   return (...args: unknown[]) => fn(...args);
 }
+=======
+import type Newable from "@rcompat/type/Newable";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type VoidFunction from "@rcompat/type/VoidFunction";
+
+// Constructor type
+function createInstance<T>(Ctor: Newable<T>): T {
+    return new Ctor();
+}
+
+// Generic function signature
+function wrap(fn: UnknownFunction) {
+    return (...args: unknown[]) => fn(...args);
+}
+
+// No-argument void function
+const cleanup: VoidFunction = () => console.log("done");
+>>>>>>> c7faedb (docs: webview package)
 ```
 
 ### JSON types
 
 ```ts
+<<<<<<< HEAD
 import type { JSONValue, Serializable } from "@rcompat/type";
 
 // calid JSON value
@@ -144,18 +235,47 @@ class User implements Serializable {
   toJSON(): JSONValue {
     return { id: this.id, name: this.name };
   }
+=======
+import type JSONValue from "@rcompat/type/JSONValue";
+import type Serializable from "@rcompat/type/Serializable";
+
+// Valid JSON value
+const data: JSONValue = {
+    name: "Alice",
+    age: 30,
+    active: true,
+    tags: ["admin", "user"],
+};
+
+// Implement custom serialization
+class User implements Serializable {
+    constructor(private id: number, private name: string) {}
+
+    toJSON(): JSONValue {
+        return { id: this.id, name: this.name };
+    }
+>>>>>>> c7faedb (docs: webview package)
 }
 ```
 
 ### Async types
 
 ```ts
+<<<<<<< HEAD
 import type { MaybePromise } from "@rcompat/type";
 
 // value or Promise of value
 async function process(input: MaybePromise<string>): Promise<string> {
   const value = await input;
   return value.toUpperCase();
+=======
+import type MaybePromise from "@rcompat/type/MaybePromise";
+
+// Value or Promise of value
+async function process(input: MaybePromise<string>): Promise<string> {
+    const value = await input;
+    return value.toUpperCase();
+>>>>>>> c7faedb (docs: webview package)
 }
 
 process("hello"); // works
@@ -171,7 +291,11 @@ process(Promise.resolve("hello")); // also works
 | `Dict<V>`        | `Record<string, V>`                                                    |
 | `PartialDict<V>` | `Partial<Record<string, V>>`                                           |
 | `Entry<K, T>`    | `[K, T]` tuple                                                         |
+<<<<<<< HEAD
 | `EmptyObject`    | Empty object `{}`                                                      |
+=======
+| `EO`             | Empty object `{}`                                                      |
+>>>>>>> c7faedb (docs: webview package)
 | `Maybe<T>`       | `T \| undefined`                                                       |
 | `Nullish`        | `null \| undefined`                                                    |
 | `Primitive`      | `bigint \| boolean \| null \| number \| string \| symbol \| undefined` |
@@ -210,6 +334,10 @@ process(Promise.resolve("hello")); // also works
 | `Newable<I, A>`         | `new (...args: A) => I`             |
 | `AbstractNewable<I, A>` | Abstract constructor type           |
 | `UnknownFunction`       | `(...params: unknown[]) => unknown` |
+<<<<<<< HEAD
+=======
+| `VoidFunction`          | `() => void`                        |
+>>>>>>> c7faedb (docs: webview package)
 
 ### JSON & Serialization
 
@@ -242,23 +370,41 @@ process(Promise.resolve("hello")); // also works
 ### Type-safe event emitter
 
 ```ts
+<<<<<<< HEAD
 import type { Dict, UnknownFunction } from "@rcompat/type";
+=======
+import type Dict from "@rcompat/type/Dict";
+import type UnknownFunction from "@rcompat/type/UnknownFunction";
+>>>>>>> c7faedb (docs: webview package)
 
 type Events = Dict<UnknownFunction[]>;
 
 class Emitter<E extends Events> {
+<<<<<<< HEAD
   #events: Partial<E> = {};
 
   on<K extends keyof E>(event: K, handler: E[K][number]) {
     (this.#events[event] ??= [] as E[K]).push(handler);
   }
+=======
+    private events: Partial<E> = {};
+
+    on<K extends keyof E>(event: K, handler: E[K][number]) {
+        (this.events[event] ??= [] as E[K]).push(handler);
+    }
+>>>>>>> c7faedb (docs: webview package)
 }
 ```
 
 ### Conditional type utilities
 
 ```ts
+<<<<<<< HEAD
 import type { IsUnion, UnionToTuple } from "@rcompat/type";
+=======
+import type IsUnion from "@rcompat/type/IsUnion";
+import type UnionToTuple from "@rcompat/type/UnionToTuple";
+>>>>>>> c7faedb (docs: webview package)
 
 type UnionLength<U> = UnionToTuple<U>["length"];
 
@@ -269,6 +415,7 @@ type B = UnionLength<string>; // 1
 ### JSON validation
 
 ```ts
+<<<<<<< HEAD
 import type { JSONValue } from "@rcompat/type";
 
 function parseJSON(text: string): JSONValue {
@@ -277,17 +424,35 @@ function parseJSON(text: string): JSONValue {
 
 function stringify(value: JSONValue): string {
   return JSON.stringify(value);
+=======
+import type JSONValue from "@rcompat/type/JSONValue";
+
+function parseJSON(text: string): JSONValue {
+    return JSON.parse(text);
+}
+
+function stringify(value: JSONValue): string {
+    return JSON.stringify(value);
+>>>>>>> c7faedb (docs: webview package)
 }
 ```
 
 ### Optional undefined properties
 
 ```ts
+<<<<<<< HEAD
 import type { UndefinedToOptional } from "@rcompat/type";
 
 type Input = {
   required: string;
   optional: string | undefined;
+=======
+import type UndefinedToOptional from "@rcompat/type/UndefinedToOptional";
+
+type Input = {
+    required: string;
+    optional: string | undefined;
+>>>>>>> c7faedb (docs: webview package)
 };
 
 type Output = UndefinedToOptional<Input>;
