@@ -41,17 +41,17 @@ const config: Dict<string> = { host: "localhost", port: "3000" };
 
 // Maybe<T> = T | undefined
 function find(id: number): Maybe<User> {
-    return users.get(id);
+  return users.get(id);
 }
 
 // Nullish = null | undefined
 function isNullish(value: unknown): value is Nullish {
-    return value == null;
+  return value == null;
 }
 
 // Primitive = bigint | boolean | null | number | string | symbol | undefined
 function isPrimitive(value: unknown): value is Primitive {
-    return value !== Object(value);
+  return value !== Object(value);
 }
 ```
 
@@ -126,12 +126,12 @@ import type VoidFunction from "@rcompat/type/VoidFunction";
 
 // Constructor type
 function createInstance<T>(Ctor: Newable<T>): T {
-    return new Ctor();
+  return new Ctor();
 }
 
 // Generic function signature
 function wrap(fn: UnknownFunction) {
-    return (...args: unknown[]) => fn(...args);
+  return (...args: unknown[]) => fn(...args);
 }
 
 // No-argument void function
@@ -146,19 +146,19 @@ import type Serializable from "@rcompat/type/Serializable";
 
 // Valid JSON value
 const data: JSONValue = {
-    name: "Alice",
-    age: 30,
-    active: true,
-    tags: ["admin", "user"],
+  name: "Alice",
+  age: 30,
+  active: true,
+  tags: ["admin", "user"],
 };
 
 // Implement custom serialization
 class User implements Serializable {
-    constructor(private id: number, private name: string) {}
+  constructor(private id: number, private name: string) {}
 
-    toJSON(): JSONValue {
-        return { id: this.id, name: this.name };
-    }
+  toJSON(): JSONValue {
+    return { id: this.id, name: this.name };
+  }
 }
 ```
 
@@ -169,8 +169,8 @@ import type MaybePromise from "@rcompat/type/MaybePromise";
 
 // Value or Promise of value
 async function process(input: MaybePromise<string>): Promise<string> {
-    const value = await input;
-    return value.toUpperCase();
+  const value = await input;
+  return value.toUpperCase();
 }
 
 process("hello"); // works
@@ -264,11 +264,11 @@ import type UnknownFunction from "@rcompat/type/UnknownFunction";
 type Events = Dict<UnknownFunction[]>;
 
 class Emitter<E extends Events> {
-    private events: Partial<E> = {};
+  #events: Partial<E> = {};
 
-    on<K extends keyof E>(event: K, handler: E[K][number]) {
-        (this.events[event] ??= [] as E[K]).push(handler);
-    }
+  on<K extends keyof E>(event: K, handler: E[K][number]) {
+    (this.#events[event] ??= [] as E[K]).push(handler);
+  }
 }
 ```
 
@@ -290,11 +290,11 @@ type B = UnionLength<string>; // 1
 import type JSONValue from "@rcompat/type/JSONValue";
 
 function parseJSON(text: string): JSONValue {
-    return JSON.parse(text);
+  return JSON.parse(text);
 }
 
 function stringify(value: JSONValue): string {
-    return JSON.stringify(value);
+  return JSON.stringify(value);
 }
 ```
 
@@ -304,8 +304,8 @@ function stringify(value: JSONValue): string {
 import type UndefinedToOptional from "@rcompat/type/UndefinedToOptional";
 
 type Input = {
-    required: string;
-    optional: string | undefined;
+  required: string;
+  optional: string | undefined;
 };
 
 type Output = UndefinedToOptional<Input>;
