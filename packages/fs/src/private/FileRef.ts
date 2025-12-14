@@ -400,6 +400,6 @@ export default class FileRef
   }
 
   async hash(algorithm = "SHA-256"): Promise<string> {
-    return await hash(await this.arrayBuffer(), algorithm);
+    return await hash(await this.arrayBuffer(), algorithm as any);
   }
 }

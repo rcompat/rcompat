@@ -14,6 +14,9 @@
     "url": "https://github.com/rcompat/rcompat",
     "directory": "packages/crypto"
   },
+  "dependencies": {
+    "@rcompat/assert": "workspace:^"
+  },
   "scripts": {
     "build": "npm run clean && tsc",
     "test": "npm run build && npx proby",
@@ -22,25 +25,15 @@
   },
   "type": "module",
   "imports": {
-    "#hash": {
-      "apekit": "./src/private/hash/node.ts",
-      "bun": "./lib/private/hash/bun.js",
-      "node": "./lib/private/hash/node.js"
-    },
-    "#index": {
-      "apekit": "./src/private/index/node.ts",
-      "bun": "./lib/private/index/bun.js",
-      "node": "./lib/private/index/node.js"
+    "#*": {
+      "apekit": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    "./hash": {
+    "./*": {
       "apekit": "./src/public/hash.ts",
       "default": "./lib/public/hash.js"
-    },
-    ".": {
-      "apekit": "./src/public/index.ts",
-      "default": "./lib/public/index.js"
     }
   }
 }
