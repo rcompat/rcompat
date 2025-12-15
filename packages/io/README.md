@@ -31,14 +31,14 @@ bun add @rcompat/io
 ### Standard streams
 
 ```js
-import std from "@rcompat/io/std";
+import io from "@rcompat/io";
 
 // write to stdout (no newline)
-std.out.write("Hello, ");
-std.out.write("World!\n");
+io.stdout.write("Hello, ");
+io.stdout.write("World!\n");
 
 // write to stderr
-std.err.write("Error: something went wrong\n");
+io.stderr.write("Error: something went wrong\n");
 ```
 
 ### Check if running in a terminal
@@ -100,30 +100,31 @@ console.log(bun); // "/home/user/.bun/bin/bun"
 
 ## API Reference
 
-### `std.in`
+### `stdin`
 
 ```ts
-import std from "@rcompat/io/std";
+import io from "@rcompat/io";
+io.stdin;
 ```
 
 The standard input stream. A `ReadStream` for reading user input.
 
-### `std.out`
+### `stdout`
 
 ```ts
-import std from "@rcompat/io/std";
+import io from "@rcompat/io";
 
-std.out.write(data: string | Uint8Array): boolean;
+io.stdout.write(data: string | Uint8Array): boolean;
 ```
 
 The standard output stream. Use `write()` to output without a newline.
 
-### `std.err`
+### `stderr`
 
 ```ts
-import std from "@rcompat/io/std";
+import io from "@rcompat/io";
 
-std.err.write(data: string | Uint8Array): boolean;
+io.stderr.write(data: string | Uint8Array): boolean;
 ```
 
 The standard error stream. Use for error messages and diagnostics.
@@ -252,14 +253,13 @@ if (missing.length > 0) {
 ### Conditional formatting
 
 ```js
-import std from "@rcompat/io";
 import io from "@rcompat/io";
 
 function log(message, color = 32) {
   if (io.isatty()) {
-    std.out.write(`\x1b[${color}m${message}\x1b[0m\n`);
+    io.stdout.write(`\x1b[${color}m${message}\x1b[0m\n`);
   } else {
-    std.out.write(`${message}\n`);
+    io.stdout.write(`${message}\n`);
   }
 }
 

@@ -14,7 +14,6 @@ Deno, Bun and future runtimes.
 |[@rcompat/args](packages/args)             | Program arguments                |
 |[@rcompat/array](packages/array)           | Array handling                   |
 |[@rcompat/assert](packages/assert)         | Invariant assertions             |
-|[@rcompat/async](packages/async)           | Async operations                 |
 |[@rcompat/bufferview](packages/bufferview) | Buffers                          |
 |[@rcompat/build](packages/build)           | Client builder                   |
 |[@rcompat/cli](packages/cli)               | CLI tools                        |

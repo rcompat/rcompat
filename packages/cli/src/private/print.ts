@@ -1,3 +1,3 @@
-import std from "@rcompat/io/std";
+import io from "@rcompat/io";
 
-export default (...messages: string[]) => std.out.write(messages.join(" "));
+export default (...messages: string[]) => io.stdout.write(messages.join(" "));
