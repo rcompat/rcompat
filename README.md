@@ -21,7 +21,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/crypto](packages/crypto)         | Cryptographic functions          |
 |[@rcompat/env](packages/env)               | Environment loading              |
 |[@rcompat/fs](packages/fs)                 | Filesystem access                |
-|[@rcompat/function](packages/function)     | Function handling                |
+|[@rcompat/fn](packages/fn)                 | Function handling                |
 |[@rcompat/html](packages/html)             | HTML handling                    |
 |[@rcompat/http](packages/http)             | HTTP servers                     |
 |[@rcompat/proby](packages/proby)           | Test runner                      |

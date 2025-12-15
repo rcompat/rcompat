@@ -2,7 +2,7 @@ import reload_defaults from "#reload/defaults";
 import reload_path from "#reload/path";
 import assert from "@rcompat/assert";
 import is from "@rcompat/assert/is";
-import exclude from "@rcompat/record/exclude";
+import record from "@rcompat/record";
 import type Dict from "@rcompat/type/Dict";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 import * as esbuild from "esbuild";
@@ -34,7 +34,7 @@ export default class Build {
     is(options).object();
     assert(mode_keys.includes(mode), `mode must be one of "${dev}", "${prod}"`);
 
-    const { name, ...rest } = exclude(options, ["hotreload"]);
+    const { name, ...rest } = record.exclude(options, ["hotreload"]);
 
     this.#name = name;
     this.#hotreload = {

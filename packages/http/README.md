@@ -37,7 +37,7 @@ const server = await serve(request => {
   return new Response("Hello, world!");
 }, { host: "localhost", port: 3000 });
 
-// Stop the server
+// stop the server
 server.stop();
 ```
 
@@ -48,15 +48,15 @@ import serve from "@rcompat/http/serve";
 
 await serve(request => {
   const { pathname } = new URL(request.url);
-  
+
   if (pathname === "/") {
     return new Response("Home");
   }
-  
+
   if (pathname === "/api/users") {
-    return Response.json([{ id: 1, name: "Alice" }]);
+    return Response.json([{ id: 1, name: "John" }]);
   }
-  
+
   return new Response("Not Found", { status: 404 });
 }, { host: "localhost", port: 3000 });
 ```
@@ -69,20 +69,20 @@ import serve from "@rcompat/http/serve";
 await serve(async request => {
   const { pathname } = new URL(request.url);
   const { method } = request;
-  
+
   if (pathname === "/api/data") {
     if (method === "GET") {
       return Response.json({ data: "value" });
     }
-    
+
     if (method === "POST") {
       const body = await request.json();
       return Response.json({ received: body }, { status: 201 });
     }
-    
+
     return new Response("Method Not Allowed", { status: 405 });
   }
-  
+
   return new Response("Not Found", { status: 404 });
 }, { host: "localhost", port: 3000 });
 ```
@@ -97,7 +97,7 @@ await serve(request => {
   return new Response("Created", { status: Status.CREATED });
 }, { host: "localhost", port: 3000 });
 
-// Available status codes
+// available status codes
 Status.OK;                    // 200
 Status.CREATED;               // 201
 Status.NO_CONTENT;            // 204
@@ -117,7 +117,7 @@ Status.INTERNAL_SERVER_ERROR; // 500
 import serve from "@rcompat/http/serve";
 
 const server = await serve(request => {
-  // Check if it's a WebSocket upgrade request
+  // check if it's a WebSocket upgrade request
   if (request.headers.get("upgrade") === "websocket") {
     return server.upgrade(request, {
       open(socket) {
@@ -133,7 +133,7 @@ const server = await serve(request => {
       },
     });
   }
-  
+
   return new Response("Hello!");
 }, { host: "localhost", port: 3000 });
 ```
@@ -161,22 +161,19 @@ await serve(request => {
 Get MIME types by extension or use predefined constants.
 
 ```js
-// By extension
-import resolve from "@rcompat/http/mime/extension/resolve";
+import MIME from "@rcompat/http/mime";
 
-resolve("index.html");  // "text/html"
-resolve("app.js");      // "text/javascript"
-resolve("data.json");   // "application/json"
-resolve("image.png");   // "image/png"
+MIME.resolve("index.html");  // "text/html"
+MIME.resolve("app.js");      // "text/javascript"
+MIME.resolve("data.json");   // "application/json"
+MIME.resolve("image.png");   // "image/png"
 
-// Direct imports
-import html from "@rcompat/http/mime/text/html";
-import json from "@rcompat/http/mime/application/json";
-import png from "@rcompat/http/mime/image/png";
+// extensions to mime type
+import MIME from "@rcompat/http/mime";
 
-console.log(html);  // "text/html"
-console.log(json);  // "application/json"
-console.log(png);   // "image/png"
+console.log(MIME.html);  // "text/html"
+console.log(MIME.json);  // "application/json"
+console.log(MIME.png);   // "image/png"
 ```
 
 ### Serving static files
@@ -184,20 +181,20 @@ console.log(png);   // "image/png"
 ```js
 import serve from "@rcompat/http/serve";
 import FileRef from "@rcompat/fs/FileRef";
-import resolve from "@rcompat/http/mime/extension/resolve";
+import MIME from "@rcompat/http/mime";
 
-const publicDir = new FileRef("./public");
+const public = new FileRef("./public");
 
 await serve(async request => {
   const { pathname } = new URL(request.url);
-  const file = publicDir.join(pathname.slice(1) || "index.html");
-  
+  const file = public.join(pathname.slice(1) || "index.html");
+
   if (await file.exists()) {
     return new Response(file.stream(), {
-      headers: { "content-type": resolve(file.name) },
+      headers: { "content-type": MIME.resolve(file.name) },
     });
   }
-  
+
   return new Response("Not Found", { status: 404 });
 }, { host: "localhost", port: 3000 });
 ```
@@ -272,16 +269,6 @@ HTTP status code constants.
 | 4xx Client  | `BAD_REQUEST`, `UNAUTHORIZED`, `FORBIDDEN`, `NOT_FOUND`, `METHOD_NOT_ALLOWED`, `CONFLICT`, `GONE`, `UNPROCESSABLE_ENTITY`, `TOO_MANY_REQUESTS` |
 | 5xx Server  | `INTERNAL_SERVER_ERROR`, `NOT_IMPLEMENTED`, `BAD_GATEWAY`, `SERVICE_UNAVAILABLE`, `GATEWAY_TIMEOUT` |
 
-### MIME Types
-
-Available categories:
-- `@rcompat/http/mime/application/*` - json, xml, pdf, wasm, zip, etc.
-- `@rcompat/http/mime/text/*` - html, css, javascript, plain, csv, etc.
-- `@rcompat/http/mime/image/*` - png, jpeg, gif, svg+xml, webp, etc.
-- `@rcompat/http/mime/audio/*` - mpeg, ogg, wav, webm
-- `@rcompat/http/mime/video/*` - mp4, webm, ogg, quicktime
-- `@rcompat/http/mime/font/*` - ttf, otf, woff, woff2
-
 ## Examples
 
 ### REST API
@@ -295,12 +282,12 @@ const users = new Map();
 await serve(async request => {
   const { pathname } = new URL(request.url);
   const { method } = request;
-  
+
   // GET /users
   if (method === "GET" && pathname === "/users") {
     return Response.json([...users.values()]);
   }
-  
+
   // POST /users
   if (method === "POST" && pathname === "/users") {
     const user = await request.json();
@@ -308,7 +295,7 @@ await serve(async request => {
     users.set(user.id, user);
     return Response.json(user, { status: Status.CREATED });
   }
-  
+
   // GET /users/:id
   const match = pathname.match(/^\/users\/(.+)$/);
   if (method === "GET" && match) {
@@ -316,7 +303,7 @@ await serve(async request => {
     if (user) return Response.json(user);
     return Response.json({ error: "Not found" }, { status: Status.NOT_FOUND });
   }
-  
+
   return new Response("Not Found", { status: Status.NOT_FOUND });
 }, { host: "localhost", port: 3000 });
 ```
@@ -344,7 +331,7 @@ const server = await serve(request => {
       },
     });
   }
-  
+
   return new Response("WebSocket server");
 }, { host: "localhost", port: 3000 });
 
