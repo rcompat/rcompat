@@ -1,7 +1,7 @@
 import assert from "#assert";
 import type ErrorFallbackFunction from "#ErrorFallbackFunction";
 import type TypeofTypeMap from "#TypesOfTypeMap";
-import newable from "@rcompat/is/newable";
+import is from "@rcompat/is";
 import type Dict from "@rcompat/type/Dict";
 import type Newable from "@rcompat/type/Newable";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
@@ -246,7 +246,7 @@ export default class Is {
    */
   newable(error?: ErrorFallbackFunction | string): Newable {
     const def = `\`${this.#stringified}\` must be newable`;
-    const condition = newable(this.#value);
+    const condition = is.newable(this.#value);
     return this.#test({ condition, def, error });
   }
 

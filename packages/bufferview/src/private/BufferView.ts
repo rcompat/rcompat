@@ -1,5 +1,5 @@
 import assert from "@rcompat/assert";
-import utf8size from "@rcompat/string/utf8size";
+import utf8 from "@rcompat/string/utf8";
 
 const OVERFLOW_ERROR = "BufferView overflow.";
 
@@ -190,7 +190,7 @@ export default class BufferView {
 
   write(value: string) {
     const encoder = new TextEncoder();
-    const size = utf8size(value);
+    const size = utf8.size(value);
     assert(this.#position + size <= this.#byteLength, OVERFLOW_ERROR);
 
     encoder.encodeInto(

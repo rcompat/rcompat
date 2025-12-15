@@ -3,7 +3,7 @@ import get_options from "#get-options";
 import handle_ws from "#handle-ws-deno";
 import type Handler from "#Handler";
 import type Server from "#Server";
-import identity from "@rcompat/function/identity";
+import fn from "@rcompat/fn";
 import type { WebSocket } from "undici-types";
 
 export default async (handler: Handler, conf: Conf): Promise<Server> => {
@@ -11,7 +11,7 @@ export default async (handler: Handler, conf: Conf): Promise<Server> => {
   Deno.serve({
     hostname: conf.host,
     // suppress default "Listening on" message
-    onListen: identity,
+    onListen: fn.identity,
     port: conf.port,
     signal: abort_controller.signal,
     ...await get_options(conf),

@@ -33,13 +33,13 @@ bun add @rcompat/is
 Checks if a value is `null` or `undefined`.
 
 ```js
-import nullish from "@rcompat/is/nullish";
+import is from "@rcompat/is";
 
-nullish(null);       // true
-nullish(undefined);  // true
-nullish(0);          // false
-nullish("");         // false
-nullish(false);      // false
+is.nullish(null);      // true
+is.nullish(undefined); // true
+is.nullish(0);         // false
+is.nullish("");        // false
+is.nullish(false);     // false
 ```
 
 ### defined
@@ -47,12 +47,12 @@ nullish(false);      // false
 Checks if a value is not `undefined`.
 
 ```js
-import defined from "@rcompat/is/defined";
+import is from "@rcompat/is";
 
-defined("hello");    // true
-defined(0);          // true
-defined(null);       // true
-defined(undefined);  // false
+is.defined("hello");   // true
+is.defined(0);         // true
+is.defined(null);      // true
+is.defined(undefined); // false
 ```
 
 ### truthy
@@ -60,14 +60,14 @@ defined(undefined);  // false
 Checks if a value is truthy.
 
 ```js
-import truthy from "@rcompat/is/truthy";
+import is from "@rcompat/is";
 
-truthy(1);           // true
-truthy("hello");     // true
-truthy([]);          // true
-truthy(0);           // false
-truthy("");          // false
-truthy(null);        // false
+is.truthy(1);       // true
+is.truthy("hello"); // true
+is.truthy([]);      // true
+is.truthy(0);       // false
+is.truthy("");      // false
+is.truthy(null);    // false
 ```
 
 ### falsy
@@ -75,15 +75,15 @@ truthy(null);        // false
 Checks if a value is falsy.
 
 ```js
-import falsy from "@rcompat/is/falsy";
+import is from "@rcompat/is";
 
-falsy(0);            // true
-falsy("");           // true
-falsy(null);         // true
-falsy(undefined);    // true
-falsy(false);        // true
-falsy(NaN);          // true
-falsy(1);            // false
+is.falsy(0);         // true
+is.falsy("");        // true
+is.falsy(null);      // true
+is.falsy(undefined); // true
+is.falsy(false);     // true
+is.falsy(NaN);       // true
+is.falsy(1);         // false
 ```
 
 ### empty
@@ -91,16 +91,16 @@ falsy(1);            // false
 Checks if a value is empty (strings, arrays, Sets, Maps, objects).
 
 ```js
-import empty from "@rcompat/is/empty";
+import is from "@rcompat/is";
 
-empty("");           // true
-empty([]);           // true
-empty({});           // true
-empty(new Set());    // true
-empty(new Map());    // true
-empty("hello");      // false
-empty([1, 2]);       // false
-empty({ a: 1 });     // false
+is.empty("");        // true
+is.empty([]);        // true
+is.empty({});        // true
+is.empty(new Set()); // true
+is.empty(new Map()); // true
+is.empty("hello");   // false
+is.empty([1, 2]);    // false
+is.empty({ a: 1 });  // false
 ```
 
 ### blank
@@ -108,13 +108,13 @@ empty({ a: 1 });     // false
 Checks if a string is empty or contains only whitespace.
 
 ```js
-import blank from "@rcompat/is/blank";
+import is from "@rcompat/is";
 
-blank("");           // true
-blank("   ");        // true
-blank("\t\n");       // true
-blank("hello");      // false
-blank(" hi ");       // false
+is.blank("");      // true
+is.blank("   ");   // true
+is.blank("\t\n");  // true
+is.blank("hello"); // false
+is.blank(" hi ");  // false
 ```
 
 ### numeric
@@ -122,30 +122,30 @@ blank(" hi ");       // false
 Checks if a string represents a valid number.
 
 ```js
-import numeric from "@rcompat/is/numeric";
+import is from "@rcompat/is";
 
-numeric("123");      // true
-numeric("-45.67");   // true
-numeric("1e10");     // true
-numeric("+3.14");    // true
-numeric("abc");      // false
-numeric("");         // false
-numeric("12px");     // false
+is.numeric("123");    // true
+is.numeric("-45.67"); // true
+is.numeric("1e10");   // true
+is.numeric("+3.14");  // true
+is.numeric("abc");    // false
+is.numeric("");       // false
+is.numeric("12px");   // false
 ```
 
-### integer
+### int
 
 Checks if a value is an integer number.
 
 ```js
-import integer from "@rcompat/is/integer";
+import is from "@rcompat/is";
 
-integer(42);         // true
-integer(-10);        // true
-integer(0);          // true
-integer(3.14);       // false
-integer(NaN);        // false
-integer("42");       // false
+is.int(42);   // true
+is.int(-10);  // true
+is.int(0);    // true
+is.int(3.14); // false
+is.int(NaN);  // false
+is.int("42"); // false
 ```
 
 ### uint
@@ -153,26 +153,26 @@ integer("42");       // false
 Checks if a value is a positive integer (unsigned).
 
 ```js
-import uint from "@rcompat/is/uint";
+import is from "@rcompat/is";
 
-uint(1);             // true
-uint(100);           // true
-uint(0);             // false
-uint(-1);            // false
-uint(3.14);          // false
+is.uint(1);    // true
+is.uint(100);  // true
+is.uint(0);    // false
+is.uint(-1);   // false
+is.uint(3.14); // false
 ```
 
-### safeInteger
+### safeint
 
 Checks if a value is a safe integer (within JavaScript's safe range).
 
 ```js
-import safeInteger from "@rcompat/is/safe-integer";
+import is from "@rcompat/is";
 
-safeInteger(42);                          // true
-safeInteger(Number.MAX_SAFE_INTEGER);     // true
-safeInteger(Number.MAX_SAFE_INTEGER + 1); // false
-safeInteger(3.14);                        // false
+is.safeint(42);                          // true
+is.safeint(Number.MAX_SAFE_INTEGER);     // true
+is.safeint(Number.MAX_SAFE_INTEGER + 1); // false
+is.safeint(3.14);                        // false
 ```
 
 ### finite
@@ -180,14 +180,14 @@ safeInteger(3.14);                        // false
 Checks if a number or bigint is finite.
 
 ```js
-import finite from "@rcompat/is/finite";
+import is from "@rcompat/is";
 
-finite(42);          // true
-finite(3.14);        // true
-finite(100n);        // true (bigints are always finite)
-finite(Infinity);    // false
-finite(-Infinity);   // false
-finite(NaN);         // false
+is.finite(42);        // true
+is.finite(3.14);      // true
+is.finite(100n);      // true (bigints are always finite)
+is.finite(Infinity);  // false
+is.finite(-Infinity); // false
+is.finite(NaN);       // false
 ```
 
 ### nan
@@ -195,13 +195,13 @@ finite(NaN);         // false
 Checks if a value is `NaN`.
 
 ```js
-import nan from "@rcompat/is/nan";
+import is from "@rcompat/is";
 
-nan(NaN);            // true
-nan(Number.NaN);     // true
-nan(0 / 0);          // true
-nan(42);             // false
-nan("NaN");          // false
+is.nan(NaN);            // true
+is.nan(Number.NaN);     // true
+is.nan(0 / 0);          // true
+is.nan(42);             // false
+is.nan("NaN");          // false
 ```
 
 ### primitive
@@ -209,17 +209,17 @@ nan("NaN");          // false
 Checks if a value is a primitive type.
 
 ```js
-import primitive from "@rcompat/is/primitive";
+import is from "@rcompat/is";
 
-primitive("hello");  // true
-primitive(42);       // true
-primitive(true);     // true
-primitive(null);     // true
-primitive(undefined);// true
-primitive(Symbol()); // true
-primitive(100n);     // true
-primitive({});       // false
-primitive([]);       // false
+is.primitive("hello");   // true
+is.primitive(42);        // true
+is.primitive(true);      // true
+is.primitive(null);      // true
+is.primitive(undefined); // true
+is.primitive(Symbol());  // true
+is.primitive(100n);      // true
+is.primitive({});        // false
+is.primitive([]);        // false
 ```
 
 ### dict
@@ -227,15 +227,15 @@ primitive([]);       // false
 Checks if a value is a plain object (not array, Date, class instance, etc.).
 
 ```js
-import dict from "@rcompat/is/dict";
+import is from "@rcompat/is";
 
-dict({});                    // true
-dict({ a: 1 });              // true
-dict(Object.create(null));   // true
-dict([]);                    // false
-dict(new Date());            // false
-dict(new Map());             // false
-dict(null);                  // false
+is.dict({});                  // true
+is.dict({ a: 1 });            // true
+is.dict(Object.create(null)); // true
+is.dict([]);                  // false
+is.dict(new Date());          // false
+is.dict(new Map());           // false
+is.dict(null);                // false
 ```
 
 ### newable
@@ -243,13 +243,13 @@ dict(null);                  // false
 Checks if a value is a constructor (can be called with `new`).
 
 ```js
-import newable from "@rcompat/is/newable";
+import is from "@rcompat/is";
 
-newable(class {});           // true
-newable(function() {});      // true
-newable(Date);               // true
-newable(() => {});           // false (arrow functions)
-newable({});                 // false
+is.newable(class {});      // true
+is.newable(function() {}); // true
+is.newable(Date);          // true
+is.newable(() => {});      // false (arrow functions)
+is.newable({});            // false
 ```
 
 ### boolish
@@ -257,13 +257,13 @@ newable({});                 // false
 Checks if a value is the string `"true"` or `"false"`.
 
 ```js
-import boolish from "@rcompat/is/boolish";
+import is from "@rcompat/is";
 
-boolish("true");     // true
-boolish("false");    // true
-boolish(true);       // false (not a string)
-boolish("yes");      // false
-boolish("1");        // false
+is.boolish("true");  // true
+is.boolish("false"); // true
+is.boolish(true);    // false (not a string)
+is.boolish("yes");   // false
+is.boolish("1");     // false
 ```
 
 ## API Reference
@@ -274,52 +274,46 @@ All functions follow the same pattern:
 declare function is<Name>(value: unknown): value is <Type>;
 ```
 
-| Function      | Import Path               | Type Guard            | Description                        |
-|---------------|---------------------------|-----------------------|------------------------------------|
-| `nullish`     | `@rcompat/is/nullish`     | `null \| undefined`   | Is null or undefined               |
-| `defined`     | `@rcompat/is/defined`     | `unknown`             | Is not undefined                   |
-| `truthy`      | `@rcompat/is/truthy`      | `unknown`             | Is truthy value                    |
-| `falsy`       | `@rcompat/is/falsy`       | `unknown`             | Is falsy value                     |
-| `empty`       | `@rcompat/is/empty`       | `unknown`             | Is empty collection/string/object  |
-| `blank`       | `@rcompat/is/blank`       | `string`              | Is empty/whitespace string         |
-| `numeric`     | `@rcompat/is/numeric`     | `string`              | Is numeric string                  |
-| `integer`     | `@rcompat/is/integer`     | `number`              | Is integer number                  |
-| `uint`        | `@rcompat/is/uint`        | `number \| bigint`    | Is positive integer                |
-| `safeInteger` | `@rcompat/is/safe-integer`| `number`              | Is safe integer                    |
-| `finite`      | `@rcompat/is/finite`      | `number \| bigint`    | Is finite number                   |
-| `nan`         | `@rcompat/is/nan`         | `number`              | Is NaN                             |
-| `primitive`   | `@rcompat/is/primitive`   | `Primitive`           | Is primitive type                  |
-| `dict`        | `@rcompat/is/dict`        | `Dict`                | Is plain object                    |
-| `newable`     | `@rcompat/is/newable`     | `Newable`             | Is constructor                     |
-| `boolish`     | `@rcompat/is/boolish`     | `"true" \| "false"`   | Is boolean string                  |
+| Function      | Type Guard          | Description                    |
+|---------------|---------------------|--------------------------------|
+| `nullish`     | `null \| undefined` | `null` or `undefined`          |
+| `defined`     | `unknown`           | not `undefined`                |
+| `truthy`      | `unknown`           | `true` in boolean contexts     |
+| `falsy`       | `unknown`           | `false` in boolean contexts    |
+| `empty`       | `unknown`           | empty collection/string/object |
+| `blank`       | `string`            | empty/whitespace string        |
+| `numeric`     | `string`            | numeric string                 |
+| `int`         | `number`            | integer number                 |
+| `uint`        | `number \| bigint`  | unsigned (positive) integer    |
+| `safeint`     | `number`            | safe integer                   |
+| `finite`      | `number \| bigint`  | finite number                  |
+| `nan`         | `number`            | `NaN`                          |
+| `primitive`   | `Primitive`         | primitive type                 |
+| `dict`        | `Dict`              | plain object                   |
+| `newable`     | `Newable`           | constructor                    |
+| `boolish`     | `"true" \| "false"` | boolean string                 |
 
 ## Examples
 
 ### Filter valid values
 
 ```js
-import defined from "@rcompat/is/defined";
-import nullish from "@rcompat/is/nullish";
+import is from "@rcompat/is";
 
 const values = [1, null, 2, undefined, 3];
 
-values.filter(defined);     // [1, null, 2, 3]
-values.filter(v => !nullish(v));  // [1, 2, 3]
+values.filter(is.defined);     // [1, null, 2, 3]
+values.filter(v => !is.nullish(v));  // [1, 2, 3]
 ```
 
 ### Parse configuration
 
 ```js
-import boolish from "@rcompat/is/boolish";
-import numeric from "@rcompat/is/numeric";
+import is from "@rcompat/is";
 
 function parseEnvVar(value) {
-  if (boolish(value)) {
-    return value === "true";
-  }
-  if (numeric(value)) {
-    return Number(value);
-  }
+  if (is.boolish(value)) return value === "true";
+  if (is.numeric(value)) return Number(value);
   return value;
 }
 
@@ -331,21 +325,19 @@ parseEnvVar("hello");  // "hello"
 ### Validate input
 
 ```js
-import blank from "@rcompat/is/blank";
-import integer from "@rcompat/is/integer";
-import uint from "@rcompat/is/uint";
+import is from "@rcompat/is";
 
 function validateForm(data) {
   const errors = [];
-  
-  if (blank(data.name)) {
+
+  if (is.blank(data.name)) {
     errors.push("Name is required");
   }
-  
-  if (!integer(data.age) || !uint(data.age)) {
+
+  if (!uint(data.age)) {
     errors.push("Age must be a positive integer");
   }
-  
+
   return errors;
 }
 ```
@@ -353,20 +345,20 @@ function validateForm(data) {
 ### Type-safe guards
 
 ```js
-import dict from "@rcompat/is/dict";
-import primitive from "@rcompat/is/primitive";
+import is from "@rcompat/is";
 
 function process(value) {
-  if (primitive(value)) {
-    // TypeScript knows: value is string | number | boolean | bigint | symbol | null | undefined
+  if (is.primitive(value)) {
+    // TypeScript knows: value is:
+    // string | number | boolean | bigint | symbol | null | undefined
     return String(value);
   }
-  
-  if (dict(value)) {
+
+  if (is.dict(value)) {
     // TypeScript knows: value is Record<string, unknown>
     return JSON.stringify(value);
   }
-  
+
   return "[complex object]";
 }
 ```

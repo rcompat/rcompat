@@ -1,21 +1,20 @@
-import stdin from "@rcompat/io/stdin";
-import stdout from "@rcompat/io/stdout";
+import std from "@rcompat/io/std";
 
 let active: null | Promise<null | string> = null;
 
 export default function readLine(): Promise<null | string> {
   if (active) return active;
 
-  try { stdout.write("\x1B[?25h"); } catch { }
+  try { std.out.write("\x1B[?25h"); } catch { }
 
   active = new Promise<null | string>((resolve) => {
     let buffer = "";
 
     const finish = (val: null | string) => {
       // cleanup listeners
-      try { stdin.off("data", onData); } catch { }
-      try { stdin.off("end", onEnd); } catch { }
-      try { stdin.off("error", onErr); } catch { }
+      try { std.in.off("data", onData); } catch { }
+      try { std.in.off("end", onEnd); } catch { }
+      try { std.in.off("error", onErr); } catch { }
       const p = active;
       active = null; // allow next read
       resolve(val);
@@ -41,9 +40,9 @@ export default function readLine(): Promise<null | string> {
       buffer += s;
     };
 
-    stdin.on("data", onData);
-    stdin.once("end", onEnd);
-    stdin.once("error", onErr);
+    std.in.on("data", onData);
+    std.in.once("end", onEnd);
+    std.in.once("error", onErr);
   });
 
   return active;

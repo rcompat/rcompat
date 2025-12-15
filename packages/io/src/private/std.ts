@@ -1,9 +1,9 @@
-import stderr from "#stderr";
-import stdin from "#stdin";
-import stdout from "#stdout";
+import stderr from "#std/err";
+import stdin from "#std/in";
+import stdout from "#std/out";
 
 export default {
-  stderr,
-  stdin,
-  stdout,
+  err: stderr,
+  in: stdin,
+  out: stdout,
 };

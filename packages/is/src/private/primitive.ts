@@ -1,10 +1,10 @@
 import type Primitive from "@rcompat/type/Primitive";
 
 const primitives = [
-  "string",
-  "number",
-  "boolean",
   "bigint",
+  "boolean",
+  "number",
+  "string",
   "symbol",
   "undefined",
 ];

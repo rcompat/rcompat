@@ -1,4 +1,4 @@
-import isatty from "@rcompat/io/isatty";
+import io from "@rcompat/io";
 
 export default function spinner() {
   let active = false;
@@ -19,12 +19,12 @@ export default function spinner() {
     start(text: string) {
       msg = text;
       active = true;
-      if (isatty()) timer = setInterval(tick, 80);
+      if (io.isatty()) timer = setInterval(tick, 80);
       else process.stdout.write(`${text}...\n`);
     },
     stop(text?: string) {
       if (timer) clearInterval(timer);
-      if (isatty()) process.stdout.write(`\r✔ ${text ?? msg}\n`);
+      if (io.isatty()) process.stdout.write(`\r✔ ${text ?? msg}\n`);
       else process.stdout.write(`${text ?? msg}\n`);
       active = false;
     },

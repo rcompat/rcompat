@@ -29,9 +29,9 @@
     }
   },
   "exports": {
-    "./*": {
-      "apekit": "./src/public/*.ts",
-      "default": "./lib/public/*.js"
+    ".": {
+      "apekit": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }

@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
-    "@rcompat/function": "workspace:^"
+    "@rcompat/fn": "workspace:^"
   },
   "type": "module",
   "imports": {
