@@ -1,5 +1,4 @@
 import js_env from "#js-env";
-import tryreturn from "@rcompat/async/tryreturn";
 import FileRef from "@rcompat/fs/FileRef";
 import root from "@rcompat/fs/project/root";
 import { parse } from "dotenv";
@@ -10,4 +9,10 @@ const local = new FileRef(`${env.path}.local`);
 const is_local = async () => await local.exists() ? local : env;
 const read = async () => parse(await (await is_local()).text());
 
-export default await tryreturn(() => read()).orelse(async () => ({}));
+export default async function tryRead() {
+  try {
+    return await read();
+  } catch {
+    return {};
+  }
+}
