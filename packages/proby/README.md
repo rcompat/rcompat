@@ -70,7 +70,7 @@ Proby displays colored output:
 
 ```
 oooooxoo
-src/math.spec.ts division 
+src/math.spec.ts division
   expected  5
   actual    4
 ```
@@ -137,17 +137,17 @@ npm test
 import test from "@rcompat/test";
 
 test.case("basic assertions", assert => {
-  // Equality
+  // equality
   assert(value).equals(expected);
-  
-  // Truthiness
+
+  // truthiness
   assert(condition).true();
   assert(condition).false();
-  
-  // Type checking
+
+  // type checking
   assert(value).type<string>();
-  
-  // Throws
+
+  // throws
   assert(() => throwingFunction()).throws();
   assert(() => safeFunction()).tries();
 });

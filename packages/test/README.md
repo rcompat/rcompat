@@ -35,12 +35,12 @@ Create a `.spec.ts` or `.spec.js` file:
 ```js
 import test from "@rcompat/test";
 
-test.case("addition works", (assert) => {
-    assert(1 + 1).equals(2);
+test.case("addition works", assert => {
+  assert(1 + 1).equals(2);
 });
 
-test.case("string concatenation", (assert) => {
-    assert("hello" + " " + "world").equals("hello world");
+test.case("string concatenation", assert => {
+  assert("hello" + " " + "world").equals("hello world");
 });
 ```
 
@@ -57,26 +57,26 @@ npx proby
 ```js
 import test from "@rcompat/test";
 
-test.case("equals", (assert) => {
-    // Primitives
-    assert(42).equals(42);
-    assert("hello").equals("hello");
-    assert(true).equals(true);
+test.case("equals", assert => {
+  // primitives
+  assert(42).equals(42);
+  assert("hello").equals("hello");
+  assert(true).equals(true);
 
-    // Objects (deep equality)
-    assert({ a: 1, b: 2 }).equals({ a: 1, b: 2 });
-    assert([1, 2, 3]).equals([1, 2, 3]);
+  // objects (deep equality)
+  assert({ a: 1, b: 2 }).equals({ a: 1, b: 2 });
+  assert([1, 2, 3]).equals([1, 2, 3]);
 
-    // Nested structures
-    assert({ users: [{ name: "Alice" }] }).equals({
-        users: [{ name: "Alice" }],
-    });
+  // nested structures
+  assert({ users: [{ name: "Alice" }] }).equals({
+    users: [{ name: "Alice" }],
+  });
 });
 
-test.case("nequals", (assert) => {
-    assert(1).nequals(2);
-    assert("foo").nequals("bar");
-    assert({ a: 1 }).nequals({ a: 2 });
+test.case("nequals", assert => {
+  assert(1).nequals(2);
+  assert("foo").nequals("bar");
+  assert({ a: 1 }).nequals({ a: 2 });
 });
 ```
 
@@ -85,11 +85,11 @@ test.case("nequals", (assert) => {
 ```js
 import test from "@rcompat/test";
 
-test.case("boolean checks", (assert) => {
-    assert(1 === 1).true();
-    assert(1 === 2).false();
-    assert(null).null();
-    assert(undefined).undefined();
+test.case("boolean checks", assert => {
+  assert(1 === 1).true();
+  assert(1 === 2).false();
+  assert(null).null();
+  assert(undefined).undefined();
 });
 ```
 
@@ -98,10 +98,10 @@ test.case("boolean checks", (assert) => {
 ```js
 import test from "@rcompat/test";
 
-test.case("instanceof", (assert) => {
-    assert(new Date()).instance(Date);
-    assert(new Map()).instance(Map);
-    assert([1, 2, 3]).instance(Array);
+test.case("instanceof", assert => {
+  assert(new Date()).instance(Date);
+  assert(new Map()).instance(Map);
+  assert([1, 2, 3]).instance(Array);
 });
 ```
 
@@ -110,22 +110,22 @@ test.case("instanceof", (assert) => {
 ```js
 import test from "@rcompat/test";
 
-test.case("throws", (assert) => {
-    // Check that function throws
-    assert(() => {
-        throw new Error("oops");
-    }).throws();
+test.case("throws", assert => {
+  // check that function throws
+  assert(() => {
+    throw new Error("oops");
+  }).throws();
 
-    // Check specific error message
-    assert(() => {
-        throw new Error("invalid input");
-    }).throws("invalid input");
+  // Check specific error message
+  assert(() => {
+    throw new Error("invalid input");
+  }).throws("invalid input");
 });
 
-test.case("tries (does not throw)", (assert) => {
-    assert(() => {
-        return 42;
-    }).tries();
+test.case("tries (does not throw)", assert => {
+  assert(() => {
+    return 42;
+  }).tries();
 });
 ```
 
@@ -135,15 +135,15 @@ test.case("tries (does not throw)", (assert) => {
 import test from "@rcompat/test";
 
 test.case("type checking", assert => {
-  // Compile-time type checks
+  // compile-time type checks
   assert<string>().type<string>();
   assert("hello").type<string>();
 
-  // Check types don't match
+  // check types don't match
   assert<string>().nottype<number>();
   assert(42).nottype<string>();
 
-  // Literal types
+  // literal types
   assert<"foo">().type<"foo">();
   assert<"foo">().nottype<"bar">();
 });
@@ -154,14 +154,14 @@ test.case("type checking", assert => {
 ```js
 import test from "@rcompat/test";
 
-test.case("async operations", async (assert) => {
-    const result = await Promise.resolve(42);
-    assert(result).equals(42);
+test.case("async operations", async assert => {
+  const result = await Promise.resolve(42);
+  assert(result).equals(42);
 });
 
-test.case("fetch data", async (assert) => {
-    const response = await fetch("https://api.example.com/data");
-    assert(response.ok).true();
+test.case("fetch data", async assert => {
+  const response = await fetch("https://api.example.com/data");
+  assert(response.ok).true();
 });
 ```
 
@@ -170,15 +170,15 @@ test.case("fetch data", async (assert) => {
 ```js
 import test from "@rcompat/test";
 
-test.case("database test", async (assert) => {
-    const db = await openDatabase();
-    const user = await db.createUser({ name: "Alice" });
-    assert(user.name).equals("Alice");
+test.case("database test", async assert => {
+  const db = await openDatabase();
+  const user = await db.createUser({ name: "Alice" });
+  assert(user.name).equals("Alice");
 });
 
 test.ended(async () => {
-    // Cleanup after all tests in this file
-    await closeDatabase();
+  // cleanup after all tests in this file
+  await closeDatabase();
 });
 ```
 
@@ -279,16 +279,16 @@ Extract error message from unknown error type.
 
 ```js
 // sum.ts
-export const sum = (a, b) => a + b;
+export default (a, b) => a + b;
 
 // sum.spec.ts
 import test from "@rcompat/test";
-import { sum } from "./sum.js";
+import sum from "./sum.js";
 
-test.case("sum adds two numbers", (assert) => {
-    assert(sum(1, 2)).equals(3);
-    assert(sum(-1, 1)).equals(0);
-    assert(sum(0, 0)).equals(0);
+test.case("sum adds two numbers", assert => {
+  assert(sum(1, 2)).equals(3);
+  assert(sum(-1, 1)).equals(0);
+  assert(sum(0, 0)).equals(0);
 });
 ```
 
@@ -298,25 +298,28 @@ test.case("sum adds two numbers", (assert) => {
 import test from "@rcompat/test";
 
 class Calculator {
-    value = 0;
-    add(n) {
-        this.value += n;
-        return this;
-    }
-    subtract(n) {
-        this.value -= n;
-        return this;
-    }
+  #value = 0;
+  add(n) {
+    this.#value += n;
+    return this;
+  }
+  subtract(n) {
+    this.#value -= n;
+    return this;
+  }
+  get value() {
+    return this.#value;
+  }
 }
 
-test.case("calculator operations", (assert) => {
-    const calc = new Calculator();
-    calc.add(10).subtract(3);
-    assert(calc.value).equals(7);
+test.case("calculator operations", assert => {
+  const calc = new Calculator();
+  calc.add(10).subtract(3);
+  assert(calc.value).equals(7);
 });
 
-test.case("calculator is instance", (assert) => {
-    assert(new Calculator()).instance(Calculator);
+test.case("calculator is instance", assert => {
+  assert(new Calculator()).instance(Calculator);
 });
 ```
 
@@ -326,17 +329,17 @@ test.case("calculator is instance", (assert) => {
 import test from "@rcompat/test";
 
 function divide(a, b) {
-    if (b === 0) throw new Error("Division by zero");
-    return a / b;
+  if (b === 0) throw new Error("Division by zero");
+  return a / b;
 }
 
-test.case("divide throws on zero", (assert) => {
-    assert(() => divide(10, 0)).throws("Division by zero");
+test.case("divide throws on zero", assert => {
+  assert(() => divide(10, 0)).throws("Division by zero");
 });
 
-test.case("divide works normally", (assert) => {
-    assert(() => divide(10, 2)).tries();
-    assert(divide(10, 2)).equals(5);
+test.case("divide works normally", assert => {
+  assert(() => divide(10, 2)).tries();
+  assert(divide(10, 2)).equals(5);
 });
 ```
 
