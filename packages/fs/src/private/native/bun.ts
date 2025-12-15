@@ -14,7 +14,7 @@ const bun: Native = {
   text(path: string) {
     return Bun.file(path).text();
   },
-  async byteLength(path: string) {
+  async size(path: string) {
     return Bun.file(path).size;
   },
   async write(path: string, input: WritableInput) {

@@ -24,7 +24,7 @@ test.case("byte length", async assert => {
   const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
   const file = new FileRef(filename);
   await file.write("hello, world.");
-  const length = await file.byteLength();
+  const length = await file.size();
   assert(length).equals(14);
   await file.remove();
 });

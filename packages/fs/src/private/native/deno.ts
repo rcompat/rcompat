@@ -14,7 +14,7 @@ const deno: Native = {
   text(path: string) {
     return Deno.readTextFile(path);
   },
-  async byteLength(path: string) {
+  async size(path: string) {
     return (await Deno.readFile(path)).byteLength;
   },
   async write(path: string, input: WritableInput) {

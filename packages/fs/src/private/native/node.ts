@@ -21,7 +21,7 @@ const node: Native = {
   text(path: string) {
     return text(path);
   },
-  async byteLength(path: string) {
+  async size(path: string) {
     return Buffer.byteLength(await readFile(path));
   },
   async write(path: string, input: WritableInput) {
