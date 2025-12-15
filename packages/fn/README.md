@@ -1,8 +1,8 @@
-# @rcompat/function
+# @rcompat/fn
 
 Function utilities for JavaScript runtimes.
 
-## What is @rcompat/function?
+## What is @rcompat/fn?
 
 A cross-runtime module providing common function utilities for functional
 programming patterns. Works consistently across Node, Deno, and Bun.
@@ -10,19 +10,19 @@ programming patterns. Works consistently across Node, Deno, and Bun.
 ## Installation
 
 ```bash
-npm install @rcompat/function
+npm install @rcompat/fn
 ```
 
 ```bash
-pnpm add @rcompat/function
+pnpm add @rcompat/fn
 ```
 
 ```bash
-yarn add @rcompat/function
+yarn add @rcompat/fn
 ```
 
 ```bash
-bun add @rcompat/function
+bun add @rcompat/fn
 ```
 
 ## Usage
@@ -32,22 +32,22 @@ bun add @rcompat/function
 A predicate function that checks if a value is not `undefined`.
 
 ```js
-import defined from "@rcompat/function/defined";
+import fn from "@rcompat/fn";
 
-defined("hello");    // true
-defined(0);          // true
-defined(null);       // true
-defined(false);      // true
-defined(undefined);  // false
+fn.defined("hello");    // true
+fn.defined(0);          // true
+fn.defined(null);       // true
+fn.defined(false);      // true
+fn.defined(undefined);  // false
 ```
 
 Useful for filtering out undefined values:
 
 ```js
-import defined from "@rcompat/function/defined";
+import fn from "@rcompat/fn";
 
 const values = [1, undefined, 2, undefined, 3];
-const filtered = values.filter(defined);
+const filtered = values.filter(fn.defined);
 // [1, 2, 3]
 ```
 
@@ -56,19 +56,19 @@ const filtered = values.filter(defined);
 The identity function — returns its input unchanged.
 
 ```js
-import identity from "@rcompat/function/identity";
+import fn from "@rcompat/fn";
 
-identity(42);        // 42
-identity("hello");   // "hello"
-identity({ a: 1 });  // { a: 1 }
+fn.identity(42);        // 42
+fn.identity("hello");   // "hello"
+fn.identity({ a: 1 });  // { a: 1 }
 ```
 
 Useful as a default callback or no-op transformer:
 
 ```js
-import identity from "@rcompat/function/identity";
+import fn from "@rcompat/fn";
 
-function transform(data, transformer = identity) {
+function transform(data, transformer = fn.identity) {
   return transformer(data);
 }
 
@@ -111,7 +111,7 @@ Returns the input value unchanged.
 ### Filter undefined from array
 
 ```js
-import defined from "@rcompat/function/defined";
+import fn from "@rcompat/fn";
 
 const users = [
   { name: "Alice" },
@@ -120,21 +120,21 @@ const users = [
   undefined,
 ];
 
-const validUsers = users.filter(defined);
+users.filter(fn.defined);
 // [{ name: "Alice" }, { name: "Bob" }]
 ```
 
 ### Optional transformation pipeline
 
 ```js
-import identity from "@rcompat/function/identity";
+import fn from "@rcompat/fn";
 
 function processData(data, options = {}) {
   const {
-    preProcess = identity,
-    postProcess = identity,
+    preProcess = fn.identity,
+    postProcess = fn.identity,
   } = options;
-  
+
   const prepared = preProcess(data);
   const result = doWork(prepared);
   return postProcess(result);
@@ -153,10 +153,10 @@ processData(myData, {
 ### Conditional mapping
 
 ```js
-import identity from "@rcompat/function/identity";
+import fn from "@rcompat/fn";
 
 function conditionalMap(array, condition, mapper) {
-  return array.map(condition ? mapper : identity);
+  return array.map(condition ? mapper : fn.identity);
 }
 
 const numbers = [1, 2, 3];
