@@ -289,7 +289,7 @@ export default class BufferView {
     return this;
   }
 
-  toBytes() {
+  bytes() {
     const bytes = new Uint8Array(this.#byteLength);
     bytes.set(new Uint8Array(this.#buffer, this.#offset, this.#byteLength));
     return bytes;

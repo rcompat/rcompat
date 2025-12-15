@@ -34,10 +34,10 @@ bun add @rcompat/bufferview
 ```js
 import BufferView from "@rcompat/bufferview";
 
-// From an ArrayBuffer
+// from an ArrayBuffer
 const view = new BufferView(new ArrayBuffer(64));
 
-// From a Uint8Array or other typed array
+// from a Uint8Array or other typed array
 const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f]);
 const view2 = new BufferView(bytes);
 
@@ -55,13 +55,13 @@ import BufferView from "@rcompat/bufferview";
 const view = new BufferView(new ArrayBuffer(32));
 
 view
-  .writeU8(0xFF)           // 1 byte
-  .writeU16(0x1234)        // 2 bytes
-  .writeU32(0xDEADBEEF)    // 4 bytes
+  .writeU8(0xFF)             // 1 byte
+  .writeU16(0x1234)          // 2 bytes
+  .writeU32(0xDEADBEEF)      // 4 bytes
   .writeU64(0x123456789ABCn) // 8 bytes (bigint)
-  .writeF32(3.14)          // 4 bytes
-  .writeF64(2.71828)       // 8 bytes
-  .write("Hello");         // UTF-8 string
+  .writeF32(3.14)            // 4 bytes
+  .writeF64(2.71828)         // 8 bytes
+  .write("Hello");           // UTF-8 string
 ```
 
 ### Reading data
@@ -91,10 +91,10 @@ import BufferView from "@rcompat/bufferview";
 
 const view = new BufferView(new ArrayBuffer(8));
 
-// Set default endianness
+// set endianness
 view.littleEndian = false;  // big-endian
 
-// Or specify per operation
+// or specify per operation
 view.writeU32(0x12345678, true);   // little-endian
 view.writeU32(0x12345678, false);  // big-endian
 ```
@@ -107,12 +107,12 @@ import BufferView from "@rcompat/bufferview";
 const view = new BufferView(new ArrayBuffer(16));
 
 view.writeU32(100);
-console.log(view.position);  // 4
+console.log(view.position);   // 4
 
-view.position = 0;           // seek to beginning
+view.position = 0;            // seek to beginning
 const value = view.readU32(); // 100
 
-view.position = 8;           // seek to byte 8
+view.position = 8;            // seek to byte 8
 ```
 
 ### Raw bytes
@@ -122,10 +122,10 @@ import BufferView from "@rcompat/bufferview";
 
 const view = new BufferView(new ArrayBuffer(16));
 
-// Write raw bytes
+// write raw bytes
 view.writeBytes(new Uint8Array([1, 2, 3, 4]));
 
-// Read raw bytes
+// read raw bytes
 view.position = 0;
 const bytes = view.readBytes(4);  // Uint8Array [1, 2, 3, 4]
 ```
@@ -138,10 +138,10 @@ import BufferView from "@rcompat/bufferview";
 const view = new BufferView(new ArrayBuffer(12));
 view.write("Hello World!");
 
-// Get as Uint8Array
-const bytes = view.toBytes();
+// get as Uint8Array
+const bytes = view.bytes();
 
-// Get as string (UTF-8 decoded)
+// get as string (UTF-8 decoded)
 const text = view.toString();  // "Hello World!"
 ```
 
@@ -211,11 +211,11 @@ All write methods return `this` for chaining.
 
 ### Other Methods
 
-| Method                     | Returns       | Description                         |
-|----------------------------|---------------|-------------------------------------|
-| `subarray(offset, length)` | `BufferView`  | Create a new view into the buffer   |
-| `toBytes()`                | `Uint8Array`  | Copy buffer contents to Uint8Array  |
-| `toString()`               | `string`      | Decode buffer contents as UTF-8     |
+| Method                     | Returns      | Description                         |
+|----------------------------|--------------|-------------------------------------|
+| `subarray(offset, length)` | `BufferView` | Create a new view into the buffer   |
+| `bytes()`                  | `Uint8Array` | Copy buffer contents to Uint8Array  |
+| `toString()`               | `string`     | Decode buffer contents as UTF-8     |
 
 ## Examples
 
@@ -226,7 +226,7 @@ import BufferView from "@rcompat/bufferview";
 
 function parseHeader(buffer) {
   const view = new BufferView(buffer);
-  
+
   return {
     magic: view.read(4),        // "PNG\x00" etc.
     version: view.readU16(),
@@ -244,14 +244,14 @@ import BufferView from "@rcompat/bufferview";
 function buildPacket(type, payload) {
   const payloadBytes = new TextEncoder().encode(payload);
   const view = new BufferView(new ArrayBuffer(8 + payloadBytes.length));
-  
+
   view
     .writeU16(type)
     .writeU16(0)                 // reserved
     .writeU32(payloadBytes.length)
     .writeBytes(payloadBytes);
-  
-  return view.toBytes();
+
+  return view.bytes();
 }
 ```
 
@@ -263,7 +263,7 @@ import BufferView from "@rcompat/bufferview";
 function readRecords(buffer, count) {
   const view = new BufferView(buffer);
   const records = [];
-  
+
   for (let i = 0; i < count; i++) {
     records.push({
       id: view.readU32(),
@@ -272,7 +272,7 @@ function readRecords(buffer, count) {
       name: view.read(16).replace(/\0+$/, ""),  // null-terminated string
     });
   }
-  
+
   return records;
 }
 ```

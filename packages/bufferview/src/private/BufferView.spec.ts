@@ -19,7 +19,7 @@ test.case("i8", assert => {
     .writeI8(2)
     .writeI8(100);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     255,
     2,
     100,
@@ -38,7 +38,7 @@ test.case("u8", assert => {
     .writeU8(255)
     .writeU8(2)
     .writeU8(100);
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     255,
     2,
     100,
@@ -57,7 +57,7 @@ test.case("i16", assert => {
     .writeI16(0x1234)
     .writeI16(0x5678);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x34,
     0x12,
     0x78,
@@ -68,7 +68,7 @@ test.case("i16", assert => {
   view.littleEndian = false;
   view.writeI16(0x1234).writeI16(0x5678);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -91,7 +91,7 @@ test.case("u16", assert => {
     .writeU16(0x1234)
     .writeU16(0x5678);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x34,
     0x12,
     0x78,
@@ -102,7 +102,7 @@ test.case("u16", assert => {
   view.littleEndian = false;
   view.writeI16(0x1234).writeI16(0x5678);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -125,7 +125,7 @@ test.case("i32", assert => {
     .writeI32(0x12345678)
     .writeI32(0x9ABCDEF0);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x78,
     0x56,
     0x34,
@@ -140,7 +140,7 @@ test.case("i32", assert => {
   view.littleEndian = false;
   view.writeI32(0x12345678).writeI32(0x9ABCDEF0);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -167,7 +167,7 @@ test.case("u32", assert => {
     .writeU32(0x12345678)
     .writeU32(0x9ABCDEF0);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x78,
     0x56,
     0x34,
@@ -182,7 +182,7 @@ test.case("u32", assert => {
   view.littleEndian = false;
   view.writeU32(0x12345678).writeU32(0x9ABCDEF0);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -209,7 +209,7 @@ test.case("i64", assert => {
     .writeI64(0x123456789ABCDEF0n)
     .writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -232,7 +232,7 @@ test.case("i64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -267,7 +267,7 @@ test.case("u64", assert => {
     .writeU64(0x123456789ABCDEF0n)
     .writeU64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -290,7 +290,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -323,7 +323,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -346,7 +346,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -381,7 +381,7 @@ test.case("u64", assert => {
     .writeU64(0x123456789ABCDEF0n)
     .writeU64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0xF0,
     0xDE,
     0xBC,
@@ -404,7 +404,7 @@ test.case("u64", assert => {
   view.littleEndian = false;
   view.writeI64(0x123456789ABCDEF0n);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0x12,
     0x34,
     0x56,
@@ -439,7 +439,7 @@ test.case("string", assert => {
   const view = new BufferView(new ArrayBuffer(helloWorld.length))
     .write("Hello World");
 
-  equals(assert, view.toBytes(), helloWorld);
+  equals(assert, view.bytes(), helloWorld);
   assert(view.position === helloWorld.length).true();
 
   view.position = 0;
@@ -458,7 +458,7 @@ test.case("bytes", assert => {
 
   view.writeBytes(expected);
 
-  equals(assert, view.toBytes(), bytes);
+  equals(assert, view.bytes(), bytes);
 
   view.position = 0;
   const read = view.readBytes(bytes.length);
@@ -493,7 +493,7 @@ test.case("float32", assert => {
     .writeF32(testValue, true)
     .writeF32(testValue, false);
 
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0xdf,
     0x47,
     0x45,
@@ -514,7 +514,7 @@ test.case("float64", assert => {
   const view = new BufferView(new ArrayBuffer(16))
     .writeF64(testValue)
     .writeF64(testValue, false);
-  equals(assert, view.toBytes(), [
+  equals(assert, view.bytes(), [
     0xad,
     0xfa,
     0x5c,
@@ -549,7 +549,7 @@ test.case("constructor", assert => {
   assert(() => new BufferView(example, 2, 6)).tries();
   assert(() => new BufferView(example, 3, 5)).tries();
 
-  assert(() => new BufferView (example, 7, 1)).tries();
+  assert(() => new BufferView(example, 7, 1)).tries();
 
   assert(() => new BufferView(example, 0, 0)).tries();
 
@@ -563,5 +563,5 @@ test.case("constructor", assert => {
   assert(new BufferView(example, 0, 0).byteLength === 0).true();
   assert(new BufferView(example, 1, 7).byteLength === 7).true();
 
-  equals(assert, new BufferView(example, 3, 4).toBytes(), [3, 4, 5, 6]);
+  equals(assert, new BufferView(example, 3, 4).bytes(), [3, 4, 5, 6]);
 });
