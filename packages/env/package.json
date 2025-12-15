@@ -21,7 +21,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/async": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "dotenv": "^17.2.1"
   },

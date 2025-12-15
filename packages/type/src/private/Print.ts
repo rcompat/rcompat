@@ -12,7 +12,7 @@ import type IsVoid from "#IsVoid";
 import type Mutable from "#Mutable";
 import type PrintArray from "#PrintArray";
 import type PrintClass from "#PrintClass";
-import type PrintRecord from "#PrintRecord";
+import type PrintDict from "#PrintDict";
 import type PrintTuple from "#PrintTuple";
 import type PrintUnion from "#PrintUnion";
 
@@ -35,12 +35,12 @@ type Print<T> =
   T extends ReadonlyArray<infer E> ? `readonly ${Print<E>}[]` : "array" :
   T extends Dict ?
   // If T is a fully readonly, concrete object (like Readonly<{ ok: boolean }>),
-  // print it wrapped as Readonly<...>. Otherwise print the record normally.
+  // print it wrapped as Readonly<...>. Otherwise print the dictionary normally.
   IsEqual<T, Readonly<T>> extends true ?
   HasSpecificKeys<T> extends true ?
-  `Readonly<${PrintRecord<Mutable<T>>}>` :
-  PrintRecord<T> :
-  PrintRecord<T> :
+  `Readonly<${PrintDict<Mutable<T>>}>` :
+  PrintDict<T> :
+  PrintDict<T> :
   IsClass<T> extends true ? PrintClass<T> :
   never
   ;

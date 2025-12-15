@@ -25,10 +25,9 @@
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
-    "@rcompat/async": "workspace:^",
+    "@rcompat/dict": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/fn": "workspace:^",
-    "@rcompat/record": "workspace:^",
     "busboy": "^1.6.0",
     "ws": "^8.18.3"
   },

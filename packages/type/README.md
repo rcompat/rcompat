@@ -146,7 +146,7 @@ import type Serializable from "@rcompat/type/Serializable";
 
 // Valid JSON value
 const data: JSONValue = {
-  name: "Alice",
+  name: "Bob",
   age: 30,
   active: true,
   tags: ["admin", "user"],

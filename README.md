@@ -12,7 +12,7 @@ Deno, Bun and future runtimes.
 | Package                                   | Purpose                          |
 |-------------------------------------------|----------------------------------|
 |[@rcompat/args](packages/args)             | Program arguments                |
-|[@rcompat/array](packages/array)           | Array handling                   |
+|[@rcompat/array](packages/array)           | Arrays                           |
 |[@rcompat/assert](packages/assert)         | Invariant assertions             |
 |[@rcompat/bufferview](packages/bufferview) | Buffers                          |
 |[@rcompat/build](packages/build)           | Client builder                   |
@@ -24,12 +24,12 @@ Deno, Bun and future runtimes.
 |[@rcompat/html](packages/html)             | HTML handling                    |
 |[@rcompat/http](packages/http)             | HTTP servers                     |
 |[@rcompat/proby](packages/proby)           | Test runner                      |
-|[@rcompat/record](packages/record)         | Record helpers                   |
+|[@rcompat/dict](packages/dict)             | Dictionaries                     |
 |[@rcompat/runtime](packages/runtime)       | Runtime detection                |
-|[@rcompat/sql](packages/sql)               | SQL abstractions                 |
+|[@rcompat/sql](packages/sql)               | SQL                              |
 |[@rcompat/io](packages/io)                 | Input/output                     |
-|[@rcompat/stream](packages/stream)         | Stream handling                  |
-|[@rcompat/string](packages/string)         | String handling                  |
+|[@rcompat/stream](packages/stream)         | Streams                          |
+|[@rcompat/string](packages/string)         | Strings                          |
 |[@rcompat/test](packages/test)             | Testing                          |
 |[@rcompat/type](packages/type)             | Types                            |
 |[@rcompat/webview](packages/webview)       | Webview                          |

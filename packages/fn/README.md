@@ -72,8 +72,8 @@ function transform(data, transformer = fn.identity) {
   return transformer(data);
 }
 
-transform({ name: "Alice" });  // { name: "Alice" }
-transform({ name: "Alice" }, x => ({ ...x, id: 1 }));  // { name: "Alice", id: 1 }
+transform({ name: "Bob" });  // { name: "Bob" }
+transform({ name: "Bob" }, x => ({ ...x, id: 1 }));  // { name: "Bob", id: 1 }
 ```
 
 ### async.map
@@ -160,14 +160,14 @@ Maps an array with an async function, executing all operations in parallel.
 import fn from "@rcompat/fn";
 
 const users = [
-  { name: "Alice" },
+  { name: "John" },
   undefined,
   { name: "Bob" },
   undefined,
 ];
 
 users.filter(fn.defined);
-// [{ name: "Alice" }, { name: "Bob" }]
+// [{ name: "John" }, { name: "Bob" }]
 ```
 
 ### Optional transformation pipeline

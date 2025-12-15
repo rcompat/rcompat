@@ -63,7 +63,7 @@ db.exec(`
 `);
 
 // insert data
-db.exec("INSERT INTO users (name, email) VALUES (?, ?)", "Alice", "alice@example.com");
+db.exec("INSERT INTO users (name, email) VALUES (?, ?)", "Bob", "bob@web.com");
 ```
 
 ### Prepared statements
@@ -78,7 +78,7 @@ db.exec("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)");
 // prepare a statement for reuse
 const insert = db.prepare("INSERT INTO users (name) VALUES (?)");
 
-insert.run("Alice");   // { changes: 1, lastInsertRowid: 1 }
+insert.run("John");   // { changes: 1, lastInsertRowid: 1 }
 insert.run("Bob");     // { changes: 1, lastInsertRowid: 2 }
 insert.run("Charlie"); // { changes: 1, lastInsertRowid: 3 }
 ```
@@ -91,18 +91,18 @@ import Database from "@rcompat/sqlite";
 const db = new Database(":memory:");
 
 db.exec("CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)");
-db.exec("INSERT INTO users (name) VALUES (?)", "Alice");
+db.exec("INSERT INTO users (name) VALUES (?)", "John");
 db.exec("INSERT INTO users (name) VALUES (?)", "Bob");
 
 const query = db.prepare("SELECT * FROM users");
 
 // get first row
 query.get();
-// { id: 1, name: "Alice" }
+// { id: 1, name: "John" }
 
 // get all rows
 query.all();
-// [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
+// [{ id: 1, name: "John" }, { id: 2, name: "Bob" }]
 ```
 
 ### Parameters
@@ -111,7 +111,7 @@ query.all();
 
 ```js
 const stmt = db.prepare("SELECT * FROM users WHERE id = ? AND name = ?");
-stmt.get(1, "Alice");
+stmt.get(1, "Bob");
 ```
 
 #### Named parameters
@@ -119,7 +119,7 @@ stmt.get(1, "Alice");
 ```js
 // $-style
 const stmt1 = db.prepare("SELECT * FROM users WHERE id = $id AND name = $name");
-stmt1.get({ $id: 1, $name: "Alice" });
+stmt1.get({ $id: 1, $name: "Bob" });
 
 // @-style
 const stmt2 = db.prepare("SELECT * FROM users WHERE id = @id");

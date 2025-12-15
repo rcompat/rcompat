@@ -8,7 +8,7 @@ const operations = [
   // eq
   "undefined", "null",
   // other types
-  "array", "object", "record", "uuid",
+  "array", "object", "dict", "uuid",
   // misc
   "defined", "newable", "instance", "subclass", "anyOf",
   // sizes

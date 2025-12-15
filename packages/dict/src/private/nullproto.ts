@@ -1,3 +1,5 @@
+import type Dict from "@rcompat/type/Dict";
+
 interface Options {
   frozen?: boolean;
 }
@@ -22,7 +24,7 @@ function hasDepth(o: object): boolean {
   return false;
 }
 
-export default function nullproto(): Record<PropertyKey, never>;
+export default function nullproto(): Dict<never>;
 export default function nullproto<T extends object>(
   init: T,
   options: { frozen: true },

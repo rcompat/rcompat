@@ -1,4 +1,4 @@
-import non_records from "#non-records";
+import non_dicts from "#non-dicts";
 import override from "#override";
 import test from "@rcompat/test";
 import any from "@rcompat/test/any";
@@ -7,8 +7,8 @@ import undef from "@rcompat/test/undef";
 test.case("typedoc", assert => {
   assert(override({}, { foo: "bar" })).equals({ foo: "bar" });
   assert(override({ foo: "bar" }, { foo: "baz" })).equals({ foo: "baz" });
-  assert(override({ foo: { bar: "baz" } }, { foo: { bar: "baz2"} }))
-    .equals({ foo: { bar: "baz2"} });
+  assert(override({ foo: { bar: "baz" } }, { foo: { bar: "baz2" } }))
+    .equals({ foo: { bar: "baz2" } });
 });
 
 test.case("faulty params", assert => {
@@ -17,9 +17,9 @@ test.case("faulty params", assert => {
   assert(() => override(undef, undef)).throws();
   assert(() => override(undef, over)).throws();
   assert(() => override(base, undef)).throws();
-  non_records.forEach(non_record => {
-    assert(() => override(any(non_record), { foo: "bar" })).throws();
-    assert(() => override({ foo: "bar" }, any(non_record))).throws();
+  non_dicts.forEach(non_dict => {
+    assert(() => override(any(non_dict), { foo: "bar" })).throws();
+    assert(() => override({ foo: "bar" }, any(non_dict))).throws();
   });
 });
 
@@ -90,7 +90,7 @@ test.case("arrays don't recurse", assert => {
   };
 
   const over = {
-    modules: [{ name: "primate:htmx" } ],
+    modules: [{ name: "primate:htmx" }],
   };
 
   assert(override(base, over)).equals(any(over));
@@ -124,7 +124,7 @@ test.case("config enhancement", assert => {
     },
   };
 
-  const overridden  = {
+  const overridden = {
     base: "/",
     debug: true,
     defaults: {

@@ -1,7 +1,7 @@
 {
-  "name": "@rcompat/record",
-  "version": "0.9.1",
-  "description": "Standrd library object record",
+  "name": "@rcompat/dict",
+  "version": "0.1.0",
+  "description": "Standard library dictionaries",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rcompat/rcompat",
-    "directory": "packages/record"
+    "directory": "packages/dict"
   },
   "scripts": {
     "build": "npm run clean && tsc",

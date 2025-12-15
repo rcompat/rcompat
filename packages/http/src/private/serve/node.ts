@@ -6,7 +6,7 @@ import is_secure from "#is-secure";
 import PseudoRequest from "#PseudoRequest";
 import type Server from "#Server";
 import Status from "#Status";
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { Writable } from "node:stream";
 import { WebSocketServer } from "ws";
@@ -33,7 +33,7 @@ type NullableHandler = (request: Request) =>
   Promise<null> | Promise<Response> | Response;
 
 export default async (handler: NullableHandler, conf?: Conf): Promise<Server> => {
-  const $conf = record.override(defaults, conf ?? {});
+  const $conf = dict.override(defaults, conf ?? {});
 
   const module = await import(is_secure($conf) ? "https" : "http");
   const options = await get_options($conf);

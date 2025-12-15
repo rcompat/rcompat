@@ -23,7 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/record": "workspace:^"
+    "@rcompat/dict": "workspace:^"
   },
   "type": "module",
   "imports": {

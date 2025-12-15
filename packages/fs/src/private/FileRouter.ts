@@ -2,7 +2,7 @@ import FileRef from "#FileRef";
 import type Config from "#router/Config";
 import * as errors from "#router/errors";
 import Node from "#router/Node";
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 const defaults: Config = {
   directory: undefined,
@@ -17,7 +17,7 @@ export default class FileRouter {
   #config: Config;
 
   constructor(config: Config) {
-    this.#config = record.override(defaults, config);
+    this.#config = dict.override(defaults, config);
     Node.config = {
       specials: this.#config.specials,
     };

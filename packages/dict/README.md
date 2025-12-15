@@ -1,29 +1,29 @@
-# @rcompat/record
+# @rcompat/dict
 
-Object/record utilities for JavaScript runtimes.
+Dictionaries for JavaScript runtimes.
 
-## What is @rcompat/record?
+## What is @rcompat/dict?
 
-A cross-runtime module providing utilities for working with objects and records.
-Includes chainable entry manipulation, deep merging, path-based access, and more.
-Works consistently across Node, Deno, and Bun.
+A cross-runtime module providing utilities for working with dictionaries
+(plain objects). Includes chainable entry manipulation, deep merging,
+path-based access, and more. Works consistently across Node, Deno, and Bun.
 
 ## Installation
 
 ```bash
-npm install @rcompat/record
+npm install @rcompat/dict
 ```
 
 ```bash
-pnpm add @rcompat/record
+pnpm add @rcompat/dict
 ```
 
 ```bash
-yarn add @rcompat/record
+yarn add @rcompat/dict
 ```
 
 ```bash
-bun add @rcompat/record
+bun add @rcompat/dict
 ```
 
 ## Usage
@@ -33,45 +33,46 @@ bun add @rcompat/record
 Checks if an object has no keys.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-record.empty({});               // true
-record.empty({ a: 1 });         // false
-record.empty({ a: undefined }); // false (key exists)
+dict.empty({});               // true
+dict.empty({ a: 1 });         // false
+dict.empty({ a: undefined }); // false (key exists)
 ```
 
 ### entries
 
-Chainable wrapper around `Object.entries` with filter, map, and transform methods.
+Chainable wrapper around `Object.entries` with filter, map, and transform
+methods.
 
 ```js
-import record from "@rcompat/record";
+import entries from "@rcompat/dict/entries";
 
 const obj = { a: 1, b: 2, c: 3 };
 
 // filter entries
-record.entries(obj)
+entries(obj)
   .filter(([key, value]) => value > 1)
   .get();  // { b: 2, c: 3 }
 
 // map values
-record.entries(obj)
+entries(obj)
   .valmap(([key, value]) => value * 2)
   .get();  // { a: 2, b: 4, c: 6 }
 
 // map keys
-record.entries(obj)
+entries(obj)
   .keymap(([key]) => key.toUpperCase())
   .get();  // { A: 1, B: 2, C: 3 }
 
 // chain operations
-record.entries(obj)
+entries(obj)
   .filter(([, v]) => v > 1)
   .valmap(([, v]) => v * 10)
   .get();  // { b: 20, c: 30 }
 
 // iterate
-for (const [key, value] of record.entries(obj)) {
+for (const [key, value] of entries(obj)) {
   console.log(key, value);
 }
 ```
@@ -81,15 +82,15 @@ for (const [key, value] of record.entries(obj)) {
 Creates a new object excluding specified keys.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-const user = { id: 1, name: "Alice", password: "secret" };
+const user = { id: 1, name: "Bob", password: "secret" };
 
-record.exclude(user, ["password"]);
-// { id: 1, name: "Alice" }
+dict.exclude(user, ["password"]);
+// { id: 1, name: "Bob" }
 
-record.exclude(user, ["id", "password"]);
-// { name: "Alice" }
+dict.exclude(user, ["id", "password"]);
+// { name: "Bob" }
 ```
 
 ### get
@@ -97,19 +98,19 @@ record.exclude(user, ["id", "password"]);
 Gets a nested value using dot notation.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 const data = {
   user: {
     profile: {
-      name: "Alice",
+      name: "Bob",
     },
   },
 };
 
-record.get(data, "user.profile.name");  // "Alice"
-record.get(data, "user.profile");       // { name: "Alice" }
-record.get(data, "user.missing");       // undefined
+dict.get(data, "user.profile.name");  // "Bob"
+dict.get(data, "user.profile");       // { name: "Bob" }
+dict.get(data, "user.missing");       // undefined
 ```
 
 ### inflate
@@ -117,15 +118,15 @@ record.get(data, "user.missing");       // undefined
 Creates a nested object from a dot-notation path.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-record.inflate("a.b.c");
+dict.inflate("a.b.c");
 // { a: { b: { c: {} } } }
 
-record.inflate("a.b.c", "value");
+dict.inflate("a.b.c", "value");
 // { a: { b: { c: "value" } } }
 
-record.inflate("a/b/c", "value", "/");
+dict.inflate("a/b/c", "value", "/");
 // { a: { b: { c: "value" } } }
 ```
 
@@ -134,20 +135,20 @@ record.inflate("a/b/c", "value", "/");
 Deep merges objects recursively. Values from the second object override the first.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-record.override({ a: 1 }, { b: 2 });
+dict.override({ a: 1 }, { b: 2 });
 // { a: 1, b: 2 }
 
-record.override({ a: 1 }, { a: 2 });
+dict.override({ a: 1 }, { a: 2 });
 // { a: 2 }
 
 // Deep merge
-record.override(
-  { user: { name: "Alice", age: 30 } },
+dict.override(
+  { user: { name: "Bob", age: 30 } },
   { user: { age: 31 } }
 );
-// { user: { name: "Alice", age: 31 } }
+// { user: { name: "Bob", age: 31 } }
 ```
 
 ### proper
@@ -155,13 +156,13 @@ record.override(
 Type guard that checks if a value is a non-null object.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-record.proper({});          // true
-record.proper([]);          // true
-record.proper(null);        // false
-record.proper(undefined);   // false
-record.proper("string");    // false
+dict.proper({});          // true
+dict.proper([]);          // true
+dict.proper(null);        // false
+dict.proper(undefined);   // false
+dict.proper("string");    // false
 ```
 
 ### nullproto
@@ -169,19 +170,19 @@ record.proper("string");    // false
 Creates objects with null prototype (no inherited properties like `toString`).
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 // Empty null-prototype object
-const empty = record.nullproto();
+const empty = dict.nullproto();
 empty.toString;  // undefined (no inherited methods)
 
 // With initial values
-const obj = record.nullproto({ a: 1, b: 2 });
+const obj = dict.nullproto({ a: 1, b: 2 });
 obj.a;           // 1
 obj.toString;    // undefined
 
 // Frozen (immutable)
-const frozen = record.nullproto({ a: 1 }, { frozen: true });
+const frozen = dict.nullproto({ a: 1 }, { frozen: true });
 frozen.a = 2;    // TypeError in strict mode
 ```
 
@@ -190,12 +191,12 @@ frozen.a = 2;    // TypeError in strict mode
 Converts an object to a URL query string.
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
-record.toQueryString({ page: "1", sort: "name" });
+dict.toQueryString({ page: "1", sort: "name" });
 // "page=1&sort=name"
 
-record.toQueryString({ q: "hello", limit: "10" });
+dict.toQueryString({ q: "hello", limit: "10" });
 // "q=hello&limit=10"
 ```
 
@@ -209,17 +210,17 @@ declare function empty(object: object): boolean;
 
 Returns `true` if the object has no own keys.
 
-### `entries(record)`
+### `entries(dict)`
 
 ```ts
-declare function entries<K extends string, V>(record: Record<K, V>): Entries<K, V>;
+declare function entries<K extends string, V>(dict: dict<K, V>): Entries<K, V>;
 
 interface Entries<K, V> {
   filter(predicate: (entry: [K, V]) => boolean): Entries<K, V>;
   map<U>(mapper: (entry: [K, V]) => [K, U]): Entries<K, U>;
   keymap(mapper: (entry: [K, V]) => K): Entries<K, V>;
   valmap<U>(mapper: (entry: [K, V]) => U): Entries<K, U>;
-  get(): Record<K, V>;
+  get(): dict<K, V>;
   [Symbol.iterator](): IterableIterator<[K, V]>;
 }
 ```
@@ -279,7 +280,7 @@ declare function nullproto<T extends object>(
 ### `toQueryString(dict)`
 
 ```ts
-declare function toQueryString(dict: Record<string, string>): string;
+declare function toQueryString(dict: dict<string, string>): string;
 ```
 
 ## Examples
@@ -287,14 +288,14 @@ declare function toQueryString(dict: Record<string, string>): string;
 ### Sanitize API response
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 function sanitizeUser(user) {
-  return record.exclude(user, ["password", "ssn", "creditCard"]);
+  return dict.exclude(user, ["password", "ssn", "creditCard"]);
 }
 
 function transformResponse(data) {
-  return record.entries(data)
+  return dict.entries(data)
     .filter(([key]) => !key.startsWith("_"))
     .valmap(([, value]) => value ?? "N/A")
     .get();
@@ -304,7 +305,7 @@ function transformResponse(data) {
 ### Configuration with defaults
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 const defaults = {
   host: "localhost",
@@ -316,7 +317,7 @@ const defaults = {
 };
 
 function createConfig(userConfig) {
-  return record.override(defaults, userConfig);
+  return dict.override(defaults, userConfig);
 }
 
 createConfig({ port: 8080, db: { port: 5433 } });
@@ -326,10 +327,10 @@ createConfig({ port: 8080, db: { port: 5433 } });
 ### Build URL with query params
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 function buildUrl(base, params) {
-  const query = record.toQueryString(params);
+  const query = dict.toQueryString(params);
   return query ? `${base}?${query}` : base;
 }
 
@@ -340,10 +341,10 @@ buildUrl("/api/users", { page: "1", limit: "10" });
 ### Safe configuration objects
 
 ```js
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 
 // Prevent prototype pollution
-const config = record.nullproto({
+const config = dict.nullproto({
   apiKey: "secret",
   endpoint: "https://api.example.com",
 }, { frozen: true });

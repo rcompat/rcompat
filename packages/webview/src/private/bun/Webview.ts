@@ -1,6 +1,6 @@
 import cstring from "#cstring";
 import dlopen from "#dlopen";
-import record from "@rcompat/record";
+import dict from "@rcompat/dict";
 import type { BunFile } from "bun";
 
 interface Init {
@@ -43,7 +43,7 @@ export default class Webview {
   }
 
   set size(size: Size) {
-    const { height, hint, width } = record.override(default_size, size);
+    const { height, hint, width } = dict.override(default_size, size);
     this.symbol("set_size")(this.#handle, width, height, hint);
   }
 

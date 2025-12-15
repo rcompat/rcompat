@@ -200,7 +200,7 @@ export default class Is {
    * @returns The value, typed as a generic object.
    * @throws If the value is not an object.
    */
-  object(error?: ErrorFallbackFunction | string): Record<PropertyKey, unknown> {
+  object(error?: ErrorFallbackFunction | string): Dict {
     const def = `\`${this.#stringified}\` must be an object`;
     const condition = typeof this.#value === "object" && this.#value !== null;
     return this.#test({ condition, def, error });
@@ -223,8 +223,8 @@ export default class Is {
    * @returns The value, typed as `Dict`.
    * @throws If the value is not a plain object.
    */
-  record(error?: ErrorFallbackFunction | string): Dict {
-    const def = `\`${this.#stringified}\` must be a plain object (Record)`;
+  dict(error?: ErrorFallbackFunction | string): Dict {
+    const def = `\`${this.#stringified}\` must be a plain object (dictionary)`;
     const value = this.#value;
 
     const condition =

@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/array",
   "version": "0.8.0",
-  "description": "Standard library array handling",
+  "description": "Standard library arrays",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

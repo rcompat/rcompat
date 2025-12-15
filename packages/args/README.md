@@ -58,8 +58,8 @@ Commands:
 ```
 
 ```bash
-node app.js greet Alice   # Hello, Alice!
-bun app.js greet          # Hello, world!
+node app.js greet Bob # Hello, Bob!
+bun app.js greet      # Hello, world!
 ```
 
 ## How It Works

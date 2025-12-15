@@ -1,5 +1,6 @@
 import Is from "#Is";
 import test from "@rcompat/test";
+import type Dict from "@rcompat/type/Dict";
 import type UnknownFunction from "@rcompat/type/UnknownFunction";
 
 const fix = {
@@ -28,7 +29,7 @@ test.case("non objects", assert => {
   });
 });
 
-test.case("record", assert => {
+test.case("dict", assert => {
   const valid: unknown[] = [
     {},
     { a: 1, b: "x" },
@@ -48,11 +49,11 @@ test.case("record", assert => {
     () => { },
   ];
 
-  valid.forEach(v => assert(new Is(v).record()).equals(v));
-  invalid.forEach(v => assert(() => new Is(v).record()).throws());
+  valid.forEach(v => assert(new Is(v).dict()).equals(v));
+  invalid.forEach(v => assert(() => new Is(v).dict()).throws());
 });
 
-test.case("record - edge cases", assert => {
+test.case("dict - edge cases", assert => {
   const nullproto = Object.create(null);
   const plain = { x: 1 };
 
@@ -64,11 +65,11 @@ test.case("record - edge cases", assert => {
   class K { }
   const instance = new K();
 
-  assert(new Is(plain).record()).equals(plain);
-  assert(new Is(nullproto).record()).equals(nullproto);
+  assert(new Is(plain).dict()).equals(plain);
+  assert(new Is(nullproto).dict()).equals(nullproto);
 
   [withCustomProto, instance, new Map(), new Set(), [], new Date()].forEach(v =>
-    assert(() => new Is(v).record()).throws(),
+    assert(() => new Is(v).dict()).throws(),
   );
 });
 
@@ -113,7 +114,6 @@ test.case("object / array / defined / undefined / null", assert => {
   const array: unknown[] = [1, 2, 3];
   class C { }
   const instance = new C();
-  type Dict = Record<PropertyKey, unknown>;
 
   assert(new Is(object).object()).equals(object).type<Dict>();
   assert(new Is(array).object()).equals(array).type<Dict>();
