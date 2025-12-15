@@ -25,7 +25,7 @@ function hasDepth(o: object): boolean {
 export default function nullproto(): Record<PropertyKey, never>;
 export default function nullproto<T extends object>(
   init: T,
-  options: { frozen: true }
+  options: { frozen: true },
 ): Readonly<T>;
 export default function nullproto<T extends object>(init: T): T;
 export default function nullproto<T extends object>(

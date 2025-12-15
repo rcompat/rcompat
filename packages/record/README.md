@@ -33,11 +33,11 @@ bun add @rcompat/record
 Checks if an object has no keys.
 
 ```js
-import empty from "@rcompat/record/empty";
+import record from "@rcompat/record";
 
-empty({});           // true
-empty({ a: 1 });     // false
-empty({ a: undefined }); // false (key exists)
+record.empty({});               // true
+record.empty({ a: 1 });         // false
+record.empty({ a: undefined }); // false (key exists)
 ```
 
 ### entries
@@ -45,33 +45,33 @@ empty({ a: undefined }); // false (key exists)
 Chainable wrapper around `Object.entries` with filter, map, and transform methods.
 
 ```js
-import entries from "@rcompat/record/entries";
+import record from "@rcompat/record";
 
 const obj = { a: 1, b: 2, c: 3 };
 
-// Filter entries
-entries(obj)
+// filter entries
+record.entries(obj)
   .filter(([key, value]) => value > 1)
   .get();  // { b: 2, c: 3 }
 
-// Map values
-entries(obj)
+// map values
+record.entries(obj)
   .valmap(([key, value]) => value * 2)
   .get();  // { a: 2, b: 4, c: 6 }
 
-// Map keys
-entries(obj)
+// map keys
+record.entries(obj)
   .keymap(([key]) => key.toUpperCase())
   .get();  // { A: 1, B: 2, C: 3 }
 
-// Chain operations
-entries(obj)
+// chain operations
+record.entries(obj)
   .filter(([, v]) => v > 1)
   .valmap(([, v]) => v * 10)
   .get();  // { b: 20, c: 30 }
 
-// Iterate
-for (const [key, value] of entries(obj)) {
+// iterate
+for (const [key, value] of record.entries(obj)) {
   console.log(key, value);
 }
 ```
@@ -81,14 +81,14 @@ for (const [key, value] of entries(obj)) {
 Creates a new object excluding specified keys.
 
 ```js
-import exclude from "@rcompat/record/exclude";
+import record from "@rcompat/record";
 
 const user = { id: 1, name: "Alice", password: "secret" };
 
-exclude(user, ["password"]);
+record.exclude(user, ["password"]);
 // { id: 1, name: "Alice" }
 
-exclude(user, ["id", "password"]);
+record.exclude(user, ["id", "password"]);
 // { name: "Alice" }
 ```
 
@@ -97,7 +97,7 @@ exclude(user, ["id", "password"]);
 Gets a nested value using dot notation.
 
 ```js
-import get from "@rcompat/record/get";
+import record from "@rcompat/record";
 
 const data = {
   user: {
@@ -107,9 +107,9 @@ const data = {
   },
 };
 
-get(data, "user.profile.name");  // "Alice"
-get(data, "user.profile");       // { name: "Alice" }
-get(data, "user.missing");       // undefined
+record.get(data, "user.profile.name");  // "Alice"
+record.get(data, "user.profile");       // { name: "Alice" }
+record.get(data, "user.missing");       // undefined
 ```
 
 ### inflate
@@ -117,15 +117,15 @@ get(data, "user.missing");       // undefined
 Creates a nested object from a dot-notation path.
 
 ```js
-import inflate from "@rcompat/record/inflate";
+import record from "@rcompat/record";
 
-inflate("a.b.c");
+record.inflate("a.b.c");
 // { a: { b: { c: {} } } }
 
-inflate("a.b.c", "value");
+record.inflate("a.b.c", "value");
 // { a: { b: { c: "value" } } }
 
-inflate("a/b/c", "value", "/");
+record.inflate("a/b/c", "value", "/");
 // { a: { b: { c: "value" } } }
 ```
 
@@ -134,16 +134,16 @@ inflate("a/b/c", "value", "/");
 Deep merges objects recursively. Values from the second object override the first.
 
 ```js
-import override from "@rcompat/record/override";
+import record from "@rcompat/record";
 
-override({ a: 1 }, { b: 2 });
+record.override({ a: 1 }, { b: 2 });
 // { a: 1, b: 2 }
 
-override({ a: 1 }, { a: 2 });
+record.override({ a: 1 }, { a: 2 });
 // { a: 2 }
 
 // Deep merge
-override(
+record.override(
   { user: { name: "Alice", age: 30 } },
   { user: { age: 31 } }
 );
@@ -155,13 +155,13 @@ override(
 Type guard that checks if a value is a non-null object.
 
 ```js
-import proper from "@rcompat/record/proper";
+import record from "@rcompat/record";
 
-proper({});          // true
-proper([]);          // true
-proper(null);        // false
-proper(undefined);   // false
-proper("string");    // false
+record.proper({});          // true
+record.proper([]);          // true
+record.proper(null);        // false
+record.proper(undefined);   // false
+record.proper("string");    // false
 ```
 
 ### nullproto
@@ -169,19 +169,19 @@ proper("string");    // false
 Creates objects with null prototype (no inherited properties like `toString`).
 
 ```js
-import nullproto from "@rcompat/record/nullproto";
+import record from "@rcompat/record";
 
 // Empty null-prototype object
-const empty = nullproto();
+const empty = record.nullproto();
 empty.toString;  // undefined (no inherited methods)
 
 // With initial values
-const obj = nullproto({ a: 1, b: 2 });
+const obj = record.nullproto({ a: 1, b: 2 });
 obj.a;           // 1
 obj.toString;    // undefined
 
 // Frozen (immutable)
-const frozen = nullproto({ a: 1 }, { frozen: true });
+const frozen = record.nullproto({ a: 1 }, { frozen: true });
 frozen.a = 2;    // TypeError in strict mode
 ```
 
@@ -190,12 +190,12 @@ frozen.a = 2;    // TypeError in strict mode
 Converts an object to a URL query string.
 
 ```js
-import toQueryString from "@rcompat/record/toQueryString";
+import record from "@rcompat/record";
 
-toQueryString({ page: "1", sort: "name" });
+record.toQueryString({ page: "1", sort: "name" });
 // "page=1&sort=name"
 
-toQueryString({ q: "hello", limit: "10" });
+record.toQueryString({ q: "hello", limit: "10" });
 // "q=hello&limit=10"
 ```
 
@@ -287,15 +287,14 @@ declare function toQueryString(dict: Record<string, string>): string;
 ### Sanitize API response
 
 ```js
-import exclude from "@rcompat/record/exclude";
-import entries from "@rcompat/record/entries";
+import record from "@rcompat/record";
 
 function sanitizeUser(user) {
-  return exclude(user, ["password", "ssn", "creditCard"]);
+  return record.exclude(user, ["password", "ssn", "creditCard"]);
 }
 
 function transformResponse(data) {
-  return entries(data)
+  return record.entries(data)
     .filter(([key]) => !key.startsWith("_"))
     .valmap(([, value]) => value ?? "N/A")
     .get();
@@ -305,7 +304,7 @@ function transformResponse(data) {
 ### Configuration with defaults
 
 ```js
-import override from "@rcompat/record/override";
+import record from "@rcompat/record";
 
 const defaults = {
   host: "localhost",
@@ -317,7 +316,7 @@ const defaults = {
 };
 
 function createConfig(userConfig) {
-  return override(defaults, userConfig);
+  return record.override(defaults, userConfig);
 }
 
 createConfig({ port: 8080, db: { port: 5433 } });
@@ -327,10 +326,10 @@ createConfig({ port: 8080, db: { port: 5433 } });
 ### Build URL with query params
 
 ```js
-import toQueryString from "@rcompat/record/toQueryString";
+import record from "@rcompat/record";
 
 function buildUrl(base, params) {
-  const query = toQueryString(params);
+  const query = record.toQueryString(params);
   return query ? `${base}?${query}` : base;
 }
 
@@ -341,10 +340,10 @@ buildUrl("/api/users", { page: "1", limit: "10" });
 ### Safe configuration objects
 
 ```js
-import nullproto from "@rcompat/record/nullproto";
+import record from "@rcompat/record";
 
 // Prevent prototype pollution
-const config = nullproto({
+const config = record.nullproto({
   apiKey: "secret",
   endpoint: "https://api.example.com",
 }, { frozen: true });
