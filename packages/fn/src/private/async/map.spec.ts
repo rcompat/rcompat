@@ -1,4 +1,4 @@
-import map from "#map";
+import map from "#async/map";
 import test from "@rcompat/test";
 
 test.case("0 case", async assert => {

@@ -76,6 +76,34 @@ transform({ name: "Alice" });  // { name: "Alice" }
 transform({ name: "Alice" }, x => ({ ...x, id: 1 }));  // { name: "Alice", id: 1 }
 ```
 
+### async.map
+
+Parallel async map over an array using `Promise.all`. Maps all items
+concurrently and waits for all to complete.
+
+```js
+import fn from "@rcompat/fn";
+
+const urls = ["/api/users/1", "/api/users/2", "/api/users/3"];
+
+// fetch all users in parallel
+const users = await fn.async.map(urls, async (url) => {
+  const response = await fetch(url);
+  return response.json();
+});
+// [{ id: 1, ... }, { id: 2, ... }, { id: 3, ... }]
+```
+
+```js
+import fn from "@rcompat/fn";
+
+// with index parameter
+const results = await fn.async.map([10, 20, 30], async (value, index) => {
+  return { index, doubled: value * 2 };
+});
+// [{ index: 0, doubled: 20 }, { index: 1, doubled: 40 }, { index: 2, doubled: 60 }]
+```
+
 ## API Reference
 
 ### `defined(value)`
@@ -105,6 +133,24 @@ Returns the input value unchanged.
 | `value`   | `T`  | The value to return  |
 
 **Returns**: The same value that was passed in.
+
+### `async.map(array, mapper)`
+
+```ts
+declare function map<T, U>(
+  array: T[],
+  mapper: (item: T, index: number, array: T[]) => Promise<U>
+): Promise<U[]>;
+```
+
+Maps an array with an async function, executing all operations in parallel.
+
+| Parameter | Type                                                 | Description            |
+| --------- | ---------------------------------------------------- | ---------------------- |
+| `array`   | `T[]`                                                | The array to map over  |
+| `mapper`  | `(item: T, index: number, array: T[]) => Promise<U>` | Async mapping function |
+
+**Returns**: A promise that resolves to an array of mapped values.
 
 ## Examples
 
@@ -140,10 +186,10 @@ function processData(data, options = {}) {
   return postProcess(result);
 }
 
-// Use with default (no-op) transformations
+// use with default (no-op) transformations
 processData(myData);
 
-// Use with custom transformations
+// use with custom transformations
 processData(myData, {
   preProcess: data => data.map(x => x * 2),
   postProcess: result => result.filter(x => x > 10),
@@ -164,6 +210,20 @@ const numbers = [1, 2, 3];
 conditionalMap(numbers, true, x => x * 2);   // [2, 4, 6]
 conditionalMap(numbers, false, x => x * 2);  // [1, 2, 3]
 ```
+
+### Parallel API requests
+
+```js
+import fn from "@rcompat/fn";
+
+async function products(ids) {
+  return fn.async.map(ids, async id => {
+    const response = await fetch(`/api/products/${id}`);
+    return response.json();
+  });
+}
+
+const products = await products([1, 2, 3, 4, 5]);
 
 ## Cross-Runtime Compatibility
 
