@@ -1,5 +1,4 @@
-import dim from "#color/dim";
-import red from "#color/red";
+import color from "#color";
 import readline from "#prompts/readline";
 import write from "#prompts/write";
 
@@ -11,13 +10,13 @@ export default async function select<T>(args: Args<T>): Promise<T> {
   write(`${message}\n`);
   options.forEach((o, i) => write(`  ${i + 1}. ${o.label}\n`));
   for (; ;) {
-    write(dim(`(1-${options.length})› `));
+    write(color.dim(`(1-${options.length})› `));
     const line = await readline();
     if (line === null) return options[initial]!.value;
     const idx = Number((line || "").trim()) - 1;
     if (Number.isInteger(idx) && idx >= 0 && idx < options.length) {
       return options[idx]!.value;
     }
-    write(`${red("✖ Invalid choice")}\n`);
+    write(`${color.red("✖ Invalid choice")}\n`);
   }
 }

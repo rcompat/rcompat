@@ -1,5 +1,5 @@
-import green from "#color/green";
+import color from "#color";
 
-export default (message?: string) => {
-  if (message) process.stdout.write(`${green("✔")} ${message}\n`);
+export default function outro(message?: string) {
+  if (message) process.stdout.write(`${color.green("✔")} ${message}\n`);
 };

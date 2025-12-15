@@ -1,18 +1,18 @@
-import dim from "#color/dim";
-import red from "#color/red";
+import color from "#color";
 import readline from "#prompts/readline";
-import type TextOptions from "#prompts/TextOptions";
+import type Args from "#prompts/TextOptions";
 import write from "#prompts/write";
 
-const CANCEL = Symbol.for("@rcompat/cli.prompts.CANCEL");
+const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
+type Return = Promise<string | typeof CANCEL>;
 
 const render = (msg: string, initial?: string) => {
-  const suffix = initial ? ` ${dim(`(${initial})`)}` : "";
-  return `${msg}${suffix} ${dim("› ")}`;
+  const suffix = initial ? ` ${color.dim(`(${initial})`)}` : "";
+  return `${msg}${suffix} ${color.dim("› ")}`;
 };
 
-export default async (opts: TextOptions): Promise<string | typeof CANCEL> => {
-  const { initial, message, validate } = opts;
+export default async function text(args: Args): Return {
+  const { initial, message, validate } = args;
 
   for (; ;) {
     write(render(message, initial));
@@ -27,12 +27,12 @@ export default async (opts: TextOptions): Promise<string | typeof CANCEL> => {
       try {
         const out = await validate(answer);
         if (typeof out === "string" && out) {
-          write(`${red(`✖ ${out}`)}\n`);
+          write(`${color.red(`✖ ${out}`)}\n`);
           continue;
         }
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
-        write(`${red(`✖ ${msg || "Invalid input"}`)}\n`);
+        write(`${color.red(`✖ ${msg || "Invalid input"}`)}\n`);
         continue;
       }
     }

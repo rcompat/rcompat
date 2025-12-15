@@ -1,5 +1,4 @@
-import dim from "#color/dim";
-import red from "#color/red";
+import color from "#color";
 import readline from "#prompts/readline";
 import write from "#prompts/write";
 
@@ -33,8 +32,8 @@ export default async function multiselect<T>(args: Args<T>): Promise<T[]> {
     : "";
 
   for (; ;) {
-    write(dim("Enter numbers, comma-separated › "));
-    if (hint) write(dim(`(${hint}) `));
+    write(color.dim("Enter numbers, comma-separated › "));
+    if (hint) write(color.dim(`(${hint}) `));
 
     const line = await readline();
 
@@ -61,6 +60,6 @@ export default async function multiselect<T>(args: Args<T>): Promise<T[]> {
 
     if (idxs.length) return idxs.map((i) => options[i]!.value);
 
-    write(`${red("✖ Choose at least one valid option")}\n`);
+    write(`${color.red("✖ Choose at least one valid option")}\n`);
   }
 }

@@ -1,6 +1,4 @@
-import blue from "@rcompat/cli/color/blue";
-import green from "@rcompat/cli/color/green";
-import red from "@rcompat/cli/color/red";
+import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import type FileRef from "@rcompat/fs/FileRef";
 import type Result from "@rcompat/test/Result";
@@ -61,7 +59,7 @@ export default async (root: FileRef, subrepo?: string) => {
   }
 
   if (subrepo !== undefined) {
-    print(`${blue(subrepo)}\n`);
+    print(`${color.blue(subrepo)}\n`);
   }
 
   for (const suite of repository.next()) {
@@ -70,18 +68,18 @@ export default async (root: FileRef, subrepo?: string) => {
     for await (const test of suite.run()) {
       for (const result of test.results) {
         if (result.passed) {
-          print(green("o"));
+          print(color.green("o"));
         } else {
-          failed.push([ test, result ]);
-          print(red("x"));
+          failed.push([test, result]);
+          print(color.red("x"));
         }
       }
     }
     await suite.end();
     if (failed.length > 0) {
       print("\n");
-      for (const [ test, result ] of failed) {
-        print(`${suite.file.debase(root)} ${red(test.name)} \n`);
+      for (const [test, result] of failed) {
+        print(`${suite.file.debase(root)} ${color.red(test.name)} \n`);
         print(`  expected  ${stringify(result.expected)}\n`);
         print(`  actual    ${stringify(result.actual)}\n`);
       }

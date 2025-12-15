@@ -33,25 +33,21 @@ bun add @rcompat/cli
 Style terminal output with ANSI colors.
 
 ```js
-import red from "@rcompat/cli/color/red";
-import green from "@rcompat/cli/color/green";
-import blue from "@rcompat/cli/color/blue";
-import bold from "@rcompat/cli/color/bold";
-import dim from "@rcompat/cli/color/dim";
+import color from "@rcompat/cli/color";
 
-console.log(red("Error: something went wrong"));
-console.log(green("Success!"));
-console.log(blue("Info: processing..."));
-console.log(bold("Important message"));
-console.log(dim("Less important"));
+console.log(color.red("Error: something went wrong"));
+console.log(color.green("Success!"));
+console.log(color.blue("Info: processing..."));
+console.log(color.bold("Important message"));
+console.log(color.dim("Less important"));
 
-// Combine styles
-console.log(bold(red("Critical error!")));
+// combine styles
+console.log(color.bold(color.red("Critical error!")));
 ```
 
 Available colors:
 - `red`, `green`, `blue`, `cyan`, `magenta`, `yellow`
-- `black`, `white`, `gray` (alias: `grey`)
+- `black`, `white`, `gray`
 - `bold`, `dim`, `inverse`
 
 ### print
@@ -217,25 +213,9 @@ if (isCancel(name)) {
 ### Colors
 
 ```ts
-import color from "@rcompat/cli/color/<name>";
-declare function color(message: string): string;
+import color from "@rcompat/cli/color";
+declare function color.[NAME](message: string): string;
 ```
-
-| Color     | Import Path                    | ANSI Code |
-|-----------|--------------------------------|-----------|
-| `black`   | `@rcompat/cli/color/black`     | 30        |
-| `red`     | `@rcompat/cli/color/red`       | 31        |
-| `green`   | `@rcompat/cli/color/green`     | 32        |
-| `yellow`  | `@rcompat/cli/color/yellow`    | 33        |
-| `blue`    | `@rcompat/cli/color/blue`      | 34        |
-| `magenta` | `@rcompat/cli/color/magenta`   | 35        |
-| `cyan`    | `@rcompat/cli/color/cyan`      | 36        |
-| `white`   | `@rcompat/cli/color/white`     | 37        |
-| `gray`    | `@rcompat/cli/color/gray`      | 90        |
-| `grey`    | `@rcompat/cli/color/grey`      | 90        |
-| `bold`    | `@rcompat/cli/color/bold`      | 1         |
-| `dim`     | `@rcompat/cli/color/dim`       | 2         |
-| `inverse` | `@rcompat/cli/color/inverse`   | 7         |
 
 ### print
 
@@ -378,16 +358,13 @@ outro(green(`Created ${name} with ${template} template`));
 ### Colored log levels
 
 ```js
-import red from "@rcompat/cli/color/red";
-import yellow from "@rcompat/cli/color/yellow";
-import blue from "@rcompat/cli/color/blue";
-import dim from "@rcompat/cli/color/dim";
+import color from "@rcompat/cli/color";
 
 const log = {
-  error: (msg) => console.log(red("ERROR"), msg),
-  warn: (msg) => console.log(yellow("WARN"), msg),
-  info: (msg) => console.log(blue("INFO"), msg),
-  debug: (msg) => console.log(dim("DEBUG"), dim(msg)),
+  error: (msg) => console.log(color.red("ERROR"), msg),
+  warn: (msg) => console.log(color.yellow("WARN"), msg),
+  info: (msg) => console.log(color.blue("INFO"), msg),
+  debug: (msg) => console.log(color.dim("DEBUG"), color.dim(msg)),
 };
 
 log.error("Connection failed");

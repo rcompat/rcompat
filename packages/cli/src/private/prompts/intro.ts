@@ -1,5 +1,5 @@
-import bold from "#color/bold";
+import color from "#color";
 
-export default (message?: string) => {
-  if (message) process.stdout.write(`${bold("●")} ${message}\n`);
+export default function intro(message?: string) {
+  if (message) process.stdout.write(`${color.bold("●")} ${message}\n`);
 };

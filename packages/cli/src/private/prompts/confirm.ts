@@ -1,15 +1,16 @@
-import dim from "#color/dim";
+import color from "#color";
 import readline from "#prompts/readline";
 import write from "#prompts/write";
 
-type ConfirmOptions = { initial?: boolean; message: string };
+type Args = { initial?: boolean; message: string };
+type Return = Promise<boolean | typeof CANCEL>;
 
-const CANCEL = Symbol.for("@rcompat/cli.prompts.CANCEL");
+const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
 
-export default async (opts: ConfirmOptions): Promise<boolean | typeof CANCEL> => {
-  const { initial, message } = opts;
+export default async function confirm(args: Args): Return {
+  const { initial, message } = args;
   const hint = initial === true ? "Y/n" : initial === false ? "y/N" : "y/n";
-  const prompt = `${message} ${dim(`(${hint})`)} ${dim("› ")}`;
+  const prompt = `${message} ${color.dim(`(${hint})`)} ${color.dim("› ")}`;
 
   for (; ;) {
     write(prompt);
@@ -23,6 +24,6 @@ export default async (opts: ConfirmOptions): Promise<boolean | typeof CANCEL> =>
     if (s === "y" || s === "yes") return true;
     if (s === "n" || s === "no") return false;
 
-    write(`${dim("Please answer y or n.")}\n`);
+    write(`${color.dim("Please answer y or n.")}\n`);
   }
 };

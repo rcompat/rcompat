@@ -1,8 +1,8 @@
-import yellow from "#color/yellow";
+import color from "#color";
 
-const CANCEL = Symbol.for("@rcompat/cli.prompts.CANCEL");
+const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
 
-export default (message?: string) => {
-  if (message) process.stdout.write(`${yellow("↩")} ${message}\n`);
+export default function cancel(message?: string) {
+  if (message) process.stdout.write(`${color.yellow("↩")} ${message}\n`);
   return CANCEL;
 };

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import red from "@rcompat/cli/color/red";
+import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import type FileRef from "@rcompat/fs/FileRef";
 import root from "@rcompat/fs/project/root";
@@ -32,5 +32,5 @@ if (type === "monorepo") {
 } else if (type === "repo") {
   await run($root.join("src"));
 } else {
-  print(`${red("src")} or ${red("packages")} not found\n`);
+  print(`${color.red("src")} or ${color.red("packages")} not found\n`);
 }
