@@ -33,15 +33,15 @@ Escapes HTML special characters to prevent Cross-Site Scripting (XSS) attacks.
 Based on [OWASP recommendations](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#output-encoding-for-html-contexts).
 
 ```js
-import escape from "@rcompat/html/escape";
+import HTML from "@rcompat/html";
 
-escape("<script>alert('xss')</script>");
+HTML.escape("<script>alert('xss')</script>");
 // "&lt;script&gt;alert(&#x27;xss&#x27;)&lt;/script&gt;"
 
-escape('Hello "world"');
+HTML.escape('Hello "world"');
 // "Hello &quot;world&quot;"
 
-escape("Tom & Jerry");
+HTML.escape("Tom & Jerry");
 // "Tom &amp; Jerry"
 ```
 
@@ -76,13 +76,13 @@ Escapes HTML special characters in a string.
 ### Safe HTML templates
 
 ```js
-import escape from "@rcompat/html/escape";
+import HTML from "@rcompat/html";
 
 function renderUser(user) {
   return `
     <div class="user">
-      <h2>${escape(user.name)}</h2>
-      <p>${escape(user.bio)}</p>
+      <h2>${HTML.escape(user.name)}</h2>
+      <p>${HTML.escape(user.bio)}</p>
     </div>
   `;
 }
@@ -97,7 +97,9 @@ renderUser({ name: "<script>bad</script>", bio: "I'm a user" });
 ### Escaping attribute values
 
 ```js
-import escape from "@rcompat/html/escape";
+import HTML from "@rcompat/html";
+
+const { escape } = HTML;
 
 function createLink(url, text) {
   return `<a href="${escape(url)}" title="${escape(text)}">${escape(text)}</a>`;
@@ -110,10 +112,10 @@ createLink("/search?q=a&b=c", 'Search "results"');
 ### Form input display
 
 ```js
-import escape from "@rcompat/html/escape";
+import HTML from "@rcompat/html";
 
 function displayComment(comment) {
-  return `<div class="comment">${escape(comment.text)}</div>`;
+  return `<div class="comment">${HTML.escape(comment.text)}</div>`;
 }
 
 // Malicious input is safely escaped
