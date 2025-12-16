@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/worker",
-  "version": "0.6.0",
-  "description": "Standard library web workers",
+  "version": "0.7.0",
+  "description": "Standard library workers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [

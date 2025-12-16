@@ -9,30 +9,30 @@ Deno, Bun and future runtimes.
 
 ## Packages
 
-| Package                                   | Purpose                          |
-|-------------------------------------------|----------------------------------|
-|[@rcompat/args](packages/args)             | Program arguments                |
-|[@rcompat/array](packages/array)           | Arrays                           |
-|[@rcompat/assert](packages/assert)         | Invariant assertions             |
-|[@rcompat/bufferview](packages/bufferview) | Buffers                          |
-|[@rcompat/cli](packages/cli)               | CLI tools                        |
-|[@rcompat/crypto](packages/crypto)         | Cryptographic functions          |
-|[@rcompat/env](packages/env)               | Environment loading              |
-|[@rcompat/fs](packages/fs)                 | Filesystem access                |
-|[@rcompat/fn](packages/fn)                 | Function handling                |
-|[@rcompat/html](packages/html)             | HTML handling                    |
-|[@rcompat/http](packages/http)             | HTTP servers                     |
-|[@rcompat/proby](packages/proby)           | Test runner                      |
-|[@rcompat/dict](packages/dict)             | Dictionaries                     |
-|[@rcompat/runtime](packages/runtime)       | Runtime detection                |
-|[@rcompat/sql](packages/sql)               | SQL                              |
-|[@rcompat/io](packages/io)                 | Input/output                     |
-|[@rcompat/stream](packages/stream)         | Streams                          |
-|[@rcompat/string](packages/string)         | Strings                          |
-|[@rcompat/test](packages/test)             | Testing                          |
-|[@rcompat/type](packages/type)             | Types                            |
-|[@rcompat/webview](packages/webview)       | Webview                          |
-|[@rcompat/worker](packages/worker)         | Web workers                      |
+| Package                                   | Purpose                 |
+|-------------------------------------------|-------------------------|
+|[@rcompat/args](packages/args)             | Program arguments       |
+|[@rcompat/array](packages/array)           | Arrays                  |
+|[@rcompat/assert](packages/assert)         | Assertions              |
+|[@rcompat/bufferview](packages/bufferview) | Buffers                 |
+|[@rcompat/cli](packages/cli)               | CLI tools               |
+|[@rcompat/crypto](packages/crypto)         | Cryptographic functions |
+|[@rcompat/env](packages/env)               | Environment variables   |
+|[@rcompat/fs](packages/fs)                 | Filesystem access       |
+|[@rcompat/fn](packages/fn)                 | Function handling       |
+|[@rcompat/html](packages/html)             | HTML handling           |
+|[@rcompat/http](packages/http)             | HTTP servers            |
+|[@rcompat/proby](packages/proby)           | Test runner             |
+|[@rcompat/dict](packages/dict)             | Dictionaries            |
+|[@rcompat/runtime](packages/runtime)       | Runtime detection       |
+|[@rcompat/sql](packages/sql)               | SQL                     |
+|[@rcompat/io](packages/io)                 | Input/output            |
+|[@rcompat/stream](packages/stream)         | Streams                 |
+|[@rcompat/string](packages/string)         | Strings                 |
+|[@rcompat/test](packages/test)             | Testing                 |
+|[@rcompat/type](packages/type)             | Types                   |
+|[@rcompat/webview](packages/webview)       | Webview                 |
+|[@rcompat/worker](packages/worker)         | Workers                 |
 
 ## Motivation
 

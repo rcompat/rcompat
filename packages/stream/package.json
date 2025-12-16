@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/stream",
-  "version": "0.2.0",
-  "description": "Standard library stream abstractions",
+  "version": "0.3.0",
+  "description": "Standard library streams",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
