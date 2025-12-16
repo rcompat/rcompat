@@ -131,15 +131,13 @@ const dir = new FileRef("./src");
 const files = await dir.list();
 
 // list with filter
-const tsFiles = await dir.list((file) => file.extension === ".ts");
+const tsFiles = await dir.list({ filter: file => file.extension === ".ts" });
 
-// recursively collect all files
-const allFiles = await dir.collect();
-
-// collect with filter
-const components = await dir.collect((file) =>
-  file.path.includes("components")
-);
+// recursive, with regex matcher
+const allTsFiles = await dir.list({
+  recursive: true,
+  filter: /\.ts$/
+});
 
 // create directory (recursive by default)
 await new FileRef("./dist/assets").create();
@@ -264,7 +262,7 @@ class FileRef extends Streamable {
   write(input: string | Uint8Array): Promise<void>;
   writeJSON(input: JSONValue): Promise<void>;
 
-  // File info
+  // file info
   exists(): Promise<boolean>;
   isFile(): Promise<boolean>;
   isDirectory(): Promise<boolean>;
@@ -272,17 +270,20 @@ class FileRef extends Streamable {
   modified(): Promise<number>;
 
   // directory operations
-  list(predicate?: (file: FileRef) => boolean): Promise<FileRef[]>;
-  collect(predicate?: (file: FileRef) => boolean): Promise<FileRef[]>;
+  list(options?: {
+    recursive?: boolean;
+    filter?: RegExp | ((file: FileRef) => MaybePromise<boolean>);
+  }): Promise<FileRef[]>
   create(options?: { recursive?: boolean }): Promise<void>;
   remove(options?: { recursive?: boolean; fail?: boolean }): Promise<void>;
-  copy(to: FileRef, predicate?: (file: FileRef) => boolean): Promise<void>;
+  copy(to: FileRef, filter?: (file: FileRef) => MaybePromise<boolean>):
+    Promise<void>;
+
 
   // other
   hash(algorithm?: string): Promise<string>;
   import(name?: string): Promise<unknown>;
   discover(filename: string): Promise<FileRef>;
-  glob(pattern: string): Promise<FileRef[]>;
 
   static resolve(path?: string): FileRef;
   static join(
@@ -332,9 +333,9 @@ await dist.remove();
 await src.copy(dist, file => file.extension !== ".test.ts");
 
 // process each file
-for (const file of await dist.collect()) {
+for (const file of await dist.list({ recursive: true })) {
   const content = await file.text();
-   // Transform content...
+   // transform content...
   await file.write(transformedContent);
 }
 ```

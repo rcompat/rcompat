@@ -109,7 +109,7 @@ export default class FileRouter {
     const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
 
     return this.init(directory === undefined ? [] : await Promise.all(
-      (await FileRef.collect(directory, file => re.test(file.path)))
+      (await FileRef.list(directory, { filter: file => re.test(file.path) }))
         .map(file =>
           `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
         )));

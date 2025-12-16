@@ -11,7 +11,6 @@ import defined from "@rcompat/assert/defined";
 import is from "@rcompat/assert/is";
 import maybe from "@rcompat/assert/maybe";
 import hash from "@rcompat/crypto/hash";
-import type Dict from "@rcompat/type/Dict";
 import type JSONValue from "@rcompat/type/JSONValue";
 import type MaybePromise from "@rcompat/type/MaybePromise";
 import type Printable from "@rcompat/type/Printable";
@@ -23,7 +22,7 @@ import {
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
 
-type FilePredicate = (file: FileRef) => MaybePromise<boolean>;
+type Filter = (file: FileRef) => MaybePromise<boolean>;
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
@@ -116,67 +115,40 @@ export default class FileRef
     }
   }
 
-  async list(predicate?: FilePredicate, options?: Dict) {
-    maybe(predicate).instance(Function);
-    maybe(options).object();
+  async list(options?: {
+    recursive?: boolean;
+    filter?: RegExp | Filter;
+  }): Promise<FileRef[]> {
+    const { recursive = false, filter } = options ?? {};
+    const match = filter === undefined
+      ? undefined
+      : filter instanceof RegExp
+        ? (file: FileRef) => filter.test(file.path)
+        : filter;
 
-    const path = this.#path;
+    const names = await readdir(this.#path);
+    let results: FileRef[] = [];
 
-    const names = await readdir(path, options);
-    const files = names.map(n => FileRef.join(path, n));
-    if (!predicate) return files;
+    for (const name of names) {
+      const file = this.join(name);
+      const kind = await file.kind();
 
-    const mapped = await Promise.all(files
-      .map(async f => await predicate(f) ? f : null));
-    return mapped.filter(Boolean) as FileRef[];
+      if (kind === Kind.None) continue;
+
+      if (recursive && kind === Kind.Directory) {
+        results = results.concat(await file.list(options));
+      }
+
+      if (!match || await match(file)) {
+        results.push(file);
+      }
+    }
+
+    return results;
   }
 
   static list(path: Path, ...params: Parameters<FileRef["list"]>) {
     return new FileRef(path).list(...params);
-  }
-
-  async glob(pattern: string) {
-    let paths = await this.list(file => file.path.startsWith("."));
-    for (const file of paths) {
-      if (await file.kind() === Kind.Directory) {
-        paths = paths.concat(await file.glob(pattern));
-      } else if (new RegExp(pattern, "u").test(file.path)) {
-        paths.push(file);
-      }
-    }
-    return paths;
-  }
-
-  async collect(predicate?: FilePredicate) {
-    maybe(predicate).instance(Function);
-
-    let files: FileRef[] = [];
-    try {
-      files = await this.list();
-    } catch {
-      files = [];
-    }
-
-    let subfiles: FileRef[] = [];
-    for (const file of files) {
-      if (file.name.startsWith(".")) {
-        continue;
-      }
-      const kind = await file.kind();
-      if (kind === Kind.None) {
-        continue;
-      }
-      if (kind === Kind.Directory) {
-        subfiles = subfiles.concat(await file.collect(predicate));
-      } else if (predicate === undefined || await predicate(file)) {
-        subfiles.push(file);
-      }
-    }
-    return subfiles;
-  }
-
-  static collect(path: Path, ...params: Parameters<FileRef["collect"]>) {
-    return new FileRef(path).collect(...params);
   }
 
   async modified() {
@@ -294,15 +266,15 @@ export default class FileRef
     return new FileRef(path).size();
   }
 
-  async copy(to: FileRef, predicate?: FilePredicate): Promise<void> {
+  async copy(to: FileRef, filter?: Filter): Promise<void> {
     await ensure_parents(to);
-    maybe(predicate).instance(Function);
+    maybe(filter).instance(Function);
 
     const path = this.#path;
     const kind = await this.kind();
 
     if (kind === Kind.Link) {
-      await new FileRef(await realpath(path)).copy(to, predicate);
+      await new FileRef(await realpath(path)).copy(to, filter);
       return;
     }
 
@@ -311,7 +283,7 @@ export default class FileRef
       await to.remove();
       await to.create();
       // copy all files
-      await Promise.all((await this.list(predicate))
+      await Promise.all((await this.list({ filter }))
         .map(({ name }) => FileRef.join(path, name).copy(to.join(name))));
       return;
     }

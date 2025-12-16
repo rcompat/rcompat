@@ -5,19 +5,18 @@ import type Result from "@rcompat/test/Result";
 import type Test from "@rcompat/test/Test";
 import repository from "@rcompat/test/repository";
 
-const endings = [".spec.ts", ".spec.js"];
+const extensions = [".spec.ts", ".spec.js"];
+const base_scalars = ["boolean", "number", "string", "symbol"];
 
 function stringify_scalar(value: unknown) {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
 
-  if (["boolean", "number", "string", "symbol"].includes(typeof value)) {
-    return value.toString();
-  }
+  const type = typeof value;
 
-  if (typeof value === "bigint") {
-    return value.toString() + "n";
-  }
+  if (base_scalars.includes(type)) return value.toString();
+
+  if (typeof value === "bigint") return value.toString() + "n";
 
   if (typeof value === "function") {
     return `[Function${value.name ? `: ${value.name}` : ""}]`;
@@ -27,9 +26,7 @@ function stringify_scalar(value: unknown) {
 function stringify(value: unknown) {
   const scalar = stringify_scalar(value);
 
-  if (scalar !== undefined) {
-    return scalar;
-  }
+  if (scalar !== undefined) return scalar;
 
   if (typeof value === "object") {
     try {
@@ -46,12 +43,12 @@ function stringify(value: unknown) {
 }
 
 export default async (root: FileRef, subrepo?: string) => {
-  const files = await root.list(file =>
-    endings.some(ending => file.path.endsWith(ending)), { recursive: true });
+  const files = await root.list({
+    recursive: true,
+    filter: file => extensions.some(extension => file.path.endsWith(extension)),
+  });
 
-  if (files.length === 0) {
-    return;
-  }
+  if (files.length === 0) return;
 
   for (const file of files) {
     repository.suite(file);
