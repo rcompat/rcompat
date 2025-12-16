@@ -1,5 +1,5 @@
-import context from "#async/context";
+import Context from "#async/Context";
 
 export default {
-  context,
+  Context,
 };
