@@ -149,6 +149,7 @@ test.case("newable", assert => {
 
   assert(is.newable(C)).true();
   assert(is.newable(F)).true();
+  assert(is.newable(Date)).true();
 
   [arrow, plain, 1, "x", null, undefined].forEach(v =>
     assert(() => is.newable(v)).throws(),
@@ -264,3 +265,8 @@ test.case("symbol", assert => {
   );
 });
 
+test.case("date", assert => {
+  assert(is.date(new Date())).true();
+  assert(() => is.date(Date.now())).throws();
+  assert(() => is.date("today")).throws();
+});

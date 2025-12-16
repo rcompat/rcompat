@@ -1,5 +1,3 @@
-import type Dict from "@rcompat/type/Dict";
-
-export default function isDict(x: unknown): x is Dict {
+export default function isObject(x: unknown): x is object {
   return typeof x === "object" && x !== null;
 }
