@@ -1,5 +1,4 @@
-import is from "@rcompat/assert/is";
-import maybe from "@rcompat/assert/maybe";
+import assert from "@rcompat/assert";
 import type Dict from "@rcompat/type/Dict";
 
 type Impl3<P extends string, T, B extends string> =
@@ -17,9 +16,9 @@ function inflate<
   T,
   B extends string>(path: P, initial: T, by: B): Impl3<P, T, B>;
 function inflate(path: string, initial?: unknown, by?: string): Dict {
-  is(path).string();
-  maybe(initial).object();
-  maybe(by).string();
+  assert.string(path);
+  assert.maybe.dict(initial);
+  assert.maybe.string(by);
 
   return path.split(by ?? BY).reduceRight<unknown>((depathed, key) =>
     ({ [key]: depathed }), initial ?? {}) as never;

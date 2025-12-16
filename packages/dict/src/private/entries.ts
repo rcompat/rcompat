@@ -1,11 +1,11 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 import type Entry from "@rcompat/type/Entry";
 
 class Entries<K extends string, V> {
   #entries: Entry<K, V>[];
 
   constructor(entries: Entry<K, V>[]) {
-    is(entries).array();
+    assert.array(entries);
 
     this.#entries = entries;
   }
@@ -13,25 +13,25 @@ class Entries<K extends string, V> {
   filter<U extends V>(predicate: (entry: Entry<K, V>) => entry is Entry<K, U>): Entries<K, U>;
   filter(predicate: (entry: Entry<K, V>) => boolean): Entries<K, V>;
   filter(predicate: (entry: Entry<K, V>) => boolean): Entries<K, V> {
-    is(predicate).function();
+    assert.function(predicate);
 
     return new Entries(this.#entries.filter(predicate));
   }
 
   map<U>(mapper: (entry: Entry<K, V>) => Entry<K, U>): Entries<K, U> {
-    is(mapper).function();
+    assert.function(mapper);
 
     return new Entries(this.#entries.map(mapper));
   }
 
   keymap(mapper: (entry: Entry<K, V>) => K): Entries<K, V> {
-    is(mapper).function();
+    assert.function(mapper);
 
     return new Entries(this.#entries.map(entry => [mapper(entry), entry[1]]));
   }
 
   valmap<U>(mapper: (entry: Entry<K, V>) => U): Entries<K, U> {
-    is(mapper).function();
+    assert.function(mapper);
 
     return new Entries(this.#entries.map(entry => [entry[0], mapper(entry)]));
   }

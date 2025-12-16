@@ -13,10 +13,10 @@ const globify = (pattern: string) => pattern
   .replace(/(?<!\.)\*/u, "[^/]*")
   // * may be standalone -> anything aside from /
   .replace(/(?<=\\)\.\*/u, ".[^/]*")
-;
+  ;
 
 export default (pattern: string) => {
-  assert(typeof pattern === "string");
+  assert.string(pattern);
 
   return new RegExp(`^${globify(pattern)}$`, "u");
 };

@@ -21,15 +21,15 @@ export default class BufferView {
     offset: number = 0,
     byteLength: number = buffer.byteLength - offset,
   ) {
-    assert(
+    assert.true(
       buffer instanceof ArrayBuffer
       || buffer instanceof SharedArrayBuffer
       || ArrayBuffer.isView(buffer),
       "BufferView expects an ArrayBuffer, SharedArrayBuffer, or "
       + "ArrayBufferView.",
     );
-    assert(offset >= 0, "BufferView offset must be positive.");
-    assert(byteLength >= 0, "BufferView byteLength must be positive.");
+    assert.uint(offset);
+    assert.uint(byteLength);
 
     if (buffer instanceof ArrayBuffer || buffer instanceof SharedArrayBuffer) {
       this.#buffer = buffer;
@@ -54,7 +54,7 @@ export default class BufferView {
   }
 
   #check_overflow(length: number) {
-    assert(this.#position + length <= this.#byteLength, OVERFLOW_ERROR);
+    assert.true(this.#position + length <= this.#byteLength, OVERFLOW_ERROR);
   }
 
   get buffer() {
@@ -74,7 +74,7 @@ export default class BufferView {
   }
 
   set position(position: number) {
-    assert(
+    assert.true(
       position >= 0 && position < this.#byteLength,
       "BufferView position out of bounds.",
     );
@@ -83,8 +83,8 @@ export default class BufferView {
   }
 
   subarray(offset: number, byteLength: number) {
-    assert(offset >= 0, "BufferView offset must be positive.");
-    assert(offset + byteLength <= this.#byteLength, OVERFLOW_ERROR);
+    assert.uint(offset);
+    assert.true(offset + byteLength <= this.#byteLength, OVERFLOW_ERROR);
 
     return new BufferView(this.#buffer, this.#offset + offset, byteLength);
   }
@@ -191,7 +191,7 @@ export default class BufferView {
   write(value: string) {
     const encoder = new TextEncoder();
     const size = utf8.size(value);
-    assert(this.#position + size <= this.#byteLength, OVERFLOW_ERROR);
+    assert.true(this.#position + size <= this.#byteLength, OVERFLOW_ERROR);
 
     encoder.encodeInto(
       value,

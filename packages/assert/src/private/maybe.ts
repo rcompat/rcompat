@@ -1,28 +1,22 @@
-import Is from "#Is";
-import is from "@rcompat/is";
-import type Nullish from "@rcompat/type/Nullish";
+import type ErrorFunction from "#ErrorFallbackFunction";
+import is from "#is";
+import std_is from "@rcompat/is";
+import type Newable from "@rcompat/type/Newable";
 
-const operations = [
-  // typeof
-  "string", "number", "bigint", "boolean", "symbol", "function",
-  // eq
-  "undefined", "null",
-  // other types
-  "array", "object", "dict", "uuid",
-  // misc
-  "defined", "newable", "instance", "subclass", "anyOf",
-  // sizes
-  "integer", "isize", "usize",
-] as const;
-
-const return_nullish = (value: unknown): Nullish | true =>
-  is.nullish(value) ? value : true;
-
-export default (value: unknown) => {
-  const _is = new Is(value);
-
-  return Object.fromEntries(operations.map(operation =>
-    // Todo: Discuss the behavior for operations having more than 1 arguments
-    [operation, (...args: any) =>
-      return_nullish(value) && (_is[operation] as any)(...args)]));
+type MaybeConditions = {
+  [K in Exclude<keyof typeof is, "instance">]: (x: unknown) => boolean;
+} & {
+  instance: (x: unknown, N: Newable, error?: ErrorFunction | string) => boolean;
 };
+
+const maybe = {} as MaybeConditions;
+
+for (const key of Object.keys(is) as (keyof typeof is)[]) {
+  if (key === "instance") continue;
+  maybe[key] = (x: unknown) => std_is.nullish(x) || is[key](x);
+}
+
+maybe.instance = (x: unknown, N: Newable, error?: ErrorFunction | string) =>
+  !std_is.nullish(x) && is.instance(x, N, error);
+
+export default maybe;

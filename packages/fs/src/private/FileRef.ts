@@ -7,9 +7,7 @@ import type RemoveOptions from "#RemoveOptions";
 import separator from "#separator";
 import Streamable from "#Streamable";
 import type WritableInput from "#WritableInput";
-import defined from "@rcompat/assert/defined";
-import is from "@rcompat/assert/is";
-import maybe from "@rcompat/assert/maybe";
+import assert from "@rcompat/assert";
 import hash from "@rcompat/crypto/hash";
 import type JSONValue from "@rcompat/type/JSONValue";
 import type MaybePromise from "@rcompat/type/MaybePromise";
@@ -35,7 +33,7 @@ const ensure_parents = async (file: FileRef) => {
 const { decodeURIComponent: decode } = globalThis;
 
 const assert_boundary = (directory: FileRef) => {
-  is(directory).instance(FileRef);
+  assert.instance(directory, FileRef);
 
   if (`${directory}` === "/") {
     throw new Error("Stopping at filesystem boundary");
@@ -51,7 +49,7 @@ export default class FileRef
 
   constructor(path: Path) {
     super();
-    defined(path);
+    assert.defined(path);
     this.#path = parse(as_string(path));
   }
 
@@ -80,7 +78,7 @@ export default class FileRef
   }
 
   async import(name?: string) {
-    maybe(name).string();
+    assert.maybe.string(name);
     const imported = await import(`${to_url(this.path)}`);
     return name === undefined ? imported : imported[name];
   }
@@ -268,7 +266,7 @@ export default class FileRef
 
   async copy(to: FileRef, filter?: Filter): Promise<void> {
     await ensure_parents(to);
-    maybe(filter).instance(Function);
+    assert.maybe.function(filter);
 
     const path = this.#path;
     const kind = await this.kind();
@@ -292,7 +290,8 @@ export default class FileRef
   }
 
   async create(options?: DirectoryOptions) {
-    maybe(options).object();
+    assert.maybe.dict(options);
+    assert.maybe.boolean(options?.recursive);
 
     await mkdir(this.#path, {
       ...options,
@@ -301,7 +300,8 @@ export default class FileRef
   }
 
   async remove(options?: RemoveOptions) {
-    maybe(options).object();
+    assert.maybe.dict(options);
+    assert.maybe.boolean(options?.fail);
 
     // if not set to fail and exists, do nothing
     if (!options?.fail && !await this.exists()) {
@@ -366,7 +366,7 @@ export default class FileRef
   }
 
   static resolve(path?: string) {
-    maybe(path).string();
+    assert.maybe.string(path);
 
     return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
   }

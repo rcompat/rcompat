@@ -1,9 +1,9 @@
 import type Conf from "#Conf";
 import FileRef from "@rcompat/fs/FileRef";
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 
 export default (conf: Conf) => {
-  is(conf).object();
+  assert.dict(conf);
 
   const { ssl } = conf;
 

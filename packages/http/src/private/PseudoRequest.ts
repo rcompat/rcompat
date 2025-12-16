@@ -1,4 +1,4 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 import busboy from "busboy";
 import type { IncomingMessage } from "node:http";
 import { Readable } from "node:stream";
@@ -25,18 +25,15 @@ export default class PseudoRequest {
   #method;
 
   constructor(url: string, incoming: IncomingMessage) {
-    this.#incoming = incoming;
+    assert.string(url);
+    assert.string(incoming.method);
+    assert.object(incoming.headers);
 
-    const { headers, method = "GET" } = incoming;
-
-    is(url).string();
     this.#url = url;
+    this.#incoming = incoming;
+    this.#method = incoming.method ?? "GET";
 
-    is(method).string();
-    this.#method = method;
-
-    is(headers).object();
-    Object.entries(headers)
+    Object.entries(incoming.headers)
       .filter((header): header is [string, string] => typeof header[1] === "string")
       .forEach(entry => this.#headers.set(...entry));
   }

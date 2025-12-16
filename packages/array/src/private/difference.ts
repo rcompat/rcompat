@@ -1,8 +1,8 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 
 export default (a: unknown[], b: unknown[]) => {
-  is(a).array();
-  is(b).array();
+  assert.array(a);
+  assert.array(b);
 
   return a.filter(member => !b.includes(member));
 };

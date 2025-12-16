@@ -1,9 +1,9 @@
 import type Conf from "#Conf";
 import is_secure from "#is-secure";
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 
 export default async (conf: Conf) => {
-  is(conf).object();
+  assert.dict(conf);
 
   return is_secure(conf)
     ? {

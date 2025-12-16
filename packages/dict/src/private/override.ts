@@ -1,5 +1,5 @@
-import assert from "@rcompat/assert";
 import proper, { type Proper } from "#proper";
+import assert from "@rcompat/assert";
 
 const proper_na = (o: unknown) => proper(o) && !Array.isArray(o);
 
@@ -19,8 +19,8 @@ const recurse = (t: unknown, u: unknown) =>
  * @returns the result of overriding `base` with `over` recursively
  */
 const override = <T extends Proper, U extends Proper>(base: T, over: U): T & U => {
-  assert(proper(base));
-  assert(proper(over));
+  assert.true(proper(base));
+  assert.true(proper(over));
 
   return (Object.keys(over) as (keyof (T & U))[])
     .reduce((overridden, key) => ({

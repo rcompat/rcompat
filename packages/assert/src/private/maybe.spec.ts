@@ -2,11 +2,11 @@ import maybe from "#maybe";
 import test from "@rcompat/test";
 
 test.case("nullish", assert => {
-  assert(maybe(undefined).number()).undefined();
-  assert(maybe(null).string()).null();
+  assert(maybe.number(undefined)).true();
+  assert(maybe.string(null)).true();
 });
 
 test.case("non-nullish", assert => {
-  assert(maybe(0).number()).equals(0);
-  assert(maybe("0").string()).equals("0");
+  assert(maybe.number(0)).true();
+  assert(maybe.string("0")).true();
 });

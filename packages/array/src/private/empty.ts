@@ -1,7 +1,7 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 
 export default (array: unknown[]): boolean => {
-  is(array).array();
+  assert.array(array);
 
   return array.length === 0;
 };

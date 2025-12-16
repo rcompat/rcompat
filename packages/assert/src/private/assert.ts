@@ -1,6 +1,9 @@
-import errored from "#errored";
-import type ErrorFallbackFunction from "#ErrorFallbackFunction";
+import every from "#every";
+import is from "#is";
+import maybe from "#maybe";
 
-export default (value: boolean, error?: ErrorFallbackFunction | string) => {
-  Boolean(value) || errored(error);
+export default {
+  ...is,
+  every,
+  maybe,
 };

@@ -1,4 +1,4 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 import fn from "@rcompat/fn";
 import type { ReadableStreamDefaultReader } from "node:stream/web";
 
@@ -15,6 +15,6 @@ const read = ({ chunks = [], reader }: Options): Promise<string[]> =>
     : read({ chunks: [...chunks, decoder.decode(value)], reader }));
 
 export default async (input: ReadableStream): Promise<string> => {
-  is(input).instance(ReadableStream);
+  assert.instance(input, ReadableStream);
   return (await read({ reader: input.getReader() })).filter(fn.defined).join("");
 };

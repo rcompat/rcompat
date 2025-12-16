@@ -1,8 +1,8 @@
-import is from "@rcompat/assert/is";
+import assert from "@rcompat/assert";
 import type Dict from "@rcompat/type/Dict";
 
 export default (dict: Dict): boolean => {
-  is(dict).object();
+  assert.dict(dict);
 
   return Object.keys(dict).length === 0;
 };
