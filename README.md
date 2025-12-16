@@ -15,7 +15,6 @@ Deno, Bun and future runtimes.
 |[@rcompat/array](packages/array)           | Arrays                           |
 |[@rcompat/assert](packages/assert)         | Invariant assertions             |
 |[@rcompat/bufferview](packages/bufferview) | Buffers                          |
-|[@rcompat/build](packages/build)           | Client builder                   |
 |[@rcompat/cli](packages/cli)               | CLI tools                        |
 |[@rcompat/crypto](packages/crypto)         | Cryptographic functions          |
 |[@rcompat/env](packages/env)               | Environment loading              |
