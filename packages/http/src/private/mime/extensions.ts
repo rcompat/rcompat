@@ -64,4 +64,5 @@ export default {
 
   form_multipart: "multipart/form-data",
   form_urlencoded: "application/x-www-form-urlencoded",
+  events: "text/event-stream",
 } as const;
