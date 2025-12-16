@@ -6,6 +6,9 @@ import nullproto from "#nullproto";
 import override from "#override";
 import proper from "#proper";
 import toQueryString from "#toQueryString";
+import type Dict from "@rcompat/type/Dict";
+
+export type { Dict };
 
 export default {
   empty,
