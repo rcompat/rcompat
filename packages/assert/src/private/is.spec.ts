@@ -33,7 +33,7 @@ test.case("non objects", assert => {
 });
 
 test.case("dict", assert => {
-  const valid = [
+  const valid: Dict[] = [
     {},
     { a: 1, b: "x" },
     Object.create(null),
@@ -59,7 +59,7 @@ test.case("dict", assert => {
 });
 
 test.case("dict - edge cases", assert => {
-  const nullproto = Object.create(null);
+  const nullproto: Dict = Object.create(null);
   const plain = { x: 1 };
 
   const customProto = { z: 1 };
@@ -69,7 +69,7 @@ test.case("dict - edge cases", assert => {
   class K { }
   const instance = new K();
 
-  assert(is.dict(plain)).equals(plain).type<Dict>();
+  assert(is.dict(plain)).equals(plain).type<{ x: number }>();
   assert(is.dict(nullproto)).equals(nullproto).type<Dict>();
 
   [withCustomProto, instance, new Map(), new Set(), [], new Date()].forEach(v =>

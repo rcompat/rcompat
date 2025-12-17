@@ -41,10 +41,17 @@ function condition<T>(pred: (y: unknown) => y is T, errmsg: string) {
   };
 }
 
-function conditionUntyped(pred: (y: unknown) => boolean, errmsg: string) {
+function untyped(pred: (y: unknown) => boolean, errmsg: string) {
   return <T>(x: T, error?: Error | string): T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x;
+  };
+}
+
+function narrowed<T>(pred: (y: unknown) => y is T, errmsg: string) {
+  return <U>(x: U, error?: Error | string): U extends T ? U : T => {
+    assert(pred(x), deferr(x, errmsg, error));
+    return x as any;
   };
 }
 
@@ -79,7 +86,7 @@ export default {
   // conditions
   array: condition(is.array, "must be array"),
   date: condition(is.date, "must be Date"),
-  dict: condition(is.dict, "must be a plain object (dictionary)"),
+  dict: narrowed(is.dict, "must be a plain object (dictionary)"),
   error: condition(is.error, "must be Error"),
   false: condition(x => x === false, "must be false"),
   finite: condition(is.finite, "must be finite number"),
@@ -97,7 +104,7 @@ export default {
   true: condition(x => x === true, "must be true"),
   uint: condition(is.uint, "must be unsigned integer"),
   url: condition(is.url, "must be URL"),
-  nonempty: conditionUntyped(is.nonempty, "must not be empty"),
+  nonempty: untyped(is.nonempty, "must not be empty"),
 
   defined,
   instance,
