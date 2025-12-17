@@ -104,6 +104,7 @@ export default {
   true: condition(x => x === true, "must be true"),
   uint: condition(is.uint, "must be unsigned integer"),
   url: condition(is.url, "must be URL"),
+  empty: untyped(is.empty, "must be empty"),
   nonempty: untyped(is.nonempty, "must not be empty"),
 
   defined,
