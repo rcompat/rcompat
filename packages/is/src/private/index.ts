@@ -74,6 +74,7 @@ export default {
   int: numbers.isInt,
   map: isMap,
   nan: numbers.isNaN,
+  nonempty: (x: unknown) => !empty(x),
   newable,
   nullish: isNullish,
   numeric,
