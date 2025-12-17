@@ -1,11 +1,11 @@
-import type ErrorFunction from "#ErrorFallbackFunction";
 import is from "#is";
 import type Newable from "@rcompat/type/Newable";
 
 type EveryConditions = {
   [K in Exclude<keyof typeof is, "instance">]: <T>(xs: T[]) => T[];
 } & {
-  instance: <T extends Newable>(xs: unknown[], N: T, error?: ErrorFunction | string) => InstanceType<T>[];
+  instance: <T extends Newable>(xs: unknown[], N: T, error?: Error | string) =>
+    InstanceType<T>[];
 };
 
 const every = {} as EveryConditions;
@@ -18,7 +18,9 @@ for (const key of Object.keys(is) as (keyof typeof is)[]) {
   };
 }
 
-every.instance = <T extends Newable>(xs: unknown[], N: T, error?: ErrorFunction | string): InstanceType<T>[] => {
+every.instance = <
+  T extends Newable,
+>(xs: unknown[], N: T, error?: Error | string): InstanceType<T>[] => {
   xs.forEach(x => is.instance(x, N, error));
   return xs as InstanceType<T>[];
 };

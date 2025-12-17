@@ -1,10 +1,9 @@
 import errored from "#errored";
-import type ErrorFunction from "#ErrorFallbackFunction";
 import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
 import type Newable from "@rcompat/type/Newable";
 
-function assert(value: boolean, error?: ErrorFunction | string) {
+function assert(value: boolean, error?: Error | string) {
   if (value === true) return;
   errored(error);
 }
@@ -24,37 +23,37 @@ function stringify(x: unknown) {
   return `${x}`;
 }
 
-function deferr(x: unknown, message: string, error?: ErrorFunction | string) {
+function deferr(x: unknown, message: string, error?: Error | string) {
   return error ?? `\`${stringify(x)}\` ${message}`;
 }
 
 function primitive<K extends keyof TypesOfTypeMap>(type: K) {
-  return (x: unknown, error?: ErrorFunction | string): TypesOfTypeMap[K] => {
+  return (x: unknown, error?: Error | string): TypesOfTypeMap[K] => {
     assert(typeof x === type, deferr(x, `must be of type ${type}`, error));
     return x as TypesOfTypeMap[K];
   };
 }
 
 function condition<T>(pred: (y: unknown) => y is T, errmsg: string) {
-  return (x: unknown, error?: ErrorFunction | string): T => {
+  return (x: unknown, error?: Error | string): T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x as T;
   };
 }
 
 function conditionUntyped(pred: (y: unknown) => boolean, errmsg: string) {
-  return <T>(x: T, error?: ErrorFunction | string): T => {
+  return <T>(x: T, error?: Error | string): T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x;
   };
 }
 
-const defined = <T>(x: T, error?: ErrorFunction | string): NonNullable<T> => {
+const defined = <T>(x: T, error?: Error | string): NonNullable<T> => {
   assert(is.defined(x), deferr(x, "must be defined", error));
   return x as NonNullable<T>;
 };
 
-const uuid = (x: unknown, error?: ErrorFunction | string): string => {
+const uuid = (x: unknown, error?: Error | string): string => {
   const uuidv4 =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
   assert(typeof x === "string" && uuidv4.test(x),
@@ -62,7 +61,7 @@ const uuid = (x: unknown, error?: ErrorFunction | string): string => {
   return x as string;
 };
 
-const instance = <T extends Newable>(x: unknown, N: T, error?: ErrorFunction | string): InstanceType<T> => {
+const instance = <T extends Newable>(x: unknown, N: T, error?: Error | string): InstanceType<T> => {
   assert(x instanceof N, deferr(x, `must be instance of ${N.name}`, error));
   return x as InstanceType<T>;
 };
