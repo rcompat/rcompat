@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/dict",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Standard library dictionaries",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
