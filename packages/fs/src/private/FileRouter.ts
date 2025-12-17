@@ -106,13 +106,14 @@ export default class FileRouter {
 
   async load() {
     const { directory, extensions } = this.#config;
-    const re = new RegExp(`^.*${extensions.join("|")}$`, "u");
+    const escaped = extensions.map(e => e.replace(".", "\\."));
+    const filter = new RegExp(`^.*(${escaped.join("|")})$`, "u");
 
-    return this.init(directory === undefined ? [] : await Promise.all(
-      (await FileRef.list(directory, { filter: file => re.test(file.path) }))
-        .map(file =>
-          `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
-        )));
+    return this.init(directory === undefined
+      ? []
+      : (await FileRef.list(directory, { filter })).map(file =>
+        `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
+      ));
   }
 
   all() {

@@ -117,6 +117,8 @@ export default class FileRef
     recursive?: boolean;
     filter?: RegExp | Filter;
   }): Promise<FileRef[]> {
+    if (!await this.exists()) return [];
+
     const { recursive = false, filter } = options ?? {};
     const match = filter === undefined
       ? undefined
