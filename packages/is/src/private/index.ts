@@ -8,6 +8,10 @@ import strings from "#strings";
 import type Dict from "@rcompat/type/Dict";
 import type Nullish from "@rcompat/type/Nullish";
 
+function isArray(x: unknown): x is unknown[] {
+  return Array.isArray(x);
+}
+
 function isDate(x: unknown): x is Date {
   return x instanceof Date;
 }
@@ -61,7 +65,7 @@ function isSet(x: unknown): x is Set<unknown> {
 }
 
 export default {
-  array: Array.isArray,
+  array: isArray,
   blank: strings.isBlank,
   boolish: strings.isBoolish,
   date: isDate,

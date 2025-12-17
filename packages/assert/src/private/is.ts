@@ -1,32 +1,26 @@
-import type Condition from "#Condition";
 import errored from "#errored";
 import type ErrorFunction from "#ErrorFallbackFunction";
+import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
 import type Newable from "@rcompat/type/Newable";
 
 function assert(value: boolean, error?: ErrorFunction | string) {
-  if (value === true) return true;
+  if (value === true) return;
   errored(error);
-  return false;
-};
+}
 
 function stringify(x: unknown) {
   try {
     const stringified = JSON.stringify(x) as string | undefined;
-
-    // symbol and function will be undefined
     if (stringified !== undefined) {
       return stringified;
     }
   } catch {
     // bigint will throw
   }
-
-  // has a toString method
   if (x?.toString !== undefined) {
     return x!.toString();
   }
-
   return `${x}`;
 }
 
@@ -34,31 +28,47 @@ function deferr(x: unknown, message: string, error?: ErrorFunction | string) {
   return error ?? `\`${stringify(x)}\` ${message}`;
 }
 
-function primitive(type: string): Condition {
-  return (x, error) =>
+function primitive<K extends keyof TypesOfTypeMap>(type: K) {
+  return (x: unknown, error?: ErrorFunction | string): TypesOfTypeMap[K] => {
     assert(typeof x === type, deferr(x, `must be of type ${type}`, error));
+    return x as TypesOfTypeMap[K];
+  };
 }
 
-const defined: Condition = (x, error) =>
+function condition<T>(pred: (y: unknown) => y is T, errmsg: string) {
+  return (x: unknown, error?: ErrorFunction | string): T => {
+    assert(pred(x), deferr(x, errmsg, error));
+    return x as T;
+  };
+}
+
+function conditionUntyped(pred: (y: unknown) => boolean, errmsg: string) {
+  return <T>(x: T, error?: ErrorFunction | string): T => {
+    assert(pred(x), deferr(x, errmsg, error));
+    return x;
+  };
+}
+
+const defined = <T>(x: T, error?: ErrorFunction | string): NonNullable<T> => {
   assert(is.defined(x), deferr(x, "must be defined", error));
-
-const uuid: Condition = (x, error) => {
-  // crypto.randomUUID(): RFC 4122 v4, lowercase hex only
-  const uuidv4 =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-
-  return assert(typeof x === "string" && uuidv4.test(x),
-    deferr(x, "must be a valid UUIDv4 string", error));
+  return x as NonNullable<T>;
 };
 
-const instance = (x: unknown, N: Newable, error?: ErrorFunction | string) =>
-  assert(x instanceof N, deferr(x, `must be instance of ${N.name}`, error));
+const uuid = (x: unknown, error?: ErrorFunction | string): string => {
+  const uuidv4 =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  assert(typeof x === "string" && uuidv4.test(x),
+    deferr(x, "must be a valid UUIDv4 string", error));
+  return x as string;
+};
 
-function condition(pred: (y: unknown) => boolean, errmsg: string): Condition {
-  return (x, error) => assert(pred(x), deferr(x, errmsg, error));
-}
+const instance = <T extends Newable>(x: unknown, N: T, error?: ErrorFunction | string): InstanceType<T> => {
+  assert(x instanceof N, deferr(x, `must be instance of ${N.name}`, error));
+  return x as InstanceType<T>;
+};
 
 export default {
+  // primitives
   bigint: primitive("bigint"),
   boolean: primitive("boolean"),
   function: primitive("function"),
@@ -67,6 +77,7 @@ export default {
   symbol: primitive("symbol"),
   undefined: primitive("undefined"),
 
+  // conditions
   array: condition(is.array, "must be array"),
   date: condition(is.date, "must be Date"),
   dict: condition(is.dict, "must be a plain object (dictionary)"),
@@ -87,7 +98,7 @@ export default {
   true: condition(x => x === true, "must be true"),
   uint: condition(is.uint, "must be unsigned integer"),
   url: condition(is.url, "must be URL"),
-  nonempty: condition(is.nonempty, "must not be empty"),
+  nonempty: conditionUntyped(is.nonempty, "must not be empty"),
 
   defined,
   instance,

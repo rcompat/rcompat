@@ -3,19 +3,24 @@ import is from "#is";
 import type Newable from "@rcompat/type/Newable";
 
 type EveryConditions = {
-  [K in Exclude<keyof typeof is, "instance">]: (xs: unknown[]) => boolean;
+  [K in Exclude<keyof typeof is, "instance">]: <T>(xs: T[]) => T[];
 } & {
-  instance: (xs: unknown[], N: Newable, error?: ErrorFunction | string) => boolean;
+  instance: <T extends Newable>(xs: unknown[], N: T, error?: ErrorFunction | string) => InstanceType<T>[];
 };
 
 const every = {} as EveryConditions;
 
 for (const key of Object.keys(is) as (keyof typeof is)[]) {
   if (key === "instance") continue;
-  every[key] = (xs: unknown[]) => xs.every(x => is[key](x));
+  every[key] = <T>(xs: T[]): T[] => {
+    xs.forEach(x => is[key](x));
+    return xs;
+  };
 }
 
-every.instance = (xs: unknown[], N: Newable, error?: ErrorFunction | string) =>
-  xs.every(x => is.instance(x, N, error));
+every.instance = <T extends Newable>(xs: unknown[], N: T, error?: ErrorFunction | string): InstanceType<T>[] => {
+  xs.forEach(x => is.instance(x, N, error));
+  return xs as InstanceType<T>[];
+};
 
 export default every;
