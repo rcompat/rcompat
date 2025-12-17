@@ -1,8 +1,11 @@
 import type Dict from "@rcompat/type/Dict";
 
-type GetResultType<T, P> = P extends `${infer P1}.${infer Rest}`
+type GetResultType<T, P, D extends number[] = []> =
+  D["length"] extends 6
+  ? unknown
+  : P extends `${infer P1}.${infer Rest}`
   ? P1 extends keyof T
-  ? GetResultType<Exclude<T[P1], undefined>, Rest> | T[P1] & undefined
+  ? GetResultType<Exclude<T[P1], undefined>, Rest, [...D, 0]> | (T[P1] & undefined)
   : undefined
   : P extends keyof T
   ? T[P]
