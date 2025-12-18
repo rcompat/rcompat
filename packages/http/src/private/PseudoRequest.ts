@@ -6,10 +6,6 @@ import { arrayBuffer, blob, json, text } from "node:stream/consumers";
 import type { ReadableStream } from "node:stream/web";
 import type { RequestDuplex } from "undici-types";
 
-type CallableEntriesFn = {
-  entries: () => Iterable<readonly [PropertyKey, any]>;
-};
-
 const no_body = ["GET", "HEAD"];
 
 const unimplemented = () => {
@@ -126,6 +122,12 @@ export default class PseudoRequest {
   arrayBuffer() {
     this.#use_body();
     return arrayBuffer(this.#incoming);
+  }
+
+  async bytes() {
+    this.#use_body();
+    const buffer = await arrayBuffer(this.#incoming);
+    return new Uint8Array(buffer);
   }
 
   blob() {
