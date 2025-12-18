@@ -86,7 +86,7 @@ webview.run();
 import platform from "@rcompat/webview/default";
 import Webview from "@rcompat/webview";
 
-// Enable developer tools
+// enable developer tools
 const webview = new Webview({ platform, debug: true });
 
 webview.navigate("https://example.com");
@@ -177,10 +177,10 @@ new Webview(init: Init);
 ### Platform Exports
 
 ```ts
-// Auto-detect current platform
+// auto-detect current platform
 import platform from "@rcompat/webview/default";
 
-// Or specify explicitly
+// or specify explicitly
 import platform from "@rcompat/webview/darwin-arm64"; // macOS ARM
 import platform from "@rcompat/webview/darwin-x64"; // macOS Intel
 import platform from "@rcompat/webview/linux-x64"; // Linux x64
@@ -213,7 +213,7 @@ import FileRef from "@rcompat/fs/FileRef";
 
 const p = "--platform=";
 const platform =
-    args.find((arg) => arg.startsWith(p))?.slice(p.length) ?? "default";
+  args.find(arg => arg.startsWith(p))?.slice(p.length) ?? "default";
 
 await new FileRef(import.meta.dirname).join("worker.ts").write(`
   import platform from "@rcompat/webview/${platform}";
@@ -256,8 +256,8 @@ const html = `
 `;
 
 const server = await serve(
-    () => new Response(html, { headers: { "Content-Type": "text/html" } }),
-    { port: 8181 }
+  () => new Response(html, { headers: { "Content-Type": "text/html" } }),
+  { port: 8181 }
 );
 
 // Bun
@@ -268,11 +268,11 @@ const worker = new Worker(new URL("worker.ts", import.meta.url).href, {
     type: "module",
 });
 
-// Graceful shutdown when webview closes
+// graceful shutdown when webview closes
 worker.addEventListener("message", (event) => {
-    if (event.data === "destroyed") {
-        server.stop();
-    }
+  if (event.data === "destroyed") {
+    server.stop();
+  }
 });
 ```
 
