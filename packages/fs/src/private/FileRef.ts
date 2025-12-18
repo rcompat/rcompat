@@ -117,7 +117,7 @@ export default class FileRef
   }): Promise<FileRef[]> {
     if (!await this.exists()) return [];
 
-    const { recursive = false, filter } = options ?? {};
+    const { recursive = true, filter } = options ?? {};
     const match = filter === undefined
       ? undefined
       : filter instanceof RegExp

@@ -111,7 +111,7 @@ export default class FileRouter {
 
     return this.init(directory === undefined
       ? []
-      : (await FileRef.list(directory, { filter, recursive: true })).map(file =>
+      : (await FileRef.list(directory, { filter })).map(file =>
         `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
       ));
   }

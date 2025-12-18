@@ -133,9 +133,9 @@ const files = await dir.list();
 // list with filter
 const tsFiles = await dir.list({ filter: file => file.extension === ".ts" });
 
-// recursive, with regex matcher
+// non recursive (shallow), with regex matcher
 const allTsFiles = await dir.list({
-  recursive: true,
+  recursive: false,
   filter: /\.ts$/
 });
 
@@ -333,7 +333,7 @@ await dist.remove();
 await src.copy(dist, file => file.extension !== ".test.ts");
 
 // process each file
-for (const file of await dist.list({ recursive: true })) {
+for (const file of await dist.list()) {
   const content = await file.text();
    // transform content...
   await file.write(transformedContent);
