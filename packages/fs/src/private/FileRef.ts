@@ -23,9 +23,7 @@ type Filter = (file: FileRef) => MaybePromise<boolean>;
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
   // make sure the directory exists
-  if (!await directory.exists()) {
-    await directory.create();
-  }
+  if (!await directory.exists()) await directory.create();
 };
 
 const { decodeURIComponent: decode } = globalThis;
@@ -33,9 +31,7 @@ const { decodeURIComponent: decode } = globalThis;
 const assert_boundary = (directory: FileRef) => {
   assert.instance(directory, FileRef);
 
-  if (`${directory}` === "/") {
-    throw new Error("Stopping at filesystem boundary");
-  }
+  if (`${directory}` === "/") throw new Error("stopping at filesystem root");
 };
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
@@ -293,25 +289,18 @@ export default class FileRef
     assert.maybe.dict(options);
     assert.maybe.boolean(options?.recursive);
 
-    await mkdir(this.#path, {
-      ...options,
-      recursive: options?.recursive ?? true,
-    });
+    await mkdir(this.#path, { recursive: options?.recursive ?? true });
   }
 
   async remove(options?: RemoveOptions) {
     assert.maybe.dict(options);
     assert.maybe.boolean(options?.fail);
+    assert.maybe.boolean(options?.recursive);
 
     // if not set to fail and exists, do nothing
-    if (!options?.fail && !await this.exists()) {
-      return;
-    }
+    if (!options?.fail && !await this.exists()) return;
 
-    await rm(this.#path, {
-      ...options,
-      recursive: options?.recursive ?? true,
-    });
+    await rm(this.#path, { recursive: options?.recursive ?? true });
   }
 
   async write(input: WritableInput) {
