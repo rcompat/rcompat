@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/is",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Standard library identity checks",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
