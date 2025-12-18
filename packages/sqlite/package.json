@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/sqlite",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Standard library SQLite client",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

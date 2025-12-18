@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fn",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Standard library functions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
