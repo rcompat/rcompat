@@ -1,9 +1,9 @@
 import extension from "#mime/extensions";
-import type from "#mime/types";
 import resolve from "#mime/resolve";
+import type from "#mime/types";
 
 export default {
   extension,
-  type,
   resolve,
+  ...type,
 };
