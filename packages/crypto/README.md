@@ -60,7 +60,7 @@ The hash function returns a 21-character string: 20 hex characters followed by
 ### `hash(data, algorithm?)`
 
 ```ts
-import type TypedArray from "@rcompat/type/TypedArray";
+import type { TypedArray } from "@rcompat/type";
 type Algorithm = "SHA-256" | "SHA-384" | "SHA-512";
 
 declare function hash(

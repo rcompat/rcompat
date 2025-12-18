@@ -31,10 +31,7 @@ bun add @rcompat/type
 ### Basic types
 
 ```ts
-import type Dict from "@rcompat/type/Dict";
-import type Maybe from "@rcompat/type/Maybe";
-import type Nullish from "@rcompat/type/Nullish";
-import type Primitive from "@rcompat/type/Primitive";
+import type { Dict, Maybe, Nullish, Primitive } from "@rcompat/type";
 
 // Dict<V> = Record<string, V>
 const config: Dict<string> = { host: "localhost", port: "3000" };
@@ -58,29 +55,25 @@ function isPrimitive(value: unknown): value is Primitive {
 ### Type predicates
 
 ```ts
-import type IsAny from "@rcompat/type/IsAny";
-import type IsNever from "@rcompat/type/IsNever";
-import type IsUnion from "@rcompat/type/IsUnion";
-import type IsTuple from "@rcompat/type/IsTuple";
-import type IsArray from "@rcompat/type/IsArray";
+import type { IsAny, IsNever, IsUnion, IsTuple, IsArray } from "@rcompat/type";
 
-// Check if type is `any`
+// check if type is `any`
 type A = IsAny<any>; // true
 type B = IsAny<string>; // false
 
-// Check if type is `never`
+// check if type is `never`
 type C = IsNever<never>; // true
 type D = IsNever<void>; // false
 
-// Check if type is a union
+// check if type is a union
 type E = IsUnion<string | number>; // true
 type F = IsUnion<string>; // false
 
-// Check if type is a tuple
+// check if type is a tuple
 type G = IsTuple<[string, number]>; // true
 type H = IsTuple<string[]>; // false
 
-// Check if type is an array
+// check if type is an array
 type I = IsArray<string[]>; // true
 type J = IsArray<[string]>; // true (tuples are arrays)
 ```
@@ -88,31 +81,29 @@ type J = IsArray<[string]>; // true (tuples are arrays)
 ### Type transformations
 
 ```ts
-import type Mutable from "@rcompat/type/Mutable";
-import type DeepMutable from "@rcompat/type/DeepMutable";
-import type Not from "@rcompat/type/Not";
-import type UnionToTuple from "@rcompat/type/UnionToTuple";
-import type TupleToUnion from "@rcompat/type/TupleToUnion";
+import type {
+  Mutable, DeepMutable, Not, UnionToTuple, TupleToUnion,
+} from "@rcompat/type";
 
-// Remove readonly modifier
+// remove readonly modifier
 type Writable = Mutable<Readonly<{ a: string }>>;
 // { a: string }
 
-// Recursively remove readonly
+// recursively remove readonly
 type DeepWritable = DeepMutable<
     Readonly<{ nested: Readonly<{ value: number }> }>
 >;
 // { nested: { value: number } }
 
-// Boolean negation
+// boolean negation
 type Yes = Not<false>; // true
 type No = Not<true>; // false
 
-// Convert union to tuple
+// convert union to tuple
 type Tuple = UnionToTuple<"a" | "b" | "c">;
 // ["a", "b", "c"]
 
-// Convert tuple to union
+// convert tuple to union
 type Union = TupleToUnion<["a", "b", "c"]>;
 // "a" | "b" | "c"
 ```
@@ -120,31 +111,25 @@ type Union = TupleToUnion<["a", "b", "c"]>;
 ### Function types
 
 ```ts
-import type Newable from "@rcompat/type/Newable";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
-import type VoidFunction from "@rcompat/type/VoidFunction";
+import type { Newable, UnknownFunction } from "@rcompat/type";
 
-// Constructor type
+// constructor type
 function createInstance<T>(Ctor: Newable<T>): T {
   return new Ctor();
 }
 
-// Generic function signature
+// generic function signature
 function wrap(fn: UnknownFunction) {
   return (...args: unknown[]) => fn(...args);
 }
-
-// No-argument void function
-const cleanup: VoidFunction = () => console.log("done");
 ```
 
 ### JSON types
 
 ```ts
-import type JSONValue from "@rcompat/type/JSONValue";
-import type Serializable from "@rcompat/type/Serializable";
+import type { JSONValue, Serializable } from "@rcompat/type";
 
-// Valid JSON value
+// calid JSON value
 const data: JSONValue = {
   name: "Bob",
   age: 30,
@@ -152,7 +137,7 @@ const data: JSONValue = {
   tags: ["admin", "user"],
 };
 
-// Implement custom serialization
+// implement custom serialization
 class User implements Serializable {
   constructor(private id: number, private name: string) {}
 
@@ -165,9 +150,9 @@ class User implements Serializable {
 ### Async types
 
 ```ts
-import type MaybePromise from "@rcompat/type/MaybePromise";
+import type { MaybePromise } from "@rcompat/type";
 
-// Value or Promise of value
+// value or Promise of value
 async function process(input: MaybePromise<string>): Promise<string> {
   const value = await input;
   return value.toUpperCase();
@@ -186,7 +171,7 @@ process(Promise.resolve("hello")); // also works
 | `Dict<V>`        | `Record<string, V>`                                                    |
 | `PartialDict<V>` | `Partial<Record<string, V>>`                                           |
 | `Entry<K, T>`    | `[K, T]` tuple                                                         |
-| `EO`             | Empty object `{}`                                                      |
+| `EmptyObject`    | Empty object `{}`                                                      |
 | `Maybe<T>`       | `T \| undefined`                                                       |
 | `Nullish`        | `null \| undefined`                                                    |
 | `Primitive`      | `bigint \| boolean \| null \| number \| string \| symbol \| undefined` |
@@ -225,7 +210,6 @@ process(Promise.resolve("hello")); // also works
 | `Newable<I, A>`         | `new (...args: A) => I`             |
 | `AbstractNewable<I, A>` | Abstract constructor type           |
 | `UnknownFunction`       | `(...params: unknown[]) => unknown` |
-| `VoidFunction`          | `() => void`                        |
 
 ### JSON & Serialization
 
@@ -258,8 +242,7 @@ process(Promise.resolve("hello")); // also works
 ### Type-safe event emitter
 
 ```ts
-import type Dict from "@rcompat/type/Dict";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { Dict, UnknownFunction } from "@rcompat/type";
 
 type Events = Dict<UnknownFunction[]>;
 
@@ -275,8 +258,7 @@ class Emitter<E extends Events> {
 ### Conditional type utilities
 
 ```ts
-import type IsUnion from "@rcompat/type/IsUnion";
-import type UnionToTuple from "@rcompat/type/UnionToTuple";
+import type { IsUnion, UnionToTuple } from "@rcompat/type";
 
 type UnionLength<U> = UnionToTuple<U>["length"];
 
@@ -287,7 +269,7 @@ type B = UnionLength<string>; // 1
 ### JSON validation
 
 ```ts
-import type JSONValue from "@rcompat/type/JSONValue";
+import type { JSONValue } from "@rcompat/type";
 
 function parseJSON(text: string): JSONValue {
   return JSON.parse(text);
@@ -301,7 +283,7 @@ function stringify(value: JSONValue): string {
 ### Optional undefined properties
 
 ```ts
-import type UndefinedToOptional from "@rcompat/type/UndefinedToOptional";
+import type { UndefinedToOptional } from "@rcompat/type";
 
 type Input = {
   required: string;

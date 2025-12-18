@@ -1,4 +1,4 @@
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { UnknownFunction } from "@rcompat/type";
 
 const is = (x: unknown): x is UnknownFunction => typeof x === "function";
 

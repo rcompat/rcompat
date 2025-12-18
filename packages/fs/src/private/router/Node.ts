@@ -1,8 +1,8 @@
+import * as errors from "#router/errors";
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
 import type NodePredicate from "#router/NodePredicate";
-import type Dict from "@rcompat/type/Dict";
-import * as errors from "./errors.js";
+import type { Dict } from "@rcompat/type";
 
 type Match = MatchedRoute | undefined;
 type Params = Dict<string | undefined>;

@@ -1,5 +1,5 @@
 import is from "#is";
-import type Newable from "@rcompat/type/Newable";
+import type { Newable } from "@rcompat/type";
 
 type EveryConditions = {
   [K in Exclude<keyof typeof is, "instance">]: <T>(xs: T[]) => T[];

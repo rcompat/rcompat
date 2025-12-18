@@ -1,4 +1,4 @@
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { UnknownFunction } from "@rcompat/type";
 
 type TypeofTypeMap = {
   bigint: bigint;

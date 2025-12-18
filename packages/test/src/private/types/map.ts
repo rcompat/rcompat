@@ -1,6 +1,6 @@
 import to_object from "#to-object";
 import record from "#types/record";
-import type UnknownMap from "@rcompat/type/UnknownMap";
+import type { UnknownMap } from "@rcompat/type";
 
 const is = (x: unknown): x is UnknownMap => x instanceof Map;
 

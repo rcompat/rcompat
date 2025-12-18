@@ -1,6 +1,6 @@
 import is from "#is";
 import std_is from "@rcompat/is";
-import type Newable from "@rcompat/type/Newable";
+import type { Newable } from "@rcompat/type";
 
 type MaybeConditions = {
   [K in Exclude<keyof typeof is, "instance">]: <T>(x: T) => T;

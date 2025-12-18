@@ -5,9 +5,10 @@ import map from "#types/map";
 import record from "#types/record";
 import set from "#types/set";
 import string from "#types/string";
-import type Dict from "@rcompat/type/Dict";
-import type UnknownMap from "@rcompat/type/UnknownMap";
-import type UnknownSet from "@rcompat/type/UnknownSet";
+import type {
+  Dict,
+  UnknownMap, UnknownSet,
+} from "@rcompat/type";
 
 const includes = <T>(x: T, y: T): boolean => typeof x === typeof y
   ? equals(x, y)

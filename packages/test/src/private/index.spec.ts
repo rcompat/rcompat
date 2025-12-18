@@ -1,5 +1,5 @@
 import test from "@rcompat/test";
-import type EO from "@rcompat/type/EO";
+import type { EmptyObject } from "@rcompat/type";
 
 test.case("type", assert => {
   assert<true>().type<true>();
@@ -38,9 +38,9 @@ test.case("type", assert => {
   assert(["foo", "foo"]).fail<["foo"][]>();
   assert(["foo", "foo"]).type(["foo", "foo"]);
 
-  assert<EO>().type<EO>();
-  assert<EO>().type({});
-  assert({}).type<EO>();
+  assert<EmptyObject>().type<EmptyObject>();
+  assert<EmptyObject>().type({});
+  assert({}).type<EmptyObject>();
   assert({}).type({});
 
   assert<[]>().type<[]>();
@@ -119,6 +119,6 @@ test.case("type without values", assert => {
   assert<[string, number]>().nottype<[number, string]>();
   assert<[number, string]>().nottype<[string, number]>();
 
-  assert<EO>().nottype<[]>();
-  assert<[]>().nottype<EO>();
+  assert<EmptyObject>().nottype<[]>();
+  assert<[]>().nottype<EmptyObject>();
 });

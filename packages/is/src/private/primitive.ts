@@ -1,4 +1,4 @@
-import type Primitive from "@rcompat/type/Primitive";
+import type { Primitive } from "@rcompat/type";
 
 const primitives = [
   "bigint",

@@ -1,4 +1,4 @@
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 export interface GetResultType<T, P, D extends number[] = []> {
   result: D["length"] extends 6

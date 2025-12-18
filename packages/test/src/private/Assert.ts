@@ -1,16 +1,14 @@
 import E from "#E";
 import equals from "#equals";
 import type Test from "#Test";
-import type Not from "@rcompat/type/Not";
-import type Print from "@rcompat/type/Print";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { Not, Print, UnknownFunction } from "@rcompat/type";
 
 type Equals<X, Y> =
   (<T>() => T extends X ? true : false) extends <T>() => T extends Y
     ? true
     : false
-    ? true
-    : false;
+  ? true
+  : false;
 
 export default class Assert<const Actual> {
   #test: Test;

@@ -1,5 +1,5 @@
 import type PrimitiveParam from "#api/PrimitiveParam";
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 type Param = Dict<PrimitiveParam> | PrimitiveParam;
 

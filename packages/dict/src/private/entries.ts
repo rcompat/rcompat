@@ -1,5 +1,5 @@
 import assert from "@rcompat/assert";
-import type Entry from "@rcompat/type/Entry";
+import type { Entry } from "@rcompat/type";
 
 class Entries<K extends string, V> {
   #entries: Entry<K, V>[];

@@ -1,5 +1,5 @@
 import assert from "@rcompat/assert";
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 export default (dict: Dict): boolean => {
   assert.dict(dict);

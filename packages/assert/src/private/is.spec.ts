@@ -1,8 +1,6 @@
 import is from "#is";
 import test from "@rcompat/test";
-import type Dict from "@rcompat/type/Dict";
-import type Newable from "@rcompat/type/Newable";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { Dict, Newable, UnknownFunction } from "@rcompat/type";
 
 type Is = Exclude<keyof typeof is, "instance">;
 

@@ -9,11 +9,9 @@ import Streamable from "#Streamable";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
 import hash from "@rcompat/crypto/hash";
-import type JSONValue from "@rcompat/type/JSONValue";
-import type MaybePromise from "@rcompat/type/MaybePromise";
-import type Printable from "@rcompat/type/Printable";
-import type StringClass from "@rcompat/type/StringClass";
-import type StringReplacer from "@rcompat/type/StringReplacer";
+import type {
+  JSONValue, MaybePromise, Printable, StringClass, StringReplacer,
+} from "@rcompat/type";
 import {
   copyFile, lstat, mkdir, readdir, realpath, rm,
 } from "node:fs/promises";

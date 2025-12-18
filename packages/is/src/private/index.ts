@@ -5,8 +5,7 @@ import numeric from "#numeric";
 import object from "#object";
 import primitive from "#primitive";
 import strings from "#strings";
-import type Dict from "@rcompat/type/Dict";
-import type Nullish from "@rcompat/type/Nullish";
+import type { Dict, Nullish } from "@rcompat/type";
 
 function isArray(x: unknown): x is unknown[] {
   return Array.isArray(x);

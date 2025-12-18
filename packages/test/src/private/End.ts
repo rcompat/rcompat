@@ -1,4 +1,4 @@
-import type MaybePromise from "@rcompat/type/MaybePromise";
+import type { MaybePromise } from "@rcompat/type";
 
 type End = () => MaybePromise<void>;
 

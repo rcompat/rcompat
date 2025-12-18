@@ -1,5 +1,4 @@
-import type Newable from "@rcompat/type/Newable";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
+import type { Newable, UnknownFunction } from "@rcompat/type";
 
 export default function isNewable(x: unknown): x is Newable {
   if (typeof x !== "function") return false;

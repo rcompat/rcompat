@@ -1,5 +1,5 @@
-import assert from "@rcompat/assert";
-import type TypedArray from "@rcompat/type/TypedArray";
+//import assert from "@rcompat/assert";
+import type { TypedArray } from "@rcompat/type";
 
 const encoder = new TextEncoder();
 

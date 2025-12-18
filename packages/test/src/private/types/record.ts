@@ -1,6 +1,6 @@
 import equals from "#equals";
 import includes from "#includes";
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 const is_null = (x: unknown): x is null => x === null;
 
@@ -16,7 +16,7 @@ const equal = <T extends Dict>(x: T, y: T) =>
 
 const include = <T extends Dict>(x: T, y: T) =>
   Object.keys(x).length >= Object.keys(y).length &&
-    Object.keys(y).reduce((included, key) =>
-      included && includes(x[key], y[key]), true);
+  Object.keys(y).reduce((included, key) =>
+    included && includes(x[key], y[key]), true);
 
 export default { equal, include, is, partial };

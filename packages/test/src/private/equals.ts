@@ -6,10 +6,9 @@ import nul from "#types/null";
 import record from "#types/record";
 import scalar from "#types/scalar";
 import set from "#types/set";
-import type Dict from "@rcompat/type/Dict";
-import type UnknownFunction from "@rcompat/type/UnknownFunction";
-import type UnknownMap from "@rcompat/type/UnknownMap";
-import type UnknownSet from "@rcompat/type/UnknownSet";
+import type {
+  Dict, UnknownFunction, UnknownMap, UnknownSet,
+} from "@rcompat/type";
 
 const checks = [
   [scalar.is, <T>(x: T, y: T) => scalar.is(y) && scalar.equal(x, y)],
@@ -19,8 +18,7 @@ const checks = [
   [set.is, <T>(x: T, y: T) => set.is(y) && set.equal(x as UnknownSet, y)],
   [map.is, <T>(x: T, y: T) => map.is(y) && map.equal(x as UnknownMap, y)],
   [fn.is, <T>(x: T, y: T) => fn.is(y) && fn.equal(x as UnknownFunction, y)],
-  [record.is, <T>(x: T, y: T) => record.is(y)
-    && record.equal(x as Dict, y)],
+  [record.is, <T>(x: T, y: T) => record.is(y) && record.equal(x as Dict, y)],
   [(_: unknown) => true, <T>(_: T, _1: T) => false],
 ] as const;
 

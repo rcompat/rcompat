@@ -1,4 +1,4 @@
-import type Boolish from "@rcompat/type/Boolish";
+import type { Boolish } from "@rcompat/type";
 
 function isBlank(x: unknown): x is string {
   return typeof x === "string" && /^\s*$/.test(x);

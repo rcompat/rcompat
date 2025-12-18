@@ -1,6 +1,6 @@
 import fn from "#equals";
 import test from "#index";
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 test.case("string", assert => {
   assert(fn("", "")).true();
@@ -68,22 +68,22 @@ test.case("object", assert => {
 
   assert(fn({}, { foo: "bar" })).false();
   assert(fn({ foo: "bar" }, {})).false();
-  assert(fn({ foo: "bar"}, { foo: "baz" })).false();
-  assert(fn({ foo: "bar"}, { bar: "baz" })).false();
-  assert(fn({ foo: "bar"}, { bar: [], foo: "bar" })).false();
+  assert(fn({ foo: "bar" }, { foo: "baz" })).false();
+  assert(fn({ foo: "bar" }, { bar: "baz" })).false();
+  assert(fn({ foo: "bar" }, { bar: [], foo: "bar" })).false();
 });
 
 test.case("Array", assert => {
   assert(fn([], [])).true();
-  assert(fn(["" ], ["" ])).true();
-  assert(fn(["",, ""], ["",, ""])).true();
-  assert(fn([ { foo: "bar" }], [ { foo: "bar" }])).true();
+  assert(fn([""], [""])).true();
+  assert(fn(["", , ""], ["", , ""])).true();
+  assert(fn([{ foo: "bar" }], [{ foo: "bar" }])).true();
 
   assert(fn([], ["foo"])).false();
   assert(fn(["foo"], [])).false();
-  assert(fn(["" ], ["", "foo"])).false();
-  assert(fn(["", "foo"], [, "" ])).false();
-  assert(fn(["" ], [, ""])).false();
+  assert(fn([""], ["", "foo"])).false();
+  assert(fn(["", "foo"], [, ""])).false();
+  assert(fn([""], [, ""])).false();
 });
 
 test.case("Date", assert => {
@@ -94,7 +94,7 @@ test.case("Date", assert => {
   assert(fn(d0, d0)).true();
   assert(fn(d0, d1)).true();
 
-  assert(fn(d0, new Date(now+1))).false();
+  assert(fn(d0, new Date(now + 1))).false();
 });
 
 test.case("Set", assert => {
@@ -120,7 +120,7 @@ test.case("Map", assert => {
   const map = (o: Dict) => new Map(Object.entries(o));
 
   const o0 = { foo: "bar" };
-  const o1 = { foo: { bar: "baz" }};
+  const o1 = { foo: { bar: "baz" } };
   const o2 = { bar: "baz", foo: "bar" };
   const m0 = map(o0);
 
@@ -132,10 +132,10 @@ test.case("Map", assert => {
   assert(fn(map(o0), map(o1))).false();
   assert(fn(new Map(), map(o0))).false();
   assert(fn(map(o2), map(o1))).false();
-  assert(fn(map({ foo: "bar"}), map({ foo: "baz" }))).false();
-  assert(fn(map({ foo: "bar"}), map({ bar: "baz" }))).false();
-  assert(fn(map({ foo: "bar"}), map({ bar: [], foo: "bar" }))).false();
-  assert(fn(map({ bar: [], foo: "bar"}), map({ foo: "bar" }))).false();
+  assert(fn(map({ foo: "bar" }), map({ foo: "baz" }))).false();
+  assert(fn(map({ foo: "bar" }), map({ bar: "baz" }))).false();
+  assert(fn(map({ foo: "bar" }), map({ bar: [], foo: "bar" }))).false();
+  assert(fn(map({ bar: [], foo: "bar" }), map({ foo: "bar" }))).false();
 });
 
 test.case("function", assert => {

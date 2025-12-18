@@ -1,7 +1,7 @@
 import errored from "#errored";
 import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
-import type Newable from "@rcompat/type/Newable";
+import type { Newable } from "@rcompat/type";
 
 function assert(value: boolean, error?: Error | string) {
   if (value === true) return;

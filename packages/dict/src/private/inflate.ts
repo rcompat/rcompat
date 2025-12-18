@@ -1,5 +1,5 @@
 import assert from "@rcompat/assert";
-import type Dict from "@rcompat/type/Dict";
+import type { Dict } from "@rcompat/type";
 
 type Impl3<P extends string, T, B extends string> =
   P extends `${infer P1}${B}${infer Rest}` ?
