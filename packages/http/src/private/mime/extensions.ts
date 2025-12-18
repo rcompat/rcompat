@@ -41,7 +41,6 @@ export default {
   tiff: "image/tiff",
   webp: "image/webp",
 
-  // text/
   css: "text/css",
   csv: "text/csv",
   htm: "text/html",
@@ -61,8 +60,4 @@ export default {
   ogv: "video/ogg",
   ts: "video/mp2t",
   webm: "video/webm",
-
-  form_multipart: "multipart/form-data",
-  form_urlencoded: "application/x-www-form-urlencoded",
-  events: "text/event-stream",
 } as const;
