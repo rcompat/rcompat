@@ -17,6 +17,9 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^"
   },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
+  },
   "scripts": {
     "build": "npm run clean && tsc",
     "test": "npm run build && npx proby",

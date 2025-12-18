@@ -21,6 +21,9 @@
     "prepublishOnly": "npm run build",
     "knip": "knip --no-config-hints"
   },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {

@@ -23,6 +23,9 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^"
   },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {

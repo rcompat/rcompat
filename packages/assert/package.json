@@ -21,7 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/is": "workspace:^"
+    "@rcompat/is": "workspace:^",
+    "@rcompat/type": "workspace:^"
   },
   "type": "module",
   "imports": {

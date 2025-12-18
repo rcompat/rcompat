@@ -25,6 +25,9 @@
     "@rcompat/crypto": "workspace:^",
     "@rcompat/dict": "workspace:^"
   },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#native": {
