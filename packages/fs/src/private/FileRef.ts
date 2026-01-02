@@ -167,9 +167,17 @@ export default class FileRef
       exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
   }
 
+  static isFile(file: FileRef) {
+    return file.isFile();
+  }
+
   isDirectory(): Promise<boolean> {
     return this.exists().then((exists: any) =>
       exists ? this.#stats().then((stats: any) => stats.isDirectory()) : false);
+  }
+
+  static isDirectory(file: FileRef) {
+    return file.isDirectory();
   }
 
   bare(append?: string) {
