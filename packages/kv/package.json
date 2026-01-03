@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/kv",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Standard library key-value abstractions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

@@ -1,6 +1,8 @@
-import root from "@rcompat/fs/project/root";
+import fs from "@rcompat/fs";
 
-const packages = await (await root()).join("packages").list();
+const packages = await (await fs.project.root()).join("packages").list(
+  { filter: info => info.kind === "directory" }
+);
 
 // check all first
 for (const pkg of packages) {
