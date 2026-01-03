@@ -2,12 +2,11 @@
 
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
-import type FileRef from "@rcompat/fs/FileRef";
-import root from "@rcompat/fs/project/root";
+import fs, { type FileRef } from "@rcompat/fs";
 import run from "./run.js";
 
-const $root = await root();
-const spec_json = $root.join("spec.json");
+const root = await fs.project.root();
+const spec_json = root.join("spec.json");
 
 if (await spec_json.exists()) {
   //  console.log(`spec.json exists, reading`);
@@ -23,14 +22,16 @@ const type = await (async (base: FileRef): Type => {
   if (await base.join("src").exists()) {
     return "repo";
   }
-})($root);
+})(root);
 
 if (type === "monorepo") {
-  for (const repo of await $root.join("packages").list()) {
+  for (const repo of await root.join("packages").list({
+    filter: info => info.kind === "directory",
+  })) {
     await run(repo.join("src"), repo.name);
   }
 } else if (type === "repo") {
-  await run($root.join("src"));
+  await run(root.join("src"));
 } else {
   print(`${color.red("src")} or ${color.red("packages")} not found\n`);
 }

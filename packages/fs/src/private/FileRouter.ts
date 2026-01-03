@@ -1,4 +1,4 @@
-import FileRef from "#FileRef";
+import fs from "#index";
 import type Config from "#router/Config";
 import * as errors from "#router/errors";
 import Node from "#router/Node";
@@ -76,7 +76,7 @@ export default class FileRouter {
 
   init(objects: string[]) {
     for (const path of objects.toSorted((a, b) => a.localeCompare(b))) {
-      this.#add(this.#root, FileRef.webpath(path).split("/"), path);
+      this.#add(this.#root, fs.webpath(path).split("/"), path);
     }
 
     // check for duplicates
@@ -111,7 +111,7 @@ export default class FileRouter {
 
     return this.init(directory === undefined
       ? []
-      : (await FileRef.list(directory, { filter })).map(file =>
+      : (await fs.files(directory, { filter, recursive: true })).map(file =>
         `${file}`.replace(directory, _ => "").slice(1, -file.extension.length),
       ));
   }

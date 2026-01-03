@@ -3,7 +3,8 @@ import type WritableInput from "#WritableInput";
 
 const deno: Native = {
   async arrayBuffer(path: string) {
-    return (await Deno.readFile(path)).buffer as ArrayBuffer;
+    const u8 = await Deno.readFile(path);
+    return u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength);
   },
   async json(path: string) {
     return JSON.parse(await Deno.readTextFile(path));
@@ -15,16 +16,26 @@ const deno: Native = {
     return Deno.readTextFile(path);
   },
   async size(path: string) {
-    return (await Deno.readFile(path)).byteLength;
+    return (await Deno.stat(path)).size;
   },
   async write(path: string, input: WritableInput) {
-    if (input instanceof Blob || input instanceof Response) {
-      return Deno.writeFile(path, new Uint8Array(await input.arrayBuffer()));
+    if (typeof input === "string") return await Deno.writeTextFile(path, input);
+
+    // normalise to Uint8Array
+    let out: Uint8Array;
+
+    if (input instanceof ReadableStream) {
+      out = await new Response(input).bytes();
+    } else if (input instanceof Blob || input instanceof Response) {
+      out = await input.bytes();
+    } else if (input instanceof ArrayBuffer) {
+      out = new Uint8Array(input);
+    } else {
+      // unnormalised Uint8Array
+      out = input;
     }
-    if (input instanceof ArrayBuffer) {
-      return Deno.writeFile(path, new Uint8Array(input));
-    }
-    return Deno.writeTextFile(path, input);
+
+    await Deno.writeFile(path, out);
   },
 };
 

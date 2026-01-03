@@ -1,14 +1,15 @@
 import type Native from "#native/type";
 import type WritableInput from "#WritableInput";
 import fs from "node:fs";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, stat, writeFile } from "node:fs/promises";
 import { Readable } from "node:stream";
 
 const text = (path: string) => readFile(path, { encoding: "utf8" });
 
 const node: Native = {
   async arrayBuffer(path: string) {
-    return (await readFile(path)).buffer as ArrayBuffer;
+    const u8 = await readFile(path);
+    return u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength);
   },
   async json(path: string) {
     return JSON.parse(await text(path));
@@ -22,16 +23,24 @@ const node: Native = {
     return text(path);
   },
   async size(path: string) {
-    return Buffer.byteLength(await readFile(path));
+    return (await stat(path)).size;
   },
   async write(path: string, input: WritableInput) {
-    if (input instanceof Blob || input instanceof Response) {
-      return writeFile(path, new Uint8Array(await input.arrayBuffer()));
+    // normalise to string | Uint8Array
+    let out: string | Uint8Array;
+
+    if (input instanceof ReadableStream) {
+      out = await new Response(input).bytes();
+    } else if (input instanceof Blob || input instanceof Response) {
+      out = await input.bytes();
+    } else if (input instanceof ArrayBuffer) {
+      out = new Uint8Array(input);
+    } else {
+      // unnormalised string | Uint8Array
+      out = input;
     }
-    if (input instanceof ArrayBuffer) {
-      return writeFile(path, new Uint8Array(input));
-    }
-    return writeFile(path, input);
+
+    await writeFile(path, out);
   },
 };
 

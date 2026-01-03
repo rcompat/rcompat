@@ -1,6 +1,6 @@
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
-import type FileRef from "@rcompat/fs/FileRef";
+import type { FileRef } from "@rcompat/fs";
 import type Result from "@rcompat/test/Result";
 import type Test from "@rcompat/test/Test";
 import repository from "@rcompat/test/repository";
@@ -45,7 +45,7 @@ function stringify(value: unknown) {
 export default async (root: FileRef, subrepo?: string) => {
   const files = await root.list({
     recursive: true,
-    filter: file => extensions.some(extension => file.path.endsWith(extension)),
+    filter: info => extensions.some(extension => info.path.endsWith(extension)),
   });
 
   if (files.length === 0) return;

@@ -35,21 +35,21 @@ A pathlib-like class for file and directory operations.
 #### Creating a FileRef
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./src/config.json");
-const absolute = new FileRef("/etc/hosts");
+const file = new fs.FileRef("./src/config.json");
+const absolute = new fs.FileRef("/etc/hosts");
 
 // resolve relative to cwd
-const resolved = FileRef.resolve("./src");
+const resolved = fs.resolve("./src");
 ```
 
 #### Path manipulation
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./src/components/Button.tsx");
+const file = new fs.FileRef("./src/components/Button.tsx");
 
 file.path; // "./src/components/Button.tsx"
 file.name; // "Button.tsx"
@@ -68,9 +68,9 @@ file.up(2); // FileRef("./src")
 #### Reading files
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./config.json");
+const file = new fs.FileRef("./config.json");
 
 // read as text
 const text = await file.text();
@@ -92,9 +92,9 @@ const size = await file.size();
 #### Writing files
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./output.txt");
+const file = new fs.FileRef("./output.txt");
 
 // write text (auto-adds trailing newline)
 await file.write("Hello, world!");
@@ -109,52 +109,50 @@ await file.write(new Uint8Array([0x48, 0x69]));
 #### File info
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./src");
+const file = new fs.FileRef("./src");
 
 await file.exists(); // true/false
-await file.isFile(); // true if regular file
-await file.isDirectory(); // true if directory
 await file.modified(); // modification time (ms)
-await file.kind(); // "file" | "directory" | "link" | "none"
+await file.kind(); // "file" | "directory" | "link" | null
 ```
 
 #### Directory operations
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const dir = new FileRef("./src");
+const src = new fs.FileRef("./src");
 
 // list directory contents
-const files = await dir.list();
+const files = await src.files();
 
-// list with filter
-const tsFiles = await dir.list({ filter: file => file.extension === ".ts" });
+// list with filter (shallow, non-recursive)
+const ts_files = await src.files({ filter: info => info.extension === ".ts" });
 
-// non recursive (shallow), with regex matcher
-const allTsFiles = await dir.list({
-  recursive: false,
+// recursive, with regex matcher
+const all_ts_files = await src.files({
+  recursive: true,
   filter: /\.ts$/
 });
 
 // create directory (recursive by default)
-await new FileRef("./dist/assets").create();
+await new fs.FileRef("./dist/assets").create();
 
 // remove directory
 await dir.remove();
 
 // copy directory
-await dir.copy(new FileRef("./backup"));
+await dir.copy(new fs.FileRef("./backup"));
 ```
 
 #### Other methods
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const file = new FileRef("./src/utils.ts");
+const file = new fs.FileRef("./src/utils.ts");
 
 // generate content hash
 const hash = await file.hash(); // SHA-256 by default
@@ -171,15 +169,14 @@ const root = await file.discover("package.json");
 ### Project utilities
 
 ```js
-import root from "@rcompat/fs/project/root";
-import pkg from "@rcompat/fs/project/package";
+import fs from "@rcompat/fs";
 
 // find project root directory
-const projectRoot = await root();
+const project_root = await fs.project.root();
 // FileRef("/path/to/project")
 
 // get path to package.json
-const packageJson = await pkg();
+const package_json = await fs.project.package();
 // FileRef("/path/to/project/package.json")
 ```
 
@@ -264,19 +261,17 @@ class FileRef extends Streamable {
 
   // file info
   exists(): Promise<boolean>;
-  isFile(): Promise<boolean>;
-  isDirectory(): Promise<boolean>;
-  kind(): Promise<"file" | "directory" | "link" | "none">;
+  kind(): Promise<"file" | "directory" | "link" | null>;
   modified(): Promise<number>;
 
   // directory operations
   list(options?: {
     recursive?: boolean;
-    filter?: RegExp | ((file: FileRef) => MaybePromise<boolean>);
+    filter?: RegExp | ((info: FileInfo) => MaybePromise<boolean>);
   }): Promise<FileRef[]>
   create(options?: { recursive?: boolean }): Promise<void>;
   remove(options?: { recursive?: boolean; fail?: boolean }): Promise<void>;
-  copy(to: FileRef, filter?: (file: FileRef) => MaybePromise<boolean>):
+  copy(to: FileRef, filter?: (info: FileInfo) => MaybePromise<boolean>):
     Promise<void>;
 
 
@@ -284,16 +279,18 @@ class FileRef extends Streamable {
   hash(algorithm?: string): Promise<string>;
   import(name?: string): Promise<unknown>;
   discover(filename: string): Promise<FileRef>;
-
-  static resolve(path?: string): FileRef;
-  static join(
-    path: string | FileRef,
-    ...paths: (string | FileRef)[]
-  ): FileRef;
-  static exists(path: string | FileRef): Promise<boolean>;
-  static text(path: string | FileRef): Promise<string>;
-  static json<T>(path: string | FileRef): Promise<T>;
 }
+```
+
+### FileInfo
+
+```ts
+type FileInfo = {
+  path: string;
+  name: string;
+  extension: string;
+  kind: "file" | "directory" | "link";
+};
 ```
 
 ### FileRouter
@@ -321,16 +318,16 @@ class FileRouter {
 ### Build script
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-const src = new FileRef("./src");
-const dist = new FileRef("./dist");
+const src = new fs.FileRef("./src");
+const dist = new fs.FileRef("./dist");
 
 // clean dist
 await dist.remove();
 
 // copy source files
-await src.copy(dist, file => file.extension !== ".test.ts");
+await src.copy(dist, info => info.extension !== ".test.ts");
 
 // process each file
 for (const file of await dist.list()) {
@@ -343,14 +340,13 @@ for (const file of await dist.list()) {
 ### Config loader
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
-import root from "@rcompat/fs/project/root";
+import fs from "@rcompat/fs";
 
 async function loadConfig() {
-  const projectRoot = await root();
-  const configPath = projectRoot.join("config.json");
+  const root = await fs.project.root();
+  const config_path = root.join("config.json");
 
-  if (await configPath.exists()) return configPath.json();
+  if (await config_path.exists()) return config_path.json();
 
   return { /* defaults */ };
 }
@@ -359,7 +355,7 @@ async function loadConfig() {
 ### Asset fingerprinting
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
 async function fingerprint(file) {
   const hash = await file.hash();
@@ -367,7 +363,7 @@ async function fingerprint(file) {
   return file.directory.join(name);
 }
 
-const original = new FileRef("./dist/bundle.js");
+const original = new fs.FileRef("./dist/bundle.js");
 const fingerprinted = await fingerprint(original);
 await original.copy(fingerprinted);
 ```

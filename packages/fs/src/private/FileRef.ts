@@ -1,5 +1,4 @@
 import type DirectoryOptions from "#DirectoryOptions";
-import Kind from "#Kind";
 import native from "#native";
 import parse from "#parse";
 import type Path from "#Path";
@@ -15,10 +14,22 @@ import type {
 import {
   copyFile, lstat, mkdir, readdir, realpath, rm,
 } from "node:fs/promises";
-import { basename, dirname, extname, join, resolve } from "node:path";
+import { basename, dirname, extname, join } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
 
-type Filter = (file: FileRef) => MaybePromise<boolean>;
+export type FileInfo = {
+  path: string;
+  name: string;
+  extension: string;
+  kind: "file" | "directory" | "link";
+};
+
+export type ListOptions = {
+  recursive?: boolean;
+  filter?: RegExp | Filter;
+};
+
+export type Filter = (info: FileInfo) => MaybePromise<boolean>;
 
 const ensure_parents = async (file: FileRef) => {
   const { directory } = file;
@@ -31,7 +42,9 @@ const { decodeURIComponent: decode } = globalThis;
 const assert_boundary = (directory: FileRef) => {
   assert.instance(directory, FileRef);
 
-  if (`${directory}` === "/") throw new Error("stopping at filesystem root");
+  if (dirname(directory.path) === directory.path) {
+    throw new Error("stopping at filesystem root");
+  }
 };
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
@@ -67,10 +80,6 @@ export default class FileRef
     return this.path.replaceAll(separator, "/");
   }
 
-  static webpath(path: Path) {
-    return new FileRef(path).webpath();
-  }
-
   async import(name?: string) {
     assert.maybe.string(name);
     const imported = await import(`${to_url(this.path)}`);
@@ -78,6 +87,7 @@ export default class FileRef
   }
 
   join(...paths: Path[]): FileRef {
+    if (paths.length === 0) return this;
     const [first, ...rest] = paths;
 
     const path = join(this.path, as_string(first));
@@ -85,64 +95,64 @@ export default class FileRef
     return paths.length === 1 ? file : file.join(...rest);
   }
 
-  static join(path: Path, ...paths: Path[]) {
-    return new FileRef(path).join(...paths);
-  }
-
   async kind() {
     try {
       const stats = await this.#stats();
-
-      if (stats.isFile()) {
-        return Kind.File;
-      }
-
-      if (stats.isDirectory()) {
-        return Kind.Directory;
-      }
-
-      return Kind.Link;
-    } catch {
-      return Kind.None;
+      if (stats.isFile()) return "file";
+      if (stats.isDirectory()) return "directory";
+      if (stats.isSymbolicLink()) return "link";
+      throw new Error("unknown kind");
+    } catch (error) {
+      if ((error as any)?.code === "ENOENT") return null;
+      throw error;
     }
   }
 
-  async list(options?: {
-    recursive?: boolean;
-    filter?: RegExp | Filter;
-  }): Promise<FileRef[]> {
-    if (!await this.exists()) return [];
+  async list(options?: ListOptions): Promise<FileRef[]> {
+    const k = await this.kind();
+    if (k !== "directory") return [];
 
-    const { recursive = true, filter } = options ?? {};
-    const match = filter === undefined
-      ? undefined
-      : filter instanceof RegExp
-        ? (file: FileRef) => filter.test(file.path)
-        : filter;
+    const { recursive = false, filter } = options ?? {};
+    const match: Filter | undefined =
+      filter === undefined ? undefined :
+        filter instanceof RegExp ? info => filter.test(info.path) :
+          filter;
 
     const names = await readdir(this.#path);
     let results: FileRef[] = [];
 
     for (const name of names) {
-      const file = this.join(name);
-      const kind = await file.kind();
+      const ref = this.join(name);
+      const kind = await ref.kind();
 
-      if (kind === Kind.None) continue;
+      if (kind === null) continue;
 
-      if (recursive && kind === Kind.Directory) {
-        results = results.concat(await file.list(options));
+      if (recursive && kind === "directory") {
+        results = results.concat(await ref.list(options));
       }
 
-      if (!match || await match(file)) {
-        results.push(file);
-      }
+      const info: FileInfo = {
+        path: ref.path,
+        name,
+        extension: extname(name),
+        kind,
+      };
+      if (!match || await match(info)) results.push(ref);
     }
 
     return results;
   }
 
-  static list(path: Path, ...params: Parameters<FileRef["list"]>) {
-    return new FileRef(path).list(...params);
+  files(options?: ListOptions) {
+    const user = options?.filter;
+    return this.list({
+      ...options,
+      filter: e =>
+        e.kind === "file" &&
+        (user === undefined ? true :
+          user instanceof RegExp ? user.test(e.path) :
+            user(e)),
+    });
   }
 
   async modified() {
@@ -153,31 +163,10 @@ export default class FileRef
     try {
       await this.#stats();
       return true;
-    } catch {
-      return false;
+    } catch (error: any) {
+      if (error?.code === "ENOENT") return false;
+      throw error;
     }
-  }
-
-  static exists(path: Path) {
-    return new FileRef(path).exists();
-  }
-
-  isFile(): Promise<boolean> {
-    return this.exists().then((exists: any) =>
-      exists ? this.#stats().then((stats: any) => stats.isFile()) : false);
-  }
-
-  static isFile(file: FileRef) {
-    return file.isFile();
-  }
-
-  isDirectory(): Promise<boolean> {
-    return this.exists().then((exists: any) =>
-      exists ? this.#stats().then((stats: any) => stats.isDirectory()) : false);
-  }
-
-  static isDirectory(file: FileRef) {
-    return file.isDirectory();
   }
 
   bare(append?: string) {
@@ -215,8 +204,9 @@ export default class FileRef
   }
 
   get fullExtension() {
-    const name = this.path.split("/").at(-1)!;
-    return name.slice(name.indexOf("."));
+    const n = this.name;
+    const i = n.indexOf(".");
+    return i === -1 ? "" : n.slice(i);
   }
 
   up(levels: number): FileRef {
@@ -232,40 +222,20 @@ export default class FileRef
     return native.arrayBuffer(this.path);
   }
 
-  static arrayBuffer(path: Path) {
-    return new FileRef(path).arrayBuffer();
-  }
-
   async bytes(): Promise<Uint8Array> {
     return new Uint8Array(await this.arrayBuffer());
-  }
-
-  static bytes(path: Path) {
-    return new FileRef(path).bytes();
   }
 
   text() {
     return native.text(this.path);
   }
 
-  static text(path: Path) {
-    return new FileRef(path).text();
-  }
-
   json<T extends JSONValue>() {
     return native.json(this.path) as Promise<T>;
   }
 
-  static json<T extends JSONValue>(path: Path) {
-    return new FileRef(path).json<T>();
-  }
-
   size() {
     return native.size(this.path);
-  }
-
-  static size(path: Path) {
-    return new FileRef(path).size();
   }
 
   async copy(to: FileRef, filter?: Filter): Promise<void> {
@@ -275,18 +245,46 @@ export default class FileRef
     const path = this.#path;
     const kind = await this.kind();
 
-    if (kind === Kind.Link) {
+    if (kind === null) throw new Error(`cannot copy missing path: ${this.path}`);
+
+    if (kind === "link") {
       await new FileRef(await realpath(path)).copy(to, filter);
       return;
     }
 
-    if (kind === Kind.Directory) {
+    if (kind === "directory") {
       // recreate directory if necessary
       await to.remove();
       await to.create();
-      // copy all files
-      await Promise.all((await this.list({ filter }))
-        .map(({ name }) => FileRef.join(path, name).copy(to.join(name))));
+
+      // recursively copy children
+      const children = await this.list();
+
+      await Promise.all(children.map(async child => {
+        const child_kind = await child.kind();
+        if (child_kind === null) return;
+
+        // always recurse into directories
+        if (child_kind === "directory") {
+          await child.copy(to.join(child.name), filter);
+          return;
+        }
+
+        // apply filter to non-directories (files/links)
+        if (filter !== undefined) {
+          const info: FileInfo = {
+            path: child.path,
+            name: child.name,
+            extension: child.extension,
+            kind: child_kind,
+          };
+          if (!await filter(info)) return;
+        }
+
+        // Copy the entry (child.copy handles link resolution etc)
+        await child.copy(to.join(child.name), filter);
+      }));
+
       return;
     }
 
@@ -312,7 +310,7 @@ export default class FileRef
   }
 
   async write(input: WritableInput) {
-    ensure_parents(this);
+    await ensure_parents(this);
 
     const to_write = typeof input === "string" && !input.endsWith("\n")
       ? input + "\n"
@@ -321,16 +319,8 @@ export default class FileRef
     await native.write(this.path, to_write);
   }
 
-  static write(path: Path, input: WritableInput) {
-    return new FileRef(path).write(input);
-  }
-
   writeJSON(input: JSONValue) {
     return this.write(JSON.stringify(input, null, 2));
-  }
-
-  static writeJSON(path: Path, input: JSONValue) {
-    return new FileRef(path).writeJSON(input);
   }
 
   async discover(filename: string): Promise<FileRef> {
@@ -343,10 +333,6 @@ export default class FileRef
     return directory.discover(filename);
   }
 
-  static discover(path: Path, filename: string) {
-    return new FileRef(path).discover(filename);
-  }
-
   debase(base: Path, suffix = "") {
     const { href: pathed } = to_url(this.path);
     const { href: based } = to_url(as_string(base));
@@ -356,16 +342,6 @@ export default class FileRef
 
   stream(): ReadableStream<Uint8Array> {
     return native.stream(this.path);
-  }
-
-  static stream(path: Path) {
-    return new FileRef(path).stream();
-  }
-
-  static resolve(path?: string) {
-    assert.maybe.string(path);
-
-    return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
   }
 
   async hash(algorithm = "SHA-256"): Promise<string> {

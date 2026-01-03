@@ -1,5 +1,5 @@
 import Database from "#Database";
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 import test from "@rcompat/test";
 
 const USER_TABLE = `
@@ -10,7 +10,7 @@ const USER_TABLE = `
 `;
 
 test.case("constructor", async assert => {
-  const file = new FileRef("/tmp/test-primate-sqlite.db");
+  const file = new fs.FileRef("/tmp/test-primate-sqlite.db");
   if (await file.exists()) {
     await file.remove();
   }

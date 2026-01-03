@@ -2,8 +2,8 @@ import FileRef from "#FileRef";
 import test from "@rcompat/test";
 
 test.case("exists", async assert => {
-  assert(await FileRef.exists("/tmp")).true();
-  assert(await FileRef.exists("/tmp/tmp/tmp")).false();
+  assert(await new FileRef("/tmp").exists()).true();
+  assert(await new FileRef("/tmp/tmp/tmp").exists()).false();
 });
 
 test.case("bare", assert => {

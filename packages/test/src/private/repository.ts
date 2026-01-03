@@ -1,7 +1,7 @@
 import type Body from "#Body";
 import type End from "#End";
 import Suite from "#Suite";
-import type FileRef from "@rcompat/fs/FileRef";
+import type { FileRef } from "@rcompat/fs";
 
 class Repository {
   #suites: Suite[] = [];

@@ -1,7 +1,7 @@
 import type Body from "#Body";
 import type End from "#End";
 import Test from "#Test";
-import type FileRef from "@rcompat/fs/FileRef";
+import type { FileRef } from "@rcompat/fs";
 
 export default class Suite {
   #file: FileRef;
