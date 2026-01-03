@@ -149,8 +149,7 @@ export default class FileRef
     const user = options?.filter;
     return this.list({
       ...options,
-      filter: e =>
-        e.kind === "file" &&
+      filter: e => e.kind === "file" &&
         (user === undefined ? true :
           user instanceof RegExp ? user.test(e.path) :
             user(e)),
