@@ -21,6 +21,7 @@ export type FileInfo = {
   path: string;
   name: string;
   extension: string;
+  fullExtension: string;
   kind: "file" | "directory" | "link";
 };
 
@@ -134,7 +135,8 @@ export default class FileRef
       const info: FileInfo = {
         path: ref.path,
         name,
-        extension: extname(name),
+        extension: ref.extension,
+        fullExtension: ref.fullExtension,
         kind,
       };
       if (!match || await match(info)) results.push(ref);
@@ -276,6 +278,7 @@ export default class FileRef
             path: child.path,
             name: child.name,
             extension: child.extension,
+            fullExtension: child.fullExtension,
             kind: child_kind,
           };
           if (!await filter(info)) return;
