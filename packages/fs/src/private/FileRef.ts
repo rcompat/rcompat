@@ -32,12 +32,6 @@ export type ListOptions = {
 
 export type Filter = (info: FileInfo) => MaybePromise<boolean>;
 
-const ensure_parents = async (file: FileRef) => {
-  const { directory } = file;
-  // make sure the directory exists
-  if (!await directory.exists()) await directory.create();
-};
-
 const { decodeURIComponent: decode } = globalThis;
 
 const assert_boundary = (directory: FileRef) => {
@@ -251,7 +245,7 @@ export default class FileRef
   }
 
   async copy(to: FileRef, filter?: Filter): Promise<void> {
-    await ensure_parents(to);
+    await to.directory.create();
     assert.maybe.function(filter);
 
     const path = this.#path;
@@ -323,7 +317,7 @@ export default class FileRef
   }
 
   async write(input: WritableInput) {
-    await ensure_parents(this);
+    await this.directory.create();
 
     const to_write = typeof input === "string" && !input.endsWith("\n")
       ? input + "\n"
