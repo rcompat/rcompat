@@ -26,6 +26,7 @@ const fs = {
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => new FileRef(path).list(opts),
   files: (path: Path, opts?: ListOptions) => new FileRef(path).files(opts),
+  dirs: (path: Path, opts?: ListOptions) => new FileRef(path).dirs(opts),
   exists: (path: Path) => new FileRef(path).exists(),
   arrayBuffer: (path: Path) => new FileRef(path).arrayBuffer(),
   bytes: (path: Path) => new FileRef(path).bytes(),

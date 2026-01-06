@@ -156,6 +156,17 @@ export default class FileRef
     });
   }
 
+  dirs(options?: ListOptions) {
+    const user = options?.filter;
+    return this.list({
+      ...options,
+      filter: e => e.kind === "directory" &&
+        (user === undefined ? true :
+          user instanceof RegExp ? user.test(e.path) :
+            user(e)),
+    });
+  }
+
   async modified() {
     return Math.round((await this.#stats()).mtimeMs);
   }
