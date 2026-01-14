@@ -19,16 +19,16 @@
   },
   "private": true,
   "devDependencies": {
-    "@rcompat/test": "workspace:^",
     "@rcompat/fs": "workspace:^",
-    "@types/bun": "^1.3.4",
+    "@rcompat/test": "workspace:^",
+    "@types/bun": "^1.3.6",
     "@types/busboy": "^1.5.4",
     "@types/deno": "^2.5.0",
-    "@types/node": "^25.0.2",
+    "@types/node": "^25.0.8",
     "@types/ws": "^8.18.1",
     "apekit": "^0.0.42",
     "eslint": "^9.39.2",
-    "knip": "^5.74.0",
+    "knip": "^5.81.0",
     "proby": "workspace:^",
     "typescript": "^5.9.3"
   }

@@ -21,15 +21,15 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "undici-types": "7.16.0"
+    "undici-types": "7.18.2"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/dict": "workspace:^",
-    "@rcompat/fs": "workspace:^",
     "@rcompat/fn": "workspace:^",
+    "@rcompat/fs": "workspace:^",
     "busboy": "^1.6.0",
-    "ws": "^8.18.3"
+    "ws": "^8.19.0"
   },
   "type": "module",
   "imports": {
