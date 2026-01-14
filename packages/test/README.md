@@ -223,9 +223,11 @@ The assert function passed to test cases.
 | `false()`               | Assert value is `false`                   |
 | `null()`                | Assert value is `null`                    |
 | `undefined()`           | Assert value is `undefined`               |
+| `defined()`             | Assert value is not `undefined`           |
 | `instance(constructor)` | Assert value is instance of class         |
 | `throws(message?)`      | Assert function throws (optional message) |
 | `tries()`               | Assert function does not throw            |
+| `not`                   | Negate the next asertion                  |
 | `type<T>()`             | Compile-time type assertion               |
 | `nottype<T>()`          | Compile-time negative type assertion      |
 | `pass()`                | Manually pass the assertion               |

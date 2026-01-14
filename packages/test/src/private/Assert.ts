@@ -13,6 +13,7 @@ type Equals<X, Y> =
 export default class Assert<const Actual> {
   #test: Test;
   #actual?: Actual;
+  #negate = false;
 
   constructor(test: Test, actual?: Actual) {
     this.#actual = actual;
@@ -20,7 +21,15 @@ export default class Assert<const Actual> {
   }
 
   #report(passed: boolean, expected: unknown, actual?: unknown) {
-    this.#test.report(actual ?? this.#actual, expected, passed);
+    const negate = this.#negate;
+    // reset negation
+    this.#negate = false;
+
+    const final_passed = negate ? !passed : passed;
+    const final_expected = negate ? { not: expected } : expected;
+
+    this.#test.report(actual ?? this.#actual, final_expected, final_passed);
+
   }
 
   #passed() {
@@ -29,6 +38,11 @@ export default class Assert<const Actual> {
 
   #failed(expected: unknown, actual?: unknown) {
     this.#report(false, expected, actual);
+  }
+
+  get not() {
+    this.#negate = !this.#negate;
+    return this;
   }
 
   equals(expected: unknown) {
@@ -73,6 +87,10 @@ export default class Assert<const Actual> {
 
   undefined() {
     return this.#static(undefined);
+  }
+
+  defined() {
+    return this.not.undefined();
   }
 
   instance(expected: UnknownFunction) {
