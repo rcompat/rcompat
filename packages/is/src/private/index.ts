@@ -13,6 +13,9 @@ function isArray(x: unknown): x is unknown[] {
 function isBigint(x: unknown): x is bigint {
   return typeof x === "bigint";
 }
+function isBlob(x: unknown): x is Blob {
+  return x instanceof Blob;
+}
 function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
@@ -32,6 +35,9 @@ function isError(x: unknown): x is Error {
 }
 function isFalsy(x: unknown): boolean {
   return !x;
+}
+function isFile(x: unknown): x is File {
+  return x instanceof File;
 }
 function isFunction(x: unknown): x is UnknownFunction {
   return typeof x === "function";
@@ -83,6 +89,7 @@ export default {
   array: isArray,
   bigint: isBigint,
   blank: strings.isBlank,
+  blob: isBlob,
   boolish: strings.isBoolish,
   boolean: isBoolean,
   date: isDate,
@@ -91,6 +98,7 @@ export default {
   empty,
   error: isError,
   falsy: isFalsy,
+  file: isFile,
   finite: numbers.isFinite,
   function: isFunction,
   int: numbers.isInt,
