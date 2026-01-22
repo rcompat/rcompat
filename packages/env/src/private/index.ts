@@ -8,10 +8,8 @@ const local = new fs.FileRef(`${env.path}.local`);
 const is_local = async () => await local.exists() ? local : env;
 const read = async () => parse(await (await is_local()).text());
 
-export default async function tryRead() {
-  try {
-    return await read();
-  } catch {
-    return {};
-  }
-}
+let e = {};
+
+try { e = await read(); } catch { }
+
+export default e;
