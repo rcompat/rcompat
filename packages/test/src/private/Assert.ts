@@ -29,7 +29,6 @@ export default class Assert<const Actual> {
     const final_expected = negate ? { not: expected } : expected;
 
     this.#test.report(actual ?? this.#actual, final_expected, final_passed);
-
   }
 
   #passed() {
@@ -52,6 +51,17 @@ export default class Assert<const Actual> {
 
   nequals(expected: unknown) {
     this.#report(!equals(this.#actual, expected), expected);
+    return this;
+  }
+
+  includes(expected: unknown) {
+    const actual = this.#actual;
+    const passed = typeof actual === "string"
+      ? actual.includes(expected as string)
+      : Array.isArray(actual)
+        ? actual.includes(expected)
+        : false;
+    this.#report(passed, expected);
     return this;
   }
 

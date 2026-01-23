@@ -1,4 +1,4 @@
-import test from "@rcompat/test";
+import test from "#index";
 import type { EmptyObject } from "@rcompat/type";
 
 test.case("type", assert => {
