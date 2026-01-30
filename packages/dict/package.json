@@ -21,7 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/assert": "workspace:^"
+    "@rcompat/assert": "workspace:^",
+    "@rcompat/is": "workspace:^"
   },
   "devDependencies": {
     "@rcompat/type": "workspace:^"

@@ -4,7 +4,6 @@ import get from "#get";
 import inflate from "#inflate";
 import nullproto from "#nullproto";
 import override from "#override";
-import proper from "#proper";
 import toQueryString from "#toQueryString";
 
 export default {
@@ -14,7 +13,6 @@ export default {
   inflate,
   nullproto,
   override,
-  proper,
   toQueryString,
 };
 

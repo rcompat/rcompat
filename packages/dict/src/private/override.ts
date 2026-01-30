@@ -1,10 +1,10 @@
-import proper, { type Proper } from "#proper";
 import assert from "@rcompat/assert";
+import is from "@rcompat/is";
 
-const proper_na = (o: unknown) => proper(o) && !Array.isArray(o);
+type Proper = NonNullable<object>;
 
 const recurse = (t: unknown, u: unknown) =>
-  (proper_na(t) && proper_na(u) ? override(t as Proper, u as Proper) : u) ?? t;
+  (is.dict(t) && is.dict(u) ? override(t as Proper, u as Proper) : u) ?? t;
 
 /**
  * Override an object with another recursively.
@@ -19,8 +19,8 @@ const recurse = (t: unknown, u: unknown) =>
  * @returns the result of overriding `base` with `over` recursively
  */
 const override = <T extends Proper, U extends Proper>(base: T, over: U): T & U => {
-  assert.true(proper(base));
-  assert.true(proper(over));
+  assert.dict(base);
+  assert.dict(over);
 
   return (Object.keys(over) as (keyof (T & U))[])
     .reduce((overridden, key) => ({
