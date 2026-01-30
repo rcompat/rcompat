@@ -1,7 +1,7 @@
 import numbers from "#numbers";
 import test from "@rcompat/test";
 
-const { isFinite, isInt, isNaN, isSafeint, isUint } = numbers;
+const { isFinite, isInt, isNaN, isSafeInt, isUint } = numbers;
 
 test.case("isInt - true", assert => {
   assert(isInt(0)).true();
@@ -83,21 +83,21 @@ test.case("isNaN - false", assert => {
   assert(isNaN({})).false();
 });
 
-test.case("isSafeint - true", assert => {
-  assert(isSafeint(0)).true();
-  assert(isSafeint(42)).true();
-  assert(isSafeint(-42)).true();
-  assert(isSafeint(Number.MAX_SAFE_INTEGER)).true();
-  assert(isSafeint(Number.MIN_SAFE_INTEGER)).true();
+test.case("isSafeInt - true", assert => {
+  assert(isSafeInt(0)).true();
+  assert(isSafeInt(42)).true();
+  assert(isSafeInt(-42)).true();
+  assert(isSafeInt(Number.MAX_SAFE_INTEGER)).true();
+  assert(isSafeInt(Number.MIN_SAFE_INTEGER)).true();
 });
 
-test.case("isSafeint - false", assert => {
-  assert(isSafeint(Number.MAX_SAFE_INTEGER + 1)).false();
-  assert(isSafeint(Number.MIN_SAFE_INTEGER - 1)).false();
-  assert(isSafeint(3.14)).false();
-  assert(isSafeint(NaN)).false();
-  assert(isSafeint(Infinity)).false();
-  assert(isSafeint(42n)).false(); // bigint not safe integer
-  assert(isSafeint("42")).false();
-  assert(isSafeint(null)).false();
+test.case("isSafeInt - false", assert => {
+  assert(isSafeInt(Number.MAX_SAFE_INTEGER + 1)).false();
+  assert(isSafeInt(Number.MIN_SAFE_INTEGER - 1)).false();
+  assert(isSafeInt(3.14)).false();
+  assert(isSafeInt(NaN)).false();
+  assert(isSafeInt(Infinity)).false();
+  assert(isSafeInt(42n)).false(); // bigint not safe integer
+  assert(isSafeInt("42")).false();
+  assert(isSafeInt(null)).false();
 });

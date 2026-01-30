@@ -10,6 +10,9 @@ import type { Dict, Nullish, UnknownFunction } from "@rcompat/type";
 function isArray(x: unknown): x is unknown[] {
   return Array.isArray(x);
 }
+function isArrayBuffer(x: unknown): x is ArrayBuffer {
+  return x instanceof ArrayBuffer;
+}
 function isBigint(x: unknown): x is bigint {
   return typeof x === "bigint";
 }
@@ -18,6 +21,9 @@ function isBlob(x: unknown): x is Blob {
 }
 function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
+}
+function isBytes(x: unknown): x is Uint8Array {
+  return x instanceof Uint8Array;
 }
 function isDate(x: unknown): x is Date {
   return x instanceof Date;
@@ -63,6 +69,12 @@ function isPromise(x: unknown): x is Promise<unknown> {
 function isRegExp(x: unknown): x is RegExp {
   return x instanceof RegExp;
 }
+function isRequest(x: unknown): x is Request {
+  return x instanceof Request;
+}
+function isResponse(x: unknown): x is Response {
+  return x instanceof Response;
+}
 function isSet(x: unknown): x is Set<unknown> {
   return x instanceof Set;
 }
@@ -87,11 +99,13 @@ function isURL(x: unknown): x is URL {
 
 export default {
   array: isArray,
+  arraybuffer: isArrayBuffer,
   bigint: isBigint,
   blank: strings.isBlank,
   blob: isBlob,
   boolish: strings.isBoolish,
   boolean: isBoolean,
+  bytes: isBytes,
   date: isDate,
   defined: isDefined,
   dict: isDict,
@@ -105,8 +119,8 @@ export default {
   iterable: isIterable,
   map: isMap,
   nan: numbers.isNaN,
-  newable,
   nonempty: (x: unknown) => !empty(x),
+  newable,
   null: isNull,
   nullish: isNullish,
   number: isNumber,
@@ -114,8 +128,10 @@ export default {
   object,
   primitive,
   promise: isPromise,
+  request: isRequest,
+  response: isResponse,
   regexp: isRegExp,
-  safeint: numbers.isSafeint,
+  safeint: numbers.isSafeInt,
   set: isSet,
   string: isString,
   symbol: isSymbol,

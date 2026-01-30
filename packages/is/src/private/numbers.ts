@@ -14,7 +14,7 @@ function isNaN(x: unknown): x is number {
   return typeof x === "number" && Number.isNaN(x);
 }
 
-function isSafeint(x: unknown): x is number {
+function isSafeInt(x: unknown): x is number {
   if (typeof x === "number") return Number.isSafeInteger(x);
   return false;
 }
@@ -29,6 +29,6 @@ export default {
   isFinite,
   isInt,
   isNaN,
-  isSafeint,
+  isSafeInt,
   isUint,
 };
