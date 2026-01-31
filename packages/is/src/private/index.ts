@@ -119,7 +119,7 @@ export default {
   iterable: isIterable,
   map: isMap,
   nan: numbers.isNaN,
-  nonempty: (x: unknown) => !empty(x),
+  nonempty: <T>(x: T | Nullish): x is T => !empty(x),
   newable,
   null: isNull,
   nullish: isNullish,
