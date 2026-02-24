@@ -5,7 +5,7 @@ import numeric from "#numeric";
 import object from "#object";
 import primitive from "#primitive";
 import strings from "#strings";
-import type { Dict, Nullish, UnknownFunction } from "@rcompat/type";
+import type { Dict, JSONValue, Nullish, UnknownFunction } from "@rcompat/type";
 
 function isArray(x: unknown): x is unknown[] {
   return Array.isArray(x);
@@ -50,6 +50,16 @@ function isFunction(x: unknown): x is UnknownFunction {
 }
 function isIterable(x: unknown): x is Iterable<unknown> {
   return typeof (x as Iterable<unknown>)?.[Symbol.iterator] === "function";
+}
+function isJSON(x: unknown): x is JSONValue {
+  if (x === null) return true;
+  if (typeof x === "string" || typeof x === "number" || typeof x === "boolean") return true;
+  if (Array.isArray(x)) return x.every(isJSON);
+  if (typeof x === "object") {
+    if (x instanceof Date || x instanceof URL) return false;
+    return Object.values(x as object).every(isJSON);
+  }
+  return false;
 }
 function isMap(x: unknown): x is Map<unknown, unknown> {
   return x instanceof Map;
@@ -117,6 +127,7 @@ export default {
   function: isFunction,
   int: numbers.isInt,
   iterable: isIterable,
+  json: isJSON,
   map: isMap,
   nan: numbers.isNaN,
   nonempty: <T>(x: T | Nullish): x is T => !empty(x),
