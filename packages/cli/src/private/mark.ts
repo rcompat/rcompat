@@ -1,12 +1,9 @@
 import color from "#color";
 
 const stringify = (params: unknown[]) => params.map(param => {
-  if (param?.toString !== undefined) {
-    return param.toString();
-  }
-  if (param instanceof Error) {
-    return param.message;
-  }
+  if (Array.isArray(param)) return param.join(", ");
+  if (param?.toString !== undefined) return param.toString();
+  if (param instanceof Error) return param.message;
   return param as string;
 });
 
