@@ -224,6 +224,14 @@ export default class FileRef
     return directory.up(levels - 1);
   }
 
+  sibling(name: string) {
+    return this.directory.join(name);
+  }
+
+  async or<T>(fallback: () => T) {
+    return await this.exists() ? this : fallback();
+  }
+
   arrayBuffer() {
     return native.arrayBuffer(this.path);
   }
