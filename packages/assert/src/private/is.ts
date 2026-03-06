@@ -1,9 +1,11 @@
 import errored from "#errored";
+import type MaybeError from "#MaybeError";
+import type ShapeDescriptor from "#ShapeDescriptor";
 import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
 import type { Newable } from "@rcompat/type";
 
-function assert(value: boolean, error?: Error | string) {
+function assert(value: boolean, error?: MaybeError) {
   if (value === true) return;
   errored(error);
 }
@@ -23,44 +25,44 @@ function stringify(x: unknown) {
   return `${x}`;
 }
 
-function deferr(x: unknown, message: string, error?: Error | string) {
+function deferr(x: unknown, message: string, error?: MaybeError) {
   return error ?? `\`${stringify(x)}\` ${message}`;
 }
 
 function primitive<K extends keyof TypesOfTypeMap>(type: K) {
-  return (x: unknown, error?: Error | string): TypesOfTypeMap[K] => {
+  return (x: unknown, error?: MaybeError): TypesOfTypeMap[K] => {
     assert(typeof x === type, deferr(x, `must be of type ${type}`, error));
     return x as TypesOfTypeMap[K];
   };
 }
 
 function condition<T>(pred: (y: unknown) => y is T, errmsg: string) {
-  return (x: unknown, error?: Error | string): T => {
+  return (x: unknown, error?: MaybeError): T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x as T;
   };
 }
 
 function untyped(pred: (y: unknown) => boolean, errmsg: string) {
-  return <T>(x: T, error?: Error | string): T => {
+  return <T>(x: T, error?: MaybeError): T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x;
   };
 }
 
 function narrowed<T>(pred: (y: unknown) => y is T, errmsg: string) {
-  return <U>(x: U, error?: Error | string): U extends T ? U : T => {
+  return <U>(x: U, error?: MaybeError): U extends T ? U : T => {
     assert(pred(x), deferr(x, errmsg, error));
     return x as any;
   };
 }
 
-const defined = <T>(x: T, error?: Error | string): NonNullable<T> => {
+const defined = <T>(x: T, error?: MaybeError): NonNullable<T> => {
   assert(is.defined(x), deferr(x, "must be defined", error));
   return x as NonNullable<T>;
 };
 
-const uuid = (x: unknown, error?: Error | string): string => {
+function uuid(x: unknown, error?: MaybeError): string {
   const uuidv4 =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
   assert(typeof x === "string" && uuidv4.test(x),
@@ -68,10 +70,27 @@ const uuid = (x: unknown, error?: Error | string): string => {
   return x as string;
 };
 
-const instance = <T extends Newable>(x: unknown, N: T, error?: Error | string): InstanceType<T> => {
+function instance<T extends Newable>(
+  x: unknown,
+  N: T,
+  error?: MaybeError,
+): InstanceType<T> {
   assert(x instanceof N, deferr(x, `must be instance of ${N.name}`, error));
   return x as InstanceType<T>;
 };
+
+function shape<T>(x: unknown, descriptor: ShapeDescriptor, error?: MaybeError): T {
+  assert(is.dict(x), deferr(x, "must be a plain object", error));
+  for (const [key, type] of Object.entries(descriptor)) {
+    const optional = type.endsWith("?");
+    const base_type = type.replace("?", "") as keyof TypesOfTypeMap;
+    const value = (x as Record<string, unknown>)[key];
+    if (optional && value === undefined) continue;
+    assert(typeof value === base_type,
+      deferr(value, `property "${key}" must be of type ${base_type}`, error));
+  }
+  return x as T;
+}
 
 export default {
   // primitives
@@ -106,6 +125,7 @@ export default {
   url: condition(is.url, "must be URL"),
   empty: untyped(is.empty, "must be empty"),
   nonempty: untyped(is.nonempty, "must not be empty"),
+  shape,
 
   defined,
   instance,

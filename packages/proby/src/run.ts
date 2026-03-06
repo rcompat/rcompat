@@ -1,8 +1,8 @@
+import assert from "@rcompat/assert";
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import type { FileRef } from "@rcompat/fs";
-import type Result from "@rcompat/test/Result";
-import type Test from "@rcompat/test/Test";
+import type { Env, Result, Test } from "@rcompat/test";
 import repository from "@rcompat/test/repository";
 import { Worker } from "node:worker_threads";
 
@@ -37,11 +37,20 @@ function stringify(value: unknown) {
 }
 
 async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
+  const env_module = assert.shape<Env>((await import(env.path)).default, {
+    globals: "function",
+    setup: "function?",
+    teardown: "function?",
+  });
+
+  const context = await env_module.setup?.();
+
   return new Promise((resolve, reject) => {
     const worker = new Worker(new URL("./worker.js", import.meta.url), {
       workerData: {
         spec: spec.path,
         env: env.path,
+        context,
       },
     });
     worker.on("message", ({ results }) => {
@@ -59,7 +68,10 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
       }
     });
     worker.on("error", reject);
-    worker.on("exit", resolve);
+    worker.on("exit", async () => {
+      await env_module.teardown?.(context);
+      resolve();
+    });
   });
 }
 
@@ -70,6 +82,8 @@ export default async (root: FileRef, subrepo?: string) => {
   });
 
   if (files.length === 0) return;
+
+  if (subrepo !== undefined) print(`${color.blue(subrepo)}\n`);
 
   for (const file of files) {
     const env_file = await file.sibling(
@@ -84,8 +98,6 @@ export default async (root: FileRef, subrepo?: string) => {
     repository.suite(file);
     await file.import();
   }
-
-  if (subrepo !== undefined) print(`${color.blue(subrepo)}\n`);
 
   for (const suite of repository.next()) {
     const failed: [Test, Result<unknown>][] = [];

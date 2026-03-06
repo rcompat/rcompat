@@ -1,3 +1,9 @@
+import type Env from "#Env";
+
 export default {
-  secret: 123,
-};
+  globals() {
+    return {
+      secret: 123,
+    };
+  },
+} satisfies Env;

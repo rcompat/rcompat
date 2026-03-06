@@ -1,11 +1,17 @@
+import assert from "@rcompat/assert";
 import fs from "@rcompat/fs";
+import type { Env } from "@rcompat/test";
 import repository from "@rcompat/test/repository";
 import { parentPort, workerData } from "node:worker_threads";
 
-const { spec, env } = workerData;
-const env_module = await import(env);
+const { spec, env, context } = workerData;
 
-Object.assign(globalThis, env_module.default);
+const env_module = assert.shape<Env>((await import(env)).default, {
+  globals: "function",
+  setup: "function?",
+  teardown: "function?",
+});
+Object.assign(globalThis, env_module.globals(context));
 
 repository.suite(fs.ref(spec));
 await import(spec);

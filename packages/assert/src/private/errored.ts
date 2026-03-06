@@ -1,4 +1,6 @@
-export default (error?: Error | string) => {
+import type MaybeError from "#MaybeError";
+
+export default (error?: MaybeError) => {
   if (error instanceof Error) {
     throw error;
   } else {

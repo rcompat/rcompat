@@ -2,7 +2,7 @@ import is from "#is";
 import test from "@rcompat/test";
 import type { Dict, Newable, UnknownFunction } from "@rcompat/type";
 
-type Is = Exclude<keyof typeof is, "instance">;
+type Is = Exclude<keyof typeof is, "instance" | "shape">;
 
 const fix = {
   bigint: [0n],

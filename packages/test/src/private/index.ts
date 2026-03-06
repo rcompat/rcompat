@@ -1,7 +1,6 @@
 import type Body from "#Body";
 import type End from "#End";
 import repository from "#repository";
-import type { Newable } from "@rcompat/type";
 
 export default {
   case(name: string, body: Body) {
@@ -11,3 +10,9 @@ export default {
     repository.ended(end);
   },
 };
+
+export type { default as Asserter } from "#Asserter";
+export type { default as Env } from "#Env";
+export type { default as Result } from "#Result";
+export type { default as Test } from "#Test";
+
