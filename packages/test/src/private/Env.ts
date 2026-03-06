@@ -1,7 +1,7 @@
-import type { Dict, MaybePromise } from "@rcompat/type";
+import type { MaybePromise } from "@rcompat/type";
 
 type Env<C = void> = {
-  globals(context: C): Dict;
+  globals(context: C): object;
   setup?(): MaybePromise<C>;
   teardown?(context: C): MaybePromise<void>;
 };
