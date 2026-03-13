@@ -1,7 +1,7 @@
 import FileRouter from "#FileRouter";
 import type MatchedRoute from "#router/MatchedRoute";
 import test from "@rcompat/test";
-import type Asserter from "@rcompat/test/Asserter";
+import type { Asserter } from "@rcompat/test";
 
 class Expect {
   #m?: MatchedRoute;

@@ -1,6 +1,9 @@
-import FileRef, { type ListOptions } from "#FileRef";
+import type { FileInfo, Filter, ListOptions } from "#FileRef";
+import FileRef from "#FileRef";
+import type Kind from "#Kind";
 import parse from "#parse";
 import type Path from "#Path";
+import type StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
 import type { JSONValue } from "@rcompat/type";
@@ -18,9 +21,9 @@ function project_root(relative_to?: string) {
   return fs_resolve(relative_to).discover("package.json");
 }
 
-const fs = {
-  FileRef,
+const fs = Object.freeze({
   ref: (path: Path) => new FileRef(path),
+  isRef: (x: unknown): x is FileRef => x instanceof FileRef,
   cwd: () => fs_resolve(),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => new FileRef(path).list(opts),
@@ -47,6 +50,16 @@ const fs = {
       return (await project_root(from)).join("package.json");
     },
   },
-} as const;
+});
 
 export default fs;
+
+export type {
+  FileInfo,
+  FileRef,
+  Filter,
+  Kind,
+  ListOptions,
+  Path,
+  StreamSource,
+};
