@@ -1,4 +1,4 @@
-export default {
+const Status = Object.freeze({
   ACCEPTED: 202,
   ALREADY_REPORTED: 208,
   BAD_GATEWAY: 502,
@@ -76,4 +76,8 @@ export default {
 
   USE_PROXY: 305,
   VARIANT_ALSO_NEGOTIATES: 506,
-} as const;
+});
+
+export type ValidStatus = typeof Status[keyof typeof Status];
+
+export default Status;
