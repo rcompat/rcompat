@@ -10,7 +10,6 @@ function fs_resolve(path?: string) {
   assert.maybe.string(path);
 
   return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
-
 }
 
 function project_root(relative_to?: string) {
