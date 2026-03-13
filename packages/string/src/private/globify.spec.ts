@@ -1,6 +1,6 @@
 import globify from "#globify";
+import type { Asserter } from "@rcompat/test";
 import test from "@rcompat/test";
-import type Asserter from "@rcompat/test/Asserter";
 
 const paths = [
   "a",
@@ -42,15 +42,15 @@ test.case("simple", assert => {
 });
 
 test.case("question mark", assert => {
-  check(assert, "?", [0,10,14]);
-  check(assert, "??", [11,13]);
-  check(assert, "a?js", [1,3]);
+  check(assert, "?", [0, 10, 14]);
+  check(assert, "??", [11, 13]);
+  check(assert, "a?js", [1, 3]);
 });
 
 test.case("simple wildcard", assert => {
-  check(assert, "*", [0,1,2,3,10,14]);
-  check(assert, "a*", [0,1,2,3]);
-  check(assert, "a.*", [1,2]);
+  check(assert, "*", [0, 1, 2, 3, 10, 14]);
+  check(assert, "a*", [0, 1, 2, 3]);
+  check(assert, "a.*", [1, 2]);
 });
 
 test.case("double wildcard", assert => {

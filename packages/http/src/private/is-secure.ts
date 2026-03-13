@@ -7,5 +7,5 @@ export default (conf: Conf) => {
 
   const { ssl } = conf;
 
-  return ssl?.key instanceof fs.FileRef && ssl.cert instanceof fs.FileRef;
+  return ssl !== undefined && fs.isRef(ssl.key) && fs.isRef(ssl.cert);
 };

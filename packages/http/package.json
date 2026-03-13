@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/http",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "Standard library HTTP",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "undici-types": "7.18.2"
+    "undici-types": "7.24.0"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",

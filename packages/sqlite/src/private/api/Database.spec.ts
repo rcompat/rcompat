@@ -10,7 +10,7 @@ const USER_TABLE = `
 `;
 
 test.case("constructor", async assert => {
-  const file = new fs.FileRef("/tmp/test-primate-sqlite.db");
+  const file = fs.ref("/tmp/test-primate-sqlite.db");
   if (await file.exists()) {
     await file.remove();
   }
