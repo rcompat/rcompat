@@ -21,8 +21,10 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/fs": "workspace:^",
-    "dotenv": "^17.3.1"
+    "@rcompat/fs": "workspace:^"
+  },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
   },
   "type": "module",
   "imports": {
