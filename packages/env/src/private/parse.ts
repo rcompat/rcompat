@@ -17,10 +17,10 @@ function unquote(value: string): [string, boolean] {
 
 function substitute(value: string, env: Dict<string>): string {
   return value
-    .replace(/\\\$/g, "\x00")
-    .replace(/\$\{(\w+)\}|\$(\w+)/g, (_, braced, bare) =>
-      env[braced ?? bare] ?? "")
-    .replace(/\x00/g, "$");
+    .replace(/\\\$/g, "\uE000")
+    .replace(/\$\{(\w+)(?::-(.[^}]*))?\}|\$(\w+)/g, (_, braced, fallback, bare) =>
+      env[braced ?? bare] ?? fallback ?? "")
+    .replace(/\uE000/g, "$");
 }
 
 export default function(raw: string, env: Dict<string> = {}): Dict<string> {

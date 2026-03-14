@@ -72,3 +72,13 @@ test.case("single quotes skip substitution", assert => {
 test.case("substitution uses earlier lines in same file", assert => {
   assert(parse("A=1\nB=$A\nC=$B")).equals({ A: "1", B: "1", C: "1" });
 });
+
+test.case("substitution with fallback", assert => {
+  assert(parse("FOO=${BAR:-default}")).equals({ FOO: "default" });
+});
+
+test.case("substitution with fallback ignored when var exists", assert => {
+  assert(parse("BAR=real\nFOO=${BAR:-default}")).equals({
+    BAR: "real", FOO: "real",
+  });
+});
