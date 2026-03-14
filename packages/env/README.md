@@ -46,15 +46,17 @@ so file variables win over system variables.
 Variables can reference other variables:
 ```
 FOO=world
-BAR=hello$FOO       # helloworld
-BAZ=hello${FOO}     # helloworld
-ESCAPED=hello\$FOO  # hello$FOO
+BAR=hello$FOO           # helloworld
+BAZ=hello${FOO}         # helloworld
+ESCAPED=hello\$FOO      # hello$FOO
+WITH_DEFAULT=${FOO:-fallback}  # uses fallback if FOO is undefined
 ```
 
 Substitution resolves against the merged environment, so `process.env` variables
 are available too:
 ```
 CONFIG=$HOME/.config/myapp
+DB_USERNAME=${DB_USERNAME:-myapp}  # uses system DB_USERNAME or falls back to myapp
 ```
 
 Single-quoted values skip substitution:
