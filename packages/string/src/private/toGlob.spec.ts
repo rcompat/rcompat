@@ -1,4 +1,4 @@
-import globify from "#globify";
+import glob from "#glob";
 import type { Asserter } from "@rcompat/test";
 import test from "@rcompat/test";
 
@@ -20,15 +20,18 @@ const paths = [
   "c",
 ];
 
-type AnyStringFunction = keyof { [K in keyof string as string[K] extends (arg: string) => unknown ? K : never]: true };
+type AnyStringFunction = keyof { [K in keyof string as string[K] extends
+  (arg: string) => unknown ? K : never]: true };
 
-const is = (c: string, key: AnyStringFunction) => paths.flatMap((path, i) => path[key](c) ? [i] : []);
+const is = (c: string, key: AnyStringFunction) =>
+  paths.flatMap((path, i) =>
+    path[key](c) ? [i] : []);
 const includes = (c: string) => is(c, "includes");
 const starts = (c: string) => is(c, "startsWith");
 const ends = (c: string) => is(c, "endsWith");
 
-const check = (assert: Asserter, glob: string, positions: number[]) => {
-  const globbed = globify(glob);
+const check = (assert: Asserter, source: string, positions: number[]) => {
+  const globbed = glob(source);
 
   paths.map((path, i) =>
     assert(globbed.test(path)).equals(positions.includes(i)),

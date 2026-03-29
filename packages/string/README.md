@@ -47,16 +47,16 @@ console.log(decoded); // "Hello, World!"
 ```js
 import string from "@rcompat/string";
 
-// from kebab-case
-string.camelcased("hello-world"); // "helloWorld"
-string.camelcased("my-component"); // "myComponent"
+// from kebab case
+string.toCamelCase("hello-world"); // "helloWorld"
+string.toCamelCase("my-component"); // "myComponent"
 
-// from snake_case
-string.camelcased("hello_world"); // "helloWorld"
-string.camelcased("user_profile"); // "userProfile"
+// from snake case
+string.toCamelCase("hello_world"); // "helloWorld"
+string.toCamelCase("user_profile"); // "userProfile"
 
 // mixed
-string.camelcased("my-user_name"); // "myUserName"
+string.toCamelCase("my-user_name"); // "myUserName"
 ```
 
 ### Dedent multi-line strings
@@ -87,22 +87,33 @@ const query = string.dedent`
 import string from "@rcompat/string";
 
 // simple wildcards
-const pattern = string.globify("*.js");
+const pattern = string.glob("*.js");
 pattern.test("app.js"); // true
 pattern.test("app.ts"); // false
 pattern.test("dir/app.js"); // false
 
 // double wildcard (recursive)
-const recursive = string.globify("**/*.js");
+const recursive = string.glob("**/*.js");
 recursive.test("app.js"); // true
 recursive.test("src/app.js"); // true
 recursive.test("src/lib/app.js"); // true
 
 // single character wildcard
-const single = string.globify("file?.txt");
+const single = string.glob("file?.txt");
 single.test("file1.txt"); // true
 single.test("fileA.txt"); // true
 single.test("file10.txt"); // false
+```
+
+### Convert to slug
+
+```js
+import string from "@rcompat/string";
+
+string.toSlug("Hello World");  // "hello-world"
+string.toSlug("café");         // "cafe"
+string.toSlug("naïve");        // "naive"
+string.toSlug("foo  bar");     // "foo-bar"
 ```
 
 ### Capitalize first letter
@@ -158,15 +169,15 @@ Object with methods for Base64 encoding and decoding.
 | `encode` | Encode a string to Base64 |
 | `decode` | Decode a Base64 string    |
 
-### `camelcased`
+### `toCamelCase`
 
 ```ts
 import string from "@rcompat/string";
 
-string.camelcased(string: string): string;
+string.toCamelCase(string: string): string;
 ```
 
-Converts kebab-case or snake_case strings to camelCase.
+Converts kebab case (a-b) or snake case (a_b) strings to camel case (aB).
 
 ### `dedent`
 
@@ -180,12 +191,12 @@ string.dedent(strings: TemplateStringsArray, ...values: unknown[]): string;
 Removes common leading whitespace from multi-line strings. Can be used as
 a template tag or called directly with a string.
 
-### `globify`
+### `glob`
 
 ```ts
 import string from "@rcompat/string";
 
-string.globify(pattern: string): RegExp;
+string.glob(pattern: string): RegExp;
 ```
 
 Converts a glob pattern to a `RegExp`.
@@ -196,6 +207,18 @@ Converts a glob pattern to a `RegExp`.
 | `**`    | Any characters including `/` |
 | `?`     | Any single character         |
 | `.`     | Literal dot (auto-escaped)   |
+
+### `toSlug`
+```ts
+import string from "@rcompat/string";
+
+string.toSlug(string: string): string;
+```
+
+Converts a string to a URL-safe slug. Lowercases, reduces accented Latin
+characters to their ASCII base (e.g. `é` → `e`), and replaces runs of
+non-alphanumeric characters with `-`. Non-Latin characters (e.g. CJK) are
+stripped. Returns `""` for fully non-Latin input.
 
 ### `upperfirst`
 
@@ -238,7 +261,7 @@ import string from "@rcompat/string";
 function toComponentName(filename) {
 // "my-button.svelte" -> "MyButton"
 const name = filename.replace(/\.\w+$/, "");
-return string.upperfirst(string.camelcased(name));
+return string.upperfirst(string.toCamelCase(name));
 }
 
 toComponentName("my-button.svelte"); // "MyButton"
@@ -268,7 +291,7 @@ const query = buildQuery("users", ["active = true", "role = 'admin'"]);
 import string from "@rcompat/string";
 
 function matchFiles(files, pattern) {
-  const regex = string.globify(pattern);
+  const regex = string.glob(pattern);
   return files.filter((file) => regex.test(file));
 }
 

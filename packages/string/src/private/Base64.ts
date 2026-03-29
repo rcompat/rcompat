@@ -1,4 +1,11 @@
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
+
 export default {
-  decode: (encoded: string): string => atob(encoded),
-  encode: (decoded: string): string => btoa(decoded),
+  encode: (decoded: string): string => {
+    return encoder.encode(decoded).toBase64();
+  },
+  decode: (encoded: string): string => {
+    return decoder.decode(Uint8Array.fromBase64(encoded));
+  },
 };

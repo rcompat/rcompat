@@ -1,11 +1,13 @@
 import dedent from "#dedent";
-import globify from "#globify";
+import glob from "#glob";
+import toCamelCase from "#to-camel-case";
+import toSlug from "#to-slug";
 import upperfirst from "#upperfirst";
-import camelcased from "#camelcased";
 
 export default {
-  camelcased,
+  toCamelCase,
   dedent,
-  globify,
   upperfirst,
+  glob,
+  toSlug,
 };

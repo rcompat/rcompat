@@ -1,8 +1,8 @@
 export default function utf8Size(string: string): number {
   let size = 0;
 
-  for (let i = 0; i < string.length; i++) {
-    const code = string.codePointAt(i)!;
+  for (const char of string) {
+    const code = char.codePointAt(0)!;
 
     if (code <= 0x7f) {
       size++;
@@ -14,10 +14,6 @@ export default function utf8Size(string: string): number {
       size += 4;
     } else {
       throw new Error(`Invalid code point: ${code}`);
-    }
-
-    if (code > 0xffff) {
-      i++;
     }
   }
 

@@ -15,7 +15,7 @@ const globify = (pattern: string) => pattern
   .replace(/(?<=\\)\.\*/u, ".[^/]*")
   ;
 
-export default (pattern: string) => {
+export default function toGlob(pattern: string) {
   assert.string(pattern);
 
   return new RegExp(`^${globify(pattern)}$`, "u");
