@@ -108,17 +108,21 @@ export default class Assert<const Actual> {
     return this;
   }
 
-  throws(expected?: string) {
+  throws(expected: string | (new (...args: any[]) => Error)) {
     try {
       (this.#actual as () => unknown)();
       this.#failed("[did not throw]");
     } catch (error) {
-      const { message } = E(error);
-
-      if (expected === undefined || expected === message) {
-        this.#passed();
+      if (typeof expected === "string") {
+        const code = E(error).code;
+        code === expected
+          ? this.#passed()
+          : this.#failed(expected, code ?? "[no code]");
       } else {
-        this.#failed(expected, message);
+        error instanceof expected
+          ? this.#passed()
+          : this.#failed(expected.name, (error as Error)?.constructor?.name
+            ?? "[unknown]");
       }
     }
     return this;
@@ -129,7 +133,8 @@ export default class Assert<const Actual> {
       (this.#actual as () => unknown)();
       this.#passed();
     } catch (error) {
-      this.#failed(E(error).message, "[did not throw]");
+      const { code, message } = E(error);
+      this.#failed(`${code ?? message}`, "[did not throw]");
     }
     return this;
   }

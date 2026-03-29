@@ -1,5 +1,6 @@
 import maybe from "#maybe";
 import test from "@rcompat/test";
+import { Code } from "#Code";
 
 test.case("nullish", assert => {
   assert(maybe.number(undefined)).equals(undefined);
@@ -12,8 +13,8 @@ test.case("non-nullish", assert => {
 });
 
 test.case("non-nullish invalid", assert => {
-  assert(() => maybe.number("0")).throws();
-  assert(() => maybe.string(0)).throws();
+  assert(() => maybe.number("0")).throws(Code.invalid_number);
+  assert(() => maybe.string(0)).throws(Code.invalid_string);
 });
 
 test.case("instance", assert => {
@@ -23,5 +24,5 @@ test.case("instance", assert => {
   assert(maybe.instance(null, C)).equals(null);
   assert(maybe.instance(undefined, C)).equals(undefined);
   assert(maybe.instance(c, C)).equals(c);
-  assert(() => maybe.instance({}, C)).throws();
+  assert(() => maybe.instance({}, C)).throws(Code.invalid_instance);
 });

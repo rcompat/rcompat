@@ -1,9 +1,10 @@
 import test from "@rcompat/test";
 import cache from "#cache";
 import undef from "@rcompat/test/undef";
+import { Code } from "@rcompat/assert";
 
 test.case("invalid invariants", assert => {
-  assert(() => cache.get(undef)).throws("`undefined` must be of type symbol");
+  assert(() => cache.get(undef)).throws(Code.invalid_symbol);
 });
 
 test.case("valid variants", assert => {

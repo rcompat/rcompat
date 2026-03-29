@@ -1,5 +1,4 @@
 import is from "#is";
-import type MaybeError from "#MaybeError";
 import type ShapeDescriptor from "#ShapeDescriptor";
 import std_is from "@rcompat/is";
 import type { Newable } from "@rcompat/type";
@@ -7,9 +6,9 @@ import type { Newable } from "@rcompat/type";
 type MaybeConditions = {
   [K in Exclude<keyof typeof is, "instance" | "shape">]: <T>(x: T) => T;
 } & {
-  instance: <T extends Newable>(x: unknown, N: T, error?: MaybeError) =>
+  instance: <T extends Newable>(x: unknown, N: T, error?: Error) =>
     InstanceType<T> | null | undefined;
-  shape: <T>(x: unknown, descriptor: ShapeDescriptor, error?: MaybeError) =>
+  shape: <T>(x: unknown, descriptor: ShapeDescriptor, error?: Error) =>
     T | null | undefined;
 };
 
@@ -26,7 +25,7 @@ for (const key of Object.keys(is) as (keyof typeof is)[]) {
 
 maybe.instance = <
   T extends Newable,
->(x: unknown, N: T, error?: MaybeError): InstanceType<T> | null | undefined => {
+>(x: unknown, N: T, error?: Error): InstanceType<T> | null | undefined => {
   if (std_is.nullish(x)) return x as null | undefined;
   return is.instance(x, N, error);
 };
@@ -34,7 +33,7 @@ maybe.instance = <
 maybe.shape = <T>(
   x: unknown,
   descriptor: ShapeDescriptor,
-  error?: MaybeError): T | null | undefined => {
+  error?: Error): T | null | undefined => {
   if (std_is.nullish(x)) return x as null | undefined;
   return is.shape<T>(x, descriptor, error);
 };

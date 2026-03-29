@@ -1,11 +1,10 @@
 import is from "#is";
-import type MaybeError from "#MaybeError";
 import type { Newable } from "@rcompat/type";
 
 type EveryConditions = {
   [K in Exclude<keyof typeof is, "instance">]: <T>(xs: T[]) => T[];
 } & {
-  instance: <T extends Newable>(xs: unknown[], N: T, error?: MaybeError) =>
+  instance: <T extends Newable>(xs: unknown[], N: T, error?: Error) =>
     InstanceType<T>[];
 };
 
@@ -21,7 +20,7 @@ for (const key of Object.keys(is) as (keyof typeof is)[]) {
 
 every.instance = <
   T extends Newable,
->(xs: unknown[], N: T, error?: MaybeError): InstanceType<T>[] => {
+>(xs: unknown[], N: T, error?: Error): InstanceType<T>[] => {
   xs.forEach(x => is.instance(x, N, error));
   return xs as InstanceType<T>[];
 };

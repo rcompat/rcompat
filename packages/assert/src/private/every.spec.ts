@@ -1,12 +1,14 @@
 import every from "#every";
+import { Code } from "#index";
 import test from "@rcompat/test";
 
 test.case("number", assert => {
-  assert(() => every.number(["1"])).throws();
+  assert(() => every.number(["1"])).throws(Code.invalid_number);
   assert(() => every.number([1])).tries();
 });
 test.case("function", assert => {
-  assert(() => every.function(["1"])).throws();
+  assert(() => every.function(["1"])).throws(Code.invalid_function);
   assert(() => every.function([() => null])).tries();
-  assert(() => every.function([() => null, undefined])).throws();
+  assert(() => every.function([() => null, undefined]))
+    .throws(Code.invalid_function);
 });

@@ -1,93 +1,72 @@
-import errored from "#errored";
-import type MaybeError from "#MaybeError";
+import errors from "#errors";
 import type ShapeDescriptor from "#ShapeDescriptor";
 import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
 import type { Newable } from "@rcompat/type";
 
-function assert(value: boolean, error?: MaybeError) {
+function assert(value: boolean, error: Error) {
   if (value === true) return;
-  errored(error);
-}
-
-function stringify(x: unknown) {
-  try {
-    const stringified = JSON.stringify(x) as string | undefined;
-    if (stringified !== undefined) {
-      return stringified;
-    }
-  } catch {
-    // bigint will throw
-  }
-  if (x?.toString !== undefined) {
-    return x!.toString();
-  }
-  return `${x}`;
-}
-
-function deferr(x: unknown, message: string, error?: MaybeError) {
-  return error ?? `\`${stringify(x)}\` ${message}`;
+  throw error;
 }
 
 function primitive<K extends keyof TypesOfTypeMap>(type: K) {
-  return (x: unknown, error?: MaybeError): TypesOfTypeMap[K] => {
-    assert(typeof x === type, deferr(x, `must be of type ${type}`, error));
+  return (x: unknown, error?: Error): TypesOfTypeMap[K] => {
+    assert(typeof x === type, error ?? errors[`invalid_${type}`](x));
     return x as TypesOfTypeMap[K];
   };
 }
 
-function condition<T>(pred: (y: unknown) => y is T, errmsg: string) {
-  return (x: unknown, error?: MaybeError): T => {
-    assert(pred(x), deferr(x, errmsg, error));
+function condition<T>(pred: (y: unknown) => y is T, err: (x: unknown) => Error) {
+  return (x: unknown, error?: Error): T => {
+    assert(pred(x), error ?? err(x));
     return x as T;
   };
 }
 
-function untyped(pred: (y: unknown) => boolean, errmsg: string) {
-  return <T>(x: T, error?: MaybeError): T => {
-    assert(pred(x), deferr(x, errmsg, error));
+function untyped(pred: (y: unknown) => boolean, err: (x: unknown) => Error) {
+  return <T>(x: T, error?: Error): T => {
+    assert(pred(x), error ?? err(x));
     return x;
   };
 }
 
-function narrowed<T>(pred: (y: unknown) => y is T, errmsg: string) {
-  return <U>(x: U, error?: MaybeError): U extends T ? U : T => {
-    assert(pred(x), deferr(x, errmsg, error));
+function narrowed<T>(pred: (y: unknown) => y is T, err: (x: unknown) => Error) {
+  return <U>(x: U, error?: Error): U extends T ? U : T => {
+    assert(pred(x), error ?? err(x));
     return x as any;
   };
 }
 
-const defined = <T>(x: T, error?: MaybeError): NonNullable<T> => {
-  assert(is.defined(x), deferr(x, "must be defined", error));
+const defined = <T>(x: T, error?: Error): NonNullable<T> => {
+  assert(is.defined(x), error ?? errors.invalid_defined(x));
   return x as NonNullable<T>;
 };
 
-function uuid(x: unknown, error?: MaybeError): string {
+function uuid(x: unknown, error?: Error): string {
   const uuidv4 =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-  assert(typeof x === "string" && uuidv4.test(x),
-    deferr(x, "must be a valid UUIDv4 string", error));
+  assert(typeof x === "string" && uuidv4.test(x), error ?? errors.invalid_uuid(x));
   return x as string;
 };
 
 function instance<T extends Newable>(
   x: unknown,
   N: T,
-  error?: MaybeError,
+  error?: Error,
 ): InstanceType<T> {
-  assert(x instanceof N, deferr(x, `must be instance of ${N.name}`, error));
+  assert(x instanceof N, error ?? errors.invalid_instance(x, N.name));
   return x as InstanceType<T>;
 };
 
-function shape<T>(x: unknown, descriptor: ShapeDescriptor, error?: MaybeError): T {
-  assert(is.dict(x), deferr(x, "must be a plain object", error));
+function shape<T>(x: unknown, descriptor: ShapeDescriptor, error?: Error): T {
+  assert(is.dict(x), error ?? errors.invalid_shape_dict(x));
   for (const [key, type] of Object.entries(descriptor)) {
     const optional = type.endsWith("?");
     const base_type = type.replace("?", "") as keyof TypesOfTypeMap;
     const value = (x as Record<string, unknown>)[key];
     if (optional && value === undefined) continue;
     assert(typeof value === base_type,
-      deferr(value, `property "${key}" must be of type ${base_type}`, error));
+      error ?? errors.invalid_shape_property(key, base_type, value));
   }
   return x as T;
 }
@@ -103,28 +82,28 @@ export default {
   undefined: primitive("undefined"),
 
   // conditions
-  array: condition(is.array, "must be array"),
-  date: condition(is.date, "must be Date"),
-  dict: narrowed(is.dict, "must be a plain object (dictionary)"),
-  error: condition(is.error, "must be Error"),
-  false: condition(x => x === false, "must be false"),
-  finite: condition(is.finite, "must be finite number"),
-  int: condition(is.int, "must be integer"),
-  map: condition(is.map, "must be Map"),
-  nan: condition(is.nan, "must be NaN"),
-  newable: condition(is.newable, "must be newable"),
-  null: condition(x => x === null, "must be null"),
-  nullish: condition(is.nullish, "must be null or undefined"),
-  object: condition(is.object, "must be object"),
-  promise: condition(is.promise, "must be Promise"),
-  regexp: condition(is.regexp, "must be RegExp"),
-  safeint: condition(is.safeint, "must be safe integer"),
-  set: condition(is.set, "must be Set"),
-  true: condition(x => x === true, "must be true"),
-  uint: condition(is.uint, "must be unsigned integer"),
-  url: condition(is.url, "must be URL"),
-  empty: untyped(is.empty, "must be empty"),
-  nonempty: untyped(is.nonempty, "must not be empty"),
+  array: condition(is.array, errors.invalid_array),
+  date: condition(is.date, errors.invalid_date),
+  dict: narrowed(is.dict, errors.invalid_dict),
+  error: condition(is.error, errors.invalid_error),
+  false: condition(x => x === false, errors.invalid_false),
+  finite: condition(is.finite, errors.invalid_finite),
+  int: condition(is.int, errors.invalid_int),
+  map: condition(is.map, errors.invalid_map),
+  nan: condition(is.nan, errors.invalid_nan),
+  newable: condition(is.newable, errors.invalid_newable),
+  null: condition(x => x === null, errors.invalid_null),
+  nullish: condition(is.nullish, errors.invalid_nullish),
+  object: condition(is.object, errors.invalid_object),
+  promise: condition(is.promise, errors.invalid_promise),
+  regexp: condition(is.regexp, errors.invalid_regexp),
+  safeint: condition(is.safeint, errors.invalid_safeint),
+  set: condition(is.set, errors.invalid_set),
+  true: condition(x => x === true, errors.invalid_true),
+  uint: condition(is.uint, errors.invalid_uint),
+  url: condition(is.url, errors.invalid_url),
+  empty: untyped(is.empty, errors.invalid_empty),
+  nonempty: untyped(is.nonempty, errors.invalid_nonempty),
   shape,
 
   defined,

@@ -1,1 +1,1 @@
-export { default } from "#assert";
+export { default, Code } from "#index";

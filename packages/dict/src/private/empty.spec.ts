@@ -1,9 +1,10 @@
 import empty from "#empty";
+import { Code } from "@rcompat/assert";
 import test from "@rcompat/test";
 import undef from "@rcompat/test/undef";
 
 test.case("no params", assert => {
-  assert(() => empty(undef)).throws();
+  assert(() => empty(undef)).throws(Code.invalid_dict);
 });
 test.case("empty object", assert => {
   assert(empty({})).true();

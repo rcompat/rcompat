@@ -1,5 +1,6 @@
 import non_dicts from "#non-dicts";
 import override from "#override";
+import { Code } from "@rcompat/assert";
 import test from "@rcompat/test";
 import any from "@rcompat/test/any";
 import undef from "@rcompat/test/undef";
@@ -14,12 +15,12 @@ test.case("typedoc", assert => {
 test.case("faulty params", assert => {
   const base = { keys: "values" };
   const over = { key: "value" };
-  assert(() => override(undef, undef)).throws();
-  assert(() => override(undef, over)).throws();
-  assert(() => override(base, undef)).throws();
-  non_dicts.forEach(non_dict => {
-    assert(() => override(any(non_dict), { foo: "bar" })).throws();
-    assert(() => override({ foo: "bar" }, any(non_dict))).throws();
+  assert(() => override(undef, undef)).throws(Code.invalid_dict);
+  assert(() => override(undef, over)).throws(Code.invalid_dict);
+  assert(() => override(base, undef)).throws(Code.invalid_dict);
+  non_dicts.forEach(non => {
+    assert(() => override(any(non), { foo: "bar" })).throws(Code.invalid_dict);
+    assert(() => override({ foo: "bar" }, any(non))).throws(Code.invalid_dict);
   });
 });
 
