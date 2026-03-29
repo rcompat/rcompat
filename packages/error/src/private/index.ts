@@ -4,6 +4,8 @@ import template from "#template";
 
 import type TemplateError from "#TemplateError";
 
-export default { template, coded, CodeError };
+export default { template, coded };
 
 export type { TemplateError };
+
+export { CodeError };

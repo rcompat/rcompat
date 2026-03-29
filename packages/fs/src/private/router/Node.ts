@@ -1,4 +1,4 @@
-import * as errors from "#router/errors";
+import E from "#router/errors";
 import type MatchedRoute from "#router/MatchedRoute";
 import type NodeConfig from "#router/NodeConfig";
 import type NodePredicate from "#router/NodePredicate";
@@ -370,26 +370,19 @@ export default class Node {
     }, {} as Dict<number>);
 
     for (const [key, count] of Object.entries(counts)) {
-      if (count > 1) {
-        const seg = key.split("::")[0];
-        throw new errors.DoubleRoute(seg);
-      }
+      if (count > 1) throw E.double_route(key.split("::")[0]);
     }
 
     const has_optionals = this.optionals().length > 0;
 
-    if (has_optionals && this.has_path) {
-      throw new errors.DoubleRoute(this.#segment);
-    }
+    if (has_optionals && this.has_path) throw E.double_route(this.#segment);
 
     for (const $static of this.statics()) {
       if ($static.#segment === "index" && $static.#path !== undefined) {
         if (this.#type === STATIC && this.has_path) {
-          throw new errors.DoubleRoute(this.#segment);
+          throw E.double_route(this.#segment);
         }
-        if (has_optionals) {
-          throw new errors.DoubleRoute(this.#segment);
-        }
+        if (has_optionals) throw E.double_route(this.#segment);
       }
     }
   }

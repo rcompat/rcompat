@@ -1,34 +1,28 @@
-const BaseError = class extends Error {
-  route: string;
+import error from "@rcompat/error";
 
-  constructor(message: string, route: string) {
-    super(message);
-    this.route = route;
-  }
-};
+const t = error.template;
 
-const DoubleRoute = class extends BaseError {
-  constructor(route: string) {
-    super("double route", route);
-  }
-};
+function double_route(route: string) {
+  return t`double route ${route}`;
+}
+function optional_route(route: string) {
+  return t`optional routes must be leaves ${route}`;
+}
+function rest_route(route: string) {
+  return t`rest routes must be leaves ${route}`;
+}
+function double_param(param: string) {
+  return t`double param ${param}`;
+}
 
-const OptionalRoute = class extends BaseError {
-  constructor(route: string) {
-    super("optional routes must be leaves", route);
-  }
-};
+const errors = error.coded({
+  double_route,
+  optional_route,
+  rest_route,
+  double_param,
+});
 
-const RestRoute = class extends BaseError {
-  constructor(route: string) {
-    super("rest routes must be leaves", route);
-  }
-};
-
-const DoubleParam = class extends BaseError {
-  constructor(param: string) {
-    super("double param", param);
-  }
-};
-
-export { DoubleParam, DoubleRoute, OptionalRoute, RestRoute };
+export default errors;
+export type Code = keyof typeof errors;
+export const Code = Object.fromEntries(
+  Object.keys(errors).map(k => [k, k])) as { [K in Code]: K };

@@ -1,6 +1,6 @@
 import fs from "#index";
 import type Config from "#router/Config";
-import * as errors from "#router/errors";
+import E from "#router/errors";
 import Node from "#router/Node";
 import dict from "@rcompat/dict";
 
@@ -11,8 +11,6 @@ const defaults: Config = {
 };
 
 export default class FileRouter {
-  static Error = errors;
-
   #root: Node;
   #config: Config;
 
@@ -31,9 +29,7 @@ export default class FileRouter {
 
     const seen = new Set<string>();
     for (const name of names) {
-      if (seen.has(name)) {
-        throw new errors.DoubleParam(name);
-      }
+      if (seen.has(name)) throw E.double_param(name);
       seen.add(name);
     }
 
@@ -84,19 +80,13 @@ export default class FileRouter {
       node.unique();
 
       const dynamics = node.dynamics();
-      if (dynamics.length > 1) {
-        throw new errors.DoubleRoute(dynamics[1].segment);
-      }
-      if (dynamics.length === 0) {
-        return true;
-      }
+      if (dynamics.length > 1) throw E.double_route(dynamics[1].segment);
+      if (dynamics.length === 0) return true;
       const [dynamic] = dynamics;
       if (dynamic.optional && !dynamic.leaf) {
-        throw new errors.OptionalRoute(dynamic.segment);
+        throw E.optional_route(dynamic.segment);
       }
-      if (dynamic.rest && !dynamic.leaf) {
-        throw new errors.RestRoute(dynamic.segment);
-      }
+      if (dynamic.rest && !dynamic.leaf) throw E.rest_route(dynamic.segment);
 
       return true;
     });

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/fs",
-  "version": "0.27.0",
+  "version": "0.27.1",
   "description": "Standard library filesystem",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -23,7 +23,8 @@
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/crypto": "workspace:^",
-    "@rcompat/dict": "workspace:^"
+    "@rcompat/dict": "workspace:^",
+    "@rcompat/error": "workspace:^"
   },
   "devDependencies": {
     "@rcompat/type": "workspace:^"

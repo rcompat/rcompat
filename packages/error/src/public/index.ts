@@ -1,3 +1,3 @@
-export type * from "#index";
-export { default } from "#index";
+export { CodeError, default } from "#index";
+export type { TemplateError } from "#index";
 

@@ -1,7 +1,8 @@
 import FileRouter from "#FileRouter";
+import { Code } from "#router/errors";
 import type MatchedRoute from "#router/MatchedRoute";
-import test from "@rcompat/test";
 import type { Asserter } from "@rcompat/test";
+import test from "@rcompat/test";
 
 class Expect {
   #m?: MatchedRoute;
@@ -94,12 +95,10 @@ function request(path: string) {
 
 test.case("match: no match on empty", assert => {
   const router = init(assert, []);
-
   router.expect("/").fail();
 });
 
 test.case("static: normalize (slashes, explicit index)", assert => {
-  // only `static` exists; `static/index` would error as doubled
   const router = init(assert, ["static"]);
   const router2 = init(assert, ["static/index"]);
   [
@@ -121,12 +120,10 @@ test.case("static: normalize (slashes, explicit index)", assert => {
   });
   router.expect("//static//index//index").fail();
   router2.expect("//static//index//index").fail();
-
 });
 
 test.case("static: normalize index", assert => {
   const router = init(assert, ["index"]);
-
   ["/", "//", "///", "/index", "/index/", "//index//"].forEach(pathname => {
     router.expect(pathname).path("index");
   });
@@ -134,10 +131,8 @@ test.case("static: normalize index", assert => {
 
 test.case("static: literal interim index route", assert => {
   const router = init(assert, ["static/index/index"]);
-
   router.expect("/static/index/index").path("static/index/index");
   router.expect("//static//index//index").path("static/index/index");
-
   router.expect("/static").fail();
   router.expect("/static/index").fail();
   router.expect("/static/index/index/index").fail();
@@ -145,7 +140,6 @@ test.case("static: literal interim index route", assert => {
 
 test.case("static: deep path normalization", assert => {
   const router = init(assert, ["a/b/c"]);
-
   ["/a/b/c", "//a//b//c", "/a/b/c/", "/a/b/c/index"].forEach(pathname => {
     router.expect(pathname).path("a/b/c");
   });
@@ -153,7 +147,6 @@ test.case("static: deep path normalization", assert => {
 
 test.case("static: encoded `/` (%2F) does not match", assert => {
   const router = init(assert, ["user/profile"]);
-
   router.expect("/%2F").fail();
   router.expect("/user/profile").path("user/profile");
   router.expect("//user/profile").path("user/profile");
@@ -163,9 +156,7 @@ test.case("static: encoded `/` (%2F) does not match", assert => {
 });
 
 test.case("static: override dynamic sibling", assert => {
-  // one dynamic child allowed: [id] plus a static sibling "profile"
   const router = init(assert, ["profile", "[id]"]);
-
   router.expect("/profile").path("profile");
   router.expect("/john").path("[id]").param("id", "john");
 
@@ -176,80 +167,41 @@ test.case("static: override dynamic sibling", assert => {
 
 test.case("static: with dynamic child", assert => {
   const router = init(assert, ["user", "user/[id]"]);
-
   router.expect("/user").path("user");
   router.expect("/user/42").path("user/[id]").param("id", "42");
 });
 
 test.case("static: with optional sibling", assert => {
   const router = init(assert, ["user/profile", "user/[id]"]);
-
   router.expect("/user/profile").path("user/profile");
   router.expect("/user/42").path("user/[id]").param("id", "42");
-  // index stripped
   router.expect("/user/index").fail();
 });
 
 test.case("static: throw with and without index", assert => {
-  try {
-    init(assert, ["user", "user/index"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["user", "user/index"])).throws(Code.double_route);
 });
 
 test.case("static: index vs index/index conflict", assert => {
-  try {
-    init(assert, ["static/index", "static/index/index"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["static/index", "static/index/index"])).throws(Code.double_route);
 });
 
 test.case("static: throw with optional child", assert => {
-  try {
-    init(assert, ["user", "user/[[id]]"]);
-    assert(false).true(); // should not reach
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
-  try {
-    init(assert, ["user/index", "user/[[id]]"]);
-    assert(false).true(); // should not reach
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["user", "user/[[id]]"])).throws(Code.double_route);
+  assert(() => init(assert, ["user/index", "user/[[id]]"])).throws(Code.double_route);
 });
 
 test.case("static: throw with optional rest child", assert => {
-  try {
-    init(assert, ["user", "user/[[...id]]"]);
-    assert(false).true(); // should not reach
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
-  try {
-    init(assert, ["user/index", "user/[[...id]]"]);
-    assert(false).true(); // should not reach
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["user", "user/[[...id]]"])).throws(Code.double_route);
+  assert(() => init(assert, ["user/index", "user/[[...id]]"])).throws(Code.double_route);
 });
 
 test.case("static: throw on directory file and index", assert => {
-  try {
-    init(assert, ["directory", "directory/index"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["directory", "directory/index"])).throws(Code.double_route);
 });
 
 test.case("dynamic: single-segment param decoding", assert => {
   const router = init(assert, ["user/[name]"]);
-
   router.expect("/user/%2Fhello%20%2Fworld")
     .path("user/[name]")
     .param("name", "/hello /world");
@@ -257,8 +209,6 @@ test.case("dynamic: single-segment param decoding", assert => {
 
 test.case("dynamic: invalid encodings are preserved", assert => {
   const router = init(assert, ["user/[name]"]);
-
-  // %E0%A4%A is invalid: decodeURIComponent throws; router keeps raw
   router.expect("/user/%E0%A4%A").path("user/[name]").param("name", "%E0%A4%A");
 });
 
@@ -269,7 +219,6 @@ test.case("dynamic: directory", assert => {
     "dd/[id]/index",
     "dd/[id]/test",
   ]);
-
   router.expect("/dd").path("dd/index");
   router.expect("/dd/test").path("dd/test");
   router.expect("/dd/1").path("dd/[id]/index").param("id", "1");
@@ -281,23 +230,19 @@ test.case("dynamic: directory", assert => {
 test.case("dynamic: with dynamic child", assert => {
   const path = "user/[id]/profile/[pid]";
   const router = init(assert, [path]);
-
   router.expect("/user").fail();
   router.expect("/user/profile").fail();
   router.expect("/user/1/profile").fail();
   router.expect("/user/1/profile/2/settings").fail();
-
   router.expect("/user/1/profile/2").path(path).params({ id: "1", pid: "2" });
 });
 
 test.case("dynamic: with optional child", assert => {
   const path = "user/[id]/profile/[[pid]]";
   const router = init(assert, [path]);
-
   router.expect("/user").fail();
   router.expect("/user/profile").fail();
   router.expect("/user/1/profile/2/settings").fail();
-
   router.expect("/user/1/profile").path(path).params({ id: "1" });
   router.expect("/user/1/profile/2").path(path).params({ id: "1", pid: "2" });
 });
@@ -305,10 +250,8 @@ test.case("dynamic: with optional child", assert => {
 test.case("dynamic: with optional rest child", assert => {
   const path = "user/[id]/profile/[[...p]]";
   const router = init(assert, [path]);
-
   router.expect("/user").fail();
   router.expect("/user/profile").fail();
-
   router.expect("/user/1/profile").path(path).params({ id: "1" });
   router.expect("/user/1/profile/2").path(path).params({ id: "1", p: "2" });
   router.expect("/user/1/profile/2/settings").path(path)
@@ -316,122 +259,60 @@ test.case("dynamic: with optional rest child", assert => {
 });
 
 test.case("dynamic: no double params", assert => {
-  try {
-    init(assert, ["user/[id]/profile/[id]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleParam).true();
-  }
-  try {
-    init(assert, ["user/[id]/profile/[[id]]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleParam).true();
-  }
-  try {
-    init(assert, ["user/[id]/profile/[[...id]]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleParam).true();
-  }
+  assert(() => init(assert, ["user/[id]/profile/[id]"])).throws(Code.double_param);
+  assert(() => init(assert, ["user/[id]/profile/[[id]]"])).throws(Code.double_param);
+  assert(() => init(assert, ["user/[id]/profile/[[...id]]"])).throws(Code.double_param);
 });
 
 test.case("dynamic: only one per segment", assert => {
-  try {
-    init(assert, ["user/[id]", "user/[pid]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
-  try {
-    init(assert, ["user/[id]", "user/[[pid]]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
-  try {
-    init(assert, ["user/[id]", "user/[...rest]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
-  try {
-    init(assert, ["user/[id]", "user/[[...rest]]"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["user/[id]", "user/[pid]"])).throws(Code.double_route);
+  assert(() => init(assert, ["user/[id]", "user/[[pid]]"])).throws(Code.double_route);
+  assert(() => init(assert, ["user/[id]", "user/[...rest]"])).throws(Code.double_route);
+  assert(() => init(assert, ["user/[id]", "user/[[...rest]]"])).throws(Code.double_route);
 });
 
 test.case("rest: must be final segment", assert => {
-  try {
-    init(assert, ["files/[...path]/extra"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.RestRoute).true();
-  }
+  assert(() => init(assert, ["files/[...path]/extra"])).throws(Code.rest_route);
 });
 
 test.case("rest: multi-segment capture and decoding", assert => {
   const router = init(assert, ["files/[...path]"]);
-
   router.expect("/files/a/b/c").path("files/[...path]").param("path", "a/b/c");
   router.expect("/files/a%20b%2Fc%20d").path("files/[...path]")
     .param("path", "a b/c d");
-  // rest param is required
   router.expect("/files").fail();
 });
 
 test.case("rest: invalid encodings preserved", assert => {
   const router = init(assert, ["f/[...p]"]);
-
   router.expect("/f/%E0%A4%A/%E0%A4%A")
     .path("f/[...p]")
     .param("p", "%E0%A4%A/%E0%A4%A");
 });
-test.case("optional: non-root directory", assert => {
-  // only one dynamic in "optional": [[id]]
-  const router = init(assert, ["index", "optional/[[id]]"]);
 
-  // param absent
+test.case("optional: non-root directory", assert => {
+  const router = init(assert, ["index", "optional/[[id]]"]);
   router.expect("/optional").path("optional/[[id]]").param("id", undefined);
-  // param present
   router.expect("/optional/john").path("optional/[[id]]").param("id", "john");
 });
 
 test.case("optional: root directory", assert => {
-  // root has only one dynamic: [[who]]
   const router = init(assert, ["[[who]]"]);
-
-  // "/" should match the optional catch at root
   router.expect("/").path("[[who]]").param("who", undefined);
   router.expect("/john").path("[[who]]").param("who", "john");
   router.expect("/john/adams").fail();
 });
 
 test.case("optional: must be final segment", assert => {
-  try {
-    init(assert, ["opt/[[id]]/extra"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.OptionalRoute).true();
-  }
+  assert(() => init(assert, ["opt/[[id]]/extra"])).throws(Code.optional_route);
 });
 
 test.case("optional: throw with dynamic child", assert => {
-  const path = "user/[[id]]/profile/[pid]";
-  try {
-    init(assert, [path]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.OptionalRoute).true();
-  }
-
+  assert(() => init(assert, ["user/[[id]]/profile/[pid]"])).throws(Code.optional_route);
 });
 
 test.case("optional rest: non-root directory", assert => {
   const router = init(assert, ["files/[[...file]]"]);
-
   router.expect("/files").path("files/[[...file]]").param("file", undefined);
   router.expect("/files/1").path("files/[[...file]]").param("file", "1");
   router.expect("/files/data.bin").path("files/[[...file]]")
@@ -441,9 +322,7 @@ test.case("optional rest: non-root directory", assert => {
 });
 
 test.case("optional rest: root directory", assert => {
-  // separate fixture to avoid >1 dynamic in the same (root) directory
   const router = init(assert, ["[[...rest]]"]);
-
   router.expect("/").path("[[...rest]]").param("rest", undefined);
   router.expect("/a/b").path("[[...rest]]").param("rest", "a/b");
   router.expect("/data.bin").path("[[...rest]]").param("rest", "data.bin");
@@ -452,22 +331,17 @@ test.case("optional rest: root directory", assert => {
 
 test.case("special: does not match as a route path", assert => {
   const router = init(assert, ["index", "+layout"]);
-
-  // specials don't map to paths
   router.expect("/+layout").fail();
-  // root still matches index
   router.expect("/").path("index").layout(["+layout"]);
 });
 
 test.case("special: local recursive special collected", assert => {
   const router = init(assert, ["index", "user/+layout", "user/profile"]);
-
   router.expect("/user/profile").path("user/profile").layout(["user/+layout"]);
 });
 
 test.case("special: local non-recursive special collected", assert => {
   const router = init(assert, ["index", "user/+error", "user/profile"]);
-
   router.expect("/user/profile").path("user/profile").error(["user/+error"]);
 });
 
@@ -478,9 +352,7 @@ test.case("special: nested recursive specials compose from within", assert => {
     "user/+layout",
     "user/profile",
   ]);
-
   router.expect("/user/profile").path("user/profile")
-    // innermost (user/+layout) first, then outermost (root +layout)
     .specials({ layout: ["user/+layout", "+layout"] });
 });
 
@@ -491,15 +363,12 @@ test.case("special: nested non-recursive special only nearest", assert => {
     "user/+error",
     "user/profile",
   ]);
-
   router.expect("/").path("index").special("error", ["+error"]);
-  // only immediate (user/+error), skips root since non-recursive and recursed
   router.expect("/user/profile").path("user/profile").error(["user/+error"]);
 });
 
 test.case("special: non-recursive only local", assert => {
   const router = init(assert, ["index", "user/+error", "user/deep/profile"]);
-
   router.expect("/").path("index").specials({});
   router.expect("/user/deep/profile").path("user/deep/profile")
     .error(["user/+error"]);
@@ -514,15 +383,14 @@ test.case("special: mixed recursive and non-recursive in nested", assert => {
     "user/profile",
   ]);
   router.expect("/user/profile").path("user/profile").specials({
-    error: ["user/+error"], // local
-    guard: ["user/+guard"], // local
-    layout: ["+layout"],    // recursive from root
+    error: ["user/+error"],
+    guard: ["user/+guard"],
+    layout: ["+layout"],
   });
 });
 
 test.case("special: root-level recursive applies to all", assert => {
   const router = init(assert, ["index", "+guard", "user/profile"]);
-
   router.expect("/").path("index").guard(["+guard"]);
   router.expect("/user/profile").path("user/profile").guard(["+guard"]);
 });
@@ -534,28 +402,20 @@ test.case("special: no collection if no applicable specials", assert => {
 });
 
 test.case("special: multiple same type at levels (recursive)", assert => {
-  // order matters for later
   const specials = ["+layout", "user/+layout", "user/deep/+layout"];
   const router = init(assert, ["index", ...specials, "user/deep/profile"]);
-
-  // innermost first: deep, then user, then root; reversed
   router.expect("/user/deep/profile").path("user/deep/profile")
     .layout(specials.toReversed());
 });
 
 test.case("special: no-conflict with same-named non-special", assert => {
-  // +layout and layout have different segments ("+layout" vs "layout")
   const router = init(assert, ["index", "+layout", "layout"]);
   router.expect("/layout").path("layout").layout(["+layout"]);
 });
 
 test.case("special: init throws on duplicate specials", assert => {
-  try {
-    init(assert, ["index", "+layout", "user/+layout", "user/+layout"]);
-    assert(false).true();
-  } catch (e) {
-    assert(e instanceof FileRouter.Error.DoubleRoute).true();
-  }
+  assert(() => init(assert, ["index", "+layout", "user/+layout", "user/+layout"]))
+    .throws(Code.double_route);
 });
 
 test.case("special: applies to dynamic routes with params", assert => {
@@ -567,9 +427,8 @@ test.case("special: applies to dynamic routes with params", assert => {
   ]);
   router.expect("/user/42/profile").path("user/[id]/profile")
     .param("id", "42")
-    .layout(["+layout"])          // recursive from root
-    .guard(["user/[id]/+guard"])  // local to directory
-    ;
+    .layout(["+layout"])
+    .guard(["user/[id]/+guard"]);
 });
 
 test.case("general: mixed routes with specials and normalization", assert => {
@@ -580,20 +439,15 @@ test.case("general: mixed routes with specials and normalization", assert => {
     "blog/+error",
     "blog/archive/index",
   ]);
-  // normalized match to dynamic
   router.expect("/blog/my-post").path("blog/[slug]")
     .param("slug", "my-post")
-    .layout(["+layout"])     // root recursive
-    .error(["blog/+error"])  // local
-    ;
+    .layout(["+layout"])
+    .error(["blog/+error"]);
 
-  // index fallback with normalization
   router.expect("/blog/archive//index").path("blog/archive/index")
     .layout(["+layout"])
-    .error(["blog/+error"])
-    ;
+    .error(["blog/+error"]);
 
-  // no match
   router.expect("/blog").fail();
 });
 
@@ -604,7 +458,6 @@ test.case("special: skip non-recursive when already found", assert => {
     "user/deep/+error",
     "user/deep/profile",
   ]);
-
   router.expect("/user/deep/profile").path("user/deep/profile")
     .error(["user/deep/+error"]);
 });
@@ -614,8 +467,6 @@ test.case("depth: max with specials", assert => {
     "+layout",
     "user/+layout",
     "user/deep/profile"]);
-
-  // max depth of layout specials
   assert(router.depth("layout")).equals(2);
   assert(router.depth("guard")).equals(1);
   assert(router.depth("error")).equals(1);
