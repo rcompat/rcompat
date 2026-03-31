@@ -5,8 +5,9 @@ Testing library for JavaScript runtimes.
 ## What is @rcompat/test?
 
 A cross-runtime testing library with a fluent assertion API. Provides deep
-equality checks, type assertions, and exception testing. Designed to work
-with the `proby` test runner. Works consistently across Node, Deno, and Bun.
+equality checks, type assertions, exception testing, and fetch interception.
+Designed to work with the `proby` test runner. Works consistently across
+Node, Deno, and Bun.
 
 ## Installation
 
@@ -158,11 +159,6 @@ test.case("async operations", async assert => {
   const result = await Promise.resolve(42);
   assert(result).equals(42);
 });
-
-test.case("fetch data", async assert => {
-  const response = await fetch("https://api.example.com/data");
-  assert(response.ok).true();
-});
 ```
 
 ### Cleanup with ended
@@ -177,10 +173,92 @@ test.case("database test", async assert => {
 });
 
 test.ended(async () => {
-  // cleanup after all tests in this file
+  // runs after all tests in this file
   await closeDatabase();
 });
 ```
+
+### Intercepting fetch
+
+Use `test.intercept` to block outbound fetch calls to a specific origin and
+replace them with fake responses. Calls to other origins pass through
+untouched. The intercept records every request so you can assert on what was
+called and how.
+
+```js
+import test from "@rcompat/test";
+
+await using telegram = test.intercept("https://api.telegram.org", setup => {
+  setup.post("/sendMessage", () => ({
+    ok: true,
+    result: { message_id: 42 },
+  }));
+});
+
+test.case("notifies user via telegram on signup", async assert => {
+  await fetch("http://localhost:6161/signup", {
+    method: "POST",
+    body: JSON.stringify({ email: "foo@bar.com" }),
+  });
+
+  // assert the path was hit the right number of times
+  assert(telegram.calls("/sendMessage")).equals(1);
+
+  // assert on the actual request that came in
+  assert(telegram.requests("/sendMessage")[0].method).equals("POST");
+});
+```
+
+`await using` restores the original fetch automatically when the file scope
+exits. For long-lived intercepts that need manual control, use `restore()`
+with `test.ended`:
+
+```js
+const telegram = test.intercept("https://api.telegram.org", setup => {
+  setup.post("/sendMessage", () => ({ ok: true, result: { message_id: 42 } }));
+});
+
+test.case("first case", async assert => {
+  // ...
+});
+
+test.case("second case", async assert => {
+  // ...
+});
+
+test.ended(() => telegram.restore());
+```
+
+Hitting a path on an intercepted origin that has no registered handler throws
+immediately, catching accidental unhandled calls early.
+
+### Extending the asserter
+
+Use `test.extend` to attach custom assertion methods to the asserter. Useful
+for domain-specific assertions shared across many test cases.
+
+```js
+import test from "@rcompat/test";
+
+// create an extended test with custom assertions
+const myTest = test.extend((assert, subject) => ({
+  even() {
+    const passed = subject % 2 === 0;
+    // use the base asserter to report the result
+    assert(passed).true();
+    return this;
+  },
+}));
+
+myTest.case("even numbers", assert => {
+  assert(2).even();
+  assert(4).even();
+});
+```
+
+The factory receives the base `assert` function and the current `subject`
+(the value passed to `assert()`). Return an object whose methods will be
+mixed into every `Assert` instance for that test.
 
 ## API Reference
 
@@ -205,6 +283,60 @@ test.ended(callback: () => void | Promise<void>): void;
 
 Register a cleanup callback to run after all tests in the file.
 
+### `test.intercept`
+
+```ts
+test.intercept(
+  base_url: string,
+  setup: (setup: Setup) => void
+): Intercept;
+```
+
+Intercept outbound fetch calls to `base_url`. Returns an `Intercept` object
+for asserting on recorded requests.
+
+| Parameter  | Type       | Description                                      |
+| ---------- | ---------- | ------------------------------------------------ |
+| `base_url` | `string`   | Origin to intercept, e.g. `"https://api.example.com"` |
+| `setup`    | `function` | Register route handlers on the setup object      |
+
+#### `Setup`
+
+| Method                          | Description                  |
+| ------------------------------- | ---------------------------- |
+| `get(path, handler)`            | Register a GET handler       |
+| `post(path, handler)`           | Register a POST handler      |
+| `put(path, handler)`            | Register a PUT handler       |
+| `patch(path, handler)`          | Register a PATCH handler     |
+| `delete(path, handler)`         | Register a DELETE handler    |
+
+Each handler receives the incoming `Request` and returns a plain object,
+which is serialized into a `Response` automatically.
+
+#### `Intercept`
+
+| Method              | Description                                          |
+| ------------------- | ---------------------------------------------------- |
+| `calls(path)`       | Number of times `path` was hit                       |
+| `requests(path)`    | Array of `Request` objects recorded for `path`       |
+| `restore()`         | Reinstate the original `globalThis.fetch`            |
+| `[Symbol.asyncDispose]` | Called automatically by `await using`            |
+
+### `test.extend`
+
+```ts
+test.extend<Subject, Extensions>(
+  factory: (assert: Asserter, subject: Subject) => Extensions
+): ExtendedTest<Extensions>;
+```
+
+Create a new test object with custom assertion methods mixed into the
+asserter.
+
+| Parameter | Type       | Description                                              |
+| --------- | ---------- | -------------------------------------------------------- |
+| `factory` | `function` | Returns extra methods to attach to each `Assert` instance |
+
 ### `Asserter`
 
 ```ts
@@ -219,15 +351,16 @@ The assert function passed to test cases.
 | ----------------------- | ----------------------------------------- |
 | `equals(expected)`      | Deep equality check                       |
 | `nequals(expected)`     | Deep inequality check                     |
+| `includes(expected)`    | Inclusion check (string, array, object)   |
 | `true()`                | Assert value is `true`                    |
 | `false()`               | Assert value is `false`                   |
 | `null()`                | Assert value is `null`                    |
 | `undefined()`           | Assert value is `undefined`               |
 | `defined()`             | Assert value is not `undefined`           |
 | `instance(constructor)` | Assert value is instance of class         |
-| `throws(message?)`      | Assert function throws (optional message) |
+| `throws(expected?)`     | Assert function throws                    |
 | `tries()`               | Assert function does not throw            |
-| `not`                   | Negate the next asertion                  |
+| `not`                   | Negate the next assertion                 |
 | `type<T>()`             | Compile-time type assertion               |
 | `nottype<T>()`          | Compile-time negative type assertion      |
 | `pass()`                | Manually pass the assertion               |
@@ -301,17 +434,9 @@ import test from "@rcompat/test";
 
 class Calculator {
   #value = 0;
-  add(n) {
-    this.#value += n;
-    return this;
-  }
-  subtract(n) {
-    this.#value -= n;
-    return this;
-  }
-  get value() {
-    return this.#value;
-  }
+  add(n) { this.#value += n; return this; }
+  subtract(n) { this.#value -= n; return this; }
+  get value() { return this.#value; }
 }
 
 test.case("calculator operations", assert => {
@@ -345,6 +470,24 @@ test.case("divide works normally", assert => {
 });
 ```
 
+### Testing code that calls external APIs
+
+```js
+import test from "@rcompat/test";
+
+await using openai = test.intercept("https://api.openai.com", setup => {
+  setup.post("/v1/chat/completions", () => ({
+    choices: [{ message: { content: "Hello!" } }],
+  }));
+});
+
+test.case("generates a reply", async assert => {
+  const reply = await myService.generateReply("hi");
+  assert(reply).equals("Hello!");
+  assert(openai.calls("/v1/chat/completions")).equals(1);
+});
+```
+
 ## Cross-Runtime Compatibility
 
 | Runtime | Supported |
@@ -362,3 +505,4 @@ MIT
 ## Contributing
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the repository root.
+
