@@ -16,6 +16,7 @@
     "directory": "packages/proby"
   },
   "dependencies": {
+    "@rcompat/args": "workspace:^",
     "@rcompat/assert": "workspace:^",
     "@rcompat/cli": "workspace:^",
     "@rcompat/fs": "workspace:^"

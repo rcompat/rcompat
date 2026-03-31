@@ -75,7 +75,7 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
   });
 }
 
-export default async (root: FileRef, subrepo?: string) => {
+export default async (root: FileRef, subrepo?: string, target?: string) => {
   const files = await root.list({
     recursive: true,
     filter: info => extensions.some(extension => info.path.endsWith(extension)),
@@ -86,6 +86,8 @@ export default async (root: FileRef, subrepo?: string) => {
   if (subrepo !== undefined) print(`${color.blue(subrepo)}\n`);
 
   for (const file of files) {
+    if (target !== undefined && !file.path.endsWith(target)) continue;
+
     const env_file = await file.sibling(
       file.name.replace(/\.spec\.(ts|js)$/, ".env.ts"),
     ).or(() => null);

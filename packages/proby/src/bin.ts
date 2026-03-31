@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import args from "@rcompat/args";
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import fs, { type FileRef } from "@rcompat/fs";
@@ -13,6 +14,8 @@ if (await spec_json.exists()) {
 } else {
   //  console.log(`spec.json missing, continuing with defaults`);
 }
+
+const [file] = args;
 
 type Type = Promise<"monorepo" | "repo" | undefined>;
 const type = await (async (base: FileRef): Type => {
@@ -28,10 +31,10 @@ if (type === "monorepo") {
   for (const repo of await root.join("packages").list({
     filter: info => info.kind === "directory",
   })) {
-    await run(repo.join("src"), repo.name);
+    await run(repo.join("src"), repo.name, file);
   }
 } else if (type === "repo") {
-  await run(root.join("src"));
+  await run(root.join("src"), undefined, file);
 } else {
   print(`${color.red("src")} or ${color.red("packages")} not found\n`);
 }
