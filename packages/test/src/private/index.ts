@@ -7,6 +7,7 @@ import type Test from "#Test";
 import type { ExtendedTest, Factory } from "#extend";
 import extend from "#extend";
 import repository from "#repository";
+import intercept from "#intercept";
 
 const base = {
   case(name: string, body: Body) {
@@ -19,6 +20,7 @@ const base = {
 
 export default {
   ...base,
+  intercept,
   extend<Subject, Extensions>(factory: Factory<Subject, Extensions>):
     ExtendedTest<Extensions> {
     return extend(base, factory);
