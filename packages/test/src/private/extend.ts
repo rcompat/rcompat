@@ -33,7 +33,7 @@ export default <Subject, Extensions>(
       const extended = <T>(actual?: T) => {
         const a = asserter(actual);
         const extra = factory(asserter, actual as Subject);
-        return Object.assign(Object.create(a) as Assert<T>, extra);
+        return Object.assign(a, extra) as Assert<T> & Extensions;
       };
       return body(extended as ExtendedAsserter<Extensions>);
     });
