@@ -16,6 +16,9 @@ const base = {
   ended(end: End) {
     repository.ended(end);
   },
+  group(name: string, fn: () => void) {
+    repository.group(name, fn);
+  },
 };
 
 export default {

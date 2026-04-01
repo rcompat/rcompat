@@ -5,13 +5,20 @@ import type { FileRef } from "@rcompat/fs";
 
 class Repository {
   #suites: Suite[] = [];
+  #current_group: string | undefined;
 
   get #suite() {
     return this.#suites.at(-1)!;
   }
 
   put(name: string, body: Body) {
-    this.#suite.test(name, body);
+    this.#suite.test(name, body, this.#current_group);
+  }
+
+  group(name: string, fn: () => void) {
+    this.#current_group = name;
+    fn();
+    this.#current_group = undefined;
   }
 
   ended(end: End) {

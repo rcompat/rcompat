@@ -178,6 +178,35 @@ test.ended(async () => {
 });
 ```
 
+### Grouping tests
+
+Use `test.group` to cluster related test cases together. Groups can be run
+individually via proby.
+```js
+import test from "@rcompat/test";
+
+test.group("addition", () => {
+  test.case("integers", assert => {
+    assert(1 + 1).equals(2);
+  });
+
+  test.case("floats", assert => {
+    assert(0.1 + 0.2).equals(0.3);
+  });
+});
+
+test.group("subtraction", () => {
+  test.case("integers", assert => {
+    assert(3 - 1).equals(2);
+  });
+});
+```
+
+Run a specific group:
+```bash
+npx proby math.spec.ts addition
+```
+
 ### Intercepting fetch
 
 Use `test.intercept` to block outbound fetch calls to a specific origin and
@@ -299,6 +328,20 @@ for asserting on recorded requests.
 | ---------- | ---------- | ------------------------------------------------ |
 | `base_url` | `string`   | Origin to intercept, e.g. `"https://api.example.com"` |
 | `setup`    | `function` | Register route handlers on the setup object      |
+
+### `test.group`
+
+```ts
+test.group(name: string, fn: () => void): void;
+```
+
+Group test cases under a named scope. Groups can be targeted individually
+when running proby.
+
+| Parameter | Type       | Description                        |
+| --------- | ---------- | ---------------------------------- |
+| `name`    | `string`   | Group name, used by proby to filter |
+| `fn`      | `function` | Function containing `test.case` calls |
 
 #### `Setup`
 

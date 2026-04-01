@@ -75,7 +75,7 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
   });
 }
 
-export default async (root: FileRef, subrepo?: string, target?: string) => {
+export default async (root: FileRef, subrepo?: string, target?: string, group?: string) => {
   const files = await root.list({
     recursive: true,
     filter: info => extensions.some(extension => info.path.endsWith(extension)),
@@ -105,6 +105,7 @@ export default async (root: FileRef, subrepo?: string, target?: string) => {
     const failed: [Test, Result<unknown>][] = [];
 
     for await (const test of suite.run()) {
+      if (group !== undefined && test.group !== group) continue;
       for (const result of test.results) {
         if (result.passed) {
           print(color.green("o"));

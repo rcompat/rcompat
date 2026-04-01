@@ -6,14 +6,20 @@ export default class Test {
   #name: string;
   #body: Body;
   #results: Result<unknown>[] = [];
+  #group?: string;
 
-  constructor(name: string, body: Body) {
+  constructor(name: string, body: Body, group?: string) {
     this.#name = name;
     this.#body = body;
+    this.#group = group;
   }
 
   get name() {
     return this.#name;
+  }
+
+  get group() {
+    return this.#group;
   }
 
   get results() {

@@ -42,6 +42,64 @@ Run proby from your project root:
 npx proby
 ```
 
+Run a single file:
+```bash
+npx proby math.spec.ts
+```
+
+Run a single group within a file:
+```bash
+npx proby math.spec.ts addition
+```
+
+### Grouping tests
+
+Use `test.group` in your spec files to cluster related cases. Groups can then
+be targeted individually when running proby:
+```js
+// src/math.spec.ts
+import test from "@rcompat/test";
+
+test.group("addition", () => {
+  test.case("integers", assert => {
+    assert(1 + 1).equals(2);
+  });
+});
+
+test.group("multiplication", () => {
+  test.case("integers", assert => {
+    assert(2 * 3).equals(6);
+  });
+});
+```
+```bash
+npx proby math.spec.ts addition  # runs only the addition group
+```
+
+### Grouping tests
+
+Use `test.group` in your spec files to cluster related cases. Groups can then
+be targeted individually when running proby:
+```js
+// src/math.spec.ts
+import test from "@rcompat/test";
+
+test.group("addition", () => {
+  test.case("integers", assert => {
+    assert(1 + 1).equals(2);
+  });
+});
+
+test.group("multiplication", () => {
+  test.case("integers", assert => {
+    assert(2 * 3).equals(6);
+  });
+});
+```
+```bash
+npx proby math.spec.ts addition  # runs only the addition group
+```
+
 ### Writing tests
 
 Create test files with `.spec.ts` or `.spec.js` extension in your `src`
@@ -128,7 +186,8 @@ npm test
 - Files must end with `.spec.ts` or `.spec.js`
 - Files must be in the `src` directory (or `packages/*/src` for monorepos)
 - Use `@rcompat/test` to write tests
-
+- Use `test.group` to organize cases into named groups targetable by proby
+￼
 ## Examples
 
 ### Basic assertions

@@ -12,8 +12,8 @@ export default class Suite {
     this.#file = file;
   }
 
-  test(name: string, body: Body) {
-    this.#tests.push(new Test(name, body));
+  test(name: string, body: Body, group?: string) {
+    this.#tests.push(new Test(name, body, group));
   }
 
   ended(end: End) {

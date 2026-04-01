@@ -15,7 +15,7 @@ if (await spec_json.exists()) {
   //  console.log(`spec.json missing, continuing with defaults`);
 }
 
-const [file] = args;
+const [file, group] = args;
 
 type Type = Promise<"monorepo" | "repo" | undefined>;
 const type = await (async (base: FileRef): Type => {
@@ -31,10 +31,10 @@ if (type === "monorepo") {
   for (const repo of await root.join("packages").list({
     filter: info => info.kind === "directory",
   })) {
-    await run(repo.join("src"), repo.name, file);
+    await run(repo.join("src"), repo.name, file, group);
   }
 } else if (type === "repo") {
-  await run(root.join("src"), undefined, file);
+  await run(root.join("src"), undefined, file, group);
 } else {
   print(`${color.red("src")} or ${color.red("packages")} not found\n`);
 }
