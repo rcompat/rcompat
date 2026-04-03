@@ -1,40 +1,50 @@
 #!/usr/bin/env node
 
-import args from "@rcompat/args";
-import color from "@rcompat/cli/color";
-import print from "@rcompat/cli/print";
-import fs, { type FileRef } from "@rcompat/fs";
-import run from "./run.js";
+import Schema from "#Schema";
+import env from "@rcompat/env";
+import fs from "@rcompat/fs";
+import io from "@rcompat/io";
+import is from "@rcompat/is";
+import runtime from "@rcompat/runtime";
 
 const root = await fs.project.root();
-const spec_json = root.join("spec.json");
+const ts_config_file = root.join("proby.config.ts");
+const js_config_file = root.join("proby.config.js");
+const user_config = await ts_config_file.exists()
+  ? (await ts_config_file.import("default"))
+  : await js_config_file.exists()
+    ? (await js_config_file.import("default"))
+    : {};
 
-if (await spec_json.exists()) {
-  //  console.log(`spec.json exists, reading`);
-} else {
-  //  console.log(`spec.json missing, continuing with defaults`);
+const { include, packages, conditions, monorepo } = Schema.parse(user_config);
+const conditions_flag = conditions.length > 0
+  ? ` --conditions=${conditions.join(",")}`
+  : "";
+const script = runtime.script;
+const args = runtime.args.join(" ");
+
+if (!is.defined(env.try("PROBY_RELAUNCHED"))) {
+  await io.spawn(`${runtime.bin} ${conditions_flag} ${script} ${args}`, {
+    inherit: true,
+    env: { ...process.env, PROBY_RELAUNCHED: "1" },
+  });
+  runtime.exit(0);
 }
 
-const [file, group] = args;
+import run from "#run";
 
-type Type = Promise<"monorepo" | "repo" | undefined>;
-const type = await (async (base: FileRef): Type => {
-  if (await base.join("packages").exists()) {
-    return "monorepo";
-  }
-  if (await base.join("src").exists()) {
-    return "repo";
-  }
-})(root);
+const [file, group] = runtime.args;
 
-if (type === "monorepo") {
-  for (const repo of await root.join("packages").list({
+if (monorepo) {
+  for (const repo of await root.join(packages).list({
     filter: info => info.kind === "directory",
   })) {
-    await run(repo.join("src"), repo.name, file, group);
+    for (const dir of include) {
+      await run(repo.join(dir), repo.name, file, group);
+    }
   }
-} else if (type === "repo") {
-  await run(root.join("src"), undefined, file, group);
 } else {
-  print(`${color.red("src")} or ${color.red("packages")} not found\n`);
+  for (const dir of include) {
+    await run(root.join(dir), undefined, file, group);
+  }
 }

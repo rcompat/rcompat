@@ -16,14 +16,14 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
   "type": "module",
   "exports": {
     ".": {
-      "apekit": "./src/bun.ts",
+      "source": "./src/bun.ts",
       "bun": "./lib/bun.js",
       "deno": "./lib/deno.js",
       "node": "./lib/node.js"

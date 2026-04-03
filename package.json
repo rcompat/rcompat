@@ -13,7 +13,7 @@
     "upgrade": "pnpm -r update -i -L",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "pnpm run build && npx proby",
+    "test": "npx proby",
     "sweep": "rm -rf node_modules pnpm-lock.yaml {app,package}s/*/node_modules",
     "knip": "knip --no-config-hints"
   },
@@ -21,12 +21,12 @@
   "devDependencies": {
     "@rcompat/fs": "workspace:^",
     "@rcompat/test": "workspace:^",
-    "@types/bun": "^1.3.10",
+    "@types/bun": "^1.3.11",
     "@types/busboy": "^1.5.4",
     "@types/deno": "^2.5.0",
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.45",
+    "apekit": "^0.0.48",
     "eslint": "^9.39.2",
     "knip": "^5.86.0",
     "proby": "workspace:^",

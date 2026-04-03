@@ -5,8 +5,10 @@ Runtime detection for JavaScript environments.
 ## What is @rcompat/runtime?
 
 A cross-runtime module that tells you which JavaScript runtime your code is
-executing in. Uses [runtime keys](https://runtime-keys.proposal.wintercg.org)
-for accurate detection without any runtime overhead.
+executing in, and provides runtime-specific utilities like the executable path,
+current script, arguments, and process exit. Uses
+[runtime keys](https://runtime-keys.proposal.wintercg.org) for accurate
+detection without any runtime overhead.
 
 ## Installation
 
@@ -33,7 +35,7 @@ bun add @rcompat/runtime
 ```js
 import runtime from "@rcompat/runtime";
 
-console.log(runtime);
+console.log(runtime.name);
 // "node" | "bun" | "deno" | "workerd" | "vercel" | "netlify" | "fastly" | "browser"
 ```
 
@@ -42,31 +44,59 @@ console.log(runtime);
 ```js
 import runtime from "@rcompat/runtime";
 
-if (runtime === "bun") {
+if (runtime.name === "bun") {
   // Bun-specific code
-} else if (runtime === "deno") {
+} else if (runtime.name === "deno") {
   // Deno-specific code
-} else if (runtime === "node") {
+} else if (runtime.name === "node") {
   // Node.js-specific code
 }
 ```
 
-### Feature detection
+### Executable path
 
 ```js
 import runtime from "@rcompat/runtime";
 
-function getFileReader() {
-  switch (runtime) {
-    case "bun":
-      return Bun.file;
-    case "deno":
-      return Deno.readFile;
-    default:
-      return require("fs").promises.readFile;
-  }
-}
+console.log(runtime.bin);
+// "/usr/local/bin/node"
+// "/home/user/.bun/bin/bun"
+// "/usr/bin/deno"
 ```
+
+### Current script
+
+```js
+import runtime from "@rcompat/runtime";
+
+console.log(runtime.script);
+// "/path/to/your/script.js"
+```
+
+### Program arguments
+
+```js
+import runtime from "@rcompat/runtime";
+
+// running: node app.js foo bar
+console.log(runtime.args);
+// ["foo", "bar"]
+```
+
+`runtime.args` always contains only your program's arguments — the runtime
+executable and script path are stripped away, consistently across all runtimes.
+
+### Exiting the process
+
+```js
+import runtime from "@rcompat/runtime";
+
+runtime.exit(0);  // success
+runtime.exit(1);  // failure
+```
+
+`runtime.exit` is `undefined` in browser and edge runtimes where process exit
+has no meaning.
 
 ## Supported Runtimes
 
@@ -83,21 +113,49 @@ function getFileReader() {
 
 ## API Reference
 
-### Default Export
+### `runtime.name`
 
 ```ts
-declare const runtime:
-  | "node"
-  | "bun"
-  | "deno"
-  | "workerd"
-  | "vercel"
-  | "netlify"
-  | "fastly"
-  | "browser";
+runtime.name: "node" | "bun" | "deno" | "workerd" | "vercel" | "netlify" | "fastly" | "browser";
 ```
 
 A string identifying the current runtime environment.
+
+### `runtime.bin`
+
+```ts
+runtime.bin: string | undefined;
+```
+
+Full path to the runtime executable. `undefined` in browser and edge runtimes.
+
+### `runtime.script`
+
+```ts
+runtime.script: string | undefined;
+```
+
+Full path to the currently executing script. `undefined` in browser and edge
+runtimes.
+
+### `runtime.args`
+
+```ts
+runtime.args: string[];
+```
+
+Program arguments, with the runtime executable and script path stripped.
+Always an array — empty if no arguments were passed. `[]` in browser and edge
+runtimes.
+
+### `runtime.exit`
+
+```ts
+runtime.exit: ((code?: number) => never) | undefined;
+```
+
+Exit the current process with an optional exit code. `undefined` in browser
+and edge runtimes where process exit has no meaning.
 
 ## How It Works
 
@@ -119,7 +177,34 @@ happens at import time with zero runtime overhead.
 }
 ```
 
+Each file simply exports the runtime object for that environment:
+
+```ts
+// node.ts
+export default {
+  name: "node",
+  bin: process.execPath,
+  script: process.argv[1],
+  args: process.argv.slice(2),
+  exit: (code?: number) => process.exit(code),
+};
+```
+
 ## Examples
+
+### Relaunching with custom flags
+
+```js
+import runtime from "@rcompat/runtime";
+import io from "@rcompat/io";
+
+// relaunch self with --conditions=source
+await io.spawn(
+  `${runtime.bin} --conditions=source ${runtime.script} ${runtime.args.join(" ")}`,
+  { inherit: true }
+);
+runtime.exit(0);
+```
 
 ### Runtime-specific logging
 
@@ -128,15 +213,13 @@ import runtime from "@rcompat/runtime";
 
 const logger = {
   info(message) {
-    const prefix = `[${runtime}]`;
-    console.log(prefix, message);
+    console.log(`[${runtime.name}]`, message);
   }
 };
 
 logger.info("Server started");
 // [node] Server started
 // [bun] Server started
-// etc.
 ```
 
 ### Environment checks
@@ -144,26 +227,9 @@ logger.info("Server started");
 ```js
 import runtime from "@rcompat/runtime";
 
-const isServerRuntime = ["node", "bun", "deno"].includes(runtime);
-const isEdgeRuntime = ["workerd", "vercel", "netlify", "fastly"].includes(runtime);
-const isClientRuntime = runtime === "browser";
-
-if (isEdgeRuntime) {
-  // Limited APIs available
-}
-```
-
-### Polyfill loading
-
-```js
-import runtime from "@rcompat/runtime";
-
-async function setup() {
-  if (runtime === "node") {
-    // Node.js doesn't have fetch in older versions
-    globalThis.fetch ??= (await import("node-fetch")).default;
-  }
-}
+const isServerRuntime = ["node", "bun", "deno"].includes(runtime.name);
+const isEdgeRuntime = ["workerd", "vercel", "netlify", "fastly"].includes(runtime.name);
+const isClientRuntime = runtime.name === "browser";
 ```
 
 ### Debug information
@@ -173,25 +239,26 @@ import runtime from "@rcompat/runtime";
 
 function getDebugInfo() {
   return {
-    runtime,
+    runtime: runtime.name,
+    script: runtime.script,
+    args: runtime.args,
     timestamp: Date.now(),
-    userAgent: runtime === "browser" ? navigator.userAgent : undefined,
   };
 }
 ```
 
 ## Cross-Runtime Compatibility
 
-| Runtime         | Supported |
-|-----------------|-----------|
-| Node.js         | ✓         |
-| Bun             | ✓         |
-| Deno            | ✓         |
-| Cloudflare Workers | ✓      |
-| Vercel Edge     | ✓         |
-| Netlify Edge    | ✓         |
-| Fastly Compute  | ✓         |
-| Browser         | ✓         |
+| Runtime            | Supported |
+|--------------------|-----------|
+| Node.js            | ✓         |
+| Bun                | ✓         |
+| Deno               | ✓         |
+| Cloudflare Workers | ✓         |
+| Vercel Edge        | ✓         |
+| Netlify Edge       | ✓         |
+| Fastly Compute     | ✓         |
+| Browser            | ✓         |
 
 No configuration required — just import and use.
 
@@ -202,4 +269,3 @@ MIT
 ## Contributing
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the repository root.
-

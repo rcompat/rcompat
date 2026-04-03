@@ -16,9 +16,12 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@rcompat/is": "workspace:^"
   },
   "devDependencies": {
     "@rcompat/fs": "workspace:^",
@@ -27,29 +30,29 @@
   "type": "module",
   "imports": {
     "#mask/*": {
-      "apekit": "./src/private/mask/*.ts",
+      "source": "./src/private/mask/*.ts",
       "default": "./lib/private/mask/*.js"
     },
     "#types/*": {
-      "apekit": "./src/private/types/*.ts",
+      "source": "./src/private/types/*.ts",
       "default": "./lib/private/types/*.js"
     },
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./mask/*": {
-      "apekit": "./src/public/mask/*.ts",
+      "source": "./src/public/mask/*.ts",
       "default": "./lib/public/mask/*.js"
     },
     "./*": {
-      "apekit": "./src/public/*.ts",
+      "source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     },
     ".": {
-      "apekit": "./src/public/index.ts",
+      "source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     }
   }

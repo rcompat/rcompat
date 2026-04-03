@@ -1,7 +1,7 @@
 {
   "name": "@rcompat/kv",
   "version": "0.7.0",
-  "description": "Standard library key-value abstractions",
+  "description": "Standard library key-value stores",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
   "files": [
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -26,13 +26,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./*": {
-      "apekit": "./src/public/*.ts",
+      "source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

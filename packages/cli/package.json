@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -27,21 +27,21 @@
   "type": "module",
   "imports": {
     "#color/*": {
-      "apekit": "./src/private/color/*.ts",
+      "source": "./src/private/color/*.ts",
       "default": "./lib/private/color/*.js"
     },
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./color/*": {
-      "apekit": "./src/public/color/*.ts",
+      "source": "./src/public/color/*.ts",
       "default": "./lib/public/color/*.js"
     },
     "./*": {
-      "apekit": "./src/public/*.ts",
+      "source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

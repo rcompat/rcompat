@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
@@ -28,13 +28,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "apekit": "./src/public/index.ts",
+      "source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     }
   }

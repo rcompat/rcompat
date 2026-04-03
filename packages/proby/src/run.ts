@@ -2,7 +2,7 @@ import assert from "@rcompat/assert";
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import type { FileRef } from "@rcompat/fs";
-import type { Env, Result, Test } from "@rcompat/test";
+import type { Env } from "@rcompat/test";
 import repository from "@rcompat/test/repository";
 import { Worker } from "node:worker_threads";
 
@@ -46,7 +46,11 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
   const context = await env_module.setup?.();
 
   return new Promise((resolve, reject) => {
-    const worker = new Worker(new URL("./worker.js", import.meta.url), {
+    const worker_url = new URL(
+      import.meta.url.endsWith(".ts") ? "./worker.ts" : "./worker.js",
+      import.meta.url,
+    );
+    const worker = new Worker(worker_url, {
       workerData: {
         spec: spec.path,
         env: env.path,
@@ -75,7 +79,12 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
   });
 }
 
-export default async (root: FileRef, subrepo?: string, target?: string, group?: string) => {
+export default async (
+  root: FileRef,
+  subrepo?: string,
+  target?: string,
+  group?: string,
+) => {
   const files = await root.list({
     recursive: true,
     filter: info => extensions.some(extension => info.path.endsWith(extension)),
@@ -97,34 +106,47 @@ export default async (root: FileRef, subrepo?: string, target?: string, group?: 
       continue;
     }
 
+    const mock_file = await file.sibling(
+      file.name.replace(/\.spec\.(ts|js)$/, ".mock.$1"),
+    ).or(() => null);
+
     repository.suite(file);
-    await file.import();
-  }
+    const suite = repository.next().next().value!;
 
-  for (const suite of repository.next()) {
-    const failed: [Test, Result<unknown>][] = [];
+    try {
+      if (mock_file !== null) await mock_file.import();
 
-    for await (const test of suite.run()) {
-      if (group !== undefined && test.group !== group) continue;
-      for (const result of test.results) {
-        if (result.passed) {
-          print(color.green("o"));
-        } else {
-          failed.push([test, result]);
-          print(color.red("x"));
+      await file.import();
+
+      const failed: [any, any][] = [];
+
+      for await (const test of suite.run()) {
+        if (group !== undefined && test.group !== group) continue;
+
+        for (const result of test.results) {
+          if (result.passed) {
+            print(color.green("o"));
+          } else {
+            failed.push([test, result]);
+            print(color.red("x"));
+          }
         }
       }
-    }
-    await suite.end();
-    if (failed.length > 0) {
-      print("\n");
-      for (const [test, result] of failed) {
-        print(`${suite.file.debase(root)} ${color.red(test.name)} \n`);
-        print(`  expected  ${stringify(result.expected)}\n`);
-        print(`  actual    ${stringify(result.actual)}\n`);
+
+      await suite.end();
+
+      if (failed.length > 0) {
+        print("\n");
+        for (const [test, result] of failed) {
+          print(`${suite.file.debase(root)} ${color.red(test.name)} \n`);
+          print(`  expected  ${stringify(result.expected)}\n`);
+          print(`  actual    ${stringify(result.actual)}\n`);
+        }
       }
+    } finally {
+      repository.reset();
     }
   }
+
   print("\n");
-  repository.reset();
 };

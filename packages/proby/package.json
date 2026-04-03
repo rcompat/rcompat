@@ -16,10 +16,14 @@
     "directory": "packages/proby"
   },
   "dependencies": {
-    "@rcompat/args": "workspace:^",
     "@rcompat/assert": "workspace:^",
     "@rcompat/cli": "workspace:^",
-    "@rcompat/fs": "workspace:^"
+    "@rcompat/env": "workspace:^",
+    "@rcompat/fs": "workspace:^",
+    "@rcompat/io": "workspace:^",
+    "@rcompat/is": "workspace:^",
+    "@rcompat/runtime": "workspace:^",
+    "pema": "^0.5.0"
   },
   "peerDependencies": {
     "@rcompat/test": "workspace:^"
@@ -38,8 +42,14 @@
   "type": "module",
   "imports": {
     "#*": {
-      "apekit": "./src/*.ts",
+      "source": "./src/*.ts",
       "default": "./lib/*.js"
+    }
+  },
+  "exports": {
+    "./config": {
+      "source": "./src/config.ts",
+      "default": "./lib/config.js"
     }
   }
 }

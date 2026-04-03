@@ -6,9 +6,14 @@ import type { FileRef } from "@rcompat/fs";
 class Repository {
   #suites: Suite[] = [];
   #current_group: string | undefined;
+  #mocks: Map<string, unknown> = new Map();
 
   get #suite() {
     return this.#suites.at(-1)!;
+  }
+
+  get mocks() {
+    return this.#mocks;
   }
 
   put(name: string, body: Body) {
@@ -21,6 +26,10 @@ class Repository {
     this.#current_group = undefined;
   }
 
+  between(fn: () => void) {
+    this.#suite.between(fn);
+  }
+
   ended(end: End) {
     this.#suite.ended(end);
   }
@@ -31,6 +40,7 @@ class Repository {
 
   reset() {
     this.#suites = [];
+    this.#mocks = new Map();
   }
 
   *next() {

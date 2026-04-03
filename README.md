@@ -11,21 +11,23 @@ Deno, Bun and future runtimes.
 
 | Package                                   | Purpose                 |
 |-------------------------------------------|-------------------------|
-|[@rcompat/args](packages/args)             | Program arguments       |
 |[@rcompat/array](packages/array)           | Arrays                  |
 |[@rcompat/assert](packages/assert)         | Assertions              |
 |[@rcompat/cli](packages/cli)               | CLI tools               |
 |[@rcompat/crypto](packages/crypto)         | Cryptographic functions |
+|[@rcompat/dict](packages/dict)             | Dictionaries            |
 |[@rcompat/env](packages/env)               | Environment variables   |
+|[@rcompat/error](packages/error)           | Errors                  |
 |[@rcompat/fs](packages/fs)                 | Filesystem access       |
 |[@rcompat/fn](packages/fn)                 | Function handling       |
 |[@rcompat/html](packages/html)             | HTML handling           |
 |[@rcompat/http](packages/http)             | HTTP servers            |
-|[@rcompat/proby](packages/proby)           | Test runner             |
-|[@rcompat/dict](packages/dict)             | Dictionaries            |
-|[@rcompat/runtime](packages/runtime)       | Runtime detection       |
-|[@rcompat/sql](packages/sql)               | SQL                     |
 |[@rcompat/io](packages/io)                 | Input/output            |
+|[@rcompat/is](packages/is)                 | Identity checks         |
+|[@rcompat/kv](packages/kv)                 | Key-value stores        |
+|[@rcompat/proby](packages/proby)           | Test runner             |
+|[@rcompat/runtime](packages/runtime)       | Runtime context         |
+|[@rcompat/sql](packages/sql)               | SQL                     |
 |[@rcompat/stream](packages/stream)         | Streams                 |
 |[@rcompat/string](packages/string)         | Strings                 |
 |[@rcompat/test](packages/test)             | Testing                 |

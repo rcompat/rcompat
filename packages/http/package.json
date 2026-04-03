@@ -16,12 +16,12 @@
   },
   "scripts": {
     "build": "npm run clean && tsc",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "undici-types": "7.24.0"
+    "undici-types": "7.24.7"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
@@ -29,7 +29,7 @@
     "@rcompat/fn": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "busboy": "^1.6.0",
-    "ws": "^8.19.0"
+    "ws": "^8.20.0"
   },
   "type": "module",
   "imports": {
@@ -39,17 +39,17 @@
       "node": "./lib/private/serve/node.js"
     },
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "apekit": "./src/public/index.ts",
+      "source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
     "./*": {
-      "apekit": "./src/public/*.ts",
+      "source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

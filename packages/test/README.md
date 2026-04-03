@@ -5,9 +5,9 @@ Testing library for JavaScript runtimes.
 ## What is @rcompat/test?
 
 A cross-runtime testing library with a fluent assertion API. Provides deep
-equality checks, type assertions, exception testing, and fetch interception.
-Designed to work with the `proby` test runner. Works consistently across
-Node, Deno, and Bun.
+equality checks, type assertions, exception testing, fetch interception, and
+module mocking. Designed to work with the `proby` test runner. Works
+consistently across Node, Deno, and Bun.
 
 ## Installation
 
@@ -115,12 +115,12 @@ test.case("throws", assert => {
   // check that function throws
   assert(() => {
     throw new Error("oops");
-  }).throws();
+  }).throws("oops");
 
-  // Check specific error message
+  // Check specific error type
   assert(() => {
-    throw new Error("invalid input");
-  }).throws("invalid input");
+    throw new TypeError("invalid input");
+  }).throws(TypeError);
 });
 
 test.case("tries (does not throw)", assert => {
@@ -182,6 +182,7 @@ test.ended(async () => {
 
 Use `test.group` to cluster related test cases together. Groups can be run
 individually via proby.
+
 ```js
 import test from "@rcompat/test";
 
@@ -203,9 +204,79 @@ test.group("subtraction", () => {
 ```
 
 Run a specific group:
+
 ```bash
 npx proby math.spec.ts addition
 ```
+
+### Mocking modules
+
+Use `test.mock` to replace a module's exports and `test.import` to import the
+mocked module.
+
+```js
+import test from "@rcompat/test";
+
+using math = test.mock("./math.ts", () => ({
+  add: (a, b) => 99,
+}));
+
+const { add } = await test.import("./math.ts");
+
+test.case("returns mocked value", assert => {
+  assert(add(1, 2)).equals(99);
+});
+
+test.case("tracks calls", assert => {
+  add(1, 2);
+  assert(math.add.calls.length).equals(1);
+  assert(math.add.calls[0]).equals([1, 2]);
+  assert(math.add.called).true();
+});
+```
+
+Tracked mock functions record each call as a tuple of arguments in `calls`.
+Call tracking resets between test cases.
+
+### Static mocks with proby
+
+When running tests with `proby`, you can preload mocks before a spec file is
+evaluated by adding a sibling mock file.
+
+- `foo.spec.ts` pairs with `foo.mock.ts`
+- `foo.spec.js` pairs with `foo.mock.js`
+
+`proby` loads the mock file before the spec file, so the spec's static imports
+see the mocked module immediately.
+
+```ts
+// math.ts
+export function add(a: number, b: number) {
+  return a + b;
+}
+```
+
+```ts
+// math.mock.ts
+import test from "@rcompat/test";
+
+test.mock("./math.ts", () => ({
+  add: (a: number, b: number) => 99,
+}));
+```
+
+```ts
+// math.spec.ts
+import test from "@rcompat/test";
+import { add } from "./math.ts";
+
+test.case("static mock is loaded before the spec", assert => {
+  assert(add(1, 2)).equals(99);
+});
+```
+
+Static mocks are file-scoped when run through `proby`; they do not leak into
+later spec files.
 
 ### Intercepting fetch
 
@@ -312,6 +383,45 @@ test.ended(callback: () => void | Promise<void>): void;
 
 Register a cleanup callback to run after all tests in the file.
 
+### `test.group`
+
+```ts
+test.group(name: string, fn: () => void): void;
+```
+
+Group test cases under a named scope. Groups can be targeted individually
+when running proby.
+
+| Parameter | Type       | Description                         |
+| --------- | ---------- | ----------------------------------- |
+| `name`    | `string`   | Group name, used by proby to filter |
+| `fn`      | `function` | Function containing `test.case` calls |
+
+### `test.mock`
+
+```ts
+test.mock<T extends object>(
+  specifier: string,
+  factory: (original: unknown) => T,
+): MockHandle<T>;
+```
+
+Register a module mock and return a handle to the tracked mocked exports.
+Function exports are wrapped so you can inspect `calls` and `called`.
+
+| Parameter   | Type       | Description                                  |
+| ----------- | ---------- | -------------------------------------------- |
+| `specifier` | `string`   | Module specifier to mock                     |
+| `factory`   | `function` | Returns the mocked exports for that module   |
+
+### `test.import`
+
+```ts
+test.import(specifier: string): Promise<unknown>;
+```
+
+Import a module after mocks have been registered.
+
 ### `test.intercept`
 
 ```ts
@@ -324,46 +434,10 @@ test.intercept(
 Intercept outbound fetch calls to `base_url`. Returns an `Intercept` object
 for asserting on recorded requests.
 
-| Parameter  | Type       | Description                                      |
-| ---------- | ---------- | ------------------------------------------------ |
-| `base_url` | `string`   | Origin to intercept, e.g. `"https://api.example.com"` |
-| `setup`    | `function` | Register route handlers on the setup object      |
-
-### `test.group`
-
-```ts
-test.group(name: string, fn: () => void): void;
-```
-
-Group test cases under a named scope. Groups can be targeted individually
-when running proby.
-
-| Parameter | Type       | Description                        |
-| --------- | ---------- | ---------------------------------- |
-| `name`    | `string`   | Group name, used by proby to filter |
-| `fn`      | `function` | Function containing `test.case` calls |
-
-#### `Setup`
-
-| Method                          | Description                  |
-| ------------------------------- | ---------------------------- |
-| `get(path, handler)`            | Register a GET handler       |
-| `post(path, handler)`           | Register a POST handler      |
-| `put(path, handler)`            | Register a PUT handler       |
-| `patch(path, handler)`          | Register a PATCH handler     |
-| `delete(path, handler)`         | Register a DELETE handler    |
-
-Each handler receives the incoming `Request` and returns a plain object,
-which is serialized into a `Response` automatically.
-
-#### `Intercept`
-
-| Method              | Description                                          |
-| ------------------- | ---------------------------------------------------- |
-| `calls(path)`       | Number of times `path` was hit                       |
-| `requests(path)`    | Array of `Request` objects recorded for `path`       |
-| `restore()`         | Reinstate the original `globalThis.fetch`            |
-| `[Symbol.asyncDispose]` | Called automatically by `await using`            |
+| Parameter  | Type       | Description                                               |
+| ---------- | ---------- | --------------------------------------------------------- |
+| `base_url` | `string`   | Origin to intercept, e.g. `"https://api.example.com"`    |
+| `setup`    | `function` | Register route handlers on the setup object               |
 
 ### `test.extend`
 
@@ -376,9 +450,31 @@ test.extend<Subject, Extensions>(
 Create a new test object with custom assertion methods mixed into the
 asserter.
 
-| Parameter | Type       | Description                                              |
-| --------- | ---------- | -------------------------------------------------------- |
-| `factory` | `function` | Returns extra methods to attach to each `Assert` instance |
+| Parameter | Type       | Description                                                |
+| --------- | ---------- | ---------------------------------------------------------- |
+| `factory` | `function` | Returns extra methods to attach to each `Assert` instance  |
+
+#### `Setup`
+
+| Method                 | Description               |
+| ---------------------- | ------------------------- |
+| `get(path, handler)`   | Register a GET handler    |
+| `post(path, handler)`  | Register a POST handler   |
+| `put(path, handler)`   | Register a PUT handler    |
+| `patch(path, handler)` | Register a PATCH handler  |
+| `delete(path, handler)`| Register a DELETE handler |
+
+Each handler receives the incoming `Request` and returns a plain object,
+which is serialized into a `Response` automatically.
+
+#### `Intercept`
+
+| Method                  | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| `calls(path)`           | Number of times `path` was hit                  |
+| `requests(path)`        | Array of `Request` objects recorded for `path`  |
+| `restore()`             | Reinstate the original `globalThis.fetch`       |
+| `[Symbol.asyncDispose]` | Called automatically by `await using`           |
 
 ### `Asserter`
 
@@ -449,7 +545,7 @@ import E from "@rcompat/test/E";
 E(error: unknown): { message: string };
 ```
 
-Extract error message from unknown error type.
+Extract error data from unknown error types.
 
 ## Examples
 

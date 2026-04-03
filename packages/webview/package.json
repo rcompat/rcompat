@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "npm run clean && tsc && npm run copy-platforms",
-    "test": "npm run build && npx proby",
+    "test": "npx proby",
     "clean": "rm -rf ./lib",
     "copy-platforms": "./scripts/copy-platforms.sh",
     "prepublishOnly": "npm run build"
@@ -28,26 +28,26 @@
   "type": "module",
   "imports": {
     "#bun/*": {
-      "apekit": "./src/private/bun/*.ts",
+      "source": "./src/private/bun/*.ts",
       "default": "./lib/private/bun/*.js"
     },
     "#deno/*": {
-      "apekit": "./src/private/deno/*.ts",
+      "source": "./src/private/deno/*.ts",
       "default": "./lib/private/deno/*.js"
     },
     "#*": {
-      "apekit": "./src/private/*.ts",
+      "source": "./src/private/*.ts",
       "deno": "./lib/private/deno/*.js",
       "default": "./lib/private/bun/*.js"
     }
   },
   "exports": {
     ".": {
-      "apekit": "./src/public/index.ts",
+      "source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
     "./*": {
-      "apekit": "./src/public/*.ts",
+      "source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

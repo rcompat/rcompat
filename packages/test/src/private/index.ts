@@ -8,6 +8,8 @@ import type { ExtendedTest, Factory } from "#extend";
 import extend from "#extend";
 import repository from "#repository";
 import intercept from "#intercept";
+import mock from "#mock";
+import import_ from "#import";
 
 const base = {
   case(name: string, body: Body) {
@@ -19,6 +21,8 @@ const base = {
   group(name: string, fn: () => void) {
     repository.group(name, fn);
   },
+  mock,
+  import: import_,
 };
 
 export default {

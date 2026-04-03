@@ -7,6 +7,7 @@ export default class Suite {
   #file: FileRef;
   #tests: Test[] = [];
   #ends: End[] = [];
+  #between: (() => void)[] = [];
 
   constructor(file: FileRef) {
     this.#file = file;
@@ -24,9 +25,16 @@ export default class Suite {
     return this.#file;
   }
 
+  between(fn: () => void) {
+    this.#between.push(fn);
+  }
+
   async *run() {
     for (const test of this.#tests) {
       yield await test.run();
+      for (const fn of this.#between) {
+        fn();
+      }
     }
   }
 
