@@ -17,4 +17,7 @@ export default {
   try(key: string): string | undefined {
     return data[key];
   },
+  toJSON(): Dict<string> {
+    return Object.assign(Object.create(null), data);
+  },
 };
