@@ -1,10 +1,10 @@
 import test from "#index";
 
-using math = test.mock("./fixtures/math.ts", () => ({
+using math = test.mock("#fixtures/math", () => ({
   add: (a: number, b: number) => 99,
 }));
 
-const { add } = await test.import("./fixtures/math.ts");
+const { add } = await test.import("#fixtures/math");
 
 test.case("returns mocked value", async assert => {
   assert(add(1, 2)).equals(99);
