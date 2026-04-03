@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
-import Schema from "#Schema";
+import p from "pema";
 import env from "@rcompat/env";
 import fs from "@rcompat/fs";
 import io from "@rcompat/io";
 import is from "@rcompat/is";
 import runtime from "@rcompat/runtime";
+
+const Schema = p({
+  monorepo: p.boolean.default(false),
+  packages: p.string.default("packages"),
+  include: p.array(p.string).default(["src"]),
+  conditions: p.array(p.string).default(["source"]),
+});
 
 const root = await fs.project.root();
 const ts_config_file = root.join("proby.config.ts");
