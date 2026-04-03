@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/sqlite",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Standard library SQLite client",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -30,27 +30,27 @@
   "type": "module",
   "imports": {
     "#*": {
-      "source": "./src/private/node/*.ts",
+      "@rcompat/source": "./src/private/node/*.ts",
       "bun": "./lib/private/bun/*.js",
       "deno": "./lib/private/node/*.js",
       "default": "./lib/private/node/*.js"
     },
     "#api/*": {
-      "source": "./src/private/api/*.ts",
+      "@rcompat/source": "./src/private/api/*.ts",
       "default": "./lib/private/api/*.js"
     },
     "#bun/*": {
-      "source": "./src/private/bun/*.ts",
+      "@rcompat/source": "./src/private/bun/*.ts",
       "default": "./lib/private/bun/*.js"
     },
     "#node/*": {
-      "source": "./src/private/node/*.ts",
+      "@rcompat/source": "./src/private/node/*.ts",
       "default": "./lib/private/node/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     }
   }

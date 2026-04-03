@@ -36,7 +36,7 @@ bun add @rcompat/runtime
 import runtime from "@rcompat/runtime";
 
 console.log(runtime.name);
-// "node" | "bun" | "deno" | "workerd" | "vercel" | "netlify" | "fastly" | "browser"
+// "node" | "bun" | "deno" | "browser"
 ```
 
 ### Conditional logic
@@ -157,6 +157,20 @@ runtime.exit: ((code?: number) => never) | undefined;
 Exit the current process with an optional exit code. `undefined` in browser
 and edge runtimes where process exit has no meaning.
 
+### `runtime.resolve`
+
+```ts
+runtime.resolve(specifier: string, from: string): string
+```
+
+Resolve a path or package specifier from a directory.
+
+* Relative specifiers like `./foo.json` and `../tsconfig.json` are resolved
+from `from`
+* Absolute paths are returned as absolute paths
+* Package specifiers like `apekit/tsconfig` are resolved using the current
+runtime’s package resolution
+
 ## How It Works
 
 This package uses [runtime keys](https://runtime-keys.proposal.wintercg.org),
@@ -200,7 +214,7 @@ import io from "@rcompat/io";
 
 // relaunch self with --conditions=source
 await io.spawn(
-  `${runtime.bin} --conditions=source ${runtime.script} ${runtime.args.join(" ")}`,
+  `${runtime.bin} --conditions="@rcompat/source" ${runtime.script} ${runtime.args.join(" ")}`,
   { inherit: true }
 );
 runtime.exit(0);
@@ -247,6 +261,34 @@ function getDebugInfo() {
 }
 ```
 
+### Reading tsconfig `customConditions` recursively
+
+```ts
+import fs from "@rcompat/fs":
+
+type TSConfig = {
+  compilerOptions?: {
+    customConditions?: string[];
+  };
+  extends?: string;
+};
+
+async function read_conditions(file: FileRef) {
+  const json = await file.json<TSConfig>();
+
+  if (json.compilerOptions?.customConditions?.length) {
+    return json.compilerOptions.customConditions;
+  }
+
+  if (json.extends === undefined) {
+    return [];
+  }
+
+  const next = runtime.resolve(json.extends, file.directory.path);
+  return read_conditions(fs.ref(next));
+}
+```
+
 ## Cross-Runtime Compatibility
 
 | Runtime            | Supported |
@@ -254,10 +296,6 @@ function getDebugInfo() {
 | Node.js            | ✓         |
 | Bun                | ✓         |
 | Deno               | ✓         |
-| Cloudflare Workers | ✓         |
-| Vercel Edge        | ✓         |
-| Netlify Edge       | ✓         |
-| Fastly Compute     | ✓         |
 | Browser            | ✓         |
 
 No configuration required — just import and use.

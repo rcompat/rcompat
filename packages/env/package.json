@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/env",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "Standard library environment variables",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -28,23 +28,18 @@
   },
   "type": "module",
   "imports": {
-    "#js-env": {
-      "source": "./src/private/js-env/node.ts",
-      "bun": "./lib/private/js-env/bun.js",
-      "default": "./lib/private/js-env/node.js"
-    },
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

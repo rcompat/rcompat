@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/test",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "Standard library testing",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -30,29 +30,29 @@
   "type": "module",
   "imports": {
     "#mask/*": {
-      "source": "./src/private/mask/*.ts",
+      "@rcompat/source": "./src/private/mask/*.ts",
       "default": "./lib/private/mask/*.js"
     },
     "#types/*": {
-      "source": "./src/private/types/*.ts",
+      "@rcompat/source": "./src/private/types/*.ts",
       "default": "./lib/private/types/*.js"
     },
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./mask/*": {
-      "source": "./src/public/mask/*.ts",
+      "@rcompat/source": "./src/public/mask/*.ts",
       "default": "./lib/public/mask/*.js"
     },
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     },
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     }
   }

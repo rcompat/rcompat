@@ -4,6 +4,9 @@
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/types-deno"
+    ],
+    "customConditions": [
+      "@rcompat/source"
     ]
   }
 }

@@ -1,7 +1,12 @@
-export default {
+import type Runtime from "#Runtime";
+
+const browser: Runtime = {
   name: "browser",
-  bin: undefined,
-  script: undefined,
+  bin: "",
+  script: "",
   args: [],
-  exit: undefined,
+  exit: () => { throw ("unimplemented"); },
+  resolve: () => { throw ("unimplemented"); },
 };
+
+export default browser;

@@ -6,9 +6,9 @@ Test runner for JavaScript runtimes.
 
 A cross-runtime test runner that automatically discovers and runs test files.
 Works with both single repositories and monorepos. Supports TypeScript source
-execution in monorepos without a build step when your packages expose `source`
-entries in `package.json`. Uses `@rcompat/test` for writing tests. Works
-consistently across Node, Deno, and Bun.
+execution in monorepos without a build step when your packages expose a custom
+source condition in `package.json`. Uses `@rcompat/test` for writing tests.
+Works consistently across Node, Deno, and Bun.
 
 ## Installation
 
@@ -58,41 +58,50 @@ npx proby math.spec.ts addition
 
 ## How proby resolves source files
 
-Proby relaunches itself with runtime conditions before running tests. By
-default it uses the `source` condition, which lets runtimes resolve package
-`imports` and `exports` to your TypeScript source files instead of built
-JavaScript.
+Proby reads `compilerOptions.customConditions` from your `tsconfig.json` and
+relaunches itself with those conditions active before running tests. This lets
+Node resolve package `imports` and `exports` to your TypeScript source files
+instead of built JavaScript — no build step required.
 
-This is especially useful in monorepos where packages depend on each other and
-you want to run tests against source directly.
+Use a condition scoped to your project to avoid conflicts when multiple
+monorepos share `node_modules`:
 
-To use this pattern, expose `source` entries in your packages.
+```json
+{
+  "compilerOptions": {
+    "customConditions": ["@myproject/source"]
+  }
+}
+```
 
-Example:
+Then expose matching entries in your packages:
 
 ```json
 {
   "imports": {
     "#*": {
-      "source": "./src/*.ts",
-      "default": "./lib/*.js"
+      "@myproject/source": "./src/private/*.ts",
+      "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/index.ts",
-      "default": "./lib/index.js"
+      "@myproject/source": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }
 ```
 
-With this setup, proby can run against your TypeScript source without requiring
-an upfront build step.
+Because TypeScript reads the same `customConditions`, your editor's
+jump-to-source also lands on the `.ts` source file — not compiled output.
+
+The opt-in is per package and entirely additive. Packages without the condition
+fall back to built output as normal.
 
 ## Configuration
 
-Create `proby.config.ts` or `proby.config.js` in your project root.
+Create `proby.config.ts` or `proby.config.js` in your project root:
 
 ```ts
 import config from "proby/config";
@@ -101,7 +110,6 @@ export default config({
   monorepo: true,
   packages: "packages",
   include: ["src"],
-  conditions: ["source"],
 });
 ```
 
@@ -115,11 +123,7 @@ boolean
 
 Whether proby should scan package directories inside a monorepo.
 
-Default:
-
-```ts
-false
-```
+Default: `false`
 
 #### `packages`
 
@@ -129,11 +133,7 @@ string
 
 Directory containing package folders when `monorepo` is enabled.
 
-Default:
-
-```ts
-"packages"
-```
+Default: `"packages"`
 
 #### `include`
 
@@ -143,29 +143,9 @@ string[]
 
 Directories to scan for spec files.
 
-Default:
-
-```ts
-["src"]
-```
-
-#### `conditions`
-
-```ts
-string[]
-```
-
-Runtime conditions used when proby relaunches itself.
-
-Default:
-
-```ts
-["source"]
-```
+Default: `["src"]`
 
 ## Project structure
-
-Proby automatically detects your project structure.
 
 ### Single repository
 
@@ -206,7 +186,7 @@ my-monorepo/
 
 Proby supports preloading sibling mock files before a spec file is evaluated.
 This allows module mocks to be registered before the spec's static imports are
-read.
+resolved.
 
 Pair files by matching the spec extension exactly:
 
@@ -214,15 +194,6 @@ Pair files by matching the spec extension exactly:
 - `math.spec.js` pairs with `math.mock.js`
 
 If a sibling mock file exists, proby loads it before the spec file.
-
-Example:
-
-```ts
-// math.ts
-export function add(a: number, b: number) {
-  return a + b;
-}
-```
 
 ```ts
 // math.mock.ts
@@ -243,13 +214,12 @@ test.case("uses the preloaded mock", assert => {
 });
 ```
 
-Static mocks are file-scoped. A mock loaded for one spec file does not leak
-into later spec files.
+Static mocks are file-scoped — they do not leak into later spec files.
 
 ## Grouping tests
 
-Use `test.group` in your spec files to cluster related cases. Groups can then
-be targeted individually when running proby.
+Use `test.group` to cluster related cases. Groups can be targeted individually
+when running proby:
 
 ```js
 import test from "@rcompat/test";
@@ -383,4 +353,3 @@ MIT
 ## Contributing
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the repository root.
-

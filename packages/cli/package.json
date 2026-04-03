@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/cli",
-  "version": "0.18.0",
+  "version": "0.18.1",
   "description": "Standard library CLI",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -27,21 +27,21 @@
   "type": "module",
   "imports": {
     "#color/*": {
-      "source": "./src/private/color/*.ts",
+      "@rcompat/source": "./src/private/color/*.ts",
       "default": "./lib/private/color/*.js"
     },
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./color/*": {
-      "source": "./src/public/color/*.ts",
+      "@rcompat/source": "./src/public/color/*.ts",
       "default": "./lib/public/color/*.js"
     },
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/http",
-  "version": "0.25.0",
+  "version": "0.25.1",
   "description": "Standard library HTTP",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -34,22 +34,23 @@
   "type": "module",
   "imports": {
     "#serve": {
+      "@rcompat/source": "./src/private/serve/node.ts",
       "bun": "./lib/private/serve/bun.js",
       "deno": "./lib/private/serve/deno.js",
       "node": "./lib/private/serve/node.js"
     },
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

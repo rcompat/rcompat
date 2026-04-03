@@ -26,7 +26,7 @@
     "@types/deno": "^2.5.0",
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.48",
+    "apekit": "^0.0.49",
     "eslint": "^9.39.2",
     "knip": "^5.86.0",
     "proby": "workspace:^",

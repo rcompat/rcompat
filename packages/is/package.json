@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/is",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Standard library identity checks",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -27,13 +27,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     }
   }

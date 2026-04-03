@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/worker",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Standard library workers",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -23,7 +23,7 @@
   "type": "module",
   "exports": {
     ".": {
-      "source": "./src/bun.ts",
+      "@rcompat/source": "./src/bun.ts",
       "bun": "./lib/bun.js",
       "deno": "./lib/deno.js",
       "node": "./lib/node.js"

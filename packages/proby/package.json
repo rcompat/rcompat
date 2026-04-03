@@ -1,6 +1,6 @@
 {
   "name": "proby",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "Standard library test runner",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -42,13 +42,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "source": "./src/*.ts",
+      "@rcompat/source": "./src/*.ts",
       "default": "./lib/*.js"
     }
   },
   "exports": {
     "./config": {
-      "source": "./src/config.ts",
+      "@rcompat/source": "./src/config.ts",
       "default": "./lib/config.js"
     }
   }

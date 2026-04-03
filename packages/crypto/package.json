@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/crypto",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Standard library cryptographic functions",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -29,13 +29,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./*": {
-      "source": "./src/public/hash.ts",
+      "@rcompat/source": "./src/public/hash.ts",
       "default": "./lib/public/hash.js"
     }
   }

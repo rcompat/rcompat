@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/kv",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Standard library key-value stores",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -26,13 +26,13 @@
   "type": "module",
   "imports": {
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }

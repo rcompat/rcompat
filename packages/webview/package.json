@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/webview",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "Standard library webview",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
@@ -28,26 +28,26 @@
   "type": "module",
   "imports": {
     "#bun/*": {
-      "source": "./src/private/bun/*.ts",
+      "@rcompat/source": "./src/private/bun/*.ts",
       "default": "./lib/private/bun/*.js"
     },
     "#deno/*": {
-      "source": "./src/private/deno/*.ts",
+      "@rcompat/source": "./src/private/deno/*.ts",
       "default": "./lib/private/deno/*.js"
     },
     "#*": {
-      "source": "./src/private/*.ts",
+      "@rcompat/source": "./src/private/*.ts",
       "deno": "./lib/private/deno/*.js",
       "default": "./lib/private/bun/*.js"
     }
   },
   "exports": {
     ".": {
-      "source": "./src/public/index.ts",
+      "@rcompat/source": "./src/public/index.ts",
       "default": "./lib/public/index.js"
     },
     "./*": {
-      "source": "./src/public/*.ts",
+      "@rcompat/source": "./src/public/*.ts",
       "default": "./lib/public/*.js"
     }
   }
