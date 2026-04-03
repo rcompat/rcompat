@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/test",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "description": "Standard library testing",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

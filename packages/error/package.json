@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/error",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Standard library errors",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/http",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "description": "Standard library HTTP",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
