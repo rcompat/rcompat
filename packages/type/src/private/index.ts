@@ -18,6 +18,7 @@ export type { default as IsVoid } from "#IsVoid";
 export type { default as Join } from "#Join";
 export type { default as JSONPointer } from "#JSONPointer";
 export type { default as JSONValue } from "#JSONValue";
+export type { default as LooseOptional } from "#LooseOptional";
 export type { default as Maybe } from "#Maybe";
 export type { default as MaybePromise } from "#MaybePromise";
 export type { default as Mutable } from "#Mutable";
@@ -43,4 +44,3 @@ export type { default as UnknownFunction } from "#UnknownFunction";
 export type { default as UnknownMap } from "#UnknownMap";
 export type { default as UnknownSet } from "#UnknownSet";
 export type { default as Unpack } from "#Unpack";
-
