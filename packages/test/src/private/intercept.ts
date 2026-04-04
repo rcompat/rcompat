@@ -18,7 +18,7 @@ type Intercept = {
   calls(path: string): number;
   requests(path: string): Request[];
   restore(): void;
-  [Symbol.asyncDispose](): Promise<void>;
+  [Symbol.dispose](): void;
 };
 
 export default (base_url: string, setup: (setup: Setup) => void): Intercept => {
@@ -74,7 +74,7 @@ export default (base_url: string, setup: (setup: Setup) => void): Intercept => {
       return log.filter(r => new URL(r.url).pathname === path);
     },
     restore,
-    async [Symbol.asyncDispose]() {
+    [Symbol.dispose]() {
       restore();
     },
   };

@@ -4,7 +4,7 @@ import intercept from "#intercept";
 const base = "https://api.example.com";
 
 test.case("calls() counts matched requests", async assert => {
-  await using api = intercept(base, setup => {
+  using api = intercept(base, setup => {
     setup.post("/echo", () => ({ ok: true }));
   });
 
@@ -15,7 +15,7 @@ test.case("calls() counts matched requests", async assert => {
 });
 
 test.case("calls() only counts matching path", async assert => {
-  await using api = intercept(base, setup => {
+  using api = intercept(base, setup => {
     setup.get("/a", () => ({ ok: true }));
     setup.get("/b", () => ({ ok: true }));
   });
@@ -29,7 +29,7 @@ test.case("calls() only counts matching path", async assert => {
 });
 
 test.case("requests() returns the actual Request objects", async assert => {
-  await using api = intercept(base, setup => {
+  using api = intercept(base, setup => {
     setup.post("/echo", () => ({ ok: true }));
   });
 
@@ -40,7 +40,7 @@ test.case("requests() returns the actual Request objects", async assert => {
 });
 
 test.case("unregistered path on intercepted origin throws", async assert => {
-  await using _ = intercept(base, setup => {
+  using _ = intercept(base, setup => {
     setup.get("/known", () => ({ ok: true }));
   });
 
@@ -69,11 +69,11 @@ test.case("restore() reinstates original fetch", assert => {
 test.case("multiple intercepts stack and unwind correctly", async assert => {
   const base2 = "https://api.other.com";
 
-  await using a = intercept(base, setup => {
+  using a = intercept(base, setup => {
     setup.get("/a", () => ({ from: "a" }));
   });
 
-  await using b = intercept(base2, setup => {
+  using b = intercept(base2, setup => {
     setup.get("/b", () => ({ from: "b" }));
   });
 
@@ -85,7 +85,7 @@ test.case("multiple intercepts stack and unwind correctly", async assert => {
 });
 
 test.case("response body matches handler return value", async assert => {
-  await using api = intercept(base, setup => {
+  using api = intercept(base, setup => {
     setup.get("/user", () => ({ id: 1, name: "alice" }));
   });
 
@@ -96,7 +96,7 @@ test.case("response body matches handler return value", async assert => {
 });
 
 test.case("method mismatch on same path throws", async assert => {
-  await using _ = intercept(base, setup => {
+  using _ = intercept(base, setup => {
     setup.post("/data", () => ({ ok: true }));
   });
 
@@ -111,7 +111,7 @@ test.case("method mismatch on same path throws", async assert => {
 });
 
 test.case("calls() returns 0 for unvisited path", async assert => {
-  await using api = intercept(base, setup => {
+  using api = intercept(base, setup => {
     setup.get("/visited", () => ({ ok: true }));
     setup.get("/unvisited", () => ({ ok: true }));
   });
@@ -121,11 +121,11 @@ test.case("calls() returns 0 for unvisited path", async assert => {
   assert(api.calls("/unvisited")).equals(0);
 });
 
-test.case("await using restores original fetch", async assert => {
+test.case("using restores original fetch", async assert => {
   const original = globalThis.fetch;
 
   {
-    await using _ = intercept(base, setup => {
+    using _ = intercept(base, setup => {
       setup.get("/", () => ({ ok: true }));
     });
 
