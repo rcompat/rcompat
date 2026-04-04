@@ -288,7 +288,7 @@ called and how.
 ```js
 import test from "@rcompat/test";
 
-await using telegram = test.intercept("https://api.telegram.org", setup => {
+using telegram = test.intercept("https://api.telegram.org", setup => {
   setup.post("/sendMessage", () => ({
     ok: true,
     result: { message_id: 42 },
@@ -309,9 +309,9 @@ test.case("notifies user via telegram on signup", async assert => {
 });
 ```
 
-`await using` restores the original fetch automatically when the file scope
-exits. For long-lived intercepts that need manual control, use `restore()`
-with `test.ended`:
+`using` restores the original fetch automatically when the file scope exits.
+For long-lived intercepts that need manual control, use `restore()` with
+`test.ended`:
 
 ```js
 const telegram = test.intercept("https://api.telegram.org", setup => {
@@ -474,7 +474,7 @@ which is serialized into a `Response` automatically.
 | `calls(path)`           | Number of times `path` was hit                  |
 | `requests(path)`        | Array of `Request` objects recorded for `path`  |
 | `restore()`             | Reinstate the original `globalThis.fetch`       |
-| `[Symbol.asyncDispose]` | Called automatically by `await using`           |
+| `[Symbol.dispose]`      | Called automatically by `using`                 |
 
 ### `Asserter`
 
@@ -614,7 +614,7 @@ test.case("divide works normally", assert => {
 ```js
 import test from "@rcompat/test";
 
-await using openai = test.intercept("https://api.openai.com", setup => {
+using openai = test.intercept("https://api.openai.com", setup => {
   setup.post("/v1/chat/completions", () => ({
     choices: [{ message: { content: "Hello!" } }],
   }));
