@@ -1,9 +1,26 @@
-import p from "pema";
+import type { Dict } from "@rcompat/type";
 
-const Schema = p({
-  monorepo: p.boolean.default(false),
-  packages: p.string.default("packages"),
-  include: p.array(p.string).default(["src"]),
-});
+export type Config = {
+  monorepo: boolean;
+  packages: string;
+  include: string[];
+};
 
-export default Schema;
+const defaults: Config = {
+  monorepo: false,
+  packages: "packages",
+  include: ["src"],
+};
+
+export default {
+  parse(input: Dict = {}): Config {
+    return {
+      monorepo: typeof input.monorepo === "boolean" ? input.monorepo : defaults.monorepo,
+      packages: typeof input.packages === "string" ? input.packages : defaults.packages,
+      include: Array.isArray(input.include) && input.include.every((x: unknown) =>
+        typeof x === "string")
+        ? input.include
+        : defaults.include,
+    };
+  },
+};

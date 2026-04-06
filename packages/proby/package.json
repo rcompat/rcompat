@@ -22,8 +22,10 @@
     "@rcompat/fs": "workspace:^",
     "@rcompat/io": "workspace:^",
     "@rcompat/is": "workspace:^",
-    "@rcompat/runtime": "workspace:^",
-    "pema": "^0.5.0"
+    "@rcompat/runtime": "workspace:^"
+  },
+  "devDependencies": {
+    "@rcompat/type": "workspace:^"
   },
   "peerDependencies": {
     "@rcompat/test": "workspace:^"

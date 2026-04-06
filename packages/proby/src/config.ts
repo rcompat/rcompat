@@ -1,3 +1,3 @@
-import type Schema from "#Schema";
+import type { Config } from "#Schema";
 
-export default (input: typeof Schema.input) => input;
+export default (input: Partial<Config>) => input;
