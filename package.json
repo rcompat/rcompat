@@ -26,10 +26,10 @@
     "@types/deno": "^2.5.0",
     "@types/node": "^25.5.0",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.49",
+    "apekit": "^0.0.51",
     "eslint": "^9.39.2",
-    "knip": "^5.86.0",
+    "knip": "^6.3.0",
     "proby": "workspace:^",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   }
 }

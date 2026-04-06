@@ -1,12 +1,13 @@
 {
   "extends": "apekit/tsconfig",
   "compilerOptions": {
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/types-deno"
-    ],
     "customConditions": [
       "@rcompat/source"
+    ],
+    "types": [
+      "node",
+      "bun",
+      "deno"
     ]
   }
 }
