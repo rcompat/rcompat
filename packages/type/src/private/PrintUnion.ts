@@ -32,4 +32,4 @@ type PrintUnion<T> =
   : `${PrintUnion<Exclude<T, void>>} | void`
   : PrintUnionMembers<T>;
 
-export type { PrintUnion as default };;
+export type { PrintUnion as default };

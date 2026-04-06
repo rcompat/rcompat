@@ -1,5 +1,5 @@
 import type Native from "#native/type";
-import { Buffer } from 'node:buffer';
+import { Buffer } from "node:buffer";
 
 const deno: Native = {
   utf8_bytelength(str: string) {

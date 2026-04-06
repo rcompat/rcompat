@@ -5,5 +5,5 @@ import to from "#to";
 export {
   difference,
   empty,
-  to
+  to,
 };
