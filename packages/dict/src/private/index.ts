@@ -15,5 +15,3 @@ export default {
   override,
   toQueryString,
 };
-
-export type { Dict } from "@rcompat/type";
