@@ -15,8 +15,8 @@ type Person = string | {
 type Funding = string | TypeURL;
 
 type PackageJSON = {
-  name?: string;
-  version?: string;
+  name: string;
+  version: string;
   description?: string;
   keywords?: string[];
   homepage?: string;
