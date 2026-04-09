@@ -146,6 +146,7 @@ export default {
   set: isSet,
   string: isString,
   symbol: isSymbol,
+  text: strings.isText,
   truthy: isTruthy,
   typedarray: isTypedArray,
   uint: numbers.isUint,
