@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/env",
-  "version": "0.17.2",
+  "version": "0.18.0",
   "description": "Standard library environment variables",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",

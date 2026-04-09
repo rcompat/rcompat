@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/io",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Standard library input/output",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
