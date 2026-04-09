@@ -1,1 +1,1 @@
-export { default, type Dict } from "#index";
+export { default } from "#index";
