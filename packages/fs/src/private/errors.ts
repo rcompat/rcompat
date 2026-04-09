@@ -15,12 +15,16 @@ function missing_path_for_copy(file: FileRef) {
 function unknown_kind() {
   return t`unknown kind`;
 }
+function target_not_streamable(x: unknown) {
+  return t`target ${x} not streamable`;
+}
 
 const errors = error.coded({
   value_not_streamable,
   reached_fs_root,
   missing_path_for_copy,
   unknown_kind,
+  target_not_streamable,
 });
 
 export default errors;

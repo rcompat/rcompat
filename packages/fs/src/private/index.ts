@@ -1,11 +1,14 @@
+import E from "#errors";
 import type { FileInfo, Filter, ListOptions } from "#FileRef";
 import FileRef from "#FileRef";
 import type Kind from "#Kind";
 import parse from "#parse";
 import type Path from "#Path";
-import type StreamSource from "#StreamSource";
+import type Streamable from "#Streamable";
+import StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
+import is from "@rcompat/is";
 import type { JSONValue } from "@rcompat/type";
 import { resolve } from "node:path";
 
@@ -18,6 +21,8 @@ function fs_resolve(path?: string) {
 const fs = Object.freeze({
   ref: (path: Path) => new FileRef(path),
   isRef: FileRef.is,
+  isStream: StreamSource.is,
+  isNamedStream: StreamSource.named,
   cwd: () => fs_resolve(),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => new FileRef(path).list(opts),
@@ -28,7 +33,11 @@ const fs = Object.freeze({
   bytes: (path: Path) => new FileRef(path).bytes(),
   text: (path: Path) => new FileRef(path).text(),
   json: (path: Path) => new FileRef(path).json(),
-  stream: (path: Path) => new FileRef(path).stream(),
+  stream: (target: string | Streamable) => {
+    if (is.string(target)) return new FileRef(target).stream();
+    if (StreamSource.is(target)) return StreamSource.stream(target);
+    throw E.target_not_streamable(target);
+  },
   write: (path: Path, val: WritableInput) => new FileRef(path).write(val),
   writeJSON: (path: Path, val: JSONValue) => new FileRef(path).writeJSON(val),
   size: (path: Path) => new FileRef(path).size(),
@@ -47,5 +56,5 @@ export type {
   Kind,
   ListOptions,
   Path,
-  StreamSource
+  Streamable
 };
