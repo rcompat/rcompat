@@ -26,11 +26,11 @@ async function read_conditions(file: FileRef): Promise<string[]> {
     return [];
   }
 
-  const next = await runtime.resolve(json.extends, file.directory.path);
+  const next = runtime.resolve(json.extends, file.directory.path);
   return read_conditions(fs.ref(next));
 }
 
-const root = await fs.project.root();
+const root = await runtime.projectRoot();
 const ts_config_file = root.join("proby.config.ts");
 const js_config_file = root.join("proby.config.js");
 const user_config = await ts_config_file.exists()
@@ -43,7 +43,7 @@ const { include, packages, monorepo } = Schema.parse(user_config);
 const ts_config = root.join("tsconfig.json");
 
 const conditions = await ts_config.exists()
- ? await read_conditions(ts_config)
+  ? await read_conditions(ts_config)
   : [];
 const conditions_flags = conditions
   .map(c => ` --conditions="${c}"`)

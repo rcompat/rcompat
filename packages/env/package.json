@@ -21,7 +21,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@rcompat/fs": "workspace:^"
+    "@rcompat/runtime": "workspace:^"
   },
   "devDependencies": {
     "@rcompat/type": "workspace:^"

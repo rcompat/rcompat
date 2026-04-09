@@ -1,12 +1,12 @@
 import candidates from "#candidates";
 import parse from "#parse";
-import fs from "@rcompat/fs";
+import runtime from "@rcompat/runtime";
 import type { Dict } from "@rcompat/type";
 
 const ENV = process.env.NODE_ENV ?? process.env.JS_ENV;
 
 export default async function load(): Promise<Dict<string>> {
-  const root = await fs.project.root();
+  const root = await runtime.projectRoot();
 
   for (const candidate of candidates(ENV)) {
     const file = root.join(candidate);
