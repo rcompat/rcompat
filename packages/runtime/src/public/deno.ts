@@ -1,3 +1,4 @@
+import common from "#common";
 import type Runtime from "#Runtime";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -21,6 +22,7 @@ const deno: Runtime = {
   args: Deno.args,
   exit: (code?: number) => Deno.exit(code),
   resolve,
+  ...common,
 };
 
 export default deno;

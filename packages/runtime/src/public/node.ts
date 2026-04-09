@@ -1,4 +1,5 @@
 import type Runtime from "#Runtime";
+import common from "#common";
 import { createRequire } from "node:module";
 import path from "node:path";
 
@@ -21,6 +22,7 @@ const node: Runtime = {
   args: process.argv.slice(2),
   exit: (code?: number) => process.exit(code),
   resolve,
+  ...common,
 };
 
 export default node;

@@ -1,10 +1,11 @@
 import type DirectoryOptions from "#DirectoryOptions";
+import E from "#errors";
 import native from "#native";
 import parse from "#parse";
 import type Path from "#Path";
 import type RemoveOptions from "#RemoveOptions";
 import separator from "#separator";
-import Streamable from "#Streamable";
+import StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
 import hash from "@rcompat/crypto/hash";
@@ -16,6 +17,7 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join } from "node:path";
 import { pathToFileURL as to_url } from "node:url";
+import util from "node:util";
 
 export type FileInfo = {
   path: string;
@@ -37,20 +39,20 @@ const { decodeURIComponent: decode } = globalThis;
 const assert_boundary = (directory: FileRef) => {
   assert.instance(directory, FileRef);
 
-  if (dirname(directory.path) === directory.path) {
-    throw new Error("stopping at filesystem root");
-  }
+  if (dirname(directory.path) === directory.path) throw E.reached_fs_root();
 };
 
 const as_string = (path: Path) => typeof path === "string" ? path : path.path;
 
+const brand = Symbol.for("std:fs/FileRef/v0");
+
 export default class FileRef
-  extends Streamable
   implements StringClass, Printable {
   #path: string;
+  [brand] = true;
+  [StreamSource.brand] = true;
 
   constructor(path: Path) {
-    super();
     assert.defined(path);
     this.#path = parse(as_string(path));
   }
@@ -63,12 +65,20 @@ export default class FileRef
     return lstat(this.#path);
   }
 
+  static is(ref: unknown): ref is FileRef {
+    return typeof ref === "object" && ref !== null && brand in ref;
+  }
+
   [Symbol.replace](string: string, replacement: string | StringReplacer) {
     return string.replace(this.toString(), replacement/* TS bug*/ as never);
   }
 
   toString() {
     return this.path;
+  }
+
+  [util.inspect.custom]() {
+    return `FileRef { path: "${this.path}" }`;
   }
 
   webpath() {
@@ -96,7 +106,7 @@ export default class FileRef
       if (stats.isFile()) return "file";
       if (stats.isDirectory()) return "directory";
       if (stats.isSymbolicLink()) return "link";
-      throw new Error("unknown kind");
+      throw E.unknown_kind();
     } catch (error) {
       if ((error as any)?.code === "ENOENT") return null;
       throw error;
@@ -259,7 +269,7 @@ export default class FileRef
     const path = this.#path;
     const kind = await this.kind();
 
-    if (kind === null) throw new Error(`cannot copy missing path: ${this.path}`);
+    if (kind === null) throw E.missing_path_for_copy(this);
 
     if (kind === "link") {
       await new FileRef(await realpath(path)).copy(to, filter);

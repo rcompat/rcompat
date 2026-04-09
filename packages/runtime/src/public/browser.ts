@@ -7,6 +7,8 @@ const browser: Runtime = {
   args: [],
   exit: () => { throw ("unimplemented"); },
   resolve: () => { throw ("unimplemented"); },
+  packageJSON: () => { throw ("unimplemented"); },
+  projectRoot: () => { throw ("unimplemented"); },
 };
 
 export default browser;

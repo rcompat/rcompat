@@ -1,17 +1,21 @@
 import TemplateError from "#TemplateError";
 
-const brand = Symbol.for("std:error/code/v0");
+const brand = Symbol.for("std:error/CodeError/v0");
 
 export default class CodeError extends TemplateError {
-  readonly code: string;
-  readonly [brand] = true;
+  #code: string;
+  [brand] = true;
 
   constructor(
     code: string,
     strings: TemplateStringsArray,
     ...params: unknown[]) {
     super(strings, ...params);
-    this.code = code;
+    this.#code = code;
+  }
+
+  get code() {
+    return this.#code;
   }
 
   static is(error: unknown): error is CodeError {

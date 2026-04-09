@@ -15,15 +15,9 @@ function fs_resolve(path?: string) {
   return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
 }
 
-function project_root(relative_to?: string) {
-  assert.maybe.string(relative_to);
-
-  return fs_resolve(relative_to).discover("package.json");
-}
-
 const fs = Object.freeze({
   ref: (path: Path) => new FileRef(path),
-  isRef: (x: unknown): x is FileRef => x instanceof FileRef,
+  isRef: FileRef.is,
   cwd: () => fs_resolve(),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => new FileRef(path).list(opts),
@@ -42,14 +36,6 @@ const fs = Object.freeze({
   join: (path: Path, ...paths: Path[]) => new FileRef(path).join(...paths),
   discover: (path: Path, filename: string) => new FileRef(path).discover(filename),
   kind: (path: Path) => new FileRef(path).kind(),
-  project: {
-    root: project_root,
-    package: async (from?: string) => {
-      assert.maybe.string(from);
-
-      return (await project_root(from)).join("package.json");
-    },
-  },
 });
 
 export default fs;
@@ -61,5 +47,5 @@ export type {
   Kind,
   ListOptions,
   Path,
-  StreamSource,
+  StreamSource
 };

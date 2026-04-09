@@ -1,3 +1,4 @@
+import common from "#common";
 import type Runtime from "#Runtime";
 import path from "node:path";
 
@@ -19,6 +20,7 @@ const bun: Runtime = {
   args: Bun.argv.slice(2),
   exit: (code?: number) => process.exit(code),
   resolve,
+  ...common,
 };
 
 export default bun;

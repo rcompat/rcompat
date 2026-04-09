@@ -20,6 +20,10 @@
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"
   },
+  "dependencies": {
+    "@rcompat/fs": "workspace:^",
+    "@rcompat/type": "workspace:^"
+  },
   "type": "module",
   "imports": {
     "#*": {

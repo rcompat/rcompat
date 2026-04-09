@@ -25,6 +25,7 @@ export type { default as Mutable } from "#Mutable";
 export type { default as Newable } from "#Newable";
 export type { default as Not } from "#Not";
 export type { default as Nullish } from "#Nullish";
+export type { default as PackageJSON } from "#PackageJSON";
 export type { default as PartialDict } from "#PartialDict";
 export type { default as Primitive } from "#Primitive";
 export type { default as Print } from "#Print";
@@ -44,3 +45,4 @@ export type { default as UnknownFunction } from "#UnknownFunction";
 export type { default as UnknownMap } from "#UnknownMap";
 export type { default as UnknownSet } from "#UnknownSet";
 export type { default as Unpack } from "#Unpack";
+
