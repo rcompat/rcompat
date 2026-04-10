@@ -1,6 +1,7 @@
 import empty from "#empty";
 import entries from "#entries";
 import exclude from "#exclude";
+import filter from "#filter";
 import flatMap from "#flatMap";
 import get from "#get";
 import inflate from "#inflate";
@@ -16,6 +17,7 @@ export default {
   entries,
   empty,
   exclude,
+  filter,
   flatMap,
   get,
   inflate,
