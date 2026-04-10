@@ -1,6 +1,6 @@
-import fs from "@rcompat/fs";
+import runtime from "@rcompat/runtime";
 
-const packages = await (await fs.project.root()).join("packages").list(
+const packages = await (await runtime.projectRoot()).join("packages").list(
   { filter: info => info.kind === "directory" }
 );
 

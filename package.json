@@ -19,7 +19,7 @@
   },
   "private": true,
   "devDependencies": {
-    "@rcompat/fs": "workspace:^",
+    "@rcompat/runtime": "workspace:^",
     "@rcompat/test": "workspace:^",
     "@types/bun": "^1.3.11",
     "@types/busboy": "^1.5.4",
