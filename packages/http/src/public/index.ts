@@ -1,1 +1,3 @@
-export * from "#index";
+export type * from "#index";
+export { default } from "#index";
+

@@ -19,5 +19,5 @@ export default http;
 export type {
   Actions,
   Conf, Method, Server,
-  ValidStatus
+  ValidStatus,
 };
