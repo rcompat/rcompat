@@ -1,0 +1,13 @@
+{
+  "name": "@rcompat/scripts",
+  "description": "Standard library for JavaScript runtimes",
+  "type": "module",
+  "bugs": "https://github.com/rcompat/rcompat/issues",
+  "license": "MIT",
+  "files": [],
+  "repository": "https://github.com/rcompat/rcompat",
+  "private": true,
+  "devDependencies": {
+    "@rcompat/runtime": "workspace:^"
+  }
+}
