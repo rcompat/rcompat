@@ -32,7 +32,6 @@ export default class Webview {
   }
 
   #symbol(name: Symbol) {
-    // @ts-expect-error: nonsense
     return this.#platform.symbols[`webview_${name}`] as Function;
   }
 

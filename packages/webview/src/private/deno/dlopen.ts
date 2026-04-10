@@ -1,5 +1,5 @@
 import symbols from "#deno/symbols";
-import entries from "@rcompat/dict/entries";
+import dict from "@rcompat/dict";
 
 export default (path: string) => Deno.dlopen(path,
-  entries(symbols).keymap(([key]) => `webview_${key}` as any).get());
+  dict.mapKey(symbols, key => `webview_${key}`));

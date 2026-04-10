@@ -2,7 +2,7 @@ export type { default as AbstractNewable } from "#AbstractNewable";
 export type { default as Boolish } from "#Boolish";
 export type { default as DeepMutable } from "#DeepMutable";
 export type { default as Dict } from "#Dict";
-export type { default as EmptyObject } from "#EmptyObject";
+export type { default as EmptyDict } from "#EmptyDict";
 export type { default as Entry } from "#Entry";
 export type { default as ImpliedOptional } from "#ImpliedOptional";
 export type { default as Import } from "#Import";

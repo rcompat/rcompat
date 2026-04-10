@@ -2,7 +2,7 @@ import errors from "#errors";
 import type ShapeDescriptor from "#ShapeDescriptor";
 import type TypesOfTypeMap from "#TypesOfTypeMap";
 import is from "@rcompat/is";
-import type { Newable } from "@rcompat/type";
+import type { Dict, Newable } from "@rcompat/type";
 
 function assert(value: boolean, error: Error) {
   if (value === true) return;
@@ -63,7 +63,7 @@ function shape<T>(x: unknown, descriptor: ShapeDescriptor, error?: Error): T {
   for (const [key, type] of Object.entries(descriptor)) {
     const optional = type.endsWith("?");
     const base_type = type.replace("?", "") as keyof TypesOfTypeMap;
-    const value = (x as Record<string, unknown>)[key];
+    const value = (x as Dict)[key];
     if (optional && value === undefined) continue;
     assert(typeof value === base_type,
       error ?? errors.invalid_shape_property(key, base_type, value));

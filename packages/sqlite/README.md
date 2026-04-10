@@ -210,7 +210,7 @@ interface Changes {
 ### `Param`
 
 ```ts
-type Param = string | number | bigint | null | Uint8Array | Record<string, Param>;
+type Param = string | number | bigint | null | Uint8Array | Dict<Param>;
 ```
 
 ## Examples

@@ -175,7 +175,7 @@ process(Promise.resolve("hello")); // also works
 | `Dict<V>`        | `Record<string, V>`                                                    |
 | `PartialDict<V>` | `Partial<Record<string, V>>`                                           |
 | `Entry<K, T>`    | `[K, T]` tuple                                                         |
-| `EmptyObject`    | Empty object `{}`                                                      |
+| `EmptyDict  `    | Empty object `{}`                                                      |
 | `Maybe<T>`       | `T \| undefined`                                                       |
 | `Nullish`        | `null \| undefined`                                                    |
 | `Primitive`      | `bigint \| boolean \| null \| number \| string \| symbol \| undefined` |

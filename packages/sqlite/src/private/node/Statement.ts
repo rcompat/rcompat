@@ -2,6 +2,7 @@ import type Changes from "#api/Changes";
 import type Param from "#api/Param";
 import type PrimitiveParam from "#api/PrimitiveParam";
 import type Statement from "#api/Statement";
+import type { Dict } from "@rcompat/type";
 import type { StatementSync as NodeStatement } from "node:sqlite";
 
 export default class implements Statement {
@@ -16,7 +17,7 @@ export default class implements Statement {
       return this.#statement.get();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.get(first as Record<string, PrimitiveParam>);
+      return this.#statement.get(first as Dict<PrimitiveParam>);
     }
     return this.#statement.get(first, ...rest);
   }
@@ -26,7 +27,7 @@ export default class implements Statement {
       return this.#statement.all();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.all(first as Record<string, PrimitiveParam>);
+      return this.#statement.all(first as Dict<PrimitiveParam>);
     }
     return this.#statement.all(first, ...rest);
   }
@@ -36,7 +37,7 @@ export default class implements Statement {
       return this.#statement.run();
     }
     if (typeof first === "object" && first !== null) {
-      return this.#statement.run(first as Record<string, PrimitiveParam>);
+      return this.#statement.run(first as Dict<PrimitiveParam>);
     }
     return this.#statement.run(first, ...rest);
   }

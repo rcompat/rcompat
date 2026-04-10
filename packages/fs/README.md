@@ -300,7 +300,7 @@ class FileRouter {
   constructor(config: {
     directory?: string;
     extensions?: string[];
-    specials?: Record<string, boolean>;
+    specials?: Dict<boolean>;
   });
 
   load(): Promise<FileRouter>;

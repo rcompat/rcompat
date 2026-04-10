@@ -1,4 +1,4 @@
-import type EmptyObject from "#EmptyObject";
+import type EmptyDict from "#EmptyDict";
 import type IsClass from "#IsClass";
 import test from "@rcompat/test";
 
@@ -17,7 +17,7 @@ test.case("true", assert => {
   assert<IsClass<ReadableStream>>().type<true>();
   assert<IsClass<WritableStream>>().type<true>();
   assert<IsClass<FormData>>().type<true>();
-  assert<IsClass<EmptyObject>>().type<true>();
+  assert<IsClass<EmptyDict>>().type<true>();
 
   class Test { };
   assert<IsClass<Test>>().type<true>();
