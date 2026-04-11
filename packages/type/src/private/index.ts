@@ -1,4 +1,5 @@
 export type { default as AbstractNewable } from "#AbstractNewable";
+export type { default as Bag } from "#Bag";
 export type { default as Boolish } from "#Boolish";
 export type { default as DeepMutable } from "#DeepMutable";
 export type { default as Dict } from "#Dict";
