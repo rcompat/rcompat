@@ -22,6 +22,9 @@ function isBlob(x: unknown): x is Blob {
 function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
+function isBranded(x: unknown, brand: symbol) {
+  return isDict(x) && brand in x;
+}
 function isBytes(x: unknown): x is Uint8Array {
   return x instanceof Uint8Array;
 }
@@ -115,6 +118,7 @@ export default {
   blob: isBlob,
   boolish: strings.isBoolish,
   boolean: isBoolean,
+  branded: isBranded,
   bytes: isBytes,
   date: isDate,
   defined: isDefined,
