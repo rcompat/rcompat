@@ -21,6 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@rcompat/dict": "workspace:^",
+    "@rcompat/error": "workspace:^",
     "@rcompat/fs": "workspace:^",
     "@rcompat/type": "workspace:^"
   },
