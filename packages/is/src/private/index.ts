@@ -23,7 +23,7 @@ function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
 function isBranded(x: unknown, brand: symbol) {
-  return isDict(x) && Object.hasOwn(x, brand);
+  return object(x) && Object.hasOwn(x, brand);
 }
 function isBytes(x: unknown): x is Uint8Array {
   return x instanceof Uint8Array;
