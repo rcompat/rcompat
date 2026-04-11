@@ -12,8 +12,8 @@ function reached_fs_root() {
 function missing_path_for_copy(file: FileRef) {
   return t`cannot copy missing path ${file.path}`;
 }
-function unknown_kind() {
-  return t`unknown kind`;
+function unknown_type(path: string) {
+  return t`${path}: unknown type`;
 }
 function target_not_streamable(x: unknown) {
   return t`target ${x} not streamable`;
@@ -23,7 +23,7 @@ const errors = error.coded({
   value_not_streamable,
   reached_fs_root,
   missing_path_for_copy,
-  unknown_kind,
+  unknown_type,
   target_not_streamable,
 });
 

@@ -8,11 +8,11 @@ interface Init {
   platform: BunFile;
 }
 
-interface Size {
+type Size = {
   height: number;
   hint: 0 | 1 | 2 | 3;
   width: number;
-}
+};
 
 const default_size: Size = {
   height: 720,

@@ -1,3 +1,4 @@
+import assert from "@rcompat/assert";
 import type { Dict } from "@rcompat/type";
 
 export interface GetResultType<T, P, D extends number[] = []> {
@@ -12,7 +13,13 @@ export interface GetResultType<T, P, D extends number[] = []> {
   : undefined;
 }
 
-export default <T extends Dict, P extends string>(dict: T, path: P):
-  GetResultType<T, P>["result"] =>
-  path.split(".").reduce((subobject, key) =>
+function get<T extends Dict, P extends string>(dict: T, path: P):
+  GetResultType<T, P>["result"] {
+  assert.dict(dict);
+  assert.string(path);
+
+  return path.split(".").reduce((subobject, key) =>
     (subobject as never)[key], dict) as never;
+}
+
+export default get;

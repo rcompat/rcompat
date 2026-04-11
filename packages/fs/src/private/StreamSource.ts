@@ -14,9 +14,7 @@ function is_blob(x: any): x is Blob {
 
 type NamedStreamable<T = unknown> = { name: string } & Streamable<T>;
 
-function branded(x: unknown) {
-  return is.dict(x) && Object.hasOwn(x, brand);
-}
+type HasStream<T> = { stream(): ReadableStream<T> };
 
 export default class StreamSource {
   static get brand() {
@@ -24,7 +22,7 @@ export default class StreamSource {
   }
 
   static is<T>(x: unknown): x is Blob | ReadableStream<T> | Streamable<T> {
-    return branded(x) || is_stream(x) || is_blob(x);
+    return is.branded(x, brand) || is_stream(x) || is_blob(x);
   }
 
   static named<T>(x: unknown): x is NamedStreamable<T> {
@@ -32,7 +30,7 @@ export default class StreamSource {
   }
 
   static stream<T>(x: unknown): ReadableStream<T> {
-    if (branded(x)) return (x as { stream(): ReadableStream<T> }).stream();
+    if (is.branded(x, brand)) return (x as HasStream<T>).stream();
     if (is_blob(x)) return x.stream() as ReadableStream<T>;
     if (is_stream<T>(x)) return x;
     throw E.value_not_streamable(x);

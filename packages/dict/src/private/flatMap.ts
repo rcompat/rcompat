@@ -2,10 +2,10 @@ import entries from "#entries";
 import assert from "@rcompat/assert";
 import type { Dict } from "@rcompat/type";
 
-export default <T extends Dict>(
+function flatMap<T extends Dict>(
   dict: T,
   mapper: (k: keyof T, v: T[keyof T]) => [string, unknown] | [],
-): Dict => {
+): Dict {
   assert.dict(dict);
   assert.function(mapper);
 
@@ -15,5 +15,7 @@ export default <T extends Dict>(
         const result = mapper(k, v);
         return result.length === 0 ? [] : [result];
       }),
-  ) as Dict;
+  );
 };
+
+export default flatMap;

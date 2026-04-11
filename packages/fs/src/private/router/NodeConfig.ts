@@ -1,7 +1,9 @@
 import type { Dict } from "@rcompat/type";
 
-export default interface NodeConfig {
+type NodeConfig = {
   specials: Dict<{
     recursive: boolean;
   }>;
-}
+};
+
+export type { NodeConfig as default };

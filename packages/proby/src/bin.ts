@@ -65,7 +65,7 @@ const [file, group] = runtime.args;
 
 if (monorepo) {
   for (const repo of await root.join(packages).list({
-    filter: info => info.kind === "directory",
+    filter: info => info.type === "directory",
   })) {
     for (const dir of include) {
       await run(repo.join(dir), repo.name, file, group);

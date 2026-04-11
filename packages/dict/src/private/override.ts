@@ -1,10 +1,10 @@
 import assert from "@rcompat/assert";
 import is from "@rcompat/is";
+import type { Dict } from "@rcompat/type";
 
-type Proper = NonNullable<object>;
-
-const recurse = (t: unknown, u: unknown) =>
-  (is.dict(t) && is.dict(u) ? override(t as Proper, u as Proper) : u) ?? t;
+function recurse(t: unknown, u: unknown) {
+  return (is.dict(t) && is.dict(u) ? override(t as Dict, u as Dict) : u) ?? t;
+}
 
 /**
  * Override an object with another recursively.
@@ -18,7 +18,7 @@ const recurse = (t: unknown, u: unknown) =>
  * @param over the overriding object
  * @returns the result of overriding `base` with `over` recursively
  */
-const override = <T extends Proper, U extends Proper>(base: T, over: U): T & U => {
+const override = <T extends Dict, U extends Dict>(base: T, over: U): T & U => {
   assert.dict(base);
   assert.dict(over);
 

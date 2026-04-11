@@ -9,6 +9,7 @@ import StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
 import hash from "@rcompat/crypto/hash";
+import is from "@rcompat/is";
 import type {
   JSONValue, MaybePromise, Printable, StringClass, StringReplacer,
 } from "@rcompat/type";
@@ -24,7 +25,7 @@ export type FileInfo = {
   name: string;
   extension: string;
   fullExtension: string;
-  kind: "file" | "directory" | "link";
+  type: "file" | "directory" | "link";
 };
 
 export type ListOptions = {
@@ -65,8 +66,8 @@ export default class FileRef
     return lstat(this.#path);
   }
 
-  static is(ref: unknown): ref is FileRef {
-    return typeof ref === "object" && ref !== null && brand in ref;
+  static is(x: unknown): x is FileRef {
+    return is.branded(x, brand);
   }
 
   [Symbol.replace](string: string, replacement: string | StringReplacer) {
@@ -100,13 +101,13 @@ export default class FileRef
     return paths.length === 1 ? file : file.join(...rest);
   }
 
-  async kind() {
+  async type() {
     try {
       const stats = await this.#stats();
       if (stats.isFile()) return "file";
       if (stats.isDirectory()) return "directory";
       if (stats.isSymbolicLink()) return "link";
-      throw E.unknown_kind();
+      throw E.unknown_type(this.#path);
     } catch (error) {
       if ((error as any)?.code === "ENOENT") return null;
       throw error;
@@ -114,7 +115,7 @@ export default class FileRef
   }
 
   async list(options?: ListOptions): Promise<FileRef[]> {
-    const k = await this.kind();
+    const k = await this.type();
     if (k !== "directory") return [];
 
     const { recursive = false, filter } = options ?? {};
@@ -128,11 +129,11 @@ export default class FileRef
 
     for (const name of names) {
       const ref = this.join(name);
-      const kind = await ref.kind();
+      const type = await ref.type();
 
-      if (kind === null) continue;
+      if (type === null) continue;
 
-      if (recursive && kind === "directory") {
+      if (recursive && type === "directory") {
         results = results.concat(await ref.list(options));
       }
 
@@ -141,7 +142,7 @@ export default class FileRef
         name,
         extension: ref.extension,
         fullExtension: ref.fullExtension,
-        kind,
+        type: type,
       };
       if (!match || await match(info)) results.push(ref);
     }
@@ -153,7 +154,7 @@ export default class FileRef
     const user = options?.filter;
     return this.list({
       ...options,
-      filter: e => e.kind === "file" &&
+      filter: e => e.type === "file" &&
         (user === undefined ? true :
           user instanceof RegExp ? user.test(e.path) :
             user(e)),
@@ -164,7 +165,7 @@ export default class FileRef
     const user = options?.filter;
     return this.list({
       ...options,
-      filter: e => e.kind === "directory" &&
+      filter: e => e.type === "directory" &&
         (user === undefined ? true :
           user instanceof RegExp ? user.test(e.path) :
             user(e)),
@@ -267,16 +268,16 @@ export default class FileRef
     assert.maybe.function(filter);
 
     const path = this.#path;
-    const kind = await this.kind();
+    const type = await this.type();
 
-    if (kind === null) throw E.missing_path_for_copy(this);
+    if (type === null) throw E.missing_path_for_copy(this);
 
-    if (kind === "link") {
+    if (type === "link") {
       await new FileRef(await realpath(path)).copy(to, filter);
       return;
     }
 
-    if (kind === "directory") {
+    if (type === "directory") {
       // recreate directory if necessary
       await to.remove();
       await to.create();
@@ -285,11 +286,11 @@ export default class FileRef
       const children = await this.list();
 
       await Promise.all(children.map(async child => {
-        const child_kind = await child.kind();
-        if (child_kind === null) return;
+        const child_type = await child.type();
+        if (child_type === null) return;
 
         // always recurse into directories
-        if (child_kind === "directory") {
+        if (child_type === "directory") {
           await child.copy(to.join(child.name), filter);
           return;
         }
@@ -301,7 +302,7 @@ export default class FileRef
             name: child.name,
             extension: child.extension,
             fullExtension: child.fullExtension,
-            kind: child_kind,
+            type: child_type,
           };
           if (!await filter(info)) return;
         }

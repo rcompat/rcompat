@@ -2,10 +2,10 @@ import entries from "#entries";
 import assert from "@rcompat/assert";
 import type { Dict } from "@rcompat/type";
 
-export default <T extends Dict>(
+function filter<T extends Dict>(
   dict: T,
   predicate: (k: keyof T, v: T[keyof T]) => boolean,
-): Partial<T> => {
+): Partial<T> {
   assert.dict(dict);
   assert.function(predicate);
 
@@ -13,3 +13,5 @@ export default <T extends Dict>(
     entries(dict).filter(([k, v]) => predicate(k, v)),
   ) as Partial<T>;
 };
+
+export default filter;

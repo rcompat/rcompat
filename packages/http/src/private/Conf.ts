@@ -1,6 +1,6 @@
 import type { FileRef } from "@rcompat/fs";
 
-export default interface Conf {
+type Conf = {
   host: string;
   port: number;
   ssl?: {
@@ -8,4 +8,6 @@ export default interface Conf {
     key: FileRef;
   };
   timeout?: number;
-}
+};
+
+export type { Conf as default };

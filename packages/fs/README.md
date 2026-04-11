@@ -115,7 +115,7 @@ const file = new fs.FileRef("./src");
 
 await file.exists(); // true/false
 await file.modified(); // modification time (ms)
-await file.kind(); // "file" | "directory" | "link" | null
+await file.type(); // "file" | "directory" | "link" | null
 ```
 
 #### Directory operations
@@ -261,7 +261,7 @@ class FileRef extends Streamable {
 
   // file info
   exists(): Promise<boolean>;
-  kind(): Promise<"file" | "directory" | "link" | null>;
+  type(): Promise<"file" | "directory" | "link" | null>;
   modified(): Promise<number>;
 
   // directory operations
@@ -289,7 +289,7 @@ type FileInfo = {
   path: string;
   name: string;
   extension: string;
-  kind: "file" | "directory" | "link";
+  type: "file" | "directory" | "link";
 };
 ```
 
