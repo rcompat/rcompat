@@ -9,5 +9,9 @@
       "bun",
       "deno"
     ]
-  }
+  },
+  "include": [
+    "${configDir}/src",
+    "${configDir}/scripts"
+  ]
 }
