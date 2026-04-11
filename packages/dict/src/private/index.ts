@@ -3,6 +3,7 @@ import entries from "#entries";
 import exclude from "#exclude";
 import filter from "#filter";
 import flatMap from "#flatMap";
+import $new from "#new";
 import get from "#get";
 import inflate from "#inflate";
 import keys from "#keys";
@@ -22,6 +23,7 @@ export default {
   get,
   inflate,
   keys,
+  new: $new,
   map,
   mapKey,
   nullproto,
