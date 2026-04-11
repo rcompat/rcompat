@@ -1,5 +1,6 @@
-const brand = Symbol.for("std:error/template/v0");
 import is from "@rcompat/is";
+
+const brand = Symbol.for("std:error/TemplateError/v0");
 
 export default class TemplateError extends Error {
   #strings: TemplateStringsArray;
