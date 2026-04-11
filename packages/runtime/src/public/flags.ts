@@ -1,6 +1,7 @@
 import type Runtime from "#Runtime";
 import dict from "@rcompat/dict";
 import error from "@rcompat/error";
+import type { Dict } from "@rcompat/type";
 
 function flag_missing(flag: string) {
   return error.template`flag ${flag} missing`;
@@ -10,7 +11,7 @@ const errors = error.coded({
   flag_missing,
 });
 
-function find(flags: Record<string, string>, key: string): string | undefined {
+function find(flags: Dict<string>, key: string): string | undefined {
   return Object.hasOwn(flags, key) ? flags[key] : undefined;
 }
 
@@ -25,15 +26,15 @@ const flags_bag: (args: string[]) => Runtime["flags"] = args => {
   const flags = Object.fromEntries(entries);
 
   return dict.new({
-    get(key: string) {
+    get(key) {
       const value = find(flags, key);
       if (value === undefined) throw errors.flag_missing(key);
       return value;
     },
-    try(key: string) {
+    try(key) {
       return find(flags, key);
     },
-    has(key: string) {
+    has(key) {
       return find(flags, key) !== undefined;
     },
     *[Symbol.iterator]() {

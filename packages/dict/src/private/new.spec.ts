@@ -30,7 +30,6 @@ test.case("cannot be modified", assert => {
 });
 
 test.case("types", assert => {
-  assert($new({ foo: "bar" })).type<Readonly<{ foo: string }>>();
-  assert($new({ foo: "bar", baz: 1 }))
-    .type<Readonly<{ foo: string; baz: number }>>();
+  assert($new({ foo: "bar" })).type<{ foo: string }>();
+  assert($new({ foo: "bar", baz: 1 })).type<{ foo: string; baz: number }>();
 });
