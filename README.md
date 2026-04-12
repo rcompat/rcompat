@@ -26,7 +26,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/is](packages/is)                 | Identity checks         |
 |[@rcompat/kv](packages/kv)                 | Key-value stores        |
 |[@rcompat/proby](packages/proby)           | Test runner             |
-|[@rcompat/runtime](packages/runtime)       | Runtime context         |
+|[@rcompat/runtime](packages/runtime)       | Runtime environment     |
 |[@rcompat/sql](packages/sql)               | SQL                     |
 |[@rcompat/stream](packages/stream)         | Streams                 |
 |[@rcompat/string](packages/string)         | Strings                 |
