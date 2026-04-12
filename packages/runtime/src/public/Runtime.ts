@@ -8,6 +8,7 @@ export default interface Runtime {
   args: string[];
   exit: (code?: number) => never;
   resolve: (specifier: string, from: string) => string;
+  toRequire: (path: Path) => NodeJS.Require;
   packageJSON: (from?: Path) => Promise<PackageJSON>;
   projectRoot: (from?: Path) => Promise<FileRef>;
   flags: Bag & { many(key: string): string[] };

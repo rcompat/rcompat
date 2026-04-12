@@ -11,6 +11,7 @@ const browser: Runtime = dict.new({
   args,
   exit: () => { throw ("unimplemented"); },
   resolve: () => { throw ("unimplemented"); },
+  toRequire: () => { throw ("unimplemented"); },
   packageJSON: () => { throw ("unimplemented"); },
   projectRoot: () => { throw ("unimplemented"); },
   flags: flags(args),
