@@ -1,5 +1,5 @@
 import type { FileRef, Path } from "@rcompat/fs";
-import type { Bag, PackageJSON } from "@rcompat/type";
+import type { Arch, Bag, OS, PackageJSON } from "@rcompat/type";
 
 export default interface Runtime {
   name: string;
@@ -12,4 +12,6 @@ export default interface Runtime {
   packageJSON: (from?: Path) => Promise<PackageJSON>;
   projectRoot: (from?: Path) => Promise<FileRef>;
   flags: Bag & { many(key: string): string[] };
+  os: OS | undefined;
+  arch: Arch | undefined;
 }

@@ -9,6 +9,8 @@ const browser: Runtime = dict.new({
   bin: "",
   script: "",
   args,
+  os: undefined,
+  arch: undefined,
   exit: () => { throw ("unimplemented"); },
   resolve: () => { throw ("unimplemented"); },
   toRequire: () => { throw ("unimplemented"); },
