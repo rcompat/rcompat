@@ -2,6 +2,7 @@ import assert from "@rcompat/assert";
 import color from "@rcompat/cli/color";
 import print from "@rcompat/cli/print";
 import type { FileRef } from "@rcompat/fs";
+import fs from "@rcompat/fs";
 import type { Env } from "@rcompat/test";
 import repository from "@rcompat/test/repository";
 import { Worker } from "node:worker_threads";
@@ -85,9 +86,15 @@ export default async (
   target?: string,
   group?: string,
 ) => {
+  const resolved = target === undefined ? undefined : fs.resolve(target).path;
   const files = await root.list({
     recursive: true,
-    filter: info => extensions.some(extension => info.path.endsWith(extension)),
+    filter: info => {
+      const path = info.path;
+      if (resolved === undefined) return extensions.some(e => path.endsWith(e));
+      if (extensions.some(e => resolved.endsWith(e))) return path.endsWith(resolved);
+      return info.path.startsWith(resolved) && extensions.some(e => path.endsWith(e));
+    },
   });
 
   if (files.length === 0) return;
@@ -95,7 +102,6 @@ export default async (
   if (subrepo !== undefined) print(`${color.blue(subrepo)}\n`);
 
   for (const file of files) {
-    if (target !== undefined && !file.path.endsWith(target)) continue;
 
     const env_file = await file.sibling(
       file.name.replace(/\.spec\.(ts|js)$/, ".env.ts"),
