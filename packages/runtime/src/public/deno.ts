@@ -2,6 +2,7 @@ import common from "#common";
 import flags from "#flags";
 import type Runtime from "#Runtime";
 import dict from "@rcompat/dict";
+import fs from "@rcompat/fs";
 import type { Arch, Dict, OS } from "@rcompat/type";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -35,6 +36,7 @@ const deno: Runtime = dict.new({
   name: "deno",
   bin: Deno.execPath(),
   script: Deno.mainModule,
+  cwd: () => fs.ref(Deno.cwd()),
   args,
   os: oses[Deno.build.os],
   arch: archs[Deno.build.arch],

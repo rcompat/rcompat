@@ -4,18 +4,23 @@ import dict from "@rcompat/dict";
 
 const args: string[] = [];
 
+const unimplemented = () => {
+  throw new Error("unimplemented");
+};
+
 const browser: Runtime = dict.new({
   name: "browser",
   bin: "",
   script: "",
+  cwd: unimplemented,
   args,
   os: undefined,
   arch: undefined,
-  exit: () => { throw ("unimplemented"); },
-  resolve: () => { throw ("unimplemented"); },
-  toRequire: () => { throw ("unimplemented"); },
-  packageJSON: () => { throw ("unimplemented"); },
-  projectRoot: () => { throw ("unimplemented"); },
+  exit: unimplemented,
+  resolve: unimplemented,
+  toRequire: unimplemented,
+  packageJSON: unimplemented,
+  projectRoot: unimplemented,
   flags: flags(args),
 });
 

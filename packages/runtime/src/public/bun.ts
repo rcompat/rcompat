@@ -2,6 +2,7 @@ import common from "#common";
 import flags from "#flags";
 import type Runtime from "#Runtime";
 import dict from "@rcompat/dict";
+import fs from "@rcompat/fs";
 import type { Arch, Dict, OS } from "@rcompat/type";
 import path from "node:path";
 
@@ -32,6 +33,7 @@ const bun: Runtime = dict.new({
   name: "bun",
   bin: Bun.argv[0],
   script: Bun.argv[1],
+  cwd: () => fs.ref(process.cwd()),
   args,
   os: oses[process.platform],
   arch: archs[process.arch],
