@@ -8,7 +8,7 @@ export default class TemplateError extends Error {
   [brand] = true;
 
   constructor(strings: TemplateStringsArray, ...params: unknown[]) {
-    super(strings.join("\u2026"));
+    super(strings.reduce((acc, str, i) => acc + (params[i - 1] ?? "") + str));
     this.#strings = strings;
     this.#params = params;
   }

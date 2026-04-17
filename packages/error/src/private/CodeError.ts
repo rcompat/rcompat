@@ -18,8 +18,11 @@ export default class CodeError extends TemplateError {
     return is.branded(x, brand);
   }
 
+  static matches(x: unknown, code: Code): x is CodeError {
+    return CodeError.is(x) && x.code === code;
+  }
+
   get code() {
     return this.#code;
   }
-
 }
