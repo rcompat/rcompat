@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/runtime",
-  "version": "0.14.3",
+  "version": "0.14.4",
   "description": "Standard library runtime environment",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
