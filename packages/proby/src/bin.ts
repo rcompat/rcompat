@@ -2,33 +2,9 @@
 
 import Schema from "#Schema";
 import env from "@rcompat/env";
-import type { FileRef } from "@rcompat/fs";
-import fs from "@rcompat/fs";
 import io from "@rcompat/io";
 import is from "@rcompat/is";
 import runtime from "@rcompat/runtime";
-
-type TSConfig = {
-  compilerOptions?: {
-    customConditions?: string[];
-  };
-  extends?: string;
-};
-
-async function read_conditions(file: FileRef): Promise<string[]> {
-  const json = await file.json<TSConfig>();
-
-  if (json.compilerOptions?.customConditions?.length) {
-    return json.compilerOptions.customConditions;
-  }
-
-  if (json.extends === undefined) {
-    return [];
-  }
-
-  const next = runtime.resolve(json.extends, file.directory.path);
-  return read_conditions(fs.ref(next));
-}
 
 const root = await runtime.projectRoot();
 const ts_config_file = root.join("proby.config.ts");
@@ -40,11 +16,8 @@ const user_config = await ts_config_file.exists()
     : {};
 
 const { include, packages, monorepo } = Schema.parse(user_config);
-const ts_config = root.join("tsconfig.json");
 
-const conditions = await ts_config.exists()
-  ? await read_conditions(ts_config)
-  : [];
+const conditions = await runtime.conditions(root);
 const conditions_flags = conditions
   .map(c => ` --conditions="${c}"`)
   .join("");

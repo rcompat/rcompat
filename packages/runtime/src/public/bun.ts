@@ -1,7 +1,9 @@
 import common from "#common";
-import flags from "#flags";
+import conditions from "#conditions";
+import flags_bag from "#flags";
 import type Runtime from "#Runtime";
 import dict from "@rcompat/dict";
+import type { Path } from "@rcompat/fs";
 import fs from "@rcompat/fs";
 import type { Arch, Dict, OS } from "@rcompat/type";
 import path from "node:path";
@@ -29,6 +31,9 @@ const archs: Dict<Arch> = {
   x64: "x64",
   arm64: "arm64",
 };
+
+const flags = flags_bag(args);
+
 const bun: Runtime = dict.new({
   name: "bun",
   bin: Bun.argv[0],
@@ -39,7 +44,8 @@ const bun: Runtime = dict.new({
   arch: archs[process.arch],
   exit: (code?: number) => process.exit(code),
   resolve,
-  flags: flags(args),
+  flags,
+  conditions: (from?: Path) => conditions(resolve, flags, from),
   ...common,
 });
 

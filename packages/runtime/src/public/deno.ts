@@ -1,7 +1,9 @@
 import common from "#common";
-import flags from "#flags";
+import conditions from "#conditions";
+import flags_bag from "#flags";
 import type Runtime from "#Runtime";
 import dict from "@rcompat/dict";
+import type { Path } from "@rcompat/fs";
 import fs from "@rcompat/fs";
 import type { Arch, Dict, OS } from "@rcompat/type";
 import { createRequire } from "node:module";
@@ -31,6 +33,7 @@ const archs: Dict<Arch> = {
 };
 
 const args = Deno.args;
+const flags = flags_bag(args);
 
 const deno: Runtime = dict.new({
   name: "deno",
@@ -42,7 +45,8 @@ const deno: Runtime = dict.new({
   arch: archs[Deno.build.arch],
   exit: (code?: number) => Deno.exit(code),
   resolve,
-  flags: flags(args),
+  flags,
+  conditions: (from?: Path) => conditions(resolve, flags, from),
   ...common,
 });
 

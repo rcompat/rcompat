@@ -9,7 +9,7 @@ export type Config = {
 const defaults: Config = {
   monorepo: false,
   packages: "packages",
-  include: ["src"],
+  include: ["src", "test"],
 };
 
 export default {

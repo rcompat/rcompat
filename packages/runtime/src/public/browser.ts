@@ -21,6 +21,7 @@ const browser: Runtime = dict.new({
   toRequire: unimplemented,
   packageJSON: unimplemented,
   projectRoot: unimplemented,
+  conditions: unimplemented,
   flags: flags(args),
 });
 
