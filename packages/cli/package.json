@@ -22,27 +22,20 @@
   },
   "dependencies": {
     "@rcompat/fs": "workspace:^",
-    "@rcompat/io": "workspace:^"
+    "@rcompat/io": "workspace:^",
+    "@rcompat/is": "workspace:^"
   },
   "type": "module",
   "imports": {
-    "#color/*": {
-      "@rcompat/source": "./src/private/color/*.ts",
-      "default": "./lib/private/color/*.js"
-    },
     "#*": {
       "@rcompat/source": "./src/private/*.ts",
       "default": "./lib/private/*.js"
     }
   },
   "exports": {
-    "./color/*": {
-      "@rcompat/source": "./src/public/color/*.ts",
-      "default": "./lib/public/color/*.js"
-    },
-    "./*": {
-      "@rcompat/source": "./src/public/*.ts",
-      "default": "./lib/public/*.js"
+    ".": {
+      "@rcompat/source": "./src/public/index.ts",
+      "default": "./lib/public/index.js"
     }
   }
 }

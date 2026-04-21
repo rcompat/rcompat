@@ -121,7 +121,7 @@ export default class FileRef
     const { recursive = false, filter } = options ?? {};
     const match: Filter | undefined =
       filter === undefined ? undefined :
-        filter instanceof RegExp ? info => filter.test(info.path) :
+        is.regexp(filter) ? info => filter.test(info.path) :
           filter;
 
     const names = await readdir(this.#path);
@@ -156,8 +156,7 @@ export default class FileRef
       ...options,
       filter: e => e.type === "file" &&
         (user === undefined ? true :
-          user instanceof RegExp ? user.test(e.path) :
-            user(e)),
+          is.regexp(user) ? user.test(e.path) : user(e)),
     });
   }
 
@@ -167,8 +166,7 @@ export default class FileRef
       ...options,
       filter: e => e.type === "directory" &&
         (user === undefined ? true :
-          user instanceof RegExp ? user.test(e.path) :
-            user(e)),
+          is.regexp(user) ? user.test(e.path) : user(e)),
     });
   }
 

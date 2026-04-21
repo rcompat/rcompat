@@ -1,8 +1,9 @@
 import io from "@rcompat/io";
+import is from "@rcompat/is";
 
 let active: null | Promise<null | string> = null;
 
-export default function readLine(): Promise<null | string> {
+export default function readline(): Promise<null | string> {
   if (active) return active;
 
   try { io.stdout.write("\x1B[?25h"); } catch { }
@@ -25,7 +26,7 @@ export default function readLine(): Promise<null | string> {
     const onErr = () => finish(null);
 
     const onData = (chunk: unknown) => {
-      const s = typeof chunk === "string"
+      const s = is.string(chunk)
         ? chunk
         : Buffer.from(chunk as any).toString("utf8");
 

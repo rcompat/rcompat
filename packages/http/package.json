@@ -28,6 +28,7 @@
     "@rcompat/dict": "workspace:^",
     "@rcompat/fn": "workspace:^",
     "@rcompat/fs": "workspace:^",
+    "@rcompat/is": "workspace:^",
     "@rcompat/type": "workspace:^",
     "busboy": "^1.6.0",
     "ws": "^8.20.0"

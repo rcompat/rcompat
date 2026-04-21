@@ -1,8 +1,8 @@
 import assert from "@rcompat/assert";
-import color from "@rcompat/cli/color";
-import print from "@rcompat/cli/print";
+import cli from "@rcompat/cli";
 import type { FileRef } from "@rcompat/fs";
 import fs from "@rcompat/fs";
+import is from "@rcompat/is";
 import type { Env } from "@rcompat/test";
 import repository from "@rcompat/test/repository";
 import { Worker } from "node:worker_threads";
@@ -10,31 +10,29 @@ import { Worker } from "node:worker_threads";
 const extensions = [".spec.ts", ".spec.js"];
 const base_scalars = ["boolean", "number", "string", "symbol"];
 
-function stringify_scalar(value: unknown) {
-  if (value === null) return "null";
-  if (value === undefined) return "undefined";
-  const type = typeof value;
-  if (base_scalars.includes(type)) return value.toString();
-  if (typeof value === "bigint") return value.toString() + "n";
-  if (typeof value === "function") {
-    return `[Function${value.name ? `: ${value.name}` : ""}]`;
-  }
+function stringify_scalar(x: unknown) {
+  if (is.null(x)) return "null";
+  if (is.undefined(x)) return "undefined";
+  const type = typeof x;
+  if (base_scalars.includes(type)) return x.toString();
+  if (is.bigint(x)) return x.toString() + "n";
+  if (is.function(x)) return `[Function${is.text(x.name) ? `: ${x.name}` : ""}]`;
 }
 
-function stringify(value: unknown) {
-  const scalar = stringify_scalar(value);
-  if (scalar !== undefined) return scalar;
-  if (typeof value === "object") {
+function stringify(x: unknown) {
+  const scalar = stringify_scalar(x);
+  if (is.defined(scalar)) return scalar;
+  if (is.object(x)) {
     try {
-      return JSON.stringify(value, (_, sub) => {
+      return JSON.stringify(x, (_, sub) => {
         const s = stringify_scalar(sub);
-        return s !== undefined ? s : sub;
+        return is.defined(s) ? s : sub;
       });
     } catch {
       return "[Object (circular or unserializable)]";
     }
   }
-  return String(value);
+  return String(x);
 }
 
 async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
@@ -61,14 +59,14 @@ async function run_in_worker(spec: FileRef, env: FileRef): Promise<void> {
     worker.on("message", ({ results }) => {
       const failed = results.filter((r: any) => !r.passed);
       for (const result of results) {
-        print(result.passed ? color.green("o") : color.red("x"));
+        cli.print(result.passed ? cli.fg.green("o") : cli.fg.red("x"));
       }
       if (failed.length > 0) {
-        print("\n");
+        cli.print("\n");
         for (const result of failed) {
-          print(`${spec.debase(spec.directory)} ${color.red(result.name)}\n`);
-          print(`  expected  ${stringify(result.expected)}\n`);
-          print(`  actual    ${stringify(result.actual)}\n`);
+          cli.print(`${spec.debase(spec.directory)} ${cli.fg.red(result.name)}\n`);
+          cli.print(`  expected  ${stringify(result.expected)}\n`);
+          cli.print(`  actual    ${stringify(result.actual)}\n`);
         }
       }
     });
@@ -86,12 +84,12 @@ export default async (
   target?: string,
   group?: string,
 ) => {
-  const resolved = target === undefined ? undefined : fs.resolve(target).path;
+  const resolved = is.defined(target) ? fs.resolve(target).path : undefined;
   const files = await root.list({
     recursive: true,
     filter: info => {
       const path = info.path;
-      if (resolved === undefined) return extensions.some(e => path.endsWith(e));
+      if (is.undefined(resolved)) return extensions.some(e => path.endsWith(e));
       if (extensions.some(e => resolved.endsWith(e))) return path.endsWith(resolved);
       return info.path.startsWith(resolved) && extensions.some(e => path.endsWith(e));
     },
@@ -99,7 +97,7 @@ export default async (
 
   if (files.length === 0) return;
 
-  if (subrepo !== undefined) print(`${color.blue(subrepo)}\n`);
+  if (is.defined(subrepo)) cli.print(`${cli.fg.blue(subrepo)}\n`);
 
   for (const file of files) {
 
@@ -127,14 +125,14 @@ export default async (
       const failed: [any, any][] = [];
 
       for await (const test of suite.run()) {
-        if (group !== undefined && test.group !== group) continue;
+        if (is.defined(group) && test.group !== group) continue;
 
         for (const result of test.results) {
           if (result.passed) {
-            print(color.green("o"));
+            cli.print(cli.fg.green("o"));
           } else {
             failed.push([test, result]);
-            print(color.red("x"));
+            cli.print(cli.fg.red("x"));
           }
         }
       }
@@ -142,11 +140,11 @@ export default async (
       await suite.end();
 
       if (failed.length > 0) {
-        print("\n");
+        cli.print("\n");
         for (const [test, result] of failed) {
-          print(`${suite.file.debase(root)} ${color.red(test.name)} \n`);
-          print(`  expected  ${stringify(result.expected)}\n`);
-          print(`  actual    ${stringify(result.actual)}\n`);
+          cli.print(`${suite.file.debase(root)} ${cli.fg.red(test.name)} \n`);
+          cli.print(`  expected  ${stringify(result.expected)}\n`);
+          cli.print(`  actual    ${stringify(result.actual)}\n`);
         }
       }
     } finally {
@@ -154,5 +152,5 @@ export default async (
     }
   }
 
-  print("\n");
+  cli.print("\n");
 };

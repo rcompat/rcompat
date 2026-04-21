@@ -1,7 +1,9 @@
+import is from "@rcompat/is";
+
 type TemplateStrings = string | TemplateStringsArray;
 
 export default function dedent(string: TemplateStrings, ...values: unknown[]) {
-  const raw = typeof string === "string" ? [string] : string.raw;
+  const raw = is.string(string) ? [string] : string.raw;
 
   // Interpolate values into template string
   let result = "";

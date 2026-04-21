@@ -1,5 +1,5 @@
-import color from "#color";
+import fg from "#fg";
 
 export default function outro(message?: string) {
-  if (message) process.stdout.write(`${color.green("✔")} ${message}\n`);
+  if (message) process.stdout.write(`${fg.green("✔")} ${message}\n`);
 };

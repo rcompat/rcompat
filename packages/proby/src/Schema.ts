@@ -1,3 +1,4 @@
+import is from "@rcompat/is";
 import type { Dict } from "@rcompat/type";
 
 export type Config = {
@@ -15,10 +16,9 @@ const defaults: Config = {
 export default {
   parse(input: Dict = {}): Config {
     return {
-      monorepo: typeof input.monorepo === "boolean" ? input.monorepo : defaults.monorepo,
-      packages: typeof input.packages === "string" ? input.packages : defaults.packages,
-      include: Array.isArray(input.include) && input.include.every((x: unknown) =>
-        typeof x === "string")
+      monorepo: is.boolean(input.monorepo) ? input.monorepo : defaults.monorepo,
+      packages: is.string(input.packages) ? input.packages : defaults.packages,
+      include: is.array(input.include) && input.include.every(is.string)
         ? input.include
         : defaults.include,
     };

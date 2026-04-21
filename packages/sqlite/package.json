@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@rcompat/fs": "workspace:^",
+    "@rcompat/is": "workspace:^",
     "@rcompat/type": "workspace:^"
   },
   "type": "module",
