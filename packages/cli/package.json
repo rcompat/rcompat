@@ -1,6 +1,6 @@
 {
   "name": "@rcompat/cli",
-  "version": "0.22.0",
+  "version": "0.22.1",
   "description": "Standard library CLI",
   "bugs": "https://github.com/rcompat/rcompat/issues",
   "license": "MIT",
