@@ -32,4 +32,6 @@ const prompt = {
   text,
 };
 
+export { CANCEL };
+
 export default prompt;
