@@ -1,12 +1,11 @@
 import fg from "#fg";
 import readline from "#prompts/readline";
+import CANCEL from "#prompts/symbol";
 import write from "#prompts/write";
 import is from "@rcompat/is";
 
 type Args = { initial?: boolean; message: string };
 type Return = Promise<boolean | typeof CANCEL>;
-
-const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
 
 export default async function confirm(args: Args): Return {
   const { initial, message } = args;

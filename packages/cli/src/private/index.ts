@@ -1,9 +1,7 @@
 import bg from "#bg";
 import fg from "#fg";
 import print from "#print";
-import prompt, { CANCEL } from "#prompt";
-
-void CANCEL;
+import prompt from "#prompt";
 
 const cli = {
   bg,

@@ -7,6 +7,7 @@ export type { default as TextOptions } from "#prompts/TextOptions";
 import cancel from "#prompts/cancel";
 import confirm from "#prompts/confirm";
 import intro from "#prompts/intro";
+import isCancel from "#prompts/is-cancel";
 import multiselect from "#prompts/multiselect";
 import outro from "#prompts/outro";
 import readline from "#prompts/readline";
@@ -14,11 +15,6 @@ import select from "#prompts/select";
 import spinner from "#prompts/spinner";
 import text from "#prompts/text";
 
-const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
-
-function isCancel(v: unknown): v is typeof CANCEL {
-  return v === CANCEL;
-}
 const prompt = {
   cancel,
   confirm,
@@ -26,12 +22,10 @@ const prompt = {
   isCancel,
   multiselect,
   outro,
-  readLine: readline,
+  readline,
   select,
   spinner,
   text,
 };
-
-export { CANCEL };
 
 export default prompt;

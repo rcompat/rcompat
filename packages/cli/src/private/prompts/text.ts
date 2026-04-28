@@ -1,10 +1,10 @@
 import fg from "#fg";
 import readline from "#prompts/readline";
+import CANCEL from "#prompts/symbol";
 import type Args from "#prompts/TextOptions";
 import write from "#prompts/write";
 import is from "@rcompat/is";
 
-const CANCEL = Symbol.for("@rcompat/cli/prompts.CANCEL");
 type Return = Promise<string | typeof CANCEL>;
 
 const render = (msg: string, initial?: string) => {
