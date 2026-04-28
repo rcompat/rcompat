@@ -5,11 +5,11 @@ import parse from "#parse";
 import type Path from "#Path";
 import type RemoveOptions from "#RemoveOptions";
 import separator from "#separator";
-import StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
 import hash from "@rcompat/crypto/hash";
 import is from "@rcompat/is";
+import symbol from "@rcompat/symbol";
 import type {
   JSONValue, MaybePromise, Printable, StringClass, StringReplacer,
 } from "@rcompat/type";
@@ -51,11 +51,14 @@ export default class FileRef
   implements StringClass, Printable {
   #path: string;
   [brand] = true;
-  [StreamSource.brand] = true;
 
   constructor(path: Path) {
     assert.defined(path);
     this.#path = parse(as_string(path));
+  }
+
+  [symbol.stream]() {
+    return this.stream();
   }
 
   get Name() {

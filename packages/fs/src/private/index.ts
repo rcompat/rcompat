@@ -5,12 +5,16 @@ import type FileType from "#FileType";
 import parse from "#parse";
 import type Path from "#Path";
 import type Streamable from "#Streamable";
-import StreamSource from "#StreamSource";
 import type WritableInput from "#WritableInput";
 import assert from "@rcompat/assert";
+import dict from "@rcompat/dict";
 import is from "@rcompat/is";
+import symbol from "@rcompat/symbol";
 import type { JSONValue } from "@rcompat/type";
 import { resolve } from "node:path";
+
+const is_streamable = (x: unknown) =>
+  is.blob(x) || is.stream(x) || is.branded(x, symbol.stream);
 
 function fs_resolve(path?: string) {
   assert.maybe.string(path);
@@ -22,11 +26,15 @@ function ref(path: Path) {
   return new FileRef(path);
 }
 
-const fs = Object.freeze({
+function isStream(x: unknown): boolean {
+  return is_streamable(x);
+}
+
+const fs = dict.new({
   ref,
   isRef: FileRef.is,
-  isStream: StreamSource.is,
-  isNamedStream: StreamSource.named,
+  isStream,
+  isNamedStream: (x: unknown) => is_streamable(x) && is.string((x as any).name),
   cwd: () => fs_resolve(),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => ref(path).list(opts),
@@ -39,7 +47,9 @@ const fs = Object.freeze({
   json: (path: Path) => ref(path).json(),
   stream: (target: string | Streamable) => {
     if (is.string(target)) return ref(target).stream();
-    if (StreamSource.is(target)) return StreamSource.stream(target);
+    if (is.blob(target)) return target.stream();
+    if (is.stream(target)) return target;
+    if (is.branded(target, symbol.stream)) return target[symbol.stream]();
     throw E.target_not_streamable(target);
   },
   write: (path: Path, val: WritableInput) => ref(path).write(val),
@@ -55,7 +65,10 @@ export default fs;
 
 export type {
   FileInfo,
-  FileRef, FileType, Filter, ListOptions,
+  FileRef,
+  FileType,
+  Filter,
+  ListOptions,
   Path,
   Streamable
 };

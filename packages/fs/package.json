@@ -25,7 +25,8 @@
     "@rcompat/crypto": "workspace:^",
     "@rcompat/dict": "workspace:^",
     "@rcompat/error": "workspace:^",
-    "@rcompat/is": "workspace:^"
+    "@rcompat/is": "workspace:^",
+    "@rcompat/symbol": "workspace:^"
   },
   "devDependencies": {
     "@rcompat/type": "workspace:^"

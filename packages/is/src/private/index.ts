@@ -22,7 +22,7 @@ function isBlob(x: unknown): x is Blob {
 function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
-function isBranded(x: unknown, brand: symbol) {
+function isBranded<S extends symbol>(x: unknown, brand: S): x is Record<S, () => unknown> {
   return object(x) && Object.hasOwn(x, brand);
 }
 function isVersioned(x: unknown, brand: symbol): boolean {
@@ -116,6 +116,9 @@ function isResponse(x: unknown): x is Response {
 function isSet(x: unknown): x is Set<unknown> {
   return x instanceof Set;
 }
+function isStream(x: unknown): x is ReadableStream {
+  return x instanceof ReadableStream;
+}
 function isString(x: unknown): x is string {
   return typeof x === "string";
 }
@@ -173,6 +176,7 @@ export default {
   regexp: isRegExp,
   safeint: numbers.isSafeInt,
   set: isSet,
+  stream: isStream,
   string: isString,
   symbol: isSymbol,
   text: strings.isText,
