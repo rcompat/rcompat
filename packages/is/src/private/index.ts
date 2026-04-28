@@ -25,6 +25,31 @@ function isBoolean(x: unknown): x is boolean {
 function isBranded(x: unknown, brand: symbol) {
   return object(x) && Object.hasOwn(x, brand);
 }
+function isVersioned(x: unknown, brand: symbol): boolean {
+  if (!object(x)) return false;
+
+  if (Object.hasOwn(x, brand)) return true;
+
+  const key = Symbol.keyFor(brand);
+  if (key === undefined) {
+    throw new Error("brand must be a global symbol (Symbol.for), got Symbol()");
+  }
+
+  const prefix = key.slice(0, key.lastIndexOf("/") + 1);
+  const mismatch = Object.getOwnPropertySymbols(x).some(s => {
+    const k = Symbol.keyFor(s);
+    return k?.startsWith(prefix) && k !== key;
+  });
+
+  if (mismatch) {
+    const got = Object.getOwnPropertySymbols(x)
+      .map(s => Symbol.keyFor(s))
+      .find(k => k?.startsWith(prefix));
+    throw new Error(`version mismatch: expected ${key}, got ${got}`);
+  }
+
+  return false;
+}
 function isBytes(x: unknown): x is Uint8Array {
   return x instanceof Uint8Array;
 }
@@ -156,4 +181,5 @@ export default {
   uint: numbers.isUint,
   undefined: isUndefined,
   url: isURL,
+  versioned: isVersioned,
 };
