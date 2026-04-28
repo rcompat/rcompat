@@ -13,8 +13,11 @@ import symbol from "@rcompat/symbol";
 import type { JSONValue } from "@rcompat/type";
 import { resolve } from "node:path";
 
-const is_streamable = (x: unknown) =>
-  is.blob(x) || is.stream(x) || is.branded(x, symbol.stream);
+type NamedStreamable<T = unknown> = Streamable<T> & { name: string };
+
+function is_streamable(x: unknown) {
+  return is.blob(x) || is.stream(x) || is.branded(x, symbol.stream);
+}
 
 function fs_resolve(path?: string) {
   assert.maybe.string(path);
@@ -26,15 +29,19 @@ function ref(path: Path) {
   return new FileRef(path);
 }
 
-function isStream(x: unknown): boolean {
+function isStream(x: unknown): x is Streamable {
   return is_streamable(x);
+}
+
+function isNamedStream(x: unknown): x is NamedStreamable {
+  return is_streamable(x) && is.string((x as any).name);
 }
 
 const fs = dict.new({
   ref,
   isRef: FileRef.is,
   isStream,
-  isNamedStream: (x: unknown) => is_streamable(x) && is.string((x as any).name),
+  isNamedStream,
   cwd: () => fs_resolve(),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => ref(path).list(opts),
@@ -69,6 +76,7 @@ export type {
   FileType,
   Filter,
   ListOptions,
+  NamedStreamable,
   Path,
   Streamable
 };
