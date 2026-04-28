@@ -30,6 +30,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/sql](packages/sql)               | SQL                     |
 |[@rcompat/stream](packages/stream)         | Streams                 |
 |[@rcompat/string](packages/string)         | Strings                 |
+|[@rcompat/symbol](packages/symbol)         | Well-known symbols      |
 |[@rcompat/test](packages/test)             | Testing                 |
 |[@rcompat/type](packages/type)             | Types                   |
 |[@rcompat/webview](packages/webview)       | Webview                 |
