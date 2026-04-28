@@ -70,7 +70,7 @@ export default class FileRef
   }
 
   static is(x: unknown): x is FileRef {
-    return is.branded(x, brand);
+    return is.versioned(x, brand);
   }
 
   [Symbol.replace](string: string, replacement: string | StringReplacer) {

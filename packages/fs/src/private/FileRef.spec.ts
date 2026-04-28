@@ -1,4 +1,5 @@
 import FileRef from "#FileRef";
+import symbol from "@rcompat/symbol";
 import test from "@rcompat/test";
 
 test.case("exists", async assert => {
@@ -36,6 +37,7 @@ test.case("write", async assert => {
   assert(await file.text()).equals("test\n");
   await file.remove();
 });
+
 test.case("write with path", async assert => {
   const filename = `/tmp/a/b/c/test-${crypto.randomUUID()}.txt`;
   const file = new FileRef(filename);
@@ -44,4 +46,23 @@ test.case("write with path", async assert => {
   assert(await file.text()).equals("test\n");
   await file.remove();
   await file.directory.remove();
+});
+
+test.group("symbol.stream", () => {
+  test.case("match", assert => {
+    const file = new FileRef("/tmp");
+    assert(symbol.stream in file).true();
+    const stream = file[symbol.stream]();
+    assert(stream instanceof ReadableStream).true();
+  });
+
+  test.case("no match", assert => {
+    const fake = { foo: true };
+    assert(FileRef.is(fake)).false();
+  });
+
+  test.case("version mismatch", assert => {
+    const fake = { [Symbol.for("std:fs/FileRef/v1")]: true };
+    assert(() => FileRef.is(fake)).throws(Error);
+  });
 });
