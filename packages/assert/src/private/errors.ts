@@ -63,7 +63,9 @@ function invalid_regexp(x: unknown) { return t`${s(x)} must be RegExp`; }
 function invalid_safeint(x: unknown) { return t`${s(x)} must be safe integer`; }
 function invalid_set(x: unknown) { return t`${s(x)} must be Set`; }
 function invalid_true(x: unknown) { return t`${s(x)} must be true`; }
-function invalid_uint(x: unknown) { return t`${s(x)} must be unsigned integer`; }
+function invalid_uint(x: unknown) {
+  return t`${s(x)} must be unsigned integer`;
+}
 function invalid_url(x: unknown) { return t`${s(x)} must be URL`; }
 function invalid_uuid(x: unknown) {
   return t`${s(x)} must be a valid UUIDv4 string`;

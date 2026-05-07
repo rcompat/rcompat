@@ -8,7 +8,8 @@ import type { Dict } from "@rcompat/type";
 
 test.case("typedoc", assert => {
   assert(flatMap({ a: 1, b: 2 }, (k, v) => [k, v * 2])).equals({ a: 2, b: 4 });
-  assert(flatMap({ a: 1, b: 2 }, (_, v) => v > 1 ? ["keep", v] : [])).equals({ keep: 2 });
+  assert(flatMap({ a: 1, b: 2 }, (_, v) => v > 1 ? ["keep", v] : []))
+    .equals({ keep: 2 });
   assert(flatMap({}, () => [])).equals({});
 });
 
@@ -22,7 +23,8 @@ test.case("faulty params", assert => {
 
 test.case("filter via empty return", assert => {
   const obj = { a: 1, b: 2, c: 3, d: 4 };
-  assert(flatMap(obj, (k, v) => v % 2 === 0 ? [k, v] : [])).equals({ b: 2, d: 4 });
+  assert(flatMap(obj, (k, v) => v % 2 === 0 ? [k, v] : []))
+    .equals({ b: 2, d: 4 });
 });
 
 test.case("remap keys and values", assert => {

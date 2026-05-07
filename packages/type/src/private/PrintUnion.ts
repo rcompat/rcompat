@@ -6,7 +6,9 @@ import type Unique from "#Unique";
 
 type PrintUnionMembers<T> =
   UnionToTuple<T> extends infer Tuple extends unknown[]
-  ? { [K in keyof Tuple]: PrintBoolean<Print<Tuple[K]>> } extends infer Printed extends string[]
+  ? {
+    [K in keyof Tuple]: PrintBoolean<Print<Tuple[K]>>
+  } extends infer Printed extends string[]
   ? Join<Unique<Printed>, " |">
   : never
   : never;

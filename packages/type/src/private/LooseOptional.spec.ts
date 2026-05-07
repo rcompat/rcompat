@@ -9,7 +9,7 @@ test.case("pass", assert => {
     .type<{ bar?: number | undefined; foo?: string | undefined }>();
 });
 
-test.case("explicit undefined accepted", assert => {
+test.case("explicit undefined accepted", _assert => {
   // unlike UndefinedToOptional, explicit undefined is assignable
   //assert<LooseOptional<{ foo: string | undefined }>>()
   // .nottype<{ foo?: string }>();

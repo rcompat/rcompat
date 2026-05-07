@@ -6,7 +6,8 @@ export interface GetResultType<T, P, D extends number[] = []> {
   ? unknown
   : P extends `${infer P1}.${infer Rest}`
   ? P1 extends keyof T
-  ? GetResultType<Exclude<T[P1], undefined>, Rest, [...D, 0]>["result"] | (T[P1] & undefined)
+  ? GetResultType<Exclude<T[P1], undefined>, Rest, [...D, 0]>["result"]
+  | (T[P1] & undefined)
   : undefined
   : P extends keyof T
   ? T[P]

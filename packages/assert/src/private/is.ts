@@ -16,23 +16,29 @@ function primitive<K extends keyof TypesOfTypeMap>(type: K) {
   };
 }
 
-function condition<T>(pred: (y: unknown) => y is T, err: (x: unknown) => Error) {
+function condition<T>(
+  predicate: (y: unknown) => y is T,
+  error_function: (x: unknown) => Error) {
   return (x: unknown, error?: Error): T => {
-    assert(pred(x), error ?? err(x));
+    assert(predicate(x), error ?? error_function(x));
     return x as T;
   };
 }
 
-function untyped(pred: (y: unknown) => boolean, err: (x: unknown) => Error) {
+function untyped(
+  predicate: (y: unknown) => boolean,
+  error_function: (x: unknown) => Error) {
   return <T>(x: T, error?: Error): T => {
-    assert(pred(x), error ?? err(x));
+    assert(predicate(x), error ?? error_function(x));
     return x;
   };
 }
 
-function narrowed<T>(pred: (y: unknown) => y is T, err: (x: unknown) => Error) {
+function narrowed<T>(
+  predicate: (y: unknown) => y is T,
+  error_function: (x: unknown) => Error) {
   return <U>(x: U, error?: Error): U extends T ? U : T => {
-    assert(pred(x), error ?? err(x));
+    assert(predicate(x), error ?? error_function(x));
     return x as any;
   };
 }
@@ -45,7 +51,7 @@ const defined = <T>(x: T, error?: Error): NonNullable<T> => {
 function uuid(x: unknown, error?: Error): string {
   const uuidv4 =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-  assert(typeof x === "string" && uuidv4.test(x), error ?? errors.invalid_uuid(x));
+  assert(is.string(x) && uuidv4.test(x), error ?? errors.invalid_uuid(x));
   return x as string;
 };
 
