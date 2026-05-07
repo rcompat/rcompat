@@ -21,7 +21,7 @@
     "@rcompat/type": "workspace:^"
   },
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsgo",
     "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build"

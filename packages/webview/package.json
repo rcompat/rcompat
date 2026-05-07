@@ -16,7 +16,7 @@
     "directory": "packages/webview"
   },
   "scripts": {
-    "build": "npm run clean && tsc && npm run copy-platforms",
+    "build": "npm run clean && tsgo && npm run copy-platforms",
     "test": "npx proby",
     "clean": "rm -rf ./lib",
     "copy-platforms": "./scripts/copy-platforms.sh",

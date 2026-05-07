@@ -15,6 +15,12 @@
     "url": "https://github.com/rcompat/rcompat",
     "directory": "packages/proby"
   },
+  "scripts": {
+    "build": "npm run clean && tsgo",
+    "clean": "rm -rf ./lib",
+    "prepublishOnly": "npm run build",
+    "test": "npx proby"
+  },
   "dependencies": {
     "@rcompat/assert": "workspace:^",
     "@rcompat/cli": "workspace:^",
@@ -34,12 +40,6 @@
     "@rcompat/test": {
       "optional": true
     }
-  },
-  "scripts": {
-    "build": "npm run clean && tsc",
-    "clean": "rm -rf ./lib",
-    "prepublishOnly": "npm run build",
-    "test": "npx proby"
   },
   "type": "module",
   "imports": {

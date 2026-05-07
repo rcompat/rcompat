@@ -175,7 +175,7 @@ test.case("unions", assert => {
   assert<Print<Boolean | true>>().fail<"true | Boolean">();
   assert<Print<Boolean | false>>().fail<"false | Boolean">();
   assert<Print<Boolean | string>>().type<"string | Boolean">();
-  assert<Print<Boolean | String>>().type<"String | Boolean">();
+  assert<Print<Boolean | String>>().type<"Boolean | String">();
   assert<Print<Blob | File>>().type<"Blob | File">();
 
   class A implements Printable {
@@ -241,7 +241,7 @@ test.case("object", assert => {
   assert<Print<{ foo: 0n }>>().type<"{ foo: 0n; }">();
 
   const _1: { count: number; foo: "bar" } = { count: 1, foo: "bar" };
-  assert<Print<typeof _1>>().type<"{ foo: 'bar'; count: number; }">();
+  assert<Print<typeof _1>>().type<"{ count: number; foo: 'bar'; }">();
   assert<Print<{ a: true; b: string[] }>>().type<"{ a: true; b: string[]; }">();
 
   const _t = { foo: ["bar", 1n] };

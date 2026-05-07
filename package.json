@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "npx proby",
-    "sweep": "rm -rf node_modules pnpm-lock.yaml {app,package}s/*/node_modules",
+    "sweep": "rm -rf node_modules pnpm-lock.yaml packages/*/node_modules",
     "knip": "knip --no-config-hints"
   },
   "private": true,
@@ -25,10 +25,10 @@
     "@types/deno": "^2.5.0",
     "@types/node": "^25.6.0",
     "@types/ws": "^8.18.1",
-    "apekit": "^0.0.51",
+    "@typescript/native-preview": "7.0.0-dev.20260506.1",
+    "apekit": "^0.0.53",
     "eslint": "^9.39.2",
     "knip": "^6.7.0",
-    "proby": "workspace:^",
-    "typescript": "^6.0.3"
+    "proby": "workspace:^"
   }
 }

@@ -32,7 +32,7 @@ test.case("marginals", assert => {
 
   // elided
   assert<UnionToTuple<never | string>>().type<[string]>();
-  assert<UnionToTuple<string | void>>().type<[string, void]>();
+  assert<UnionToTuple<string | void>>().type<[void, string]>();
 });
 
 test.case("there and back again", assert => {

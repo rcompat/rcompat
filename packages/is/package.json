@@ -15,7 +15,7 @@
     "directory": "packages/is"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsgo",
     "test": "npx proby",
     "clean": "rm -rf ./lib",
     "prepublishOnly": "npm run build",

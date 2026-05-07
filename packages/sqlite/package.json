@@ -15,7 +15,7 @@
     "directory": "packages/sqlite"
   },
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsgo",
     "test": "npm run test:node && npm run test:bun",
     "test:node": "npx proby",
     "test:deno": "deno run npm:proby",
