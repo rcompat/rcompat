@@ -36,11 +36,8 @@
   "exports": {
     ".": {
       "@rcompat/source": "./src/public/index.ts",
+      "browser": "./lib/public/client.js",
       "default": "./lib/public/index.js"
-    },
-    "./*": {
-      "@rcompat/source": "./src/public/*.ts",
-      "default": "./lib/public/*.js"
     }
   }
 }
