@@ -21,6 +21,8 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@types/busboy": "^1.5.4",
+    "@types/ws": "^8.18.1",
     "undici-types": "8.1.0"
   },
   "dependencies": {

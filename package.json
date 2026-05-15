@@ -20,10 +20,8 @@
   "devDependencies": {
     "@rcompat/test": "workspace:^",
     "@types/bun": "^1.3.13",
-    "@types/busboy": "^1.5.4",
     "@types/deno": "^2.5.0",
     "@types/node": "^25.6.0",
-    "@types/ws": "^8.18.1",
     "@typescript/native-preview": "7.0.0-dev.20260506.1",
     "apekit": "^0.0.53",
     "eslint": "^9.39.2",
