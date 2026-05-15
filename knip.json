@@ -1,4 +1,0 @@
-{
-  "ignore": ["**/*.spec.ts"],
-  "ignoreBinaries": ["tsc", "proby"]
-}
