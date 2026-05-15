@@ -21,7 +21,7 @@ to properly implement or use WinterTC interfaces. For example, Node's
 
 ## Setup
 
-We recommend joining our Discord server at https://discord.gg/RSg4NNwM4f to
+We recommend joining our Discord server at https://primate.run/chat to
 coordinate development. The rcompat channels are under the category `rcompat`.
 
 Make sure you have Node, Deno and Bun installed in case you need to test
@@ -64,8 +64,8 @@ individual runtimes, use a [runtime key][runtime-keys].
 ## Dependencies
 
 rcompat should ideally have no dependencies. In the few cases it has
-dependencies, they are slated for removal or considered too much of an effort
-to implement non-natively. Consult the maintainers before adding any new
+dependencies, they are slated for removal or considered too much effort to
+implement non-natively. Consult the maintainers before adding any new
 dependencies.
 
 ## New / renaming packages

@@ -25,7 +25,7 @@ Deno, Bun and future runtimes.
 |[@rcompat/io](packages/io)                 | Input/output            |
 |[@rcompat/is](packages/is)                 | Identity checks         |
 |[@rcompat/kv](packages/kv)                 | Key-value stores        |
-|[@rcompat/proby](packages/proby)           | Test runner             |
+|[proby](packages/proby)                    | Test runner             |
 |[@rcompat/runtime](packages/runtime)       | Runtime environment     |
 |[@rcompat/sql](packages/sql)               | SQL                     |
 |[@rcompat/stream](packages/stream)         | Streams                 |
@@ -64,13 +64,13 @@ JavaScript offers this kind of flexibility.
 rcompat is designed with many modules in mind, including `@rcompat/fs` for
 filesystem operations, `@rcompat/http` for using a modern HTTP server working
 with WHATWG `Request`/`Response` (which Node doesn't support; rcompat wraps
-a Node request object into a WHATWG `Request` as it comes in),
-`@rcompat/invariant` for ensuring runtime invariants, `@rcompat/record` for
-record handling, and many more useful modules and abstractions.
+a Node request object into a WHATWG `Request` as it comes in), `@rcompat/assert`
+for assertions, `@rcompat/dict` for record handling, and many more useful
+modules and abstractions.
 
 The standard library is designed to accommodate modern development needs: for
 example, `@rcompat/http` supports WebSockets (natively on Deno/Bun, and using
-NPM's `ws` on Node), while `@rcompat/fs/FileRef` offers globbing, listing and
+NPM's `ws` on Node), while `@rcompat/fs` offers globbing, listing and
 manipulation of files, similarly to Python's `pathlib`.
 
 For example, to set up a server with rcompat, use `@rcompat/http/serve` -- the
@@ -82,9 +82,8 @@ import serve from "@rcompat/http/serve";
 serve(request => new Response("Hi!"), { host: "localhost", port: 6161 });
 ```
 
-This code runs successfully with either `node app.js` (if you set your
-package.json to `{ "type": "module" }`; otherwise use `app.mjs`), `deno run
--A app.js` or `bun --bun app.js`, taking advantage of native optimizations.
+This code runs successfully with `node app.js`, `deno run -A app.js` or
+`bun --bun app.js`, taking advantage of native optimizations.
 
 ### Another standard library?
 
@@ -100,9 +99,9 @@ target everything.
 For example, here's how you can read a file and parse it as JSON.
 
 ```js
-import FileRef from "@rcompat/fs/FileRef";
+import fs from "@rcompat/fs";
 
-console.log(await new FileRef("./users.json").json());
+console.log(await fs.json("./users.json"));
 ```
 
 Again, this code runs successfully on Node, Deno or Bun, taking advantage of
@@ -110,15 +109,14 @@ optimizations native to every runtime.
 
 ## Evolving standard — input needed
 
-rcompat has been quietly developed the last few months in conjunction with
-[Primate](https://primate.run)'s development and is largely influenced by its
-needs. We'd like to invite more participation by other projects / individuals
-in order to converge on APIs that best serve everyone and are the most useful
-on a broad basis.
+rcompat is developed in support of [Primate](https://primate.run)'s development
+and largely influenced by its needs. We'd like to invite more participation by
+other projects / individuals in order to converge on APIs that best serve
+everyone and are the most useful on a broad basis.
 
 ## Resources
 
-* Discord: https://discord.gg/RSg4NNwM4f
+* Discord: https://primate.run/chat
 
 ## License
 
