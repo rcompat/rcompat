@@ -19,6 +19,7 @@
     "build": "npm run clean && tsgo && npm run copy-platforms",
     "test": "npx proby",
     "clean": "rm -rf ./lib",
+    "lint": "eslint .",
     "copy-platforms": "./scripts/copy-platforms.sh",
     "prepublishOnly": "npm run build"
   },

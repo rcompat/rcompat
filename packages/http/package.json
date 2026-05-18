@@ -18,12 +18,13 @@
     "build": "npm run clean && tsgo",
     "test": "npx proby",
     "clean": "rm -rf ./lib",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/busboy": "^1.5.4",
     "@types/ws": "^8.18.1",
-    "undici-types": "8.1.0"
+    "undici-types": "8.3.0"
   },
   "dependencies": {
     "@rcompat/assert": "workspace:^",

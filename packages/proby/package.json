@@ -18,6 +18,7 @@
   "scripts": {
     "build": "npm run clean && tsgo",
     "clean": "rm -rf ./lib",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build",
     "test": "npx proby"
   },

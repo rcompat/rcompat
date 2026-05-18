@@ -16,5 +16,6 @@ const read = ({ chunks = [], reader }: Options): Promise<string[]> =>
 
 export default async (input: ReadableStream): Promise<string> => {
   assert.instance(input, ReadableStream);
-  return (await read({ reader: input.getReader() })).filter(fn.defined).join("");
+  const result = await read({ reader: input.getReader() });
+  return result.filter(fn.defined).join("");
 };

@@ -21,6 +21,7 @@
     "test:deno": "deno run npm:proby",
     "test:bun": "bunx --bun proby",
     "clean": "rm -rf ./lib",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

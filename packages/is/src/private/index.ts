@@ -22,7 +22,9 @@ function isBlob(x: unknown): x is Blob {
 function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
-function isBranded<S extends symbol>(x: unknown, brand: S): x is Record<S, () => unknown> {
+function isBranded<
+  S extends symbol,
+>(x: unknown, brand: S): x is Record<S, () => unknown> {
   return object(x) && Object.hasOwn(x, brand);
 }
 function isVersioned(x: unknown, brand: symbol): boolean {
@@ -81,9 +83,10 @@ function isIterable(x: unknown): x is Iterable<unknown> {
 }
 function isJSON(x: unknown): x is JSONValue {
   if (x === null) return true;
-  if (typeof x === "string" || typeof x === "number" || typeof x === "boolean") return true;
+  const type = typeof x;
+  if (["string", "number", "boolean"].includes(type)) return true;
   if (Array.isArray(x)) return x.every(isJSON);
-  if (typeof x === "object") {
+  if (type === "object") {
     if (x instanceof Date || x instanceof URL) return false;
     return Object.values(x as object).every(isJSON);
   }

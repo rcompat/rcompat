@@ -8,7 +8,7 @@ import is from "@rcompat/is";
 type Return = Promise<string | typeof CANCEL>;
 
 const render = (msg: string, initial?: string) => {
-  const suffix = initial ? ` ${fg.dim(`(${initial})`)}` : "";
+  const suffix = is.text(initial) ? ` ${fg.dim(`(${initial})`)}` : "";
   return `${msg}${suffix} ${fg.dim("› ")}`;
 };
 

@@ -4,13 +4,15 @@ import { Readable, Writable } from "node:stream";
 
 type Options = SpawnOptions & { inherit?: boolean };
 
+const OPTIONS = { shell: true, stdio: "inherit" } as const;
+
 export default (command: string, options?: Options) => {
   assert.maybe.dict(options);
   const inherit = assert.maybe.boolean(options?.inherit) ?? false;
 
   if (inherit) {
     return new Promise<void>((resolve, reject) => {
-      const child = spawn(command, { ...options, shell: true, stdio: "inherit" });
+      const child = spawn(command, { ...options, ...OPTIONS });
       child.on("exit", code => code === 0 ? resolve() : reject(code));
     });
   }
