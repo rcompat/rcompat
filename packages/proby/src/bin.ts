@@ -15,7 +15,7 @@ const user_config = await ts_config_file.exists()
     ? (await js_config_file.import("default"))
     : {};
 
-const { include, packages, monorepo } = Schema.parse(user_config);
+const { include, packages, monorepo, loaders } = Schema.parse(user_config);
 
 const conditions = await runtime.conditions(root);
 const conditions_flags = conditions
@@ -24,8 +24,14 @@ const conditions_flags = conditions
 const script = runtime.script;
 const args = runtime.args.join(" ");
 
+const loaders_flags = loaders
+  .map(l => ` --import="${root.join(l).path}"`)
+  .join("");
+
+const flags = `${conditions_flags}${loaders_flags}`;
+
 if (!is.defined(env.try("PROBY_RELAUNCHED"))) {
-  await io.spawn(`${runtime.bin}${conditions_flags} ${script} ${args}`, {
+  await io.spawn(`${runtime.bin}${flags} ${script} ${args}`, {
     inherit: true,
     env: { ...process.env, PROBY_RELAUNCHED: "1" },
   });

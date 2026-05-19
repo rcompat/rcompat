@@ -5,12 +5,14 @@ export type Config = {
   monorepo: boolean;
   packages: string;
   include: string[];
+  loaders: string[];
 };
 
 const defaults: Config = {
   monorepo: false,
   packages: "packages",
   include: ["src", "test"],
+  loaders: [],
 };
 
 export default {
@@ -21,6 +23,9 @@ export default {
       include: is.array(input.include) && input.include.every(is.string)
         ? input.include
         : defaults.include,
+      loaders: is.array(input.loaders) && input.loaders.every(is.string)
+        ? input.loaders
+        : defaults.loaders,
     };
   },
 };
