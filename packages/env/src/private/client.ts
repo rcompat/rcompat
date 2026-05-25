@@ -1,11 +1,11 @@
 export default {
-  get(_key: string): string {
-    throw new Error();
-  },
-  try(_key: string) {
+  get() {
     return undefined;
   },
-  toJSON(): Dict<string> {
+  try() {
+    return undefined;
+  },
+  toJSON() {
     return Object.assign(Object.create(null), {});
   },
 };
