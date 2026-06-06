@@ -1,3 +1,4 @@
+import type DirectoryOptions from "#DirectoryOptions";
 import E from "#errors";
 import type { FileInfo, Filter, ListOptions } from "#FileRef";
 import FileRef from "#FileRef";
@@ -39,6 +40,7 @@ const fs = dict.new({
   isStream,
   isNamedStream,
   cwd: () => fs_resolve(),
+  create: (path: Path, options?: DirectoryOptions) => ref(path).create(options),
   resolve: fs_resolve,
   list: (path: Path, opts?: ListOptions) => ref(path).list(opts),
   files: (path: Path, opts?: ListOptions) => ref(path).files(opts),
@@ -72,9 +74,8 @@ export type {
   FileInfo,
   FileRef,
   FileType,
-  Filter,
-  ListOptions,
+  Filter, le, ListOptions,
   NamedStreamable,
   Path,
-  Streamable
-};
+  Streamab
+};,
