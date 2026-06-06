@@ -74,8 +74,8 @@ export type {
   FileInfo,
   FileRef,
   FileType,
-  Filter, le, ListOptions,
+  Filter, ListOptions,
   NamedStreamable,
   Path,
-  Streamab
-};,
+  Streamable
+};

@@ -1,0 +1,27 @@
+const fs = {
+  ref: () => { throw new Error("fs is not available in the browser"); },
+  isRef: () => false,
+  isStream: () => false,
+  isNamedStream: () => false,
+  cwd: () => { throw new Error("fs is not available in the browser"); },
+  create: () => { throw new Error("fs is not available in the browser"); },
+  resolve: () => { throw new Error("fs is not available in the browser"); },
+  list: () => { throw new Error("fs is not available in the browser"); },
+  files: () => { throw new Error("fs is not available in the browser"); },
+  dirs: () => { throw new Error("fs is not available in the browser"); },
+  exists: () => { throw new Error("fs is not available in the browser"); },
+  arrayBuffer: () => { throw new Error("fs is not available in the browser"); },
+  bytes: () => { throw new Error("fs is not available in the browser"); },
+  text: () => { throw new Error("fs is not available in the browser"); },
+  json: () => { throw new Error("fs is not available in the browser"); },
+  stream: () => { throw new Error("fs is not available in the browser"); },
+  write: () => { throw new Error("fs is not available in the browser"); },
+  writeJSON: () => { throw new Error("fs is not available in the browser"); },
+  size: () => { throw new Error("fs is not available in the browser"); },
+  webpath: () => { throw new Error("fs is not available in the browser"); },
+  join: () => { throw new Error("fs is not available in the browser"); },
+  discover: () => { throw new Error("fs is not available in the browser"); },
+  type: () => { throw new Error("fs is not available in the browser"); },
+};
+
+export default fs;
