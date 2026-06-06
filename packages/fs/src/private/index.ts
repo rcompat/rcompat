@@ -2,11 +2,9 @@ import E from "#errors";
 import type { FileInfo, Filter, ListOptions } from "#FileRef";
 import FileRef from "#FileRef";
 import type FileType from "#FileType";
-import parse from "#parse";
 import type Path from "#Path";
 import type Streamable from "#Streamable";
 import type WritableInput from "#WritableInput";
-import assert from "@rcompat/assert";
 import dict from "@rcompat/dict";
 import is from "@rcompat/is";
 import symbol from "@rcompat/symbol";
@@ -19,10 +17,8 @@ function is_streamable(x: unknown) {
   return is.blob(x) || is.stream(x) || is.branded(x, symbol.stream);
 }
 
-function fs_resolve(path?: string) {
-  assert.maybe.string(path);
-
-  return new FileRef(path === undefined ? resolve() : resolve(parse(path)));
+function fs_resolve(path?: Path) {
+  return new FileRef(path === undefined ? resolve() : resolve(ref(path).path));
 }
 
 function ref(path: Path) {
@@ -52,8 +48,10 @@ const fs = dict.new({
   bytes: (path: Path) => ref(path).bytes(),
   text: (path: Path) => ref(path).text(),
   json: (path: Path) => ref(path).json(),
-  stream: (target: string | Streamable) => {
-    if (is.string(target)) return ref(target).stream();
+  stream: (target: Path | Streamable) => {
+    if (is.string(target) || target instanceof URL || FileRef.is(target)) {
+      return ref(target).stream();
+    }
     if (is.blob(target)) return target.stream();
     if (is.stream(target)) return target;
     if (is.branded(target, symbol.stream)) return target[symbol.stream]();

@@ -18,6 +18,12 @@ function unknown_type(path: string) {
 function target_not_streamable(x: unknown) {
   return t`target ${x} not streamable`;
 }
+function invalid_file_url(url: URL) {
+  return t`file URL required: ${url.href}`;
+}
+function invalid_join_path(path: string) {
+  return t`join path must be relative: ${path}`;
+}
 
 const errors = error.coded({
   value_not_streamable,
@@ -25,6 +31,11 @@ const errors = error.coded({
   missing_path_for_copy,
   unknown_type,
   target_not_streamable,
+  invalid_file_url,
+  invalid_join_path,
 });
 
 export default errors;
+export type Code = keyof typeof errors;
+export const Code = Object.fromEntries(
+  Object.keys(errors).map(k => [k, k])) as { [K in Code]: K };

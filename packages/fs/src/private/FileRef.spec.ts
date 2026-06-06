@@ -1,6 +1,9 @@
+import { Code } from "#errors";
 import FileRef from "#FileRef";
+import fs from "#index";
 import symbol from "@rcompat/symbol";
 import test from "@rcompat/test";
+import { pathToFileURL } from "node:url";
 
 test.case("exists", async assert => {
   assert(await new FileRef("/tmp").exists()).true();
@@ -46,6 +49,60 @@ test.case("write with path", async assert => {
   assert(await file.text()).equals("test\n");
   await file.remove();
   await file.directory.remove();
+});
+
+test.group("file URL paths", () => {
+  test.case("construct from file URL", assert => {
+    const file = new FileRef(pathToFileURL("/tmp/file-url.txt"));
+    assert(file.path).equals("/tmp/file-url.txt");
+  });
+
+  test.case("fs helpers accept file URL", async assert => {
+    const filename = `/tmp/test-${crypto.randomUUID()}.txt`;
+    const url = pathToFileURL(filename);
+
+    assert(fs.resolve(url).path).equals(filename);
+    await fs.write(url, "test");
+    assert(await fs.text(url)).equals("test\n");
+    await fs.ref(url).remove();
+  });
+
+  test.case("fs helpers reject non-file URL", assert => {
+    assert(() => fs.resolve(new URL("https://example.com/file.txt")))
+      .throws(Code.invalid_file_url);
+  });
+
+  test.case("reject non-file URL", assert => {
+    assert(() => new FileRef(new URL("https://example.com/file.txt")))
+      .throws(Code.invalid_file_url);
+  });
+});
+
+test.group("join path contract", () => {
+  test.case("accept relative segments", assert => {
+    const file = new FileRef("/tmp").join("a", "./b");
+    assert(file.path).equals("/tmp/a/b");
+  });
+
+  test.case("reject absolute string segment", assert => {
+    assert(() => new FileRef("/tmp").join("/etc/passwd"))
+      .throws(Code.invalid_join_path);
+  });
+
+  test.case("reject absolute FileRef segment", assert => {
+    assert(() => new FileRef("/tmp").join(new FileRef("/etc/passwd")))
+      .throws(Code.invalid_join_path);
+  });
+
+  test.case("reject file URL string segment", assert => {
+    assert(() => new FileRef("/tmp").join("file:///etc/passwd"))
+      .throws(Code.invalid_join_path);
+  });
+
+  test.case("reject file URL segment", assert => {
+    assert(() => new FileRef("/tmp").join(pathToFileURL("/etc/passwd")))
+      .throws(Code.invalid_join_path);
+  });
 });
 
 test.group("symbol.stream", () => {
