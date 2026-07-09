@@ -382,7 +382,11 @@ async function process_file(
     // spec files and teardown always pairs with setup. `repository.reset()`
     // is nested so a throwing teardown can't skip it.
     try {
-      await cleanup?.();
+      try {
+        await suite.end();
+      } finally {
+        await cleanup?.();
+      }
     } finally {
       repository.reset();
     }
