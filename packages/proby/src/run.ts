@@ -325,19 +325,19 @@ async function process_file(
 
     const iter = suite.run()[Symbol.asyncIterator]();
 
-    let doneIterating = false;
+    let done_iterating = false;
 
-    while (is.falsy(doneIterating)) {
+    while (is.falsy(done_iterating)) {
       const { done, value, output } = await next_test_with_std_output(iter);
 
-      doneIterating = is.truthy(done) || !is.defined(value);
-      if (doneIterating) break;
+      done_iterating = is.truthy(done) || !is.defined(value);
+      if (done_iterating) break;
 
       const { test, duration } = value!;
 
       if (is.defined(group) && test.group !== group) continue;
 
-      const testEntry: SuiteTest = {
+      const test_entry: SuiteTest = {
         name: test.name,
         group: test.group,
         duration,
@@ -347,7 +347,7 @@ async function process_file(
 
       // Counted per test.case, not per assert — a test.case with several
       // asserts still contributes exactly one pass or one fail.
-      const test_failed = testEntry.results.some(r => !r.passed);
+      const test_failed = test_entry.results.some(r => !r.passed);
       if (test_failed) {
         result.failed++;
       } else {
@@ -359,7 +359,7 @@ async function process_file(
         if (stack.length === 0 || stack.at(-1)!.name !== test.group) {
           stack.push({ name: test.group, tests: [], children: [] });
         }
-        stack.at(-1)!.tests.push(testEntry);
+        stack.at(-1)!.tests.push(test_entry);
         continue;
       }
 
@@ -369,7 +369,7 @@ async function process_file(
         flush_top();
       }
 
-      result.items.push({ kind: "test", test: testEntry });
+      result.items.push({ kind: "test", test: test_entry });
     }
 
     // Flush any remaining groups at end of file.
@@ -398,8 +398,8 @@ async function process_file(
 function print_group(node: GroupNode, depth: number, show_all: boolean) {
   const failed = group_failed(node);
 
-  const isPassingEntireGroup = !show_all && !failed;
-  if (isPassingEntireGroup) return;
+  const is_passing_entire_group = !show_all && !failed;
+  if (is_passing_entire_group) return;
 
   const group_indent = indent_at(depth + 1);
   const test_indent = indent_at(depth + 2);

@@ -4,6 +4,6 @@ export function complete() {
   completed = true;
 }
 
-export function isComplete() {
+export function is_complete() {
   return completed;
 }
