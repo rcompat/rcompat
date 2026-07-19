@@ -288,8 +288,11 @@ declare function is<Name>(value: unknown): value is <Type>;
 | `safeint`     | `number`            | safe integer                   |
 | `finite`      | `number \| bigint`  | finite number                  |
 | `nan`         | `number`            | `NaN`                          |
+| `f32`         | `number`            | 32-bit float number            |
 | `primitive`   | `Primitive`         | primitive type                 |
 | `dict`        | `Dict`              | plain object                   |
+| `f32array`    | `Float32Array`      | 32-bit float typed array       |
+| `f64array`    | `Float64Array`      | 64-bit float typed array       |
 | `newable`     | `Newable`           | constructor                    |
 | `boolish`     | `"true" \| "false"` | boolean string                 |
 
@@ -380,4 +383,3 @@ MIT
 ## Contributing
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the repository root.
-

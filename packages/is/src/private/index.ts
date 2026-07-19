@@ -72,6 +72,15 @@ function isError(x: unknown): x is Error {
 function isFalsy(x: unknown): boolean {
   return !x;
 }
+function isF32(x: unknown): x is number {
+  return typeof x === "number" && x === new Float32Array([x])[0];
+}
+function isF32Array(x: unknown): x is Float32Array {
+  return x instanceof Float32Array;
+}
+function isF64Array(x: unknown): x is Float64Array {
+  return x instanceof Float64Array;
+}
 function isFile(x: unknown): x is File {
   return x instanceof File;
 }
@@ -156,6 +165,9 @@ export default {
   dict: isDict,
   empty,
   error: isError,
+  f32: isF32,
+  f32array: isF32Array,
+  f64array: isF64Array,
   falsy: isFalsy,
   file: isFile,
   finite: numbers.isFinite,
