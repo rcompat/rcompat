@@ -414,6 +414,53 @@ The factory receives the base `assert` function and the current `subject`
 (the value passed to `assert()`). Return an object whose methods will be
 mixed into every `Assert` instance for that test.
 
+The extended test keeps the full base surface — `group`, `mock`, `spy`,
+`import`, and `intercept` all keep working on it, so you can group, mock, and
+intercept exactly as you would on `test` itself.
+
+```js
+import test from "@rcompat/test";
+
+const myTest = test.extend((assert, subject) => ({
+  even() {
+    assert(subject % 2 === 0).true();
+    return this;
+  },
+}));
+
+myTest.group("arithmetic", () => {
+  myTest.case("even numbers", assert => {
+    assert(2).even();
+    assert(4).even();
+  });
+});
+```
+
+An extended test is itself extendable: chain `test.extend(...)` calls to
+compose assertions. Later `extend` calls win on overlapping keys, just as if
+you had merged the factories into a single `test.extend(...)`.
+
+```js
+import test from "@rcompat/test";
+
+const chained = test.extend((assert, subject) => ({
+  even() {
+    assert(subject % 2 === 0).true();
+    return this;
+  },
+})).extend((assert, subject) => ({
+  odd() {
+    assert(subject % 2 === 1).true();
+    return this;
+  },
+}));
+
+chained.case("parity", assert => {
+  assert(2).even();
+  assert(3).odd();
+});
+```
+
 ## API Reference
 
 ### `test.case`
@@ -502,10 +549,12 @@ test.extend<Subject, Extensions>(
 ```
 
 Create a new test object with custom assertion methods mixed into the
-asserter.
+asserter. The returned `ExtendedTest` keeps the full base surface
+(`group`, `mock`, `spy`, `import`, `intercept`) and is itself extendable, so
+`test.extend(...)` calls can be chained to compose assertions.
 
 | Parameter | Type       | Description                                               |
-| --------- | ---------- | --------------------------------------------------------- |
+| --------- | ---------- | -------------------------------------------------------- |
 | `factory` | `function` | Returns extra methods to attach to each `Assert` instance |
 
 ### `test.spy`

@@ -25,11 +25,11 @@ const base = {
   mock,
   spy,
   import: import_,
+  intercept,
 };
 
 export default {
   ...base,
-  intercept,
   extend<Subject, Extensions>(factory: Factory<Subject, Extensions>):
     ExtendedTest<Extensions> {
     return extend(base, factory);
