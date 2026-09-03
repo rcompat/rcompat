@@ -19,12 +19,12 @@
   "private": true,
   "devDependencies": {
     "@rcompat/test": "workspace:^",
-    "@types/bun": "^1.3.14",
+    "@types/bun": "^1.4.0",
     "@types/deno": "^2.7.0",
-    "@types/node": "^26.0.0",
-    "@typescript/native-preview": "7.0.0-dev.20260624.1",
+    "@types/node": "^26.4.1",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "apekit": "^0.0.58",
-    "eslint": "^10.5.0",
+    "eslint": "^10.9.1",
     "proby": "workspace:^"
   }
 }
