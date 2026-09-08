@@ -23,3 +23,12 @@ test.case("is.f64array", assert => {
   assert(is.f64array(new Uint8Array())).false();
   assert(is.f64array([])).false();
 });
+
+test.case("is.text", assert => {
+  assert(is.text("hello")).true();
+  assert(is.text(" hello ")).true();
+  assert(is.text("")).false();
+  assert(is.text("   ")).false();
+  assert(is.text("\n\t")).false();
+  assert(is.text(1)).false();
+});
